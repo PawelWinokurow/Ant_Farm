@@ -11,7 +11,6 @@ public class Creator : MonoBehaviour
     public Hexagon hexagonPrefab;
     private GameManager gm;
     public Transform back;
-    public GameObject marker;
 
     // Start is called before the first frame update
     void Start()
@@ -26,8 +25,6 @@ public class Creator : MonoBehaviour
         lu = Intersect(Vector3.zero, Vector3.back, cam.transform.position, lu - cam.transform.position);
         Vector3 ru = cam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 1f));
         ru = Intersect(Vector3.zero, Vector3.back, cam.transform.position, ru - cam.transform.position);
-        Instantiate(marker, ru, cam.transform.rotation);
-
 
         higth =Mathf.CeilToInt((lu.y - ld.y) / 0.433f);
         width = Mathf.CeilToInt((rd.x - ld.x) / 1.5f);
