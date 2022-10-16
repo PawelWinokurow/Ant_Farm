@@ -30,8 +30,6 @@ public class Player : MonoBehaviour
                     hex.isSelected = true;
                 }
             }
-           // Debug.Log("Target Position: " + rayHit.collider.gameObject.transform.position);
-
         }
  
     }
