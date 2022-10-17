@@ -8,7 +8,7 @@ public class Creator : MonoBehaviour
 
     public int higth = 10;
     public int width = 10;
-    public Hexagon hexagonPrefab;
+   // public Hexagon hexagonPrefab;
     private GameManager gm;
     public Transform back;
 
@@ -31,7 +31,7 @@ public class Creator : MonoBehaviour
         back.transform.localScale = new Vector3((rd.x - ld.x),1f, (lu.z - ld.z));
 
 
-        gm.hexagons = new Hexagon[width, higth];
+        gm.hexagons=new List<Hexagon>();
         int x=0;
         int z = 0;
         float n = 1;
@@ -41,10 +41,10 @@ public class Creator : MonoBehaviour
             for (x = 0; x < width; x++)
             {
 
-                gm.hexagons[x,z]= Instantiate(hexagonPrefab, transform.position + new Vector3(x * 0.433f*2f+n* 0.433f/2, 0f,  z * 1.5f/2f), transform.rotation, transform);
+                gm.hexagons.Add(Instantiate(gm.hexagonWall, transform.position + new Vector3(x * 0.433f*2f+n* 0.433f/2, 0f,  z * 1.5f/2f), transform.rotation, transform));
             }
         }
-        transform.position = new Vector3(-gm.hexagons[x-1, z-1].mr.transform.position.x / 2f, 0f, -gm.hexagons[x - 1, z - 1].mr.transform.position.z / 2f);
+        transform.position = new Vector3(-gm.hexagons[gm.hexagons.Count-1].mr.transform.position.x / 2f, 0f, -gm.hexagons[gm.hexagons.Count-1].mr.transform.position.z / 2f);
     }
 
     Vector3 Intersect(Vector3 planeP, Vector3 planeN, Vector3 rayP, Vector3 rayD)

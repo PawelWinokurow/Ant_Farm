@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public Material mat;
+    private GameManager gm;
     // Start is called before the first frame update
     void Start()
     {
+        gm = GameManager.instance;
         Screen.orientation = ScreenOrientation.Portrait;
     }
 
@@ -25,8 +26,10 @@ public class Player : MonoBehaviour
 
                 if (hex)
                 {
-                    hex.mr.material = mat;
-                    hex.isSelected = true;
+                    Vector3 pos = hex.transform.position;
+                    gm.hexagons.Remove(hex);
+                    GameObject.Destroy(hit.transform.gameObject);
+                    gm.hexagons.Add(Instantiate(gm.hexagonFloor, pos, Quaternion.identity));
                 }
 
             }

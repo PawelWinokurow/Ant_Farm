@@ -5,7 +5,9 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
-    public Hexagon[,] hexagons;
+    public List<Hexagon> hexagons;
+    public Hexagon hexagonFloor;
+    public Hexagon hexagonWall;
     // Start is called before the first frame update
     void Awake()
     {
