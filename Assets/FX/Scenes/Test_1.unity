@@ -366,7 +366,6 @@ MonoBehaviour:
   width: 10
   hexagonPrefab: {fileID: 6282430065500862220, guid: 672e4e0c34be15f428d3413b8e716280, type: 3}
   back: {fileID: 711178239}
-  marker: {fileID: 3448391201762654976, guid: c98347547095d9247aa662f443cd43b1, type: 3}
 --- !u!1 &942798689
 GameObject:
   m_ObjectHideFlags: 0
@@ -603,7 +602,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: e64b0dca1b7aeb649b49c9d7358d81a0, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: a9d251e7a66a028428496624c86da979, type: 2}
+      objectReference: {fileID: 2100000, guid: 18adfd7edcc9cca438611d666d26a6d4, type: 2}
     - target: {fileID: 919132149155446097, guid: e64b0dca1b7aeb649b49c9d7358d81a0, type: 3}
       propertyPath: m_Name
       value: Back
