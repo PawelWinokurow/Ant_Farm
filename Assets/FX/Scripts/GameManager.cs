@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
     public List<Hexagon> hexagons;
+
     public Hexagon hexagonFloor;
     public Hexagon hexagonWall;
     // Start is called before the first frame update
@@ -13,6 +14,13 @@ public class GameManager : MonoBehaviour
     {
         instance = this;
 
+    }
+   public void AddFloor(Hexagon hex)
+    {
+        Vector3 pos = hex.transform.position;
+        hexagons.Remove(hex);
+        GameObject.Destroy(hex.gameObject);
+        hexagons.Add(Instantiate(hexagonFloor, pos, Quaternion.identity));
     }
 
    

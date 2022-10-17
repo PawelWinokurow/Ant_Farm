@@ -26,10 +26,7 @@ public class Player : MonoBehaviour
 
                 if (hex)
                 {
-                    Vector3 pos = hex.transform.position;
-                    gm.hexagons.Remove(hex);
-                    GameObject.Destroy(hit.transform.gameObject);
-                    gm.hexagons.Add(Instantiate(gm.hexagonFloor, pos, Quaternion.identity));
+                    gm.AddFloor(hex);
                 }
 
             }
