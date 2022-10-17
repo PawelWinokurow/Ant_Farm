@@ -10,9 +10,11 @@ public class Spawn : MonoBehaviour
         yield return null;
 
 
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.8f);
-        foreach(Collider2D collider in colliders)
+        Collider[] colliders=Physics.OverlapSphere(transform.position, 0.8f);
+
+        foreach(Collider collider in colliders)
         {
+            Debug.Log(collider);
             if (collider.GetComponent<Hexagon>())
             {
                 GameObject.Destroy(collider.gameObject);

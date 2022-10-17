@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        Screen.orientation = ScreenOrientation.Portrait;
     }
 
     // Update is called once per frame
@@ -17,20 +17,20 @@ public class Player : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
-            RaycastHit2D rayHit = Physics2D.GetRayIntersection(Camera.main.ScreenPointToRay(Input.mousePosition));
-
-            if (rayHit)
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
             {
-
-                Hexagon hex = rayHit.collider.gameObject.GetComponent<Hexagon>();
+                Hexagon hex = hit.transform.gameObject.GetComponent<Hexagon>();
 
                 if (hex)
                 {
                     hex.mr.material = mat;
                     hex.isSelected = true;
                 }
+
             }
+
         }
- 
     }
 }
