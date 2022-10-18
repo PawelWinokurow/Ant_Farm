@@ -11,10 +11,11 @@ public class Spawn : MonoBehaviour
         gm = GameManager.instance;
         yield return null;
 
-        Collider[] colliders=Physics.OverlapSphere(transform.position, 0.8f);
+        Collider[] colliders=Physics.OverlapSphere(transform.position, 3f);
 
         foreach(Collider collider in colliders)
         {
+
             Hexagon hex = collider.GetComponent<Hexagon>();
             if (hex)
             {
@@ -22,5 +23,7 @@ public class Spawn : MonoBehaviour
 
             }
         }
+
+        gm.navSurface.BuildNavMesh();
     }
 }

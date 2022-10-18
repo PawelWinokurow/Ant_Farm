@@ -26,9 +26,9 @@ public class Creator : MonoBehaviour
         Vector3 ru = cam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 1f));
         ru = Intersect(Vector3.zero, Vector3.down, cam.transform.position, ru - cam.transform.position);
 
-        higth =Mathf.CeilToInt((lu.z - ld.z) / (1.5f/2f));
-        width = Mathf.CeilToInt((rd.x - ld.x) / (0.433f*2f));
-        back.transform.localScale = new Vector3((rd.x - ld.x),1f, (lu.z - ld.z));
+        higth =Mathf.CeilToInt((lu.z - ld.z) / (1.5f*2f));
+        width = Mathf.CeilToInt((rd.x - ld.x) / (0.433f*8f));
+       // back.transform.localScale = new Vector3((rd.x - ld.x),1f, (lu.z - ld.z));
 
 
         gm.hexagons=new List<Hexagon>();
@@ -41,7 +41,7 @@ public class Creator : MonoBehaviour
             for (x = 0; x < width; x++)
             {
 
-                gm.hexagons.Add(Instantiate(gm.hexagonWall, transform.position + new Vector3(x * 0.433f*2f+n* 0.433f/2, 0f,  z * 1.5f/2f), transform.rotation, transform));
+                gm.hexagons.Add(Instantiate(gm.hexagonWall, transform.position + new Vector3(x * 0.433f*4f*2f+n* 0.433f*2f, 0f,  z * 1.5f*2f), transform.rotation, transform));
             }
         }
         transform.position = new Vector3(-gm.hexagons[gm.hexagons.Count-1].mr.transform.position.x / 2f, 0f, -gm.hexagons[gm.hexagons.Count-1].mr.transform.position.z / 2f);

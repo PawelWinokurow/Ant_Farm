@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
 
                 if (hex)
                 {
-                    gm.AddFloor(hex);
+                    gm.AddPath(hex);
                 }
 
             }
