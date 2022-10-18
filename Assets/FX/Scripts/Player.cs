@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,8 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     private GameManager gm;
-    // Start is called before the first frame update
+
+
     void Start()
     {
         gm = GameManager.instance;
@@ -24,9 +26,10 @@ public class Player : MonoBehaviour
             {
                 Hexagon hex = hit.transform.gameObject.GetComponent<Hexagon>();
 
-                if (hex)
+                if (hex && hex.isWall)
                 {
-                    gm.AddPath(hex);
+                    gm.DigTarget(hex);
+
                 }
 
             }

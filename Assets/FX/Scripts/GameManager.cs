@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,40 +10,54 @@ public class GameManager : MonoBehaviour
     public NavMeshSurface navSurface;
    // public GameObject back;
     public List<Hexagon> hexagons;
-    public Hexagon hexagonFloor;
+    public List<Hexagon> hexagonsDig;
+    public Hexagon hexagonGround;
     public Hexagon hexagonWall;
+    public Hexagon hexagonWallDig;
+    public static event Action rebuildEvent;
 
-    // Start is called before the first frame update
     void Awake()
     {
         instance = this;
         navSurface = GetComponent<NavMeshSurface>();
+        hexagonsDig = new List<Hexagon>();
+        hexagons = new List<Hexagon>();
     }
 
-    void Start()
-    {
-
-    }
-
-
-
+   
     public void AddFloor(Hexagon hex)
     {
         Vector3 pos = hex.transform.position;
         hexagons.Remove(hex);
         GameObject.Destroy(hex.gameObject);
-        Instantiate(hexagonFloor, pos, Quaternion.identity,transform);
+        hex = Instantiate(hexagonGround, pos, Quaternion.identity, transform);
+        hexagons.Add(hex);
     }
 
     
-    public void AddPath(Hexagon hex)
+    public void DigTarget(Hexagon hex)//если тапнули клетку копать
     {
         Vector3 pos = hex.transform.position;
         hexagons.Remove(hex);
         GameObject.Destroy(hex.gameObject);
-        Instantiate(hexagonFloor, pos, Quaternion.identity, transform);
+        hex= Instantiate(hexagonWallDig, pos, Quaternion.identity, transform);
+        hexagonsDig.Add(hex);
+        hexagons.Add(hex);
         navSurface.BuildNavMesh();
+        rebuildEvent();
     }
 
-    
+    public void Dig(Hexagon hex)//если выкопали
+    {
+        Vector3 pos = hex.transform.position;
+        hexagons.Remove(hex);
+        hexagonsDig.Remove(hex);
+        GameObject.Destroy(hex.gameObject);
+        hex = Instantiate(hexagonGround, pos, Quaternion.identity, transform);
+        hexagons.Add(hex);
+        navSurface.BuildNavMesh();
+        rebuildEvent();
+    }
+
+
 }
