@@ -36,7 +36,7 @@ public class Enemy : MonoBehaviour
 
 
         antsList = gm.antsList.OrderBy(x => Vector3.Distance(transform.position, x.transform.position)).ToList();
-        if (Vector3.Distance(transform.position, antsList[0].transform.position) < 10)
+        if (antsList.Count>0 &&  Vector3.Distance(transform.position, antsList[0].transform.position) < 10)
         {
             target = antsList[0].transform.position;
         }
