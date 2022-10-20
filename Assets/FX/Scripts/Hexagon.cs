@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class Hexagon : MonoBehaviour
 {
-    public bool isSelected;
-    public bool isDigged;
-    public int x;
-    public int z;
+
+    public bool isWall;
+    public bool isDig;
+    public bool isGround;
+    public bool isBuild;
+    public bool isSpawn;
+    public float hp=1f;
     public MeshRenderer mr;
 }
 

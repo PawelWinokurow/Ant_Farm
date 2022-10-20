@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,8 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     private GameManager gm;
-    // Start is called before the first frame update
+
+
     void Start()
     {
         gm = GameManager.instance;
@@ -23,14 +25,37 @@ public class Player : MonoBehaviour
             if (Physics.Raycast(ray, out hit))
             {
                 Hexagon hex = hit.transform.gameObject.GetComponent<Hexagon>();
-
-                if (hex)
+                if (hex != null)
                 {
-                    gm.AddPath(hex);
+                    if (hex.isWall && !hex.isDig && !hex.isGround && !hex.isSpawn)//строим яму
+                    {
+                        hex.isWall = false;
+                        hex.isDig = true;
+                        hex.isGround = false;
+                        gm.TapWall(hex);
+
+                    }
+
+                    if (!hex.isWall && !hex.isDig && hex.isGround && !hex.isSpawn)//строим возвышенность
+                    {
+                        Hexagon wall = gm.TapGround(hex);
+                        wall.isWall = true;
+                        wall.isDig = false;
+                        wall.isGround = true;
+                    }
+
                 }
-
             }
-
+        }
+        else
+        {
+            for (int i = 0; i < gm.wallList.Count; i++)
+            {
+                if(gm.wallList[i].isGround && gm.wallList[i].isWall)//кода отпустили
+                {
+                    gm.wallList[i].isGround = false;
+                }    
+            }
         }
     }
 }

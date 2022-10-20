@@ -5,6 +5,7 @@ using UnityEngine;
 public class Spawn : MonoBehaviour
 {
     private GameManager gm;
+    //public GameObject marker;
 
     IEnumerator Start()
     {
@@ -19,11 +20,19 @@ public class Spawn : MonoBehaviour
             Hexagon hex = collider.GetComponent<Hexagon>();
             if (hex)
             {
-                gm.AddFloor(hex);
-
+                    gm.AddSpawn(hex);
             }
         }
+    }
 
-        gm.navSurface.BuildNavMesh();
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.A))
+        {
+          
+            Ant ant= Instantiate(gm.antPrefab, gm.spawnList[Random.Range(0, gm.spawnList.Count)].transform.position, Quaternion.identity);
+            //Instantiate(marker, ant.transform.position, Quaternion.identity);
+            gm.antsList.Add(ant);
+        }   
     }
 }
