@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4367760386197881604}
   - component: {fileID: 8665943215791828932}
   - component: {fileID: 4367760386197881602}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +97,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85543b621ab85429490acf7b87bcbe17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  antsList: []
 --- !u!195 &4367760386197881602
 NavMeshAgent:
   m_ObjectHideFlags: 0

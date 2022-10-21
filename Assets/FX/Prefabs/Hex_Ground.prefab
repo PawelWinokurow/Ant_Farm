@@ -111,11 +111,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88d5a24f8ff15d3489b55e4230c41418, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isWall: 0
   isDig: 0
   isGround: 1
-  isWall: 0
+  isBuild: 0
+  isSpawn: 0
   hp: 1
-  mr: {fileID: 0}
 --- !u!114 &6546860434953039979
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -6,56 +6,47 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     private GameManager gm;
-
+    public List<Hexagon> pushedList;
 
     void Start()
     {
         gm = GameManager.instance;
         Screen.orientation = ScreenOrientation.Portrait;
+        pushedList = new List<Hexagon>();
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
 
         if (Input.GetMouseButton(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit,1000f, ~(1 << LayerMask.NameToLayer("Ignore Raycast"))))
             {
-                Hexagon hex = hit.transform.gameObject.GetComponent<Hexagon>();
-                if (hex != null)
+                Hexagon hex = hit.transform.GetComponent<Hexagon>();
+                if (hex != null && !pushedList.Contains(hex))
                 {
-                    if (hex.isWall && !hex.isDig && !hex.isGround && !hex.isSpawn)//строим яму
+     
+                    if (hex.isWall && !hex.isDig)//ставим заготовку для ямы
                     {
-                        hex.isWall = false;
-                        hex.isDig = true;
-                        hex.isGround = false;
-                        gm.TapWall(hex);
-
+                        hex = gm.TapWall(hex);//dig
                     }
 
-                    if (!hex.isWall && !hex.isDig && hex.isGround && !hex.isSpawn)//строим возвышенность
+                    if (hex.isGround && !hex.isSpawn && !hex.isBuild && !hex.isDig)//ставим заготовку для возвышенности
                     {
-                        Hexagon wall = gm.TapGround(hex);
-                        wall.isWall = true;
-                        wall.isDig = false;
-                        wall.isGround = true;
+
+                        hex = gm.TapGround(hex);//build
                     }
 
                 }
+                pushedList.Add(hex);
             }
         }
-        else
+        else//кода отпустили  нажатие
         {
-            for (int i = 0; i < gm.wallList.Count; i++)
-            {
-                if(gm.wallList[i].isGround && gm.wallList[i].isWall)//кода отпустили
-                {
-                    gm.wallList[i].isGround = false;
-                }    
-            }
+            pushedList.Clear();
         }
     }
 }

@@ -23,6 +23,13 @@ public class Spawn : MonoBehaviour
                     gm.AddSpawn(hex);
             }
         }
+        /*
+        for (int i = 0; i < 20; i++)
+        {
+            IAnt ant = Instantiate(gm.antPrefab, gm.spawnList[Random.Range(0, gm.spawnList.Count)].transform.position, Quaternion.identity);
+            gm.antsList.Add(ant);
+        }
+        */
     }
 
     private void Update()
@@ -30,7 +37,7 @@ public class Spawn : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.A))
         {
           
-            Ant ant= Instantiate(gm.antPrefab, gm.spawnList[Random.Range(0, gm.spawnList.Count)].transform.position, Quaternion.identity);
+            IAnt ant= Instantiate(gm.antPrefab, gm.spawnList[Random.Range(0, gm.spawnList.Count)].transform.position, Quaternion.identity);
             //Instantiate(marker, ant.transform.position, Quaternion.identity);
             gm.antsList.Add(ant);
         }   

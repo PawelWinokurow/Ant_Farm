@@ -20,8 +20,8 @@ public class GameManager : MonoBehaviour
     public Hexagon digPrefab;
     public Hexagon buildPrefab;
 
-    public List<Ant> antsList;
-    public Ant antPrefab;
+    public List<IAnt> antsList;
+    public Ant_Digger antPrefab;
 
     public List<Enemy> enemyList;
     public Enemy enemyPrefab;
@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
         groundList = new List<Hexagon>();
         spawnList = new List<Hexagon>();
         wallList = new List<Hexagon>();
+        antsList = new List<IAnt>();
     }
 
     public void AddSpawn(Hexagon hex)//для зоны спауна 

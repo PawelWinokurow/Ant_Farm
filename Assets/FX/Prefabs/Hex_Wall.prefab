@@ -97,11 +97,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88d5a24f8ff15d3489b55e4230c41418, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isWall: 1
   isDig: 0
   isGround: 0
-  isWall: 1
+  isBuild: 0
+  isSpawn: 0
   hp: 5
-  mr: {fileID: 898964041126489336}
 --- !u!135 &1340082042
 SphereCollider:
   m_ObjectHideFlags: 0

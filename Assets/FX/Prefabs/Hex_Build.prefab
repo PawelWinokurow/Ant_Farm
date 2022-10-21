@@ -118,7 +118,6 @@ MonoBehaviour:
   isBuild: 1
   isSpawn: 0
   hp: 0
-  mr: {fileID: 0}
 --- !u!114 &3040621433630525460
 MonoBehaviour:
   m_ObjectHideFlags: 0

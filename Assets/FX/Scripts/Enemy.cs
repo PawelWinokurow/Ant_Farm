@@ -8,7 +8,7 @@ public class Enemy : MonoBehaviour
 {
     private GameManager gm;
     private Vector3 target;
-    public List<Ant> antsList;
+    public List<IAnt> antsList;
     private NavMeshAgent agent;
     private Hexagon diggedHex;
     private Vector3 center;
@@ -34,11 +34,10 @@ public class Enemy : MonoBehaviour
         agent.speed = 15;
 
 
-
-        antsList = gm.antsList.OrderBy(x => Vector3.Distance(transform.position, x.transform.position)).ToList();
-        if (antsList.Count>0 &&  Vector3.Distance(transform.position, antsList[0].transform.position) < 10)
+        antsList = gm.antsList.OrderBy(x => Vector3.Distance(transform.position, x.position)).ToList();
+        if (antsList.Count>0 &&  Vector3.Distance(transform.position, antsList[0].position) < 10)
         {
-            target = antsList[0].transform.position;
+            target = antsList[0].position;
         }
         else
         {

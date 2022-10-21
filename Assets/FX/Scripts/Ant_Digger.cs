@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
-public class Ant : MonoBehaviour
+public class Ant_Digger : MonoBehaviour, IAnt
 {
     private GameManager gm;
     public List<Hexagon> digList;
@@ -13,7 +13,7 @@ public class Ant : MonoBehaviour
     private Vector3 randPos;
     private float speed;
     private Hexagon diggedHex;
-
+    public Vector3 position { get; set; }
 
 
     private void Start()
@@ -33,11 +33,12 @@ public class Ant : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        position = transform.position;
         NavMeshHit navMeshHit;
         NavMesh.SamplePosition(agent.transform.position, out navMeshHit, 1f, NavMesh.AllAreas);
     
       
-        if (navMeshHit.mask == 1 << NavMesh.GetAreaFromName("WallSelect"))
+        if (navMeshHit.mask == 1 << NavMesh.GetAreaFromName("Digged"))
         {
             agent.speed = 0.0f;//если подъехали к стене
 
@@ -52,7 +53,7 @@ public class Ant : MonoBehaviour
 
         if ( agent.velocity.magnitude <0.1f )//если останавливаемся ищем новый путь
         {
-            if(navMeshHit.mask == 1 << NavMesh.GetAreaFromName("WallSelect") )
+            if(navMeshHit.mask == 1 << NavMesh.GetAreaFromName("Digged") )
             {
                 if (diggedHex == null)
                 {

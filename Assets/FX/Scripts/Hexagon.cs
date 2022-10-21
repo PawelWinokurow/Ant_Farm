@@ -11,6 +11,5 @@ public class Hexagon : MonoBehaviour
     public bool isBuild;
     public bool isSpawn;
     public float hp=1f;
-    public MeshRenderer mr;
 }
 
