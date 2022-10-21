@@ -31,17 +31,16 @@ public class Player : MonoBehaviour
      
                     if (hex.isWall && !hex.isDig)//ставим заготовку для ямы
                     {
-                        hex = gm.TapWall(hex);//dig
+                        hex = gm.TapToDig(hex);//dig
                     }
 
                     if (hex.isGround && !hex.isSpawn && !hex.isBuild && !hex.isDig)//ставим заготовку для возвышенности
                     {
 
-                        hex = gm.TapGround(hex);//build
+                        hex = gm.TapToBuild(hex);//build
                     }
-
+                    pushedList.Add(hex);
                 }
-                pushedList.Add(hex);
             }
         }
         else//кода отпустили  нажатие

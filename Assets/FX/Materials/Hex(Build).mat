@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Sand(DigTest)
+  m_Name: Hex(Build)
   m_Shader: {fileID: 4800000, guid: 8fdc71820a583b74fa86db0651e1855d, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -102,7 +102,7 @@ Material:
     - _ZWrite: 1
     - __dirty: 0
     m_Colors:
-    - _Color: {r: 1, g: 0.4481132, b: 0.4481132, a: 1}
+    - _Color: {r: 0.4470588, g: 0.5166492, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowColor: {r: 0.21568628, g: 0.03295701, b: 0, a: 1}
   m_BuildTextureStacks: []

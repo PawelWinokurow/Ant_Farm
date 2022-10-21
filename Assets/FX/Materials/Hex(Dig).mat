@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Sand(DigTest)
+  m_Name: Hex(Dig)
   m_Shader: {fileID: 4800000, guid: 8fdc71820a583b74fa86db0651e1855d, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []

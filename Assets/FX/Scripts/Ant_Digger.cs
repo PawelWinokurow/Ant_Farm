@@ -7,17 +7,17 @@ public class Ant_Digger : MonoBehaviour, IAnt
 {
     private GameManager gm;
     public List<Hexagon> digList;
-    private NavMeshAgent agent;
     public float damagePeriod=0.3f;
     private NavMeshPath navMeshPath;
     private Vector3 randPos;
     private float speed;
     private Hexagon diggedHex;
-    public Vector3 position { get; set; }
-
+    public Transform _transform { get; set; }
+    public NavMeshAgent agent { get; set; }
 
     private void Start()
     {
+        _transform = transform;
         navMeshPath = new NavMeshPath();
         gm = GameManager.instance;
         agent = GetComponent<NavMeshAgent>();
@@ -33,7 +33,6 @@ public class Ant_Digger : MonoBehaviour, IAnt
     // Update is called once per frame
     void Update()
     {
-        position = transform.position;
         NavMeshHit navMeshHit;
         NavMesh.SamplePosition(agent.transform.position, out navMeshHit, 1f, NavMesh.AllAreas);
     
@@ -106,7 +105,7 @@ public class Ant_Digger : MonoBehaviour, IAnt
 
         if ( gm.digList.Count == 0 || i == digList.Count)//если гексы не выделены /  если выделенные гексы не достижимы
         {
-            if(gm.groundList.Count > 0)
+            if(agent.enabled && gm.groundList.Count > 0)
             {
                 agent.destination = gm.groundList[Random.Range(0, gm.groundList.Count)].transform.position + new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f));//рандомно ходим
             }

@@ -34,10 +34,10 @@ public class Enemy : MonoBehaviour
         agent.speed = 15;
 
 
-        antsList = gm.antsList.OrderBy(x => Vector3.Distance(transform.position, x.position)).ToList();
-        if (antsList.Count>0 &&  Vector3.Distance(transform.position, antsList[0].position) < 10)
+        antsList = gm.antsList.OrderBy(x => Vector3.Distance(transform.position, x._transform.position)).ToList();
+        if (antsList.Count>0 &&  Vector3.Distance(transform.position, antsList[0]._transform.position) < 10)
         {
-            target = antsList[0].position;
+            target = antsList[0]._transform.position;
         }
         else
         {

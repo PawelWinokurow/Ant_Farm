@@ -37,9 +37,13 @@ public class Spawn : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.A))
         {
           
-            IAnt ant= Instantiate(gm.antPrefab, gm.spawnList[Random.Range(0, gm.spawnList.Count)].transform.position, Quaternion.identity);
-            //Instantiate(marker, ant.transform.position, Quaternion.identity);
+            IAnt ant= Instantiate(gm.antDiggerPrefab, gm.spawnList[Random.Range(0, gm.spawnList.Count)].transform.position, Quaternion.identity).GetComponent<IAnt>();
+
             gm.antsList.Add(ant);
+
+             ant = Instantiate(gm.antBuilderPrefab, gm.spawnList[Random.Range(0, gm.spawnList.Count)].transform.position, Quaternion.identity).GetComponent<IAnt>();
+            gm.antsList.Add(ant);
+
         }   
     }
 }

@@ -1,6 +1,9 @@
 using UnityEngine;
+using UnityEngine.AI;
+
 public interface IAnt
     {
     //  float health { get; set; } //A variable
-       Vector3 position { get; set; }
+    Transform _transform { get; set; }
+    NavMeshAgent agent { get; set; }
 }
