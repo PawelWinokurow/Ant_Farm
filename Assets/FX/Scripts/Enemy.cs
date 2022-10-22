@@ -75,7 +75,7 @@ public class Enemy : MonoBehaviour
                     if (diggedHex.hp <= 0)
                     {
 
-                        gm.Dig(diggedHex);
+                        gm.Dig(diggedHex.id);
                         diggedHex = null;
                     }
                 }

@@ -44,7 +44,7 @@ public class Enemies : MonoBehaviour
             Hexagon hex = hit.transform.GetComponent<Hexagon>();
             if (!hex.isGround)
             {
-                gm.AddGround(hex);
+                gm.AddGround(hex.id);
                 gm.enemyList.Add(Instantiate(gm.enemyPrefab, hit.transform.position, Quaternion.identity));
             }
 

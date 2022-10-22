@@ -30,6 +30,7 @@ public class Creator : MonoBehaviour
         width = Mathf.CeilToInt((rd.x - ld.x) / (0.433f*8f));
         // back.transform.localScale = new Vector3((rd.x - ld.x),1f, (lu.z - ld.z));
 
+        gm.allHex = new Hexagon[higth * width];
 
         Hexagon hex=null;
         int x=0;
@@ -42,20 +43,18 @@ public class Creator : MonoBehaviour
             {
            
 
-                hex=Instantiate(gm.wallPrefab, transform.position + new Vector3(x * 0.433f*4f*2f+n* 0.433f*2f, 0f,  z * 1.5f*2f), transform.rotation, transform);//делаем начальные стены
-                gm.wallList.Add(hex);
+                hex=Instantiate(gm.wallPrefab,
+                    new Vector3(x * 0.433f*4f*2f+n* 0.433f*2f, 0f,  z * 1.5f*2f)+
+                    new Vector3((-width + 1f) * 0.433f * 4f,0, (-higth+1f) * 1.5f),
+                    Quaternion.identity, transform);//делаем начальные стены
+                hex.id = z * width + x;
+                gm.AddStartWall(hex);
 
                 if (x == 0 || x == width -1 || z==0 || z == higth-1)//ищем точки по краям что-бы запускать из них монстров
                 {
                     gm.sideList.Add(hex.transform.position);
                 }
             }
-        }
-        transform.position = new Vector3(-hex.transform.position.x / 2f, 0f, -hex.transform.position.z / 2f);//смещаем все в середину
-
-        for (int i = 0; i < gm.sideList.Count; i++)
-        {
-            gm.sideList[i]+= new Vector3(-hex.transform.position.x, 0f, -hex.transform.position.z);//смещаем все в середину
         }
 
     }
@@ -67,5 +66,7 @@ public class Creator : MonoBehaviour
         return rayP + t * rayD;
     }
 
-    
+
+
+
 }

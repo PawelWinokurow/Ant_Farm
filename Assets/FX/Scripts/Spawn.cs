@@ -16,34 +16,22 @@ public class Spawn : MonoBehaviour
 
         foreach(Collider collider in colliders)
         {
-
             Hexagon hex = collider.GetComponent<Hexagon>();
             if (hex)
             {
-                    gm.AddSpawn(hex);
+                    gm.AddSpawn(hex.id);
             }
         }
-        /*
+      
         for (int i = 0; i < 20; i++)
         {
-            IAnt ant = Instantiate(gm.antPrefab, gm.spawnList[Random.Range(0, gm.spawnList.Count)].transform.position, Quaternion.identity);
+            IAnt ant = Instantiate(gm.antDiggerPrefab, gm.spawnList[UnityEngine.Random.Range(0, gm.spawnList.Count)].transform.position, Quaternion.identity).GetComponent<IAnt>();
+            gm.antsList.Add(ant);
+
+            ant = Instantiate(gm.antBuilderPrefab, gm.spawnList[UnityEngine.Random.Range(0, gm.spawnList.Count)].transform.position, Quaternion.identity).GetComponent<IAnt>();
             gm.antsList.Add(ant);
         }
-        */
+      
     }
 
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.A))
-        {
-          
-            IAnt ant= Instantiate(gm.antDiggerPrefab, gm.spawnList[Random.Range(0, gm.spawnList.Count)].transform.position, Quaternion.identity).GetComponent<IAnt>();
-
-            gm.antsList.Add(ant);
-
-             ant = Instantiate(gm.antBuilderPrefab, gm.spawnList[Random.Range(0, gm.spawnList.Count)].transform.position, Quaternion.identity).GetComponent<IAnt>();
-            gm.antsList.Add(ant);
-
-        }   
-    }
 }

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44792324, g: 0.4973449, b: 0.57265073, a: 1}
+  m_IndirectSpecularColor: {r: 0.44787967, g: 0.49719572, b: 0.5724886, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -155,6 +155,67 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!1001 &593210948
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5174705270409185143, guid: 13df9ae2779a8ed4ba9be1a81dde35a1, type: 3}
+      propertyPath: m_Name
+      value: Hex_Build (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5174705270409185143, guid: 13df9ae2779a8ed4ba9be1a81dde35a1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5520269283015564749, guid: 13df9ae2779a8ed4ba9be1a81dde35a1, type: 3}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5520269283015564749, guid: 13df9ae2779a8ed4ba9be1a81dde35a1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5520269283015564749, guid: 13df9ae2779a8ed4ba9be1a81dde35a1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5520269283015564749, guid: 13df9ae2779a8ed4ba9be1a81dde35a1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5520269283015564749, guid: 13df9ae2779a8ed4ba9be1a81dde35a1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5520269283015564749, guid: 13df9ae2779a8ed4ba9be1a81dde35a1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5520269283015564749, guid: 13df9ae2779a8ed4ba9be1a81dde35a1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5520269283015564749, guid: 13df9ae2779a8ed4ba9be1a81dde35a1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5520269283015564749, guid: 13df9ae2779a8ed4ba9be1a81dde35a1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5520269283015564749, guid: 13df9ae2779a8ed4ba9be1a81dde35a1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5520269283015564749, guid: 13df9ae2779a8ed4ba9be1a81dde35a1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 13df9ae2779a8ed4ba9be1a81dde35a1, type: 3}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -283,7 +344,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec644cb54d5713e4188d20afc3ad9dd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pushedList: []
 --- !u!4 &942798691
 Transform:
   m_ObjectHideFlags: 0
@@ -428,8 +488,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df3dc31d06a27d84f9bcff996f7b878f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGraphic: 0
-  isGraphicOld: 1
   navSurface: {fileID: 1390120425}
   digList: []
   groundList: []
@@ -441,11 +499,15 @@ MonoBehaviour:
   wallPrefab: {fileID: 6282430065500862220, guid: 672e4e0c34be15f428d3413b8e716280, type: 3}
   digPrefab: {fileID: 8408876141986682503, guid: e6a710a4f2ebd4cdb9ca3d64a4e1fa0c, type: 3}
   buildPrefab: {fileID: 313914663098937080, guid: 13df9ae2779a8ed4ba9be1a81dde35a1, type: 3}
+  spawnPrefab: {fileID: 8408876141986682503, guid: 7a9a657ff269e8c49ad3f6a69c6d5011, type: 3}
   antBuilderPrefab: {fileID: 8418325682715133492, guid: 05b9cdcafa70843bea19f5e90cd77015, type: 3}
   antDiggerPrefab: {fileID: 8418325682715133492, guid: 09bd2f2c12bf4b841bc4008b14e5fe6a, type: 3}
   enemyList: []
   enemyPrefab: {fileID: 8665943215791828932, guid: 7f47512f4ff29422d862431a0072d4ca, type: 3}
   spawn: {fileID: 1859876531}
+  allHex: []
+  pushedList: 
+  creator: {fileID: 1862567685}
 --- !u!114 &1390120425
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -471,7 +533,7 @@ MonoBehaviour:
   m_IgnoreNavMeshObstacle: 1
   m_OverrideTileSize: 0
   m_TileSize: 256
-  m_OverrideVoxelSize: 0
+  m_OverrideVoxelSize: 1
   m_VoxelSize: 0.1
   m_BuildHeightMesh: 0
   m_NavMeshData: {fileID: 0}

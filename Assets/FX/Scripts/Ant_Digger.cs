@@ -11,7 +11,7 @@ public class Ant_Digger : MonoBehaviour, IAnt
     private NavMeshPath navMeshPath;
     private Vector3 randPos;
     private float speed;
-    private Hexagon diggedHex;
+    private Hexagon digHex;
     public Transform _transform { get; set; }
     public NavMeshAgent agent { get; set; }
 
@@ -24,7 +24,6 @@ public class Ant_Digger : MonoBehaviour, IAnt
         randPos = new Vector3(Random.Range(-100f, 100f), 0, Random.Range(-100f, 100f));
         //speed = Random.Range(3f, 4f);
         speed = Random.Range(10f, 15f);
-        agent.avoidancePriority=90;
         digList = new List<Hexagon>();
         DigPath();
     }
@@ -50,18 +49,14 @@ public class Ant_Digger : MonoBehaviour, IAnt
 
 
 
-        if ( agent.velocity.magnitude <0.1f )//если останавливаемся ищем новый путь
+        if (agent.velocity.magnitude <0.1f && digHex == null)
         {
-            if(navMeshHit.mask == 1 << NavMesh.GetAreaFromName("Digged") )
+       
+            Hexagon hex = test();
+
+            if (hex != null )
             {
-                if (diggedHex == null)
-                {
-                    Hexagon hex = test();
-                    if (hex != null && hex.isDig)
-                    {
-                        diggedHex = hex;
-                    }
-                }
+                digHex = hex;
             }
             else
             {
@@ -69,14 +64,21 @@ public class Ant_Digger : MonoBehaviour, IAnt
             }
         }
 
-        if (diggedHex != null)//копаем пока не скопаем
+
+        if (digHex != null)
         {
-            diggedHex.hp -= Time.deltaTime / damagePeriod;
-            //Debug.Log(diggedHex.hp);
-            if (diggedHex.hp <= 0 )
+            if (agent.velocity.magnitude == 0f)
             {
-                gm.Dig(diggedHex);
+                digHex.hp -= Time.fixedDeltaTime / 0.2f;
+                if (digHex.hp <= 0)
+                { 
+                    if (digHex == gm.allHex[digHex.id])
+                    {
+                        gm.Dig(digHex.id);
+                    }
+                }
             }
+    
         }
 
 

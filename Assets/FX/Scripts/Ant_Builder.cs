@@ -14,7 +14,7 @@ public class Ant_Builder : MonoBehaviour, IAnt
     private Hexagon buildHex;
     public Transform _transform { get; set; }
     public NavMeshAgent agent { get; set; }
-    public GameObject marker;
+
 
     private void Start()
     {
@@ -33,18 +33,18 @@ public class Ant_Builder : MonoBehaviour, IAnt
 
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
 
 
             
 
 
-        if (agent.remainingDistance == 0f && agent.velocity.magnitude == 0f)
+        if (agent.remainingDistance == 0f && agent.velocity.magnitude == 0f && buildHex==null)
         {
 
             Hexagon hex = test();
-            if (hex != null)
+            if (hex != null && hex.isBuild)
             {
                 buildHex = hex;
             }
@@ -52,23 +52,19 @@ public class Ant_Builder : MonoBehaviour, IAnt
             {
                 BuildPath();
             }
-
+          
         }
 
 
         if (buildHex != null)
         {
-            if (agent.velocity.magnitude == 0f && agent.remainingDistance == 0 && buildHex.isBuild)
+            if (agent.velocity.magnitude == 0f && agent.remainingDistance == 0 )
             {
-                buildHex.hp += Time.fixedDeltaTime / 0.1f;
+                buildHex.hp += Time.fixedDeltaTime / 0.2f;
                 if (buildHex.hp >= 1)
                 {
-
-                    buildHex.isWall = true;
-                    gm.groundList.Remove(buildHex);
                     Evacuate();
-                    gm.Build(buildHex);
-                    buildHex = null;
+                    gm.Build(buildHex.id);
                 }
             }
             else
@@ -102,10 +98,7 @@ public class Ant_Builder : MonoBehaviour, IAnt
         {
             if(gm.antsList[i]!=null && Vector3.Distance(buildHex.transform.position, gm.antsList[i]._transform.position) < 6f)
             {
-
                 gm.antsList[i].agent.Warp(nearestHex.transform.position);
-               // gm.antsList[i].agent.destination = buildHex.transform.position;
-               Instantiate(marker, nearestHex.transform.position, Quaternion.identity);
             }
         }
 
@@ -119,7 +112,7 @@ public class Ant_Builder : MonoBehaviour, IAnt
         int i = 0;
         if (gm.buildList.Count != 0)
         {
-            buildList = gm.buildList.OrderBy(x => Vector3.Distance(transform.position, x.transform.position)).ToList();//сортирую массив чтоб каждый муравей в своей стороне работал
+            buildList = gm.buildList.OrderBy(x => Vector3.Distance(transform.position,  x.transform.position)).ToList();//сортирую массив чтоб каждый муравей в своей стороне работал
             for (i = 0; i < buildList.Count; i++)
             {
                 agent.CalculatePath(buildList[i].transform.position, navMeshPath);//
