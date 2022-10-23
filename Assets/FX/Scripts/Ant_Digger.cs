@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 public class Ant_Digger : MonoBehaviour, IAnt
@@ -15,7 +12,7 @@ public class Ant_Digger : MonoBehaviour, IAnt
 
     private DigJob job;
 
-    private float initialSpeed = 10f;
+    private float initialSpeed = 15f;
 
     private void Start()
     {

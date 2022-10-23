@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class JobScheduler<T>
 {
 
-    private List<Job> jobs = new List<Job>();
-    private Dictionary<int, int> jobsMap = new Dictionary<int, int>();
+    // private List<Job> jobs = new List<Job>();
+    private Dictionary<int, Job> jobsMap = new Dictionary<int, Job>();
 
     private List<IAnt> ants = new List<IAnt>();
 
@@ -61,6 +62,7 @@ public class JobScheduler<T>
         this.ants.AddRange(ants);
     }
 
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Update()
     {
         ants.ForEach(worker => { if (SomeJobLeft() && !worker.HasJob()) { AssignClosestJob(worker); } });
@@ -68,7 +70,7 @@ public class JobScheduler<T>
 
     private bool SomeJobLeft()
     {
-        return jobs.Count != 0;
+        return jobsMap.Count != 0;
     }
 
     private void AssignClosestJob(IAnt worker)
@@ -77,7 +79,7 @@ public class JobScheduler<T>
         Job minPathJob = null;
         NavMeshPath minPath = null;
         NavMeshPath navMeshPath = new NavMeshPath();
-        jobs.ForEach(job =>
+        foreach (var job in jobsMap.Values)
         {
             worker.Agent.CalculatePath(job.Destination, navMeshPath);
             float pathLength = Utils.CalculateDistanceFromPoints(navMeshPath.corners);
@@ -87,14 +89,13 @@ public class JobScheduler<T>
                 minPathJob = job;
                 minPath = navMeshPath;
             }
-        });
+        }
         if (minPath != null)
         {
             RemoveJob(minPathJob);
             worker.SetPath(minPath);
             worker.SetJob(minPathJob);
         }
-
     }
 
     public bool IsJobAlreadyCreated(int Id)
@@ -104,17 +105,11 @@ public class JobScheduler<T>
 
     public void AssignJob(Job job)
     {
-        jobs.Add(job);
-        jobsMap.Add(job.Id, jobs.Count - 1);
+        jobsMap.Add(job.Id, job);
     }
 
     public void RemoveJob(Job job)
     {
-        int index = jobsMap.GetValueOrDefault(job.Id, -1);
         jobsMap.Remove(job.Id);
-        if (index != -1)
-        {
-            jobs.RemoveAt(index);
-        }
     }
 }

@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour
         creator.Init(surface);
         spawn.Init(surface, this);
         digAntJobScheduler.AddAnts(antsList);
-        StartCoroutine(WaitAndUpdate(0.1f));
+        StartCoroutine(WaitAndUpdate(1f));
     }
 
     private IEnumerator WaitAndUpdate(float waitTime)
