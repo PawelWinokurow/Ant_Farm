@@ -10,20 +10,22 @@ public class Creator : MonoBehaviour
     public int width = 10;
     private GameManager gm;
     public Transform back;
-
-
+    public Vector3 ld;
+    public Vector3 rd;
+    public Vector3 lu;
+    public Vector3 ru;
 
     void Start()
     {
         gm = GameManager.instance;
         Camera cam = Camera.main;
-        Vector3 ld = cam.ScreenToWorldPoint(new Vector3(0, 0, 1f));
+        ld = cam.ScreenToWorldPoint(new Vector3(0, 0, 1f));
         ld = Intersect(Vector3.zero, Vector3.down, cam.transform.position, ld - cam.transform.position);//ищем углы экрана
-        Vector3 rd = cam.ScreenToWorldPoint(new Vector3(Screen.width, 0, 1f));
+        rd = cam.ScreenToWorldPoint(new Vector3(Screen.width, 0, 1f));
         rd = Intersect(Vector3.zero, Vector3.down, cam.transform.position, rd - cam.transform.position);
-        Vector3 lu = cam.ScreenToWorldPoint(new Vector3(0, Screen.height, 1f));
+        lu = cam.ScreenToWorldPoint(new Vector3(0, Screen.height, 1f));
         lu = Intersect(Vector3.zero, Vector3.down, cam.transform.position, lu - cam.transform.position);
-        Vector3 ru = cam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 1f));
+        ru = cam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 1f));
         ru = Intersect(Vector3.zero, Vector3.down, cam.transform.position, ru - cam.transform.position);
 
         higth =Mathf.CeilToInt((lu.z - ld.z) / (1.5f*2f));//находим количество шестиугольников в ширину и длину

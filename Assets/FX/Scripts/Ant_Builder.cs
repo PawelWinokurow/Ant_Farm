@@ -63,7 +63,7 @@ public class Ant_Builder : MonoBehaviour, IAnt
                 buildHex.hp += Time.fixedDeltaTime / 0.2f;
                 if (buildHex.hp >= 1)
                 {
-                    Evacuate();
+                    gm.Evacuate(buildHex.id);
                     gm.Build(buildHex.id);
                 }
             }
@@ -76,35 +76,6 @@ public class Ant_Builder : MonoBehaviour, IAnt
     }
 
   
-        void Evacuate()//убираем муравьев из зоны постройки
-    {
-        
-        float minDist = 1000000;
-        float dist;
-       Hexagon nearestHex=null;
-        
-        for (int i = 0; i < gm.groundList.Count; i++)
-        {
-            dist = Vector3.Distance(buildHex.transform.position, gm.groundList[i].transform.position);
-            if ( dist< minDist)
-            {
-                minDist = dist;
-                nearestHex = gm.groundList[i];
-            }
-        }
-
-        
-        for (int i = 0; i < gm.antsList.Count; i++)
-        {
-            if(gm.antsList[i]!=null && Vector3.Distance(buildHex.transform.position, gm.antsList[i]._transform.position) < 6f)
-            {
-                gm.antsList[i].agent.Warp(nearestHex.transform.position);
-            }
-        }
-
-    }
-   
-
 
     public void BuildPath()//находим путь
     {

@@ -4,23 +4,25 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IAnt
 {
     private GameManager gm;
     private Vector3 target;
     public List<IAnt> antsList;
-    private NavMeshAgent agent;
     private Hexagon diggedHex;
     private Vector3 center;
 
     private float speed;
+    public Transform _transform { get; set; }
+    public NavMeshAgent agent { get; set; }
 
 
     void Start()
     {
         gm = GameManager.instance;
         agent = GetComponent<NavMeshAgent>();
-        center = Camera.main.transform.position;
+        _transform = transform;
+        center = gm.spawn.transform.position;
         center = new Vector3(center.x, 0, center.z);
         agent.destination = center;
         speed = Random.Range(10f, 15f);

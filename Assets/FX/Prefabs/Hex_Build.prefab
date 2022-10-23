@@ -202,6 +202,7 @@ MonoBehaviour:
   isBuild: 1
   isSpawn: 0
   hp: 0
+  id: 0
 --- !u!114 &3040621433630525460
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -276,6 +277,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 78d0c8073e0edac4dbf455a999863b99, type: 3}
       propertyPath: m_Name
       value: Frame
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 78d0c8073e0edac4dbf455a999863b99, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 78d0c8073e0edac4dbf455a999863b99, type: 3}
