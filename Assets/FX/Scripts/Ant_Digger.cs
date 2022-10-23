@@ -6,133 +6,65 @@ using UnityEngine.AI;
 public class Ant_Digger : MonoBehaviour, IAnt
 {
     private GameManager gm;
-    public List<Hexagon> digList;
-    public float damagePeriod=0.3f;
+    public float damagePeriod = 0.3f;
     private NavMeshPath navMeshPath;
     private Vector3 randPos;
     private float speed;
-    private Hexagon digHex;
-    public Transform _transform { get; set; }
-    public NavMeshAgent agent { get; set; }
+    public Transform Transform { get; set; }
+    public NavMeshAgent Agent { get; set; }
+
+    private DigJob job;
+
+    private float initialSpeed = 10f;
 
     private void Start()
     {
-        _transform = transform;
+        Transform = transform;
         navMeshPath = new NavMeshPath();
-        gm = GameManager.instance;
-        agent = GetComponent<NavMeshAgent>();
+        gm = GameManager.GetInstance();
+        Agent = GetComponent<NavMeshAgent>();
         randPos = new Vector3(Random.Range(-100f, 100f), 0, Random.Range(-100f, 100f));
-        //speed = Random.Range(3f, 4f);
         speed = Random.Range(10f, 15f);
-        digList = new List<Hexagon>();
-        DigPath();
     }
 
 
     // Update is called once per frame
     void Update()
     {
-        NavMeshHit navMeshHit;
-        NavMesh.SamplePosition(agent.transform.position, out navMeshHit, 1f, NavMesh.AllAreas);
-    
-      
-        if (navMeshHit.mask == 1 << NavMesh.GetAreaFromName("Digged"))
+        if (job != null)
         {
-            agent.speed = 0.0f;//если подъехали к стене
-
-        }
-        else
-        {
-            agent.speed = speed;//если едем по полу
-      
-        }
-
-
-
-        if (agent.velocity.magnitude <0.1f && digHex == null)
-        {
-       
-            Hexagon hex = test();
-
-            if (hex != null )
+            if (Vector3.Distance(transform.position, job.Destination) < 2f)
             {
-                digHex = hex;
-            }
-            else
-            {
-                DigPath();
-            }
-        }
-
-
-        if (digHex != null)
-        {
-            if (agent.velocity.magnitude == 0f)
-            {
-                digHex.hp -= Time.fixedDeltaTime / 0.2f;
+                speed = 0;
+                var digHex = job.TargetHex;
+                digHex.hp -= Time.deltaTime / 0.2f;
                 if (digHex.hp <= 0)
-                { 
-                    if (digHex == gm.allHex[digHex.id])
-                    {
-                        gm.Dig(digHex.id);
-                    }
-                }
-            }
-    
-        }
-
-
-
-
-    }
-
-
-    public void DigPath()//находим путь
-    {
-        
-        int i=0;
-        if (gm.digList.Count != 0)
-        {
-            digList = gm.digList.OrderBy(x => Vector3.Distance(randPos, x.transform.position)).ToList();//сортирую массив чтоб каждый муравей в своей стороне работал
-            for (i = 0; i < digList.Count; i++)
-            {
-                agent.CalculatePath(digList[i].transform.position, navMeshPath);//
-                if (navMeshPath.status == NavMeshPathStatus.PathComplete)
                 {
-                    agent.destination = digList[i].transform.position;
-                    break;
+                    job.RemoveHexagonFunc(digHex);
+                    job = null;
+                    speed = initialSpeed;
                 }
             }
         }
-
-        if ( gm.digList.Count == 0 || i == digList.Count)//если гексы не выделены /  если выделенные гексы не достижимы
-        {
-            if(agent.enabled && gm.groundList.Count > 0)
-            {
-                agent.destination = gm.groundList[Random.Range(0, gm.groundList.Count)].transform.position + new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f));//рандомно ходим
-            }
-        }
-        
     }
 
 
-    private Hexagon test()//находим что рядом можно выкопать
+    public bool HasJob()
     {
-        Hexagon hex = null;
-
-        Collider[] colliders = Physics.OverlapSphere(transform.position, 1f);
-
-        foreach (Collider collider in colliders)
-        {
-           Hexagon hexObst = collider.GetComponent<Hexagon>();
-            if (hexObst.isDig)
-            {
-                hex = hexObst;
-                break;
-            }
-
-        }
-        return hex;
+        return job != null;
     }
+
+    public void SetPath(NavMeshPath path)
+    {
+        Agent.SetPath(path);
+    }
+    public void SetJob(Job job)
+    {
+        this.job = (DigJob)job;
+    }
+
+
+
+
 
 }

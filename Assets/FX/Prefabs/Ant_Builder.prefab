@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8418325682715133497}
   - component: {fileID: 8418325682715133503}
   - component: {fileID: 885872234}
+  - component: {fileID: 8783593803994336202}
   m_Layer: 2
   m_Name: Ant_Builder
   m_TagString: Untagged
@@ -114,11 +115,22 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8418325682715133492}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: df6e5f2f2e6474f36bdf9831ccf2afa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   buildList: []
   damagePeriod: 0.3
-  marker: {fileID: 8814868800950481170, guid: 2191a92172b61496f89f0285dad6521a, type: 3}
+--- !u!114 &8783593803994336202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8418325682715133492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5003a31c194f5a345a546ddc4374b1f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
