@@ -18,9 +18,8 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator coroutine;
 
+    public JobScheduler AntJobScheduler;
     private static GameManager instance;
-    private JobScheduler<DigJob> digAntJobScheduler;
-
 
     private GameManager()
     {
@@ -41,19 +40,9 @@ public class GameManager : MonoBehaviour
     {
         Screen.orientation = ScreenOrientation.Portrait;
 
-        digAntJobScheduler = JobScheduler<DigJob>.GetInstance();
         creator.Init(surface);
         spawn.Init(surface, this);
-        digAntJobScheduler.AddAnts(antsList);
-        StartCoroutine(WaitAndUpdate(1f));
+        AntJobScheduler.AddAnts(antsList);
     }
 
-    private IEnumerator WaitAndUpdate(float waitTime)
-    {
-        while (true)
-        {
-            digAntJobScheduler.Update();
-            yield return new WaitForSeconds(waitTime);
-        }
-    }
 }

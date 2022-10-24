@@ -1,10 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class JobScheduler<T>
+struct JobAntDistance
+{
+
+    public float Distance;
+    public Job Job;
+    public IAnt Ant;
+    public NavMeshPath Path;
+    public JobAntDistance(Job job, IAnt ant)
+    {
+        Path = new NavMeshPath();
+        ant.Agent.CalculatePath(job.Destination, Path);
+        Distance = Utils.CalculateDistanceFromPoints(Path.corners);
+        Job = job;
+        Ant = ant;
+    }
+}
+
+public class JobScheduler : MonoBehaviour
 {
 
     // private List<Job> jobs = new List<Job>();
@@ -12,45 +30,12 @@ public class JobScheduler<T>
 
     private List<IAnt> ants = new List<IAnt>();
 
-    private static JobScheduler<T> instance;
-
     private GameManager gm;
 
     private IEnumerator coroutine;
 
     private bool isRunning = false;
 
-    private JobScheduler()
-    {
-        instance = this;
-        UpdateInterval();
-    }
-
-    public void Start()
-    {
-        isRunning = true;
-    }
-    public void False()
-    {
-        isRunning = false;
-    }
-
-    private void UpdateInterval()
-    {
-        while (isRunning)
-        {
-            Update();
-        }
-    }
-
-    public static JobScheduler<T> GetInstance()
-    {
-        if (instance == null)
-        {
-            instance = new JobScheduler<T>();
-        }
-        return instance;
-    }
 
     public void AddAnt(IAnt ant)
     {
@@ -62,10 +47,12 @@ public class JobScheduler<T>
         this.ants.AddRange(ants);
     }
 
-    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Update()
     {
-        ants.ForEach(worker => { if (SomeJobLeft() && !worker.HasJob()) { AssignClosestJob(worker); } });
+        if (SomeJobLeft())
+        {
+            AssignJobs();
+        }
     }
 
     private bool SomeJobLeft()
@@ -73,29 +60,27 @@ public class JobScheduler<T>
         return jobsMap.Count != 0;
     }
 
-    private void AssignClosestJob(IAnt worker)
+
+    private void AssignJobs()
     {
-        double minPathLength = double.MaxValue;
-        Job minPathJob = null;
-        NavMeshPath minPath = null;
-        NavMeshPath navMeshPath = new NavMeshPath();
+        List<JobAntDistance> distances = new List<JobAntDistance>();
         foreach (var job in jobsMap.Values)
         {
-            worker.Agent.CalculatePath(job.Destination, navMeshPath);
-            float pathLength = Utils.CalculateDistanceFromPoints(navMeshPath.corners);
-            if (navMeshPath.status == NavMeshPathStatus.PathComplete && pathLength < minPathLength)
+            foreach (var ant in ants)
             {
-                minPathLength = pathLength;
-                minPathJob = job;
-                minPath = navMeshPath;
+                distances.Add(new JobAntDistance(job, ant));
             }
         }
-        if (minPath != null)
+        distances = distances.OrderBy(dist => dist.Distance).ToList();
+        distances.ForEach(dist =>
         {
-            RemoveJob(minPathJob);
-            worker.SetPath(minPath);
-            worker.SetJob(minPathJob);
-        }
+            if (SomeJobLeft())
+            {
+                RemoveJob(dist.Job);
+                dist.Ant.SetPath(dist.Path);
+                dist.Ant.SetJob(dist.Job);
+            }
+        });
     }
 
     public bool IsJobAlreadyCreated(int Id)

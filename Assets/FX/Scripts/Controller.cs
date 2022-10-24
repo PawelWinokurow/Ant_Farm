@@ -4,11 +4,14 @@ using UnityEngine;
 public class Controller : MonoBehaviour
 {
     public Surface surface;
-    private JobScheduler<DigJob> scheduler;
+    private JobScheduler scheduler;
+
+    private GameManager gm;
 
     void Start()
     {
-        scheduler = JobScheduler<DigJob>.GetInstance();
+        gm = GameManager.GetInstance();
+        scheduler = gm.AntJobScheduler;
     }
 
     // Update is called once per frame
