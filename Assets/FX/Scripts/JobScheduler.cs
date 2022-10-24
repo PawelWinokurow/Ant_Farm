@@ -25,16 +25,11 @@ struct JobAntDistance
 public class JobScheduler : MonoBehaviour
 {
 
-    // private List<Job> jobs = new List<Job>();
     private Dictionary<int, Job> jobsMap = new Dictionary<int, Job>();
 
     private List<IAnt> ants = new List<IAnt>();
 
     private GameManager gm;
-
-    private IEnumerator coroutine;
-
-    private bool isRunning = false;
 
 
     public void AddAnt(IAnt ant)
