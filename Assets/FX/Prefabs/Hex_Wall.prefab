@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 3142725571891517490}
   - component: {fileID: 1340082042}
   - component: {fileID: 6282430065500862220}
-  - component: {fileID: 3155258412869688882}
   m_Layer: 0
   m_Name: Hex_Wall
   m_TagString: Untagged
@@ -76,19 +75,6 @@ MonoBehaviour:
   isSpawn: 0
   hp: 5
   id: 0
---- !u!114 &3155258412869688882
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1691452921421368621}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d83dd69cef345cb4a9ef6a1d2f797836, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isTest: 0
 --- !u!1 &4178769138555642299
 GameObject:
   m_ObjectHideFlags: 0
