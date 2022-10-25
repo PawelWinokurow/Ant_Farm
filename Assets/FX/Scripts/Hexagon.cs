@@ -12,6 +12,9 @@ public class Hexagon : MonoBehaviour
     public bool isSpawn;
     public float hp = 1f;
     public int id;
+    public int cost;
+
+    public List<int> neighbors;
 
     public bool IsDigabble()
     {
@@ -34,5 +37,6 @@ public class Hexagon : MonoBehaviour
     {
         isBuild = true; ;
     }
+    
 }
 

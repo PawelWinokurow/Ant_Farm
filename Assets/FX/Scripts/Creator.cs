@@ -17,13 +17,13 @@ public class Creator : MonoBehaviour
     {
         cam = Camera.main;
         ld = cam.ScreenToWorldPoint(new Vector3(0, 0, 1f));
-        ld = Intersect(Vector3.zero, Vector3.down, cam.transform.position, ld - cam.transform.position);//ищем углы экрана
+        ld = ExtensionMethods.Intersect(Vector3.zero, Vector3.down, cam.transform.position, ld - cam.transform.position);//ищем углы экрана
         rd = cam.ScreenToWorldPoint(new Vector3(Screen.width, 0, 1f));
-        rd = Intersect(Vector3.zero, Vector3.down, cam.transform.position, rd - cam.transform.position);
+        rd = ExtensionMethods.Intersect(Vector3.zero, Vector3.down, cam.transform.position, rd - cam.transform.position);
         lu = cam.ScreenToWorldPoint(new Vector3(0, Screen.height, 1f));
-        lu = Intersect(Vector3.zero, Vector3.down, cam.transform.position, lu - cam.transform.position);
+        lu = ExtensionMethods.Intersect(Vector3.zero, Vector3.down, cam.transform.position, lu - cam.transform.position);
         ru = cam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 1f));
-        ru = Intersect(Vector3.zero, Vector3.down, cam.transform.position, ru - cam.transform.position);
+        ru = ExtensionMethods.Intersect(Vector3.zero, Vector3.down, cam.transform.position, ru - cam.transform.position);
 
         higth = Mathf.CeilToInt((lu.z - ld.z) / (1.5f * 2f));//находим количество шестиугольников в ширину и длину
         width = Mathf.CeilToInt((rd.x - ld.x) / (0.433f * 8f));
@@ -54,15 +54,6 @@ public class Creator : MonoBehaviour
         }
 
     }
-
-    Vector3 Intersect(Vector3 planeP, Vector3 planeN, Vector3 rayP, Vector3 rayD)//пересечение прямой и плоскости
-    {
-        var d = Vector3.Dot(planeP, -planeN);
-        var t = -(d + Vector3.Dot(rayP, planeN)) / Vector3.Dot(rayD, planeN);
-        return rayP + t * rayD;
-    }
-
-
 
 
 }
