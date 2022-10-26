@@ -26,7 +26,7 @@ public class Controller : MonoBehaviour
             pos = cam.ScreenToWorldPoint(Input.mousePosition);
 
             // marker.transform.position = new Vector3(x* surf.w + (z % 2) * 0.5f* surf.w, 0, z* surf.h);
-            marker.transform.position = surf.allHex[surf.PositionToId(pos)].transform.position;
+           // marker.transform.position = surf.allHex[surf.PositionToId(pos)].transform.position;
 
         }
     }
