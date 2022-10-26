@@ -12,7 +12,8 @@ public class Agent : MonoBehaviour
     Vector3 currentFrom;
     Vector3 currentTo;
     float currentStartTime;
-
+    float t = 0f;
+    int i = 0;
 
     public void SetPath(Path path)
     {
@@ -22,22 +23,41 @@ public class Agent : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
-    {
-        if (WayPoints.Count != 0)
-        {
+    // void Update()
+    // {
+    //     if (WayPoints.Count != 0)
+    //     {
 
-            if (Vector3.Distance(transform.position, currentTo) < 0.05f)
+    //         if (Vector3.Distance(transform.position, currentTo) < 0.05f)
+    //         {
+    //             currentFrom = currentTo;
+    //             currentTo = WayPoints[0];
+    //             currentStartTime = Time.time;
+    //             WayPoints.RemoveAt(0);
+    //         }
+    //         Step(currentFrom, currentTo, currentStartTime);
+
+
+
+    //     }
+    // }
+
+    void Update()
+    {
+        if (WayPoints.Count != 0 && i < WayPoints.Count - 1)
+        {
+            if (t < 1f)
             {
-                currentFrom = currentTo;
-                currentTo = WayPoints[0];
-                currentStartTime = Time.time;
-                WayPoints.RemoveAt(0);
+                t += Time.deltaTime / 0.2f;
+                transform.position = Vector3.Lerp(WayPoints[i], WayPoints[i + 1], t);
             }
-            Step(currentFrom, currentTo, currentStartTime);
+            else
+            {
+                i++;
+                t = 0;
+            }
         }
     }
-
     void Step(Vector3 from, Vector3 to, float startTime)
     {
         float distanceBetween = Vector3.Distance(from, to);

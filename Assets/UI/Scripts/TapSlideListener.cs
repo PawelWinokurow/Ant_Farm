@@ -8,38 +8,43 @@ public class TapSlideListener : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 {
    // public Transform testMarker;
     private bool isButtonDown;
+    public Transform marker;
     private Vector3 pos;
+    private int x;
+    private int z;
+    private Surface surf;
+    private Camera cam;
+    private void Start()
+    {
+        surf = Surface.instance;
+        cam = Camera.main;
+    }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        pos= eventData.position;
-        isButtonDown = true;
-  
+            isButtonDown = true;
     }
     public void OnPointerUp(PointerEventData eventData)
     {
-        isButtonDown = false;
+            isButtonDown = false;
     }
-
 
     public void OnDrag(PointerEventData eventData)
     {
-        pos = eventData.position;
-
     }
+
+
 
     private void Update()
     {
-      if(isButtonDown)
-        {
 
-                Ray ray = Camera.main.ScreenPointToRay(pos);
-                RaycastHit hit;
-                if (Physics.Raycast(ray, out hit, 1000f, ~(1 << LayerMask.NameToLayer("Ignore Raycast"))))
-                {
-                  //  testMarker.transform.position = hit.transform.position;
-                }
-            }
+        if (isButtonDown)
+        {
+            pos = cam.ScreenToWorldPoint(Input.mousePosition);
+            // marker.transform.position = new Vector3(x* surf.w + (z % 2) * 0.5f* surf.w, 0, z* surf.h);
+            marker.transform.position = surf.allHex[surf.PositionToId(pos)].transform.position;
+        }
     }
+
 
 }
