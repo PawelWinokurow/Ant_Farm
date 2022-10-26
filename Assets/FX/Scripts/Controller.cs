@@ -13,6 +13,9 @@ public class Controller : MonoBehaviour
     public GameManager gm;
     private Surface surface;
 
+    //TODO remove from controller
+    public Agent agent;
+
     private void Start()
     {
         cam = Camera.main;
@@ -28,6 +31,7 @@ public class Controller : MonoBehaviour
 
             // marker.transform.position = new Vector3(x* surf.w + (z % 2) * 0.5f* surf.w, 0, z* surf.h);
             marker.transform.position = surface.allHex[surface.PositionToId(pos)].transform.position;
+            agent.SetPath(gm.Surface.PathGraph.FindPath(transform.position, marker.transform.position));
 
         }
     }

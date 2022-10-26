@@ -23,7 +23,7 @@ public class Surface : MonoBehaviour
     private int[,] allHexXZ;//это для счета к какому хексу мышка наиближе
     public Hexagon[] allHex;//это хексы логики
 
-    Graph PathGraph;
+    public Graph PathGraph;
 
     public void Init()
     {
