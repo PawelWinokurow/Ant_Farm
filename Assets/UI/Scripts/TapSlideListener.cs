@@ -6,27 +6,28 @@ using UnityEngine.UI;
 
 public class TapSlideListener : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
-   // public Transform testMarker;
+    // public Transform testMarker;
     private bool isButtonDown;
     public Transform marker;
     private Vector3 pos;
     private int x;
     private int z;
-    private Surface surf;
+    private GameManager gm;
     private Camera cam;
+    private Surface surf;
     private void Start()
     {
-        surf = Surface.instance;
+        surf = gm.Surface;
         cam = Camera.main;
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-            isButtonDown = true;
+        isButtonDown = true;
     }
     public void OnPointerUp(PointerEventData eventData)
     {
-            isButtonDown = false;
+        isButtonDown = false;
     }
 
     public void OnDrag(PointerEventData eventData)

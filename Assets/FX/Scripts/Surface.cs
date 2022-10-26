@@ -98,11 +98,6 @@ public class Surface : MonoBehaviour
 
         }
         );
-        var path = PathGraph.FindPath(new Vector3(0, 0, 0), new Vector3(40, 0, 40));
-        for (int i = 0; i < path.WayPoints.Count - 1; i++)
-        {
-            Debug.DrawLine(path.WayPoints[i], path.WayPoints[i + 1], Color.black);
-        }
     }
 
     public int PositionToId(Vector3 pos)
