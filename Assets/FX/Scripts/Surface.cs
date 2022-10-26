@@ -2,138 +2,170 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
+
+
+
 
 public class Surface : MonoBehaviour
 {
+    public static Surface instance;
+    public Hexagon hexPrefab;
+    public Transform WallPrefab;
+    private Camera cam;
+    public int height = 10;
+    public int width = 10;
+    public Vector3 ld;
+    public Vector3 rd;
+    public Vector3 lu;
+    public Vector3 ru;
+    public float w;
+    public float h;
 
-    public Creator creator;
-    private Vector3 pos;
-    public NavMeshSurface navSurface;
-    public List<Hexagon> digList;
-    public List<Hexagon> groundList;
-    public List<Hexagon> spawnList;
-    public List<Hexagon> wallList;
-    public List<Hexagon> buildList;
-    public List<Vector3> sideList;
-    public List<int> pushedList;
+    private int[,] allHexXZ;//это для счета к какому хексу мышка наиближе
+    public Hexagon[] allHex;//это хексы логики
 
-    public Hexagon groundPrefab;
-    public Hexagon wallPrefab;
-    public Hexagon digPrefab;
-    public Hexagon buildPrefab;
-    public Hexagon spawnPrefab;
-
-
-    public Hexagon[] allHex;
-    private Hexagon hex;
-
-    void Awake()
+    Graph PathGraph;
+    public void Awake()
     {
-        navSurface = GetComponent<NavMeshSurface>();
-        buildList = new List<Hexagon>();
-        wallList = new List<Hexagon>();
-        digList = new List<Hexagon>();
-        groundList = new List<Hexagon>();
-        spawnList = new List<Hexagon>();
-        pushedList = new List<int>();
-    }
-
-    public void AddStartWall(Hexagon hex)//самые первые стены везде
-    {
-        allHex[hex.id] = hex;
-        wallList.Add(hex);
-    }
-
-    public void AddSpawn(int id)//для зоны спауна 
-    {
-        hex = allHex[id];
-        RemoveFromAllHexList(id);
-        pos = hex.transform.position;
-        GameObject.Destroy(hex.gameObject);
-        hex = Instantiate(spawnPrefab, pos, Quaternion.identity, transform);
-        hex.id = id;
-        spawnList.Add(hex);//здесь будем спаунить муравьев
-        groundList.Add(hex);
-        allHex[id] = hex;
-        navSurface.BuildNavMesh();
-    }
-
-    public Hexagon AssignDigHex(int id)//если тапнули стену создаем заготовку для копания 
-    {
-        hex = allHex[id];
-        RemoveFromAllHexList(id);
-        pos = hex.transform.position;
-        GameObject.Destroy(hex.gameObject);//удаляем стену
-        Hexagon dig = Instantiate(digPrefab, pos, Quaternion.identity, transform);
-        dig.id = id;
-        allHex[id] = dig;
-        digList.Add(dig);
-        navSurface.BuildNavMesh();
-        return dig;
-    }
-
-    public Hexagon AssignBuildHex(int id)//если тапнули землю создаем заготовку где потом построим стену
-    {
-        hex = allHex[id];
-        RemoveFromAllHexList(id);
-        pos = hex.transform.position;
-        GameObject.Destroy(hex.gameObject);
-        Hexagon build = Instantiate(buildPrefab, pos, Quaternion.identity, transform);
-        build.id = id;
-        allHex[id] = build;
-        buildList.Add(build);
-        navSurface.BuildNavMesh();
-        return build;
+        instance = this;
+        Init();
     }
 
 
-    public void Dig(int id)//если выкопали
+    public void Init()
     {
-        hex = allHex[id];
-        RemoveFromAllHexList(id);
-        pos = hex.transform.position;
-        GameObject.Destroy(hex.gameObject);
-        Hexagon ground = Instantiate(groundPrefab, pos, Quaternion.identity, transform);
-        ground.id = id;
-        allHex[id] = ground;
-        groundList.Add(ground);
-        pushedList.Remove(id);
-        navSurface.BuildNavMesh();
+        cam = Camera.main;
 
+        ld = cam.ScreenToWorldPoint(new Vector3(0, 0, 1f));
+
+        rd = cam.ScreenToWorldPoint(new Vector3(Screen.width, 0, 1f));
+
+        lu = cam.ScreenToWorldPoint(new Vector3(0, Screen.height, 1f));
+
+        ru = cam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 1f));
+
+        float radius = 2f;
+        w = Mathf.Sin((60) * Mathf.Deg2Rad) * 2f * radius;//растояние по горизонтали между шестигольниками
+        h = 2 * radius * 3f / 4f;//растояние по вертикали между шестигольниками
+
+        height = Mathf.CeilToInt((lu.z - ld.z) / h) - 1;//находим количество шестиугольников в ширину и длину
+        width = Mathf.CeilToInt((rd.x - ld.x) / w) - 1;
+
+        allHexXZ = new int[width, height];
+        allHex = new Hexagon[width * height];
+        PathGraph = new Graph();
+        for (int z = 0; z < height; z++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                Vector3 hexPosition = new Vector3(w * (x + (z % 2f) / 2f), 0f, z * h);
+                AddCreateHexagonGraph(hexPosition, radius, $"x{x}z{z}", PathGraph);
+
+                Hexagon hex = Instantiate(hexPrefab, new Vector3(w * (x + (z % 2f) / 2f), 0f, z * h), Quaternion.identity, transform);
+                int id = z * width + x;
+                allHexXZ[x, z] = id;//двумерный массив
+                hex.id = id;
+                allHex[id] = hex;
+
+            }
+        }
+
+        Camera.main.transform.parent.position = new Vector3((width - 0.5f) * w / 2f, 0, (height - 1) * h / 2f);
+
+
+        for (int i = 0; i < allHex.Length; i++)//записываем соседей
+        {
+            allHex[i].neighbors = new List<int>();
+            for (int j = 0; j < allHex.Length; j++)
+            {
+                if (Vector3.Distance(allHex[i].transform.position, allHex[j].transform.position) < 4f)
+                {
+                    if (allHex[i] != allHex[j])
+                    {
+                        allHex[i].neighbors.Add(j);
+                    }
+                }
+            }
+        }
     }
 
-    public void Build(int id)//если построили
+    void Update()
     {
-        hex = allHex[id];
-        RemoveFromAllHexList(id);
-        pos = hex.transform.position;
-        GameObject.Destroy(hex.gameObject);
-        Hexagon wall = Instantiate(wallPrefab, pos, Quaternion.identity, creator.transform);
-        wall.id = id;
-        allHex[id] = wall;
-        wallList.Add(wall);
-        pushedList.Remove(id);
-        StartCoroutine(Build_Cor());
 
-    }
-    IEnumerator Build_Cor()
-    {
-        yield return new WaitForEndOfFrame();
-        navSurface.BuildNavMesh();
+        PathGraph.AdjacencyList.ForEach(edge =>
+        {
+            if (!edge.IsWalkable)
+            {
+                Debug.DrawLine(edge.From.GeometricalPoint, edge.To.GeometricalPoint, Color.red);
+            }
+            else
+            {
+                Debug.DrawLine(edge.From.GeometricalPoint, edge.To.GeometricalPoint, Color.green);
+            }
 
-    }
-
-
-    private void RemoveFromAllHexList(int id)
-    {
-        hex = allHex[id];
-        buildList.Remove(hex);
-        wallList.Remove(hex);
-        digList.Remove(hex);
-        groundList.Remove(hex);
-        spawnList.Remove(hex);
+        }
+        );
+        var path = PathGraph.FindPath(new Vector3(0, 0, 0), new Vector3(50, 0, 50));
+        for (int i = 0; i < path.WayPoints.Count - 1; i++)
+        {
+            Debug.DrawLine(path.WayPoints[i], path.WayPoints[i + 1], Color.black);
+        }
     }
 
+    public int PositionToId(Vector3 pos)
+    {
+        int z = (int)Mathf.Round(pos.z / h);
+        int x = (int)Mathf.Round((pos.x - (z % 2) * 0.5f * w) / w);
+        z = Mathf.Clamp(z, 0, allHexXZ.GetLength(1) - 1);
+        x = Mathf.Clamp(x, 0, allHexXZ.GetLength(0) - 1);
+        return allHexXZ[x, z];
+    }
 
+
+    public void AddWall(int id)
+    {
+        Hexagon hex = allHex[id];
+        SetAllStateToNull(id);
+        hex.isWall = true;
+        hex.cost = -1;
+
+        for (int i = 0; i < hex.transform.childCount; i++)//удаляет чайлды старой графики
+        {
+            GameObject.Destroy(hex.transform.GetChild(i));
+        }
+        PathGraph.ProhibitHexagon(hex.transform.position);
+        Instantiate(WallPrefab, hex.transform.position, Quaternion.identity, hex.transform);
+    }
+
+    private void SetAllStateToNull(int id)
+    {
+        Hexagon hex = allHex[id];
+        hex.isWall = false;
+        hex.isDig = false;
+        hex.isGround = false;
+        hex.isBuild = false;
+        hex.isSpawn = false;
+    }
+
+    public PathVertex AddCreateHexagonGraph(Vector3 center, float R, string Id, Graph PathGraph)
+    {
+        float r = (float)Math.Sqrt(3) * R / 2;
+
+        var centerPathPoint = PathGraph.AddVertex(new PathVertex($"{Id}0", center));
+        List<PathVertex> pathPoints = new List<PathVertex>();
+        for (int n = 0; n < 6; n++)
+        {
+            float angle = (float)(Math.PI * (n * 60) / 180.0);
+            float x = r * (float)Math.Cos(angle);
+            float z = r * (float)Math.Sin(angle);
+            pathPoints.Add(PathGraph.AddVertex(new PathVertex($"{Id}{n + 1}", center + new Vector3(x, 0, z))));
+        }
+        for (int i = 0; i < pathPoints.Count; i++)
+        {
+            PathGraph.AddEdge(centerPathPoint, pathPoints[i], Vector3.Distance(centerPathPoint.GeometricalPoint, pathPoints[i].GeometricalPoint));
+            PathGraph.AddEdge(pathPoints[i], pathPoints[(i + 2) % pathPoints.Count], Vector3.Distance(pathPoints[i].GeometricalPoint, pathPoints[(i + 2) % pathPoints.Count].GeometricalPoint));
+        }
+        return centerPathPoint;
+
+    }
 }

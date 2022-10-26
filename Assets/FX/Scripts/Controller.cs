@@ -1,57 +1,64 @@
-using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+
 
 public class Controller : MonoBehaviour
 {
-    public Surface surface;
-    private JobScheduler scheduler;
+    private Camera cam;
+    public Transform marker;
+    private Vector3 pos;
+    private int x;
+    private int z;
+    private Surface surf;
 
-    private GameManager gm;
-
-    void Start()
+    private void Start()
     {
-        gm = GameManager.GetInstance();
-        scheduler = gm.AntJobScheduler;
+        cam = Camera.main;
+        surf = Surface.instance;
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         if (Input.GetMouseButton(0))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, 1000f, ~(1 << LayerMask.NameToLayer("Ignore Raycast"))))
-            {
-                ProcessHexagon(hit);
-            }
+            pos = cam.ScreenToWorldPoint(Input.mousePosition);
+
+            // marker.transform.position = new Vector3(x* surf.w + (z % 2) * 0.5f* surf.w, 0, z* surf.h);
+            marker.transform.position = surf.allHex[surf.PositionToId(pos)].transform.position;
+
         }
     }
 
-    public void ProcessHexagon(RaycastHit hit)
-    {
-        Hexagon hex = hit.transform.GetComponent<Hexagon>();
-        if (hex != null && !hex.IsInSpawnArea() && !scheduler.IsJobAlreadyCreated(hex.id))
-        {
+    // public void ProcessHexagon(RaycastHit hit)
+    // {
+    //     Hexagon hex = hit.transform.GetComponent<Hexagon>();
+    //     if (hex != null && !hex.IsInSpawnArea() && !scheduler.IsJobAlreadyCreated(hex.id))
+    //     {
 
-            if (hex.IsDigabble())//ставим заготовку для ямы
-            {
-                hex.AssignDig();
-                hex = surface.AssignDigHex(hex.id);//dig
-            }
+    //         if (hex.IsDigabble())
+    //         {
+    //             hex.AssignDig();
+    //             hex = surface.AssignDigHex(hex.id);
+    //         }
 
-            if (hex.IsBuildable())//ставим заготовку для возвышенности
-            {
-                hex.AssignBuild();
-                hex = surface.AssignBuildHex(hex.id);//build
-            }
-            scheduler.AssignJob(new DigJob(hex, digHex =>
-            {
-                if (digHex == surface.allHex[digHex.id])
-                {
-                    surface.Dig(digHex.id);
-                }
-            }));
-        }
-    }
+    //         if (hex.IsBuildable())
+    //         {
+    //             hex.AssignBuild();
+    //             hex = surface.AssignBuildHex(hex.id);//build
+    //         }
+    //         scheduler.AssignJob(new DigJob(hex, digHex =>
+    //         {
+    //             if (digHex == surface.allHex[digHex.id])
+    //             {
+    //                 surface.Dig(digHex.id);
+    //             }
+    //         }));
+    //     }
+    // }
+
+
+
 }
+
