@@ -6,16 +6,47 @@ namespace AntFarm
 {
     public class Agent : MonoBehaviour
     {
-        // Start is called before the first frame update
-        void Start()
+        public float Speed = 1.0f;
+        float startTime = Time.time;
+
+        List<Vector3> WayPoints = new List<Vector3>();
+        Vector3 currentFrom;
+        Vector3 currentTo;
+        float currentStartTime;
+
+
+        public void SetPath(List<Vector3> path)
         {
-        
+            WayPoints = path;
+            currentTo = WayPoints[0];
+            WayPoints.RemoveAt(0);
         }
 
         // Update is called once per frame
         void Update()
         {
-        
+            if (WayPoints.Count != 0)
+            {
+
+                if (Vector3.Distance(transform.position, currentTo) < 0.05f)
+                {
+                    currentFrom = currentTo;
+                    currentTo = WayPoints[0];
+                    currentStartTime = Time.time;
+                    WayPoints.RemoveAt(0);
+                }
+                Step(currentFrom, currentTo, currentStartTime);
+            }
         }
+
+        void Step(Vector3 from, Vector3 to, float startTime)
+        {
+            float distanceBetween = Vector3.Distance(from, to);
+            float distanceTime = (Time.time - startTime) * this.Speed;
+            float relativeTime = distanceTime / distanceBetween;
+            this.transform.position = Vector3.Lerp(transform.position, to, relativeTime);
+        }
+
+
     }
 }
