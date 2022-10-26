@@ -8,7 +8,6 @@ using UnityEngine;
 
 public class Surface : MonoBehaviour
 {
-    public static Surface instance;
     public Hexagon hexPrefab;
     public Transform WallPrefab;
     private Camera cam;
@@ -25,11 +24,6 @@ public class Surface : MonoBehaviour
     public Hexagon[] allHex;//это хексы логики
 
     Graph PathGraph;
-    public void Awake()
-    {
-        instance = this;
-    }
-
 
     public void Init()
     {
@@ -104,11 +98,11 @@ public class Surface : MonoBehaviour
 
         }
         );
-        var path = PathGraph.FindPath(new Vector3(0, 0, 0), new Vector3(50, 0, 50));
-        // for (int i = 0; i < path.WayPoints.Count - 1; i++)
-        // {
-        //     Debug.DrawLine(path.WayPoints[i], path.WayPoints[i + 1], Color.black);
-        // }
+        var path = PathGraph.FindPath(new Vector3(0, 0, 0), new Vector3(40, 0, 40));
+        for (int i = 0; i < path.WayPoints.Count - 1; i++)
+        {
+            Debug.DrawLine(path.WayPoints[i], path.WayPoints[i + 1], Color.black);
+        }
     }
 
     public int PositionToId(Vector3 pos)
