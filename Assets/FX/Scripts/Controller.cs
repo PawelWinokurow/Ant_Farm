@@ -31,7 +31,9 @@ public class Controller : MonoBehaviour
 
             // marker.transform.position = new Vector3(x* surf.w + (z % 2) * 0.5f* surf.w, 0, z* surf.h);
             marker.transform.position = surface.allHex[surface.PositionToId(pos)].transform.position;
-            agent.SetPath(gm.Surface.PathGraph.FindPath(transform.position, marker.transform.position));
+            var path = gm.Surface.PathGraph.FindPath(agent.CurrentPosition, marker.transform.position);
+            if (path == null) Debug.Log("Path is null");
+            else agent.SetPath(path);
 
         }
     }
