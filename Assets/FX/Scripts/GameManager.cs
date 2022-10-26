@@ -7,11 +7,7 @@ using UnityEngine.AI;
 public class GameManager : MonoBehaviour
 {
     public Surface surface;
-
-
     public List<Mob> antsList = new List<Mob>();
-    public GameObject antBuilderPrefab;
-
     public JobScheduler JobScheduler;
     private static GameManager instance;
 
@@ -33,7 +29,6 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         surface.Init();
-        // AntJobScheduler.AddAnts(antsList);
     }
 
 }

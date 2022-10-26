@@ -28,7 +28,6 @@ public class Surface : MonoBehaviour
     public void Awake()
     {
         instance = this;
-        Init();
     }
 
 
@@ -106,10 +105,10 @@ public class Surface : MonoBehaviour
         }
         );
         var path = PathGraph.FindPath(new Vector3(0, 0, 0), new Vector3(50, 0, 50));
-        for (int i = 0; i < path.WayPoints.Count - 1; i++)
-        {
-            Debug.DrawLine(path.WayPoints[i], path.WayPoints[i + 1], Color.black);
-        }
+        // for (int i = 0; i < path.WayPoints.Count - 1; i++)
+        // {
+        //     Debug.DrawLine(path.WayPoints[i], path.WayPoints[i + 1], Color.black);
+        // }
     }
 
     public int PositionToId(Vector3 pos)
