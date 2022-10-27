@@ -3,7 +3,8 @@ using UnityEngine.AI;
 
 public interface Mob
 {
-    bool HasJob();
-    void SetJob(Job job);
-    void SetPath(Path path);
+
+    public bool HasJob();
+    public void SetJob(Job job);
+    public void SetPath(Path path);
 }

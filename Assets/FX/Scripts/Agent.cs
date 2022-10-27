@@ -3,20 +3,37 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Agent : MonoBehaviour
+public class Agent : MonoBehaviour, Mob
 {
     List<Vector3> WayPoints = new List<Vector3>();
     float t = 0f;
     int i = 0;
     public Vector3 CurrentPosition;
+    private Job job;
+    public GameManager gm;
+
+    void Start()
+    {
+        gm = GameManager.GetInstance();
+        CurrentPosition = transform.position;
+    }
     public void SetPath(Path path)
     {
         WayPoints = path.WayPoints;
     }
-    void Start()
+
+    public bool HasJob()
     {
-        CurrentPosition = transform.position;
+        return job != null;
     }
+
+    public void SetJob(Job job)
+    {
+        var path = gm.Surface.PathGraph.FindPath(CurrentPosition, job.Destination);
+        SetPath(path);
+    }
+
+
     void Update()
     {
         for (int i = 0; i < WayPoints.Count - 1; i++)
@@ -46,6 +63,7 @@ public class Agent : MonoBehaviour
             t = 0;
         }
     }
+
 
 }
 

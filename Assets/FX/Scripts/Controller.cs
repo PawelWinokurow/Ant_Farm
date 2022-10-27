@@ -12,6 +12,7 @@ public class Controller : MonoBehaviour
     private int z;
     public GameManager gm;
     private Surface surface;
+    private JobScheduler jobScheduler;
 
     //TODO remove from controller
     public Agent agent;
@@ -21,6 +22,7 @@ public class Controller : MonoBehaviour
     {
         cam = Camera.main;
         surface = gm.Surface;
+        jobScheduler = gm.JobScheduler;
     }
 
     // Update is called once per frame
@@ -32,43 +34,32 @@ public class Controller : MonoBehaviour
 
             // marker.transform.position = new Vector3(x* surf.w + (z % 2) * 0.5f* surf.w, 0, z* surf.h);
             marker.transform.position = surface.allHex[surface.PositionToId(pos)].transform.position;
-            var path = gm.Surface.PathGraph.FindPath(agent.CurrentPosition, marker.transform.position);
-            if (path == null) Debug.Log("Path is null");
-            else
-            {
-                GameObject.Destroy(cubeGoal);
-                agent.SetPath(path);
-                cubeGoal = Instantiate(cube, path.WayPoints[path.WayPoints.Count - 1], Quaternion.identity);
-            }
+            ProcessHexagon(surface.allHex[surface.PositionToId(pos)]);
+            // var path = gm.Surface.PathGraph.FindPath(agent.CurrentPosition, marker.transform.position);
+            // if (path == null) Debug.Log("Path is null");
+            // else
+            // {
+            //     GameObject.Destroy(cubeGoal);
+            //     agent.SetPath(path);
+            //     cubeGoal = Instantiate(cube, path.WayPoints[path.WayPoints.Count - 1], Quaternion.identity);
+            // }
         }
     }
 
-    // public void ProcessHexagon(RaycastHit hit)
-    // {
-    //     Hexagon hex = hit.transform.GetComponent<Hexagon>();
-    //     if (hex != null && !hex.IsInSpawnArea() && !scheduler.IsJobAlreadyCreated(hex.id))
-    //     {
+    public void ProcessHexagon(Hexagon hex)
+    {
+        if (hex != null && !hex.IsInSpawnArea() && !jobScheduler.IsJobAlreadyCreated(hex.id))
+        {
 
-    //         if (hex.IsDigabble())
-    //         {
-    //             hex.AssignDig();
-    //             hex = surface.AssignDigHex(hex.id);
-    //         }
+            if (hex.IsDigabble())
+            {
+                hex.AssignDig();
+                jobScheduler.AssignJob(new DigJob(hex));
+            }
 
-    //         if (hex.IsBuildable())
-    //         {
-    //             hex.AssignBuild();
-    //             hex = surface.AssignBuildHex(hex.id);//build
-    //         }
-    //         scheduler.AssignJob(new DigJob(hex, digHex =>
-    //         {
-    //             if (digHex == surface.allHex[digHex.id])
-    //             {
-    //                 surface.Dig(digHex.id);
-    //             }
-    //         }));
-    //     }
-    // }
+
+        }
+    }
 
 
 
