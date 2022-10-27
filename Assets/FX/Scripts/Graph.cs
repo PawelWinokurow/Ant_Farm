@@ -147,6 +147,7 @@ public class Graph
     {
         PathVertex from = NearestVertex(fromVec);
         PathVertex to = NearestVertex(toVec);
+        if (from.Id == to.Id) return null;
         var path = Astar(from, to);
         if (path != null)
         {

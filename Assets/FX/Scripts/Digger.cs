@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Digger : MonoBehaviour, Mob
 {
-    List<Vector3> WayPoints = new List<Vector3>();
+    public List<Vector3> WayPoints = new List<Vector3>();
     float t = 0f;
     int i = 0;
 
@@ -33,7 +33,10 @@ public class Digger : MonoBehaviour, Mob
     public void SetJob(Job job)
     {
         var path = gm.Surface.PathGraph.FindPath(CurrentPosition, job.Destination);
-        SetPath(path);
+        if (path != null)
+        {
+            SetPath(path);
+        }
     }
 
 

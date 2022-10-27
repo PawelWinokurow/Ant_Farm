@@ -11,11 +11,11 @@ class JobDiggerDistance
     public Job Job;
     public Digger Digger;
 
-    public JobDiggerDistance(Job job, Digger digger)
+    public JobDiggerDistance(Job job, Digger digger, float distance)
     {
         Job = job;
         Digger = digger;
-        Distance = Vector3.Distance(job.Destination, digger.CurrentPosition);
+        Distance = distance;
     }
 
 }
@@ -26,6 +26,13 @@ public class JobScheduler : MonoBehaviour
     private Dictionary<int, Job> jobsMap = new Dictionary<int, Job>();
 
     private List<Digger> diggers = new List<Digger>();
+
+    private GameManager gm;
+
+    void Start()
+    {
+        gm = GameManager.GetInstance();
+    }
 
     public void AddDigger(Digger ant)
     {
@@ -58,7 +65,15 @@ public class JobScheduler : MonoBehaviour
         {
             foreach (var digger in diggers)
             {
-                distances.Add(new JobDiggerDistance(job, digger));
+                // var path = gm.Surface.PathGraph.FindPath(digger.CurrentPosition, job.Destination);
+                // if (path != null)
+                // {
+                //     distances.Add(new JobDiggerDistance(job, digger, path.OverallDistance));
+
+                // }
+
+                distances.Add(new JobDiggerDistance(job, digger, Vector3.Distance(digger.CurrentPosition, job.Destination)));
+
             }
         }
         distances = distances.OrderBy(dist => dist.Distance).ToList();
@@ -66,8 +81,11 @@ public class JobScheduler : MonoBehaviour
         {
             if (SomeJobLeft())
             {
-                RemoveJob(dist.Job);
-                dist.Digger.SetJob(dist.Job);
+                if (dist.Digger.WayPoints.Count == 0)
+                {
+                    RemoveJob(dist.Job);
+                    dist.Digger.SetJob(dist.Job);
+                }
             }
         });
     }
@@ -79,7 +97,10 @@ public class JobScheduler : MonoBehaviour
 
     public void AssignJob(Job job)
     {
-        jobsMap.Add(job.Id, job);
+        if (!IsJobAlreadyCreated(job.Id))
+        {
+            jobsMap.Add(job.Id, job);
+        }
     }
 
     public void RemoveJob(Job job)

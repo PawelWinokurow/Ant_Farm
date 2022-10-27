@@ -41,8 +41,8 @@ public class GameManager : MonoBehaviour
     {
         var gameObjects = new List<GameObject>();
         gameObjects.Add(Instantiate(DiggerPrefab, new Vector3(0, 0, 0), Quaternion.identity));
-        gameObjects.Add(Instantiate(DiggerPrefab, new Vector3(30, 0, 0), Quaternion.identity));
-        gameObjects.Add(Instantiate(DiggerPrefab, new Vector3(0, 0, 30), Quaternion.identity));
+        gameObjects.Add(Instantiate(DiggerPrefab, new Vector3(50, 0, 0), Quaternion.identity));
+        gameObjects.Add(Instantiate(DiggerPrefab, new Vector3(0, 0, 50), Quaternion.identity));
         JobScheduler.AddDiggers(gameObjects.Select(obj => obj.GetComponent<Digger>()).ToList());
     }
 

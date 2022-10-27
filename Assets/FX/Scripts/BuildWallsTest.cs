@@ -9,6 +9,7 @@ public class BuildWallsTest : MonoBehaviour
 
     public void Test()
     {
+        Random.InitState(42);
         for (int i = 0; i < Surface.allHex.Length; i++)
         {
             if (Random.Range(0, 100f) < 30f)
