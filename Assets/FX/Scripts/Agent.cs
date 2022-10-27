@@ -20,7 +20,7 @@ using UnityEngine;
    public void GoTo( Hexagon goalHex)
     {
        // current = surf.allHex[surf.PositionToId(transform.position)];
-        //path = PathFinder.instance.GetPath(current, goalHex);
+       // path = PathFinder.instance.GetPath(current, goalHex);
        
         t = 0;
         i = 0;
