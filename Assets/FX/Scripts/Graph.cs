@@ -206,6 +206,7 @@ public class Graph
                 next = cameFrom[next.Id];
             }
             path.WayPoints.Reverse();
+            path.WayPoints = Utils.NormalizePath(path.WayPoints, 1f);
             path.OverallDistance = costSoFar[goal.Id];
             return path;
         }

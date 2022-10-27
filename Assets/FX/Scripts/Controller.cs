@@ -15,7 +15,6 @@ public class Controller : MonoBehaviour
 
     //TODO remove from controller
     public Agent agent;
-
     private void Start()
     {
         cam = Camera.main;

@@ -19,6 +19,12 @@ public class Agent : MonoBehaviour
     }
     void Update()
     {
+        for (int i = 0; i < WayPoints.Count - 1; i++)
+        {
+            Debug.DrawLine(WayPoints[i], WayPoints[i + 1], Color.blue);
+        }
+
+
         if (WayPoints.Count != 0 && i < WayPoints.Count - 1)
         {
             if (t < 1f)
