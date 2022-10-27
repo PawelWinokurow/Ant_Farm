@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using DataStructures.PriorityQueue;
+using PriorityQueue;
 
 public class PathVertex
 {
@@ -125,7 +125,10 @@ public class Graph
 
     public PathVertex NearestVertex(Vector3 position)
     {
-        if (PathVerticesMap.ContainsKey(position)) return PathVerticesMap[position];
+        if (PathVerticesMap.ContainsKey(position))
+        {
+            return PathVerticesMap[position];
+        }
         return PathVertices.Aggregate(PathVertices[0], (acc, vertex) =>
         {
             if (Vector3.Distance(vertex.GeometricalPoint, position) <
@@ -136,7 +139,7 @@ public class Graph
 
     public List<PathVertex> GetNeighbors(PathVertex center)
     {
-        return center.Edges.Where(edge => edge.IsWalkable).Select(edge => edge.To).ToList();
+        return center.Edges.Select(edge => edge.To).ToList();
     }
 
 
@@ -144,27 +147,35 @@ public class Graph
     {
         PathVertex from = NearestVertex(fromVec);
         PathVertex to = NearestVertex(toVec);
-        var neighbors = GetNeighbors(to);
-        var paths = neighbors.Select(vertex => Astar(from, vertex)).Where(path => path != null).ToList();
-        if (paths.Count() != 0)
+        var path = Astar(from, to);
+        if (path != null)
         {
-            var path = paths.Aggregate(paths[0], (acc, p) =>
-            {
-                {
-                    if (p.OverallDistance < acc.OverallDistance) return p;
-                    else return acc;
-                }
-
-            });
             return path;
         }
-        return null;
+        else
+        {
+            var neighbors = GetNeighbors(to);
+            var paths = neighbors.Select(vertex => Astar(from, vertex)).Where(path => path != null).ToList();
+            if (paths.Count() != 0)
+            {
+                path = paths.Aggregate(paths[0], (acc, p) =>
+                {
+                    {
+                        if (p.OverallDistance < acc.OverallDistance) return p;
+                        else return acc;
+                    }
+
+                });
+                return path;
+            }
+            return null;
+        }
     }
 
     private Path Astar(PathVertex start, PathVertex goal)
     {
         PriorityQueue<PathVertex, float> frontier = new PriorityQueue<PathVertex, float>(0);
-        frontier.Insert(start, 0);
+        frontier.Enqueue(start, 0);
 
         var cameFrom = new Dictionary<string, PathVertex>();
         var costSoFar = new Dictionary<string, float>();
@@ -172,9 +183,9 @@ public class Graph
         cameFrom[start.Id] = null;
         costSoFar[start.Id] = 0;
         var isGoalFound = false;
-        while (frontier.Top() != null)
+        while (frontier.Count != 0)
         {
-            var current = frontier.Pop();
+            var current = frontier.Dequeue();
             if (current == goal)
             {
                 isGoalFound = true;
@@ -190,7 +201,7 @@ public class Graph
                 {
                     costSoFar[next.Id] = newCost;
                     var priority = newCost + GetDistance(next, goal);
-                    frontier.Insert(next, priority);
+                    frontier.Enqueue(next, priority);
                     cameFrom[next.Id] = current;
                 }
             }
@@ -206,7 +217,8 @@ public class Graph
                 next = cameFrom[next.Id];
             }
             path.WayPoints.Reverse();
-            path.WayPoints = Utils.NormalizePath(path.WayPoints, 1f);
+            path.WayPoints.Add(goal.GeometricalPoint);
+            path.WayPoints = Utils.NormalizePath(path.WayPoints, 0.5f);
             path.OverallDistance = costSoFar[goal.Id];
             return path;
         }

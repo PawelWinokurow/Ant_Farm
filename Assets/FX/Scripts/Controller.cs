@@ -15,6 +15,8 @@ public class Controller : MonoBehaviour
 
     //TODO remove from controller
     public Agent agent;
+    public GameObject cube;
+    public GameObject cubeGoal;
     private void Start()
     {
         cam = Camera.main;
@@ -32,8 +34,12 @@ public class Controller : MonoBehaviour
             marker.transform.position = surface.allHex[surface.PositionToId(pos)].transform.position;
             var path = gm.Surface.PathGraph.FindPath(agent.CurrentPosition, marker.transform.position);
             if (path == null) Debug.Log("Path is null");
-            else agent.SetPath(path);
-
+            else
+            {
+                GameObject.Destroy(cubeGoal);
+                agent.SetPath(path);
+                cubeGoal = Instantiate(cube, path.WayPoints[path.WayPoints.Count - 1], Quaternion.identity);
+            }
         }
     }
 

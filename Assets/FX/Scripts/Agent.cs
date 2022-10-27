@@ -29,7 +29,7 @@ public class Agent : MonoBehaviour
         {
             if (t < 1f)
             {
-                t += Time.deltaTime / 0.2f;
+                t += Time.deltaTime * 20f;
                 transform.position = Vector3.Lerp(WayPoints[i], WayPoints[i + 1], t);
                 CurrentPosition = transform.position;
             }

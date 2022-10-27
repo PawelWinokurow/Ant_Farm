@@ -436,6 +436,7 @@ MonoBehaviour:
   marker: {fileID: 1466981558}
   gm: {fileID: 1041044675}
   agent: {fileID: 1040347214}
+  cube: {fileID: 8814868800950481170, guid: e3fce081860e446a99419c8b74afe6a0, type: 3}
 --- !u!1 &1466981554
 GameObject:
   m_ObjectHideFlags: 0
@@ -454,7 +455,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1466981555
 BoxCollider:
   m_ObjectHideFlags: 0
