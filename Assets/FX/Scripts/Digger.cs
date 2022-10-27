@@ -3,20 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Agent : MonoBehaviour, Mob
+public class Digger : MonoBehaviour, Mob
 {
     List<Vector3> WayPoints = new List<Vector3>();
     float t = 0f;
     int i = 0;
-    public Vector3 CurrentPosition;
+
+    public Vector3 CurrentPosition;   // property
+
     private Job job;
-    public GameManager gm;
+    private GameManager gm;
 
     void Start()
     {
         gm = GameManager.GetInstance();
         CurrentPosition = transform.position;
     }
+
     public void SetPath(Path path)
     {
         WayPoints = path.WayPoints;
@@ -64,6 +67,19 @@ public class Agent : MonoBehaviour, Mob
         }
     }
 
+    bool Mob.HasJob()
+    {
+        throw new System.NotImplementedException();
+    }
 
+    void Mob.SetJob(Job job)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    void Mob.SetPath(Path path)
+    {
+        throw new System.NotImplementedException();
+    }
 }
 

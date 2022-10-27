@@ -5,24 +5,36 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
 
+class JobDiggerDistance
+{
+    public float Distance;
+    public Job Job;
+    public Digger Digger;
+
+    public JobDiggerDistance(Job job, Digger digger)
+    {
+        Job = job;
+        Digger = digger;
+        Distance = Vector3.Distance(job.Destination, digger.CurrentPosition);
+    }
+
+}
+
 public class JobScheduler : MonoBehaviour
 {
 
     private Dictionary<int, Job> jobsMap = new Dictionary<int, Job>();
 
-    private List<Mob> ants = new List<Mob>();
+    private List<Digger> diggers = new List<Digger>();
 
-    // private GameManager gm;
-
-
-    public void AddAnt(Mob ant)
+    public void AddDigger(Digger ant)
     {
-        ants.Add(ant);
+        diggers.Add(ant);
     }
 
-    public void AddAnts(List<Mob> ants)
+    public void AddDiggers(List<Digger> diggers)
     {
-        this.ants.AddRange(ants);
+        this.diggers.AddRange(diggers);
     }
 
     public void Update()
@@ -41,24 +53,23 @@ public class JobScheduler : MonoBehaviour
 
     private void AssignJobs()
     {
-        // List<JobAntDistance> distances = new List<JobAntDistance>();
-        // foreach (var job in jobsMap.Values)
-        // {
-        //     foreach (var ant in ants)
-        //     {
-        //         distances.Add(new JobAntDistance(job, ant));
-        //     }
-        // }
-        // distances = distances.OrderBy(dist => dist.Distance).ToList();
-        // distances.ForEach(dist =>
-        // {
-        //     if (SomeJobLeft())
-        //     {
-        //         RemoveJob(dist.Job);
-        //         dist.Ant.SetPath(dist.Path);
-        //         dist.Ant.SetJob(dist.Job);
-        //     }
-        // });
+        List<JobDiggerDistance> distances = new List<JobDiggerDistance>();
+        foreach (var job in jobsMap.Values)
+        {
+            foreach (var digger in diggers)
+            {
+                distances.Add(new JobDiggerDistance(job, digger));
+            }
+        }
+        distances = distances.OrderBy(dist => dist.Distance).ToList();
+        distances.ForEach(dist =>
+        {
+            if (SomeJobLeft())
+            {
+                RemoveJob(dist.Job);
+                dist.Digger.SetJob(dist.Job);
+            }
+        });
     }
 
     public bool IsJobAlreadyCreated(int Id)

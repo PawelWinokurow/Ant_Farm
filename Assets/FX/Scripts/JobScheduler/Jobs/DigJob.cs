@@ -8,5 +8,6 @@ public class DigJob : Job
     public DigJob(Hexagon hex)
     {
         Id = hex.id;
+        Destination = hex.gameObject.transform.position;
     }
 }

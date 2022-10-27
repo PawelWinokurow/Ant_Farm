@@ -84,23 +84,23 @@ public class Surface : MonoBehaviour
 
     void Update()
     {
-        // if (PathGraph != null)
-        // {
+        if (PathGraph != null)
+        {
 
-        //     PathGraph.AdjacencyList.ForEach(edge =>
-        //     {
-        //         if (!edge.IsWalkable)
-        //         {
-        //             Debug.DrawLine(edge.From.GeometricalPoint, edge.To.GeometricalPoint, Color.red);
-        //         }
-        //         else
-        //         {
-        //             Debug.DrawLine(edge.From.GeometricalPoint, edge.To.GeometricalPoint, Color.green);
-        //         }
+            PathGraph.AdjacencyList.ForEach(edge =>
+            {
+                if (!edge.IsWalkable)
+                {
+                    Debug.DrawLine(edge.From.GeometricalPoint, edge.To.GeometricalPoint, Color.red);
+                }
+                else
+                {
+                    Debug.DrawLine(edge.From.GeometricalPoint, edge.To.GeometricalPoint, Color.green);
+                }
 
-        //     }
-        //     );
-        // }
+            }
+            );
+        }
     }
 
     public int PositionToId(Vector3 pos)
