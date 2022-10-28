@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
         PathGraph = new Graph();
         JobScheduler.SetGraph(PathGraph);
         Surface.Init(PathGraph);
-        BuildWallsTest.Test();
+        BuildWallsTest.Init(Surface);
         InstantiateTestMobs();
     }
 
@@ -34,13 +34,15 @@ public class GameManager : MonoBehaviour
 
     public void ProcessHexagon(Vector3 position)
     {
-        Hexagon hex = Surface.allHex[Surface.PositionToId(position)];
+        Hexagon hex = Surface.PositionToHex(position);
         if (!JobScheduler.IsJobAlreadyCreated(hex.id))
         {
             hex.AssignDig();
             JobScheduler.AssignJob(new DigJob(hex, position));
         }
     }
+
+
 
 }
 

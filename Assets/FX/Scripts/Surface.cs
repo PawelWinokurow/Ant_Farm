@@ -25,7 +25,7 @@ public class Surface : MonoBehaviour
     private Hexagon[,] allHexXZ;//это для счета к какому хексу мышка наиближе
     public Hexagon[] allHex;//это хексы логики
 
-    Graph PathGraph;
+    public Graph PathGraph;
 
     public List<Hexagon> digList;
     public List<Hexagon> buildList;
@@ -126,7 +126,6 @@ public class Surface : MonoBehaviour
         HexagonClear(hex);
         hex.isGround = true;
         hex.cost = 1;
-        PathGraph.ProhibitHexagon(hex.transform.position);
     }
 
 
@@ -135,7 +134,7 @@ public class Surface : MonoBehaviour
         HexagonClear(hex);
         hex.isWall = true;
         hex.cost = -1;
-        // PathGraph.ProhibitHexagon(hex.transform.position);
+        PathGraph.ProhibitHexagon(hex.transform.position);
         Instantiate(wallPrefab, hex.transform.position, Quaternion.identity, hex.transform);
     }
 

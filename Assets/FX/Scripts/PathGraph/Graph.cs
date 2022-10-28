@@ -21,6 +21,11 @@ public class Graph
         PathVertices.ForEach(pathVerex => pathVerex.ResetPathWeight());
     }
 
+    public void ResetAllEdgesToWalkable()
+    {
+        AdjacencyList.ForEach(edge => edge.IsWalkable = true);
+    }
+
     public PathVertex GetVertexByPoistion(Vector3 position)
     {
         return PathVerticesMap.GetValueOrDefault(position);

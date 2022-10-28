@@ -5,19 +5,40 @@ using UnityEngine;
 
 public class BuildWallsTest : MonoBehaviour
 {
-    public Surface Surface;
+    private Surface surf;
+    [Range(0, 100)]
+    public int wallPercentage = 25;
+    private int wallPercentageOld;
 
-    public void Test()
+    public void Init(Surface surf)
     {
-        Random.InitState(42);
-        for (int i = 0; i < Surface.allHex.Length; i++)
+        this.surf = surf;
+        CreateWalls();
+    }
+
+    private void Update()
+    {
+        if (wallPercentage != wallPercentageOld)
         {
-            if (Random.Range(0, 100f) < 30f)
-            {
-                Surface.AddWall(i);
-            }
+            CreateWalls();
+            wallPercentageOld = wallPercentage;
         }
     }
 
 
+    void CreateWalls()
+    {
+        surf.PathGraph.ResetAllEdgesToWalkable();
+        for (int i = 1; i < surf.allHex.Length - 1; i++)
+        {
+            if (Random.Range(0, 100f) < wallPercentage)
+            {
+                surf.AddWall(surf.allHex[i]);
+            }
+            else
+            {
+                surf.AddGround(surf.allHex[i]);
+            }
+        }
+    }
 }
