@@ -8,53 +8,41 @@ public class Controller : MonoBehaviour
 
     public Transform marker;
     private Surface surf;
-
-   
+    public bool isDig;
+    private Hexagon hex;
 
     private void Start()
     {
         surf = Surface.instance;
         Screen.orientation = ScreenOrientation.Portrait;
+        isDig = true;
     }
 
 
     public void Tap(Vector3 pos)
     {
         pos = Camera.main.ScreenToWorldPoint(pos);
-        int id = surf.PositionToId(pos);
-        marker.transform.position = surf.allHex[id].transform.position;
+        hex = surf.PositionToHex(pos);
+        marker.transform.position = hex.transform.position;
+        if (hex.isWall)
+        {
+            surf.AddDig(hex);
+        }
+        if(hex.isGround)
+        {
+            surf.AddBuild(hex);
+        }
     }
 
-  
 
-    // public void ProcessHexagon(RaycastHit hit)
-    // {
-    //     Hexagon hex = hit.transform.GetComponent<Hexagon>();
-    //     if (hex != null && !hex.IsInSpawnArea() && !scheduler.IsJobAlreadyCreated(hex.id))
-    //     {
-
-    //         if (hex.IsDigabble())
-    //         {
-    //             hex.AssignDig();
-    //             hex = surface.AssignDigHex(hex.id);
-    //         }
-
-    //         if (hex.IsBuildable())
-    //         {
-    //             hex.AssignBuild();
-    //             hex = surface.AssignBuildHex(hex.id);//build
-    //         }
-    //         scheduler.AssignJob(new DigJob(hex, digHex =>
-    //         {
-    //             if (digHex == surface.allHex[digHex.id])
-    //             {
-    //                 surface.Dig(digHex.id);
-    //             }
-    //         }));
-    //     }
-    // }
-
-
+    public void DigButton()
+    {
+        isDig = true;
+    }
+    public void BuildButton()
+    {
+        isDig = false;
+    }
 
 }
 

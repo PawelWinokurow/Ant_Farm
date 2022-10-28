@@ -38,7 +38,7 @@ namespace AntFarm
 
             if (Input.mouseScrollDelta.y != 0)//для мышки зум
             {
-                zoomL -= Input.mouseScrollDelta.y * 0.1f;
+                zoomL -= Input.mouseScrollDelta.y * 0.06f;
                 zoomL = Mathf.Clamp(zoomL, 0f, 1f);
                 zoom = -Mathf.Cos(zoomL * 3.14f) * 0.5f + 0.5f;
                 cam.orthographicSize = ExtensionMethods.Remap(zoom, 0f, 1f, zoomOutMin, zoomOutMax);
@@ -67,7 +67,7 @@ namespace AntFarm
 
                 float difference = currentMagnitude - prevMagnitude;//насколько растояние между двумя пальцами изменилось
 
-                zoomL -= difference * 0.005f;
+                zoomL -= difference * 0.003f;
                 zoomL = Mathf.Clamp(zoomL, 0f, 1f);
                 zoom = -Mathf.Cos(zoomL * 3.14f) * 0.5f + 0.5f;
 

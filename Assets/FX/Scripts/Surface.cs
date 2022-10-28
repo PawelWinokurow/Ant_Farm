@@ -10,7 +10,9 @@ public class Surface : MonoBehaviour
 {
     public static Surface instance;
     public Hexagon hexPrefab;
-    public Transform WallPrefab;
+    public GameObject wallPrefab;
+    public GameObject digPrefab;
+    public GameObject buildPrefab;
     private Camera cam;
     public int height = 10;
     public int width = 10;
@@ -21,10 +23,16 @@ public class Surface : MonoBehaviour
     public float w;
     public float h;
 
-    private int[,] allHexXZ;//это для счета к какому хексу мышка наиближе
+    private Hexagon[,] allHexXZ;//это для счета к какому хексу мышка наиближе
     public Hexagon[] allHex;//это хексы логики
 
+
     Graph PathGraph;
+
+    public List<Hexagon> digList;
+    public List<Hexagon> buildList;
+
+
     public void Awake()
     {
         instance = this;
@@ -33,9 +41,11 @@ public class Surface : MonoBehaviour
 
     public void Init()
     {
+        digList = new List<Hexagon>();
+        buildList = new List<Hexagon>();
         cam = Camera.main;
 
-        ld = cam.ScreenToWorldPoint(new Vector3(0, Screen.height*0.09f, 1f));
+        ld = cam.ScreenToWorldPoint(new Vector3(0, Screen.height * 0.09f, 1f));
 
         rd = cam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height * 0.09f, 1f));
 
@@ -50,7 +60,7 @@ public class Surface : MonoBehaviour
         height = Mathf.CeilToInt((lu.z - ld.z) / h) - 1;//находим количество шестиугольников в ширину и длину
         width = Mathf.CeilToInt((rd.x - ld.x) / w) - 1;
 
-        allHexXZ = new int[width, height];
+        allHexXZ = new Hexagon[width, height];
         allHex = new Hexagon[width * height];
         PathGraph = new Graph();
         for (int z = 0; z < height; z++)
@@ -61,15 +71,13 @@ public class Surface : MonoBehaviour
                 AddCreateHexagonGraph(hexPosition, radius, $"x{x}z{z}", PathGraph);
 
                 Hexagon hex = Instantiate(hexPrefab, new Vector3(w * (x + (z % 2f) / 2f), 0f, z * h), Quaternion.identity, transform);
-                int id = z * width + x;
-                allHexXZ[x, z] = id;//двумерный массив
-                hex.id = id;
-                allHex[id] = hex;
+                allHexXZ[x, z] = hex;//двумерный массив
+                allHex[z * width + x] = hex;
 
             }
         }
 
-        Camera.main.transform.parent.position = new Vector3((width - 0.5f) * w / 2f, 0, (height - 1) * h / 2f*(1f- 0.09f));
+        Camera.main.transform.parent.position = new Vector3((width - 0.5f) * w / 2f, 0, (height - 1) * h / 2f * (1f - 0.09f));
 
 
         for (int i = 0; i < allHex.Length; i++)//записываем соседей
@@ -111,7 +119,7 @@ public class Surface : MonoBehaviour
         // }
     }
 
-    public int PositionToId(Vector3 pos)
+    public Hexagon PositionToHex(Vector3 pos)
     {
         int z = (int)Mathf.Round(pos.z / h);
         int x = (int)Mathf.Round((pos.x - (z % 2) * 0.5f * w) / w);
@@ -121,29 +129,56 @@ public class Surface : MonoBehaviour
     }
 
 
-    public void AddWall(int id)
+    public void AddGround(Hexagon hex)
     {
-        Hexagon hex = allHex[id];
-        SetAllStateToNull(id);
-        hex.isWall = true;
-        hex.cost = -1;
-
-        for (int i = 0; i < hex.transform.childCount; i++)//удаляет чайлды старой графики
-        {
-            GameObject.Destroy(hex.transform.GetChild(i));
-        }
+        HexagonClear(hex);
+        hex.isGround = true;
+        hex.cost = 1;
         PathGraph.ProhibitHexagon(hex.transform.position);
-        Instantiate(WallPrefab, hex.transform.position, Quaternion.identity, hex.transform);
     }
 
-    private void SetAllStateToNull(int id)
+
+    public void AddWall(Hexagon hex)
     {
-        Hexagon hex = allHex[id];
+        HexagonClear(hex);
+        hex.isWall = true;
+        hex.cost = -1;
+        PathGraph.ProhibitHexagon(hex.transform.position);
+        Instantiate(wallPrefab, hex.transform.position, Quaternion.identity, hex.transform);
+    }
+
+    public void AddDig(Hexagon hex)
+    {
+        HexagonClear(hex);
+        hex.isDig = true;
+        hex.cost = -1;
+        digList.Add(hex);
+        //PathGraph.ProhibitHexagon(hex.transform.position);
+        Instantiate(digPrefab, hex.transform.position, Quaternion.identity, hex.transform);
+    }
+    public void AddBuild(Hexagon hex)
+    {
+        HexagonClear(hex);
+        hex.isBuild = true;
+        hex.cost = 1;
+        buildList.Add(hex);
+       // PathGraph.ProhibitHexagon(hex.transform.position);
+        Instantiate(buildPrefab, hex.transform.position, Quaternion.identity, hex.transform);
+    }
+
+    private void HexagonClear(Hexagon hex)
+    {
         hex.isWall = false;
         hex.isDig = false;
         hex.isGround = false;
         hex.isBuild = false;
         hex.isSpawn = false;
+        digList.Remove(hex);
+        buildList.Remove(hex);
+        for (int i = 0; i < hex.transform.childCount; i++)//удаляет чайлды старой графики
+        {
+            GameObject.Destroy(hex.transform.GetChild(i).gameObject);
+        }
     }
 
     public PathVertex AddCreateHexagonGraph(Vector3 center, float R, string Id, Graph PathGraph)

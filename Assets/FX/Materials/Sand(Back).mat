@@ -90,8 +90,8 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _Pow: 2.67
-    - _Pow1: 2.6
-    - _Pow2: 1
+    - _Pow1: 2
+    - _Pow2: 0.65
     - _ScaleUV: 0.15
     - _ScaleUV1: 1
     - _ScaleUV2: 3

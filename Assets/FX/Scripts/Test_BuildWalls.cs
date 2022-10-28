@@ -7,21 +7,40 @@ namespace AntFarm
     public class Test_BuildWalls : MonoBehaviour
     {
         private Surface surf;
-
-        IEnumerator Start()
+        [Range(0, 100)]
+        public int wallPercentage = 25;
+        private int wallPercentageOld;
+        void Start()
         {
             surf = Surface.instance;
+            CreateWalls();
 
-            yield return null;
-            for (int i = 0; i < surf.allHex.Length; i++)
+
+        }
+        private void Update()
+        {
+            if (wallPercentage != wallPercentageOld)
             {
-                if (Random.Range(0, 100f) < 30f)
-                {
-                    surf.AddWall(i);
-                }
+                CreateWalls();
+                wallPercentageOld = wallPercentage;
             }
         }
 
 
+        void CreateWalls()
+        {
+
+            for (int i = 1; i < surf.allHex.Length - 1; i++)
+            {
+                if (Random.Range(0, 100f) < wallPercentage)
+                {
+                    surf.AddWall(surf.allHex[i]);
+                }
+                else
+                {
+                    surf.AddGround(surf.allHex[i]);
+                }
+            }
+        }
     }
 }
