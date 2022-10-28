@@ -11,14 +11,14 @@ public class GridLayoutCellSize : MonoBehaviour
     {
         rt = GetComponent<RectTransform>();
         grid = GetComponent<GridLayoutGroup>();
-        grid.cellSize = new Vector2(rt.rect.width / grid.transform.childCount, grid.cellSize.y);
+        grid.cellSize = new Vector2(rt.rect.width / grid.transform.childCount, rt.rect.height);
     }
 
 
     #if UNITY_EDITOR
     private void Update()
     {
-        grid.cellSize = new Vector2(rt.rect.width/ grid.transform.childCount, grid.cellSize.y);
+        grid.cellSize = new Vector2(rt.rect.width/ grid.transform.childCount, rt.rect.height);
     }
 #endif
 }

@@ -35,9 +35,9 @@ public class Surface : MonoBehaviour
     {
         cam = Camera.main;
 
-        ld = cam.ScreenToWorldPoint(new Vector3(0, 0, 1f));
+        ld = cam.ScreenToWorldPoint(new Vector3(0, Screen.height*0.09f, 1f));
 
-        rd = cam.ScreenToWorldPoint(new Vector3(Screen.width, 0, 1f));
+        rd = cam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height * 0.09f, 1f));
 
         lu = cam.ScreenToWorldPoint(new Vector3(0, Screen.height, 1f));
 
@@ -69,7 +69,7 @@ public class Surface : MonoBehaviour
             }
         }
 
-        Camera.main.transform.parent.position = new Vector3((width - 0.5f) * w / 2f, 0, (height - 1) * h / 2f);
+        Camera.main.transform.parent.position = new Vector3((width - 0.5f) * w / 2f, 0, (height - 1) * h / 2f*(1f- 0.09f));
 
 
         for (int i = 0; i < allHex.Length; i++)//записываем соседей

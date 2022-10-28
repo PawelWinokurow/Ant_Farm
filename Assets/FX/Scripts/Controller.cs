@@ -5,31 +5,27 @@ using UnityEngine;
 
 public class Controller : MonoBehaviour
 {
-    private Camera cam;
+
     public Transform marker;
-    private Vector3 pos;
-    private int x;
-    private int z;
     private Surface surf;
+
+   
 
     private void Start()
     {
-        cam = Camera.main;
         surf = Surface.instance;
+        Screen.orientation = ScreenOrientation.Portrait;
     }
 
-    // Update is called once per frame
-    void Update()
+
+    public void Tap(Vector3 pos)
     {
-        if (Input.GetMouseButton(0))
-        {
-            pos = cam.ScreenToWorldPoint(Input.mousePosition);
-
-            // marker.transform.position = new Vector3(x* surf.w + (z % 2) * 0.5f* surf.w, 0, z* surf.h);
-           // marker.transform.position = surf.allHex[surf.PositionToId(pos)].transform.position;
-
-        }
+        pos = Camera.main.ScreenToWorldPoint(pos);
+        int id = surf.PositionToId(pos);
+        marker.transform.position = surf.allHex[id].transform.position;
     }
+
+  
 
     // public void ProcessHexagon(RaycastHit hit)
     // {

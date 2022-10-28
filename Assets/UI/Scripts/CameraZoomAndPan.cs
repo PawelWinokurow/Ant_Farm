@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,56 +6,55 @@ namespace AntFarm
 {
     public class CameraZoomAndPan : MonoBehaviour
     {
+
+        public float zoomOutMin = 50f;
+        public float zoomOutMax = 100f;
         private Vector3 touchStart;
-        private Vector3 camPos;
-        private Vector3 targetPos;
-        public float zoomOutMin=50f;
-        public float zoomOutMax=100f;
         private float heightMin;
         private float widthMin;
         private Camera cam;
+        private float zoomL;//линейный
+        private float zoom;//синусоидный
 
-        private float zoom;
-        private float zoomPrev;
-        private float zm;
-        // Start is called before the first frame update
         void Start()
         {
             cam = Camera.main;
 
-            heightMin = 2f * zoomOutMin;
-            widthMin = heightMin * cam.aspect;
- 
+            heightMin = 2f * zoomOutMin*(1f-0.09f);
+            widthMin = 2f * zoomOutMin * cam.aspect;
+            Camera.main.orthographicSize = zoomOutMin;
         }
 
-        Vector3 Clamp(Vector3 pos)
+        Vector3 Clamp(Vector3 pos)//задаем границы чтоб камера не уехала за поле
         {
-            float z = Mathf.Clamp(pos.z, -heightMin / 2f * (1f - zoom), heightMin / 2f * (1f - zoom));
-            float x = Mathf.Clamp(pos.x, -widthMin / 2f * (1f - zoom), widthMin / 2f * (1f - zoom));
+            float z = Mathf.Clamp(pos.z, -heightMin* (1f - 0.09f) / 2f*(1f - zoom) , (heightMin*(1f + 0.09f) / 2f) *(1f - zoom) );
+            float x = Mathf.Clamp(pos.x, -widthMin / 2f * (1f - zoom) , widthMin / 2f * (1f - zoom) );
             return new Vector3(x, 0, z);
         }
+
         void Update()
         {
 
 
-            if (Input.mouseScrollDelta.y != 0)
+            if (Input.mouseScrollDelta.y != 0)//для мышки зум
             {
-                zoom -= Input.mouseScrollDelta.y * 0.1f;
-                zoom = Mathf.Clamp(zoom, 0f, 1f);
-                Camera.main.orthographicSize = ExtensionMethods.Remap(zoom, 0f, 1f, zoomOutMin, zoomOutMax);
+                zoomL -= Input.mouseScrollDelta.y * 0.1f;
+                zoomL = Mathf.Clamp(zoomL, 0f, 1f);
+                zoom = -Mathf.Cos(zoomL * 3.14f) * 0.5f + 0.5f;
+                cam.orthographicSize = ExtensionMethods.Remap(zoom, 0f, 1f, zoomOutMin, zoomOutMax);
                 cam.transform.localPosition = Clamp(cam.transform.localPosition);
-               
+
             }
- 
+
 
 
 
             if (Input.GetMouseButtonDown(0))
             {
-                touchStart = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                touchStart = cam.ScreenToWorldPoint(Input.mousePosition);//позиция первого косания
             }
 
-            if (Input.touchCount == 2)
+            if (Input.touchCount == 2)//зум камеры в телефоне
             {
                 Touch touchZero = Input.GetTouch(0);
                 Touch touchOne = Input.GetTouch(1);
@@ -66,23 +65,26 @@ namespace AntFarm
                 float prevMagnitude = (touchZeroPrevPos - touchOnePrevPos).magnitude;
                 float currentMagnitude = (touchZero.position - touchOne.position).magnitude;
 
-                float difference = currentMagnitude - prevMagnitude;
+                float difference = currentMagnitude - prevMagnitude;//насколько растояние между двумя пальцами изменилось
 
-                Zoom(difference * 0.01f);
+                zoomL -= difference * 0.005f;
+                zoomL = Mathf.Clamp(zoomL, 0f, 1f);
+                zoom = -Mathf.Cos(zoomL * 3.14f) * 0.5f + 0.5f;
+
+                cam.orthographicSize = ExtensionMethods.Remap(zoom, 0f, 1f, zoomOutMin, zoomOutMax);
+                cam.transform.localPosition = Clamp(cam.transform.localPosition);
             }
-            else if (Input.GetMouseButton(0))
+            else if (Input.GetMouseButton(0))//перемещение камеры
             {
                 Vector3 direction = touchStart - Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                Camera.main.transform.position += direction;
-                float z = Mathf.Clamp(cam.transform.localPosition.z, -heightMin/2f * (1f - zoom), heightMin / 2f * (1f - zoom));
-                float x = Mathf.Clamp(cam.transform.localPosition.x, -widthMin/2f * (1f - zoom), widthMin / 2f * (1f - zoom));
-                cam.transform.localPosition = new Vector3(x, 0, z);
+                cam.transform.position += direction;
+                cam.transform.localPosition = Clamp(cam.transform.localPosition);
+
+
             }
-     
-        }
-        void Zoom(float increament)
-        {
-            Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize - increament, zoomOutMin, zoomOutMax);
+
+
+
         }
     }
 }
