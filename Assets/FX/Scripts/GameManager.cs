@@ -5,45 +5,42 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
+
 public class GameManager : MonoBehaviour
 {
     public Surface Surface;
     public BuildWallsTest BuildWallsTest;
-    public List<Mob> antsList = new List<Mob>();
     public JobScheduler JobScheduler;
-    private static GameManager instance;
 
-    public GameObject DiggerPrefab;
+    public Digger DiggerPrefab;
 
-    private GameManager()
-    {
-        instance = this;
-    }
-
-    public static GameManager GetInstance()
-    {
-        if (instance == null)
-        {
-            instance = new GameManager();
-        }
-        return instance;
-    }
-
+    public Graph PathGraph;
 
     void Awake()
     {
-        Surface.Init();
+        PathGraph = new Graph();
+        JobScheduler.SetGraph(PathGraph);
+        Surface.Init(PathGraph);
         BuildWallsTest.Test();
         InstantiateTestMobs();
     }
 
     void InstantiateTestMobs()
     {
-        var gameObjects = new List<GameObject>();
-        gameObjects.Add(Instantiate(DiggerPrefab, new Vector3(0, 0, 0), Quaternion.identity));
-        gameObjects.Add(Instantiate(DiggerPrefab, new Vector3(50, 0, 0), Quaternion.identity));
-        gameObjects.Add(Instantiate(DiggerPrefab, new Vector3(0, 0, 50), Quaternion.identity));
-        JobScheduler.AddDiggers(gameObjects.Select(obj => obj.GetComponent<Digger>()).ToList());
+        JobScheduler.AddMob(Instantiate(DiggerPrefab, new Vector3(0, 0, 0), Quaternion.identity));
+        JobScheduler.AddMob(Instantiate(DiggerPrefab, new Vector3(50, 0, 0), Quaternion.identity));
+        JobScheduler.AddMob(Instantiate(DiggerPrefab, new Vector3(0, 0, 50), Quaternion.identity));
+    }
+
+    public void ProcessHexagon(Vector3 position)
+    {
+        Hexagon hex = Surface.allHex[Surface.PositionToId(position)];
+        if (!JobScheduler.IsJobAlreadyCreated(hex.id))
+        {
+            hex.AssignDig();
+            JobScheduler.AssignJob(new DigJob(hex, position));
+        }
     }
 
 }
+

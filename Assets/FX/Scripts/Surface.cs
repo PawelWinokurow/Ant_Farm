@@ -25,8 +25,9 @@ public class Surface : MonoBehaviour
 
     public Graph PathGraph;
 
-    public void Init()
+    public void Init(Graph PathGraph)
     {
+        this.PathGraph = PathGraph;
         cam = Camera.main;
 
         ld = cam.ScreenToWorldPoint(new Vector3(0, 0, 1f));
@@ -44,15 +45,16 @@ public class Surface : MonoBehaviour
         height = Mathf.CeilToInt((lu.z - ld.z) / h) - 1;//находим количество шестиугольников в ширину и длину
         width = Mathf.CeilToInt((rd.x - ld.x) / w) - 1;
 
+        Camera.main.transform.parent.position = new Vector3((width - 0.5f) * w / 2f, 0, (height - 1) * h / 2f);
         allHexXZ = new int[width, height];
         allHex = new Hexagon[width * height];
-        PathGraph = new Graph();
+
         for (int z = 0; z < height; z++)
         {
             for (int x = 0; x < width; x++)
             {
                 Vector3 hexPosition = new Vector3(w * (x + (z % 2f) / 2f), 0f, z * h);
-                AddCreateHexagonGraph(hexPosition, radius, $"x{x}z{z}", PathGraph);
+                PathGraph.AddHexagonSubGraph(hexPosition, radius, $"x{x}z{z}");
 
                 Hexagon hex = Instantiate(hexPrefab, new Vector3(w * (x + (z % 2f) / 2f), 0f, z * h), Quaternion.identity, transform);
                 int id = z * width + x;
@@ -63,7 +65,6 @@ public class Surface : MonoBehaviour
             }
         }
 
-        Camera.main.transform.parent.position = new Vector3((width - 0.5f) * w / 2f, 0, (height - 1) * h / 2f);
 
 
         for (int i = 0; i < allHex.Length; i++)//записываем соседей
@@ -138,25 +139,4 @@ public class Surface : MonoBehaviour
         hex.isSpawn = false;
     }
 
-    public PathVertex AddCreateHexagonGraph(Vector3 center, float R, string Id, Graph PathGraph)
-    {
-        float r = (float)Math.Sqrt(3) * R / 2;
-
-        var centerPathPoint = PathGraph.AddVertex(new PathVertex($"{Id}0", center));
-        List<PathVertex> pathPoints = new List<PathVertex>();
-        for (int n = 0; n < 6; n++)
-        {
-            float angle = (float)(Math.PI * (n * 60) / 180.0);
-            float x = r * (float)Math.Cos(angle);
-            float z = r * (float)Math.Sin(angle);
-            pathPoints.Add(PathGraph.AddVertex(new PathVertex($"{Id}{n + 1}", center + new Vector3(x, 0, z))));
-        }
-        for (int i = 0; i < pathPoints.Count; i++)
-        {
-            PathGraph.AddEdge(centerPathPoint, pathPoints[i], Vector3.Distance(centerPathPoint.GeometricalPoint, pathPoints[i].GeometricalPoint));
-            PathGraph.AddEdge(pathPoints[i], pathPoints[(i + 2) % pathPoints.Count], Vector3.Distance(pathPoints[i].GeometricalPoint, pathPoints[(i + 2) % pathPoints.Count].GeometricalPoint));
-        }
-        return centerPathPoint;
-
-    }
 }

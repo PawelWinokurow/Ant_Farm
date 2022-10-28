@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,17 +6,17 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
 
-class JobDiggerDistance
+class JobMobDistance
 {
-    public float Distance;
     public Job Job;
-    public Digger Digger;
+    public Mob Mob;
+    public Path Path;
 
-    public JobDiggerDistance(Job job, Digger digger, float distance)
+    public JobMobDistance(Job job, Mob mob, Path path)
     {
         Job = job;
-        Digger = digger;
-        Distance = distance;
+        Mob = mob;
+        Path = path;
     }
 
 }
@@ -25,30 +26,27 @@ public class JobScheduler : MonoBehaviour
 
     private Dictionary<int, Job> jobsMap = new Dictionary<int, Job>();
 
-    private List<Digger> diggers = new List<Digger>();
+    private Graph pathGraph;
+    private PathFinder pathFinder;
 
-    private GameManager gm;
 
-    void Start()
+    private List<Mob> mobs = new List<Mob>();
+
+    public void SetGraph(Graph pathGraph)
     {
-        gm = GameManager.GetInstance();
+        this.pathGraph = pathGraph;
+        pathFinder = new PathFinder(pathGraph);
     }
-
-    public void AddDigger(Digger ant)
+    public void AddMob(Mob ant)
     {
-        diggers.Add(ant);
-    }
-
-    public void AddDiggers(List<Digger> diggers)
-    {
-        this.diggers.AddRange(diggers);
+        mobs.Add(ant);
     }
 
     public void Update()
     {
         if (SomeJobLeft())
         {
-            AssignJobs();
+            DistributeJobs();
         }
     }
 
@@ -58,33 +56,31 @@ public class JobScheduler : MonoBehaviour
     }
 
 
-    private void AssignJobs()
+    private void DistributeJobs()
     {
-        List<JobDiggerDistance> distances = new List<JobDiggerDistance>();
+        List<JobMobDistance> distances = new List<JobMobDistance>();
         foreach (var job in jobsMap.Values)
         {
-            foreach (var digger in diggers)
+            foreach (var mob in mobs)
             {
-                // var path = gm.Surface.PathGraph.FindPath(digger.CurrentPosition, job.Destination);
-                // if (path != null)
-                // {
-                //     distances.Add(new JobDiggerDistance(job, digger, path.OverallDistance));
-
-                // }
-
-                distances.Add(new JobDiggerDistance(job, digger, Vector3.Distance(digger.CurrentPosition, job.Destination)));
+                Path path = pathFinder.FindPath(mob.CurrentPosition, job.Destination);
+                if (path != null)
+                {
+                    distances.Add(new JobMobDistance(job, mob, path));
+                }
 
             }
         }
-        distances = distances.OrderBy(dist => dist.Distance).ToList();
-        distances.ForEach(dist =>
+        distances = distances.OrderBy(distance => distance.Path.OverallDistance).ToList();
+        distances.ForEach(distance =>
         {
             if (SomeJobLeft())
             {
-                if (dist.Digger.WayPoints.Count == 0)
+                if (distance.Mob.WayPoints.Count == 0)
                 {
-                    RemoveJob(dist.Job);
-                    dist.Digger.SetJob(dist.Job);
+                    RemoveJob(distance.Job);
+                    distance.Mob.SetJob(distance.Job);
+                    distance.Mob.SetPath(distance.Path);
                 }
             }
         });

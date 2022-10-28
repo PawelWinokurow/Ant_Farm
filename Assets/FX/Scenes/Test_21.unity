@@ -276,7 +276,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1041044676}
-  - component: {fileID: 1041044675}
+  - component: {fileID: 1041044677}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -284,22 +284,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1041044675
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1041044674}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d4f826169fa2cb429e1ba3d0f25ae12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Surface: {fileID: 685065891}
-  BuildWallsTest: {fileID: 718137218}
-  JobScheduler: {fileID: 348439228}
-  DiggerPrefab: {fileID: 4135837485797866603, guid: d76627fe718a559439689ca54c475515, type: 3}
 --- !u!4 &1041044676
 Transform:
   m_ObjectHideFlags: 0
@@ -315,6 +299,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1041044677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1041044674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d4f826169fa2cb429e1ba3d0f25ae12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Surface: {fileID: 685065891}
+  BuildWallsTest: {fileID: 718137218}
+  JobScheduler: {fileID: 348439228}
+  DiggerPrefab: {fileID: -8269178080199528486, guid: d76627fe718a559439689ca54c475515, type: 3}
 --- !u!1 &1049165275
 GameObject:
   m_ObjectHideFlags: 0
@@ -359,7 +359,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 141af0b3b678b40208ade63a7b184d2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gm: {fileID: 1041044675}
+  GameManager: {fileID: 1041044677}
 --- !u!1 &1466981554
 GameObject:
   m_ObjectHideFlags: 0

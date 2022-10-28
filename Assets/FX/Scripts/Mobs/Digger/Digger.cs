@@ -1,23 +1,20 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
 public class Digger : MonoBehaviour, Mob
 {
-    public List<Vector3> WayPoints = new List<Vector3>();
+    public List<Vector3> WayPoints { set; get; }
     float t = 0f;
     int i = 0;
 
-    public Vector3 CurrentPosition;   // property
-
+    public Vector3 CurrentPosition { set; get; }
     private Job job;
-    private GameManager gm;
 
     void Start()
     {
-        gm = GameManager.GetInstance();
         CurrentPosition = transform.position;
+        WayPoints = new List<Vector3>();
     }
 
     public void SetPath(Path path)
@@ -32,11 +29,7 @@ public class Digger : MonoBehaviour, Mob
 
     public void SetJob(Job job)
     {
-        var path = gm.Surface.PathGraph.FindPath(CurrentPosition, job.Destination);
-        if (path != null)
-        {
-            SetPath(path);
-        }
+        this.job = job;
     }
 
 
@@ -70,19 +63,5 @@ public class Digger : MonoBehaviour, Mob
         }
     }
 
-    bool Mob.HasJob()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    void Mob.SetJob(Job job)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    void Mob.SetPath(Path path)
-    {
-        throw new System.NotImplementedException();
-    }
 }
 
