@@ -8,7 +8,6 @@ using UnityEngine;
 
 public class Surface : MonoBehaviour
 {
-    public static Surface instance;
     public Hexagon hexPrefab;
     public GameObject wallPrefab;
     public GameObject digPrefab;
@@ -26,23 +25,18 @@ public class Surface : MonoBehaviour
     private Hexagon[,] allHexXZ;//это для счета к какому хексу мышка наиближе
     public Hexagon[] allHex;//это хексы логики
 
-
     Graph PathGraph;
 
     public List<Hexagon> digList;
     public List<Hexagon> buildList;
 
 
-    public void Awake()
-    {
-        instance = this;
-    }
 
-
-    public void Init()
+    public void Init(Graph PathGraph)
     {
         digList = new List<Hexagon>();
         buildList = new List<Hexagon>();
+        this.PathGraph = PathGraph;
         cam = Camera.main;
 
         ld = cam.ScreenToWorldPoint(new Vector3(0, Screen.height * 0.09f, 1f));
@@ -62,13 +56,13 @@ public class Surface : MonoBehaviour
 
         allHexXZ = new Hexagon[width, height];
         allHex = new Hexagon[width * height];
-        PathGraph = new Graph();
+
         for (int z = 0; z < height; z++)
         {
             for (int x = 0; x < width; x++)
             {
                 Vector3 hexPosition = new Vector3(w * (x + (z % 2f) / 2f), 0f, z * h);
-                AddCreateHexagonGraph(hexPosition, radius, $"x{x}z{z}", PathGraph);
+                PathGraph.AddHexagonSubGraph(hexPosition, radius, $"x{x}z{z}");
 
                 Hexagon hex = Instantiate(hexPrefab, new Vector3(w * (x + (z % 2f) / 2f), 0f, z * h), Quaternion.identity, transform);
                 allHexXZ[x, z] = hex;//двумерный массив
@@ -98,25 +92,23 @@ public class Surface : MonoBehaviour
 
     void Update()
     {
-
-        PathGraph.AdjacencyList.ForEach(edge =>
+        if (PathGraph != null)
         {
-            if (!edge.IsWalkable)
-            {
-                Debug.DrawLine(edge.From.GeometricalPoint, edge.To.GeometricalPoint, Color.red);
-            }
-            else
-            {
-                Debug.DrawLine(edge.From.GeometricalPoint, edge.To.GeometricalPoint, Color.green);
-            }
 
+            PathGraph.AdjacencyList.ForEach(edge =>
+            {
+                if (!edge.IsWalkable)
+                {
+                    Debug.DrawLine(edge.From.GeometricalPoint, edge.To.GeometricalPoint, Color.red);
+                }
+                else
+                {
+                    Debug.DrawLine(edge.From.GeometricalPoint, edge.To.GeometricalPoint, Color.green);
+                }
+
+            }
+            );
         }
-        );
-        var path = PathGraph.FindPath(new Vector3(0, 0, 0), new Vector3(50, 0, 50));
-        // for (int i = 0; i < path.WayPoints.Count - 1; i++)
-        // {
-        //     Debug.DrawLine(path.WayPoints[i], path.WayPoints[i + 1], Color.black);
-        // }
     }
 
     public Hexagon PositionToHex(Vector3 pos)
@@ -143,7 +135,7 @@ public class Surface : MonoBehaviour
         HexagonClear(hex);
         hex.isWall = true;
         hex.cost = -1;
-       // PathGraph.ProhibitHexagon(hex.transform.position);
+        // PathGraph.ProhibitHexagon(hex.transform.position);
         Instantiate(wallPrefab, hex.transform.position, Quaternion.identity, hex.transform);
     }
 
@@ -162,7 +154,7 @@ public class Surface : MonoBehaviour
         hex.isBuild = true;
         hex.cost = 1;
         buildList.Add(hex);
-       // PathGraph.ProhibitHexagon(hex.transform.position);
+        // PathGraph.ProhibitHexagon(hex.transform.position);
         Instantiate(buildPrefab, hex.transform.position, Quaternion.identity, hex.transform);
     }
 
@@ -181,25 +173,4 @@ public class Surface : MonoBehaviour
         }
     }
 
-    public PathVertex AddCreateHexagonGraph(Vector3 center, float R, string Id, Graph PathGraph)
-    {
-        float r = (float)Math.Sqrt(3) * R / 2;
-
-        var centerPathPoint = PathGraph.AddVertex(new PathVertex($"{Id}0", center));
-        List<PathVertex> pathPoints = new List<PathVertex>();
-        for (int n = 0; n < 6; n++)
-        {
-            float angle = (float)(Math.PI * (n * 60) / 180.0);
-            float x = r * (float)Math.Cos(angle);
-            float z = r * (float)Math.Sin(angle);
-            pathPoints.Add(PathGraph.AddVertex(new PathVertex($"{Id}{n + 1}", center + new Vector3(x, 0, z))));
-        }
-        for (int i = 0; i < pathPoints.Count; i++)
-        {
-            PathGraph.AddEdge(centerPathPoint, pathPoints[i], Vector3.Distance(centerPathPoint.GeometricalPoint, pathPoints[i].GeometricalPoint));
-            PathGraph.AddEdge(pathPoints[i], pathPoints[(i + 2) % pathPoints.Count], Vector3.Distance(pathPoints[i].GeometricalPoint, pathPoints[(i + 2) % pathPoints.Count].GeometricalPoint));
-        }
-        return centerPathPoint;
-
-    }
 }

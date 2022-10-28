@@ -7,12 +7,11 @@ public class Controller : MonoBehaviour
 {
 
     public Transform marker;
-    private Surface surf;
     private Hexagon hex;
-
+    public GameManager GameManager;
+    public Surface Surface;
     private void Start()
     {
-        surf = Surface.instance;
         Screen.orientation = ScreenOrientation.Portrait;
     }
 
@@ -20,16 +19,17 @@ public class Controller : MonoBehaviour
     public void Tap(Vector3 pos)
     {
         pos = Camera.main.ScreenToWorldPoint(pos);
-        hex = surf.PositionToHex(pos);
+        hex = Surface.PositionToHex(pos);
         marker.transform.position = hex.transform.position;
         if (hex.isWall)
         {
-            surf.AddDig(hex);
+            Surface.AddDig(hex);
         }
-        if(hex.isGround)
+        if (hex.isGround)
         {
-            surf.AddBuild(hex);
+            Surface.AddBuild(hex);
         }
+        GameManager.ProcessHexagon(pos);
     }
 
 

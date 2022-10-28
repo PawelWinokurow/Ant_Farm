@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,31 +6,47 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
 
+class JobMobDistance
+{
+    public Job Job;
+    public Mob Mob;
+    public Path Path;
+
+    public JobMobDistance(Job job, Mob mob, Path path)
+    {
+        Job = job;
+        Mob = mob;
+        Path = path;
+    }
+
+}
+
 public class JobScheduler : MonoBehaviour
 {
 
     private Dictionary<int, Job> jobsMap = new Dictionary<int, Job>();
 
-    private List<Mob> ants = new List<Mob>();
+    private Graph pathGraph;
+    private PathFinder pathFinder;
 
-    // private GameManager gm;
 
+    private List<Mob> mobs = new List<Mob>();
 
-    public void AddAnt(Mob ant)
+    public void SetGraph(Graph pathGraph)
     {
-        ants.Add(ant);
+        this.pathGraph = pathGraph;
+        pathFinder = new PathFinder(pathGraph);
     }
-
-    public void AddAnts(List<Mob> ants)
+    public void AddMob(Mob ant)
     {
-        this.ants.AddRange(ants);
+        mobs.Add(ant);
     }
 
     public void Update()
     {
         if (SomeJobLeft())
         {
-            AssignJobs();
+            DistributeJobs();
         }
     }
 
@@ -39,26 +56,34 @@ public class JobScheduler : MonoBehaviour
     }
 
 
-    private void AssignJobs()
+    private void DistributeJobs()
     {
-        // List<JobAntDistance> distances = new List<JobAntDistance>();
-        // foreach (var job in jobsMap.Values)
-        // {
-        //     foreach (var ant in ants)
-        //     {
-        //         distances.Add(new JobAntDistance(job, ant));
-        //     }
-        // }
-        // distances = distances.OrderBy(dist => dist.Distance).ToList();
-        // distances.ForEach(dist =>
-        // {
-        //     if (SomeJobLeft())
-        //     {
-        //         RemoveJob(dist.Job);
-        //         dist.Ant.SetPath(dist.Path);
-        //         dist.Ant.SetJob(dist.Job);
-        //     }
-        // });
+        List<JobMobDistance> distances = new List<JobMobDistance>();
+        foreach (var job in jobsMap.Values)
+        {
+            foreach (var mob in mobs)
+            {
+                Path path = pathFinder.FindPath(mob.CurrentPosition, job.Destination);
+                if (path != null)
+                {
+                    distances.Add(new JobMobDistance(job, mob, path));
+                }
+
+            }
+        }
+        distances = distances.OrderBy(distance => distance.Path.OverallDistance).ToList();
+        distances.ForEach(distance =>
+        {
+            if (SomeJobLeft())
+            {
+                if (distance.Mob.WayPoints.Count == 0)
+                {
+                    RemoveJob(distance.Job);
+                    distance.Mob.SetJob(distance.Job);
+                    distance.Mob.SetPath(distance.Path);
+                }
+            }
+        });
     }
 
     public bool IsJobAlreadyCreated(int Id)
@@ -68,7 +93,10 @@ public class JobScheduler : MonoBehaviour
 
     public void AssignJob(Job job)
     {
-        jobsMap.Add(job.Id, job);
+        if (!IsJobAlreadyCreated(job.Id))
+        {
+            jobsMap.Add(job.Id, job);
+        }
     }
 
     public void RemoveJob(Job job)

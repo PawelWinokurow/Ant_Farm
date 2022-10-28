@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44402242, g: 0.49316543, b: 0.5722324, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -123,45 +123,15 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &67208666
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 67208668}
-  - component: {fileID: 67208667}
-  m_Layer: 0
-  m_Name: Test
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &67208667
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 67208666}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eedf2a9b8623e4bc297129ce0e192072, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  wallPercentage: 25
 --- !u!4 &67208668
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 67208666}
+  m_GameObject: {fileID: 348439227}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 23.273796, y: -5.01676, z: 27.674728}
+  m_LocalPosition: {x: 4.272581, y: -19.58505, z: 11.567666}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -225,6 +195,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0686bbb6af340ee47be2902425b62faa, type: 3}
+--- !u!1 &348439227
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 67208668}
+  - component: {fileID: 348439228}
+  m_Layer: 0
+  m_Name: JobScheduler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &348439228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 348439227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f5e9ca48c925554ba990a49d3e1ead6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &685065889
 GameObject:
   m_ObjectHideFlags: 0
@@ -270,9 +269,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hexPrefab: {fileID: 8408876141986682503, guid: 83042c4f51c064a6fb1d205437579b2e, type: 3}
-  wallPrefab: {fileID: 1691452921421368621, guid: ec894f0ce755446469ef99bff8183c98, type: 3}
-  digPrefab: {fileID: 1691452921421368621, guid: c7632245c71964a679408febbbf35e0c, type: 3}
-  buildPrefab: {fileID: 1691452921421368621, guid: 99821c0ed144a4324828715eca72ccaf, type: 3}
+  WallPrefab: {fileID: 0}
   height: 10
   width: 10
   ld: {x: 0, y: 0, z: 0}
@@ -282,8 +279,6 @@ MonoBehaviour:
   w: 0
   h: 0
   allHex: []
-  digList: []
-  buildList: []
 --- !u!1 &699954847
 GameObject:
   m_ObjectHideFlags: 0
@@ -345,8 +340,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d4f826169fa2cb429e1ba3d0f25ae12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  surface: {fileID: 685065891}
+  Surface: {fileID: 0}
+  BuildWallsTest: {fileID: 0}
   JobScheduler: {fileID: 0}
+  DiggerPrefab: {fileID: 0}
 --- !u!4 &1041044676
 Transform:
   m_ObjectHideFlags: 0
@@ -541,6 +538,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1248071469379589762, guid: 465f21d7f82950741b51465480634072, type: 3}
+      propertyPath: GameManager
+      value: 
+      objectReference: {fileID: 1041044675}
     - target: {fileID: 7101241707985254853, guid: 465f21d7f82950741b51465480634072, type: 3}
       propertyPath: m_RootOrder
       value: 6
