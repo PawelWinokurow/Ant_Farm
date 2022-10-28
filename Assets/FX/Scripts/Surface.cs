@@ -143,7 +143,7 @@ public class Surface : MonoBehaviour
         HexagonClear(hex);
         hex.isWall = true;
         hex.cost = -1;
-        PathGraph.ProhibitHexagon(hex.transform.position);
+       // PathGraph.ProhibitHexagon(hex.transform.position);
         Instantiate(wallPrefab, hex.transform.position, Quaternion.identity, hex.transform);
     }
 

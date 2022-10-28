@@ -8,14 +8,12 @@ public class Controller : MonoBehaviour
 
     public Transform marker;
     private Surface surf;
-    public bool isDig;
     private Hexagon hex;
 
     private void Start()
     {
         surf = Surface.instance;
         Screen.orientation = ScreenOrientation.Portrait;
-        isDig = true;
     }
 
 
@@ -34,15 +32,6 @@ public class Controller : MonoBehaviour
         }
     }
 
-
-    public void DigButton()
-    {
-        isDig = true;
-    }
-    public void BuildButton()
-    {
-        isDig = false;
-    }
 
 }
 
