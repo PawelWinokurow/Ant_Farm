@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class PathVertex
 {
-    public Vector3 GeometricalPoint;
+    public Vector3 Position;
     public string Id;
     public List<Edge> Edges { get; set; }
 
@@ -11,7 +11,7 @@ public class PathVertex
 
     public PathVertex(string id, Vector3 geometricalPoint)
     {
-        GeometricalPoint = geometricalPoint;
+        Position = geometricalPoint;
         PathWeight = float.MaxValue;
         Edges = new List<Edge>();
         Id = id;

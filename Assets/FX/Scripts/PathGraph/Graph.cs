@@ -33,10 +33,10 @@ public class Graph
 
     public PathVertex AddVertex(PathVertex newVertex)
     {
-        int index = PathVertices.FindIndex(vertex => Vector3.Distance(vertex.GeometricalPoint, newVertex.GeometricalPoint) < 0.1f ? true : false);
+        int index = PathVertices.FindIndex(vertex => Vector3.Distance(vertex.Position, newVertex.Position) < 0.1f ? true : false);
         if (index >= 0) return PathVertices[index];
         PathVertices.Add(newVertex);
-        PathVerticesMap.Add(newVertex.GeometricalPoint, newVertex);
+        PathVerticesMap.Add(newVertex.Position, newVertex);
         return newVertex;
     }
 
@@ -91,8 +91,8 @@ public class Graph
         }
         return PathVertices.Aggregate(PathVertices[0], (acc, vertex) =>
         {
-            if (Vector3.Distance(vertex.GeometricalPoint, position) <
-            Vector3.Distance(acc.GeometricalPoint, position)) return vertex;
+            if (Vector3.Distance(vertex.Position, position) <
+            Vector3.Distance(acc.Position, position)) return vertex;
             else return acc;
         });
     }
@@ -104,7 +104,7 @@ public class Graph
 
     private static float GetDistance(PathVertex from, PathVertex to)
     {
-        return Vector3.Distance(from.GeometricalPoint, to.GeometricalPoint);
+        return Vector3.Distance(from.Position, to.Position);
     }
 
     public void AddHexagonSubGraph(Vector3 center, float R, string id)
@@ -122,8 +122,8 @@ public class Graph
         }
         for (int i = 0; i < pathPoints.Count; i++)
         {
-            AddEdge(centerPathPoint, pathPoints[i], Vector3.Distance(centerPathPoint.GeometricalPoint, pathPoints[i].GeometricalPoint));
-            AddEdge(pathPoints[i], pathPoints[(i + 2) % pathPoints.Count], Vector3.Distance(pathPoints[i].GeometricalPoint, pathPoints[(i + 2) % pathPoints.Count].GeometricalPoint));
+            AddEdge(centerPathPoint, pathPoints[i], Vector3.Distance(centerPathPoint.Position, pathPoints[i].Position));
+            AddEdge(pathPoints[i], pathPoints[(i + 2) % pathPoints.Count], Vector3.Distance(pathPoints[i].Position, pathPoints[(i + 2) % pathPoints.Count].Position));
         }
     }
 

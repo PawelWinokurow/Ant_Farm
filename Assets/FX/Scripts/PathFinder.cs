@@ -92,11 +92,11 @@ public class PathFinder
             var next = cameFrom[goal.Id];
             while (next != null)
             {
-                path.WayPoints.Add(next.GeometricalPoint);
+                path.WayPoints.Add(next.Position);
                 next = cameFrom[next.Id];
             }
             path.WayPoints.Reverse();
-            path.WayPoints.Add(goal.GeometricalPoint);
+            path.WayPoints.Add(goal.Position);
             path.WayPoints = Utils.NormalizePath(path.WayPoints, 0.5f);
             path.OverallDistance = costSoFar[goal.Id];
             return path;
@@ -109,7 +109,7 @@ public class PathFinder
 
     private static float GetDistance(PathVertex from, PathVertex to)
     {
-        return Vector3.Distance(from.GeometricalPoint, to.GeometricalPoint);
+        return Vector3.Distance(from.Position, to.Position);
     }
 
 }

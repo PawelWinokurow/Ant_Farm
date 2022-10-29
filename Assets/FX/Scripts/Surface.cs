@@ -99,11 +99,11 @@ public class Surface : MonoBehaviour
             {
                 if (!edge.IsWalkable)
                 {
-                    Debug.DrawLine(edge.From.GeometricalPoint, edge.To.GeometricalPoint, Color.red);
+                    Debug.DrawLine(edge.From.Position, edge.To.Position, Color.red);
                 }
                 else
                 {
-                    Debug.DrawLine(edge.From.GeometricalPoint, edge.To.GeometricalPoint, Color.green);
+                    Debug.DrawLine(edge.From.Position, edge.To.Position, Color.green);
                 }
 
             }

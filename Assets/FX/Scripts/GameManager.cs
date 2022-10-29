@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
         if (!JobScheduler.IsJobAlreadyCreated(hex.id))
         {
             hex.AssignDig();
-            JobScheduler.AssignJob(new DigJob(hex, position));
+            JobScheduler.AssignJob(new DigJob(hex, hex.transform.position));
         }
     }
 
