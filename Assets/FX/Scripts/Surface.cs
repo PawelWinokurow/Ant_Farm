@@ -68,20 +68,20 @@ public class Surface : MonoBehaviour
         Camera.main.transform.parent.position = new Vector3((width - 0.5f) * w / 2f, 0, (height - 1) * h / 2f * (1f - 0.09f));
 
 
-        for (int i = 0; i < allHex.Length; i++)//записываем соседей
-        {
-            allHex[i].neighbors = new List<int>();
-            for (int j = 0; j < allHex.Length; j++)
-            {
-                if (Vector3.Distance(allHex[i].transform.position, allHex[j].transform.position) < 4f)
-                {
-                    if (allHex[i] != allHex[j])
-                    {
-                        allHex[i].neighbors.Add(j);
-                    }
-                }
-            }
-        }
+        // for (int i = 0; i < allHex.Length; i++)//записываем соседей
+        // {
+        //     allHex[i].neighbors = new List<int>();
+        //     for (int j = 0; j < allHex.Length; j++)
+        //     {
+        //         if (Vector3.Distance(allHex[i].transform.position, allHex[j].transform.position) < 4f)
+        //         {
+        //             if (allHex[i] != allHex[j])
+        //             {
+        //                 allHex[i].neighbors.Add(j);
+        //             }
+        //         }
+        //     }
+        // }
     }
 
     void Update()
@@ -115,45 +115,31 @@ public class Surface : MonoBehaviour
     }
 
 
-    public void AddGround(Hexagon hex)
-    {
-        HexagonClear(hex);
-        hex.SetBuildable();
-        hex.isGround = true;
-    }
 
-
-    public void AddWall(Hexagon hex)
+    public void AddBlock(Hexagon hex)
     {
-        HexagonClear(hex);
-        hex.SetBuildable();
+        hex.HexType = HEX_TYPE.SOIL;
         PathGraph.ProhibitHexagon(hex.transform.position);
         Instantiate(wallPrefab, hex.transform.position, Quaternion.identity, hex.transform);
     }
-
-    public void AddDig(Hexagon hex)
+    public void AddGround(Hexagon hex)
     {
-        HexagonClear(hex);
-        hex.SetDigable();
-        hex.cost = -1;
+        hex.HexType = HEX_TYPE.EMPTY;
+        ClearHexagon(hex);
+    }
+
+    public void Dig(Hexagon hex)
+    {
         Instantiate(digPrefab, hex.transform.position, Quaternion.identity, hex.transform);
     }
-    public void AddBuild(Hexagon hex)
+
+    public void Fill(Hexagon hex)
     {
-        HexagonClear(hex);
-        hex.isBuild = true;
-        hex.cost = 1;
-        // PathGraph.ProhibitHexagon(hex.transform.position);
-        Instantiate(buildPrefab, hex.transform.position, Quaternion.identity, hex.transform);
+        Instantiate(wallPrefab, hex.transform.position, Quaternion.identity, hex.transform);
     }
 
-    private void HexagonClear(Hexagon hex)
+    private void ClearHexagon(Hexagon hex)
     {
-        hex.isWall = false;
-        hex.isDig = false;
-        hex.isGround = false;
-        hex.isBuild = false;
-        hex.isSpawn = false;
         for (int i = 0; i < hex.transform.childCount; i++)//удаляет чайлды старой графики
         {
             GameObject.Destroy(hex.transform.GetChild(i).gameObject);

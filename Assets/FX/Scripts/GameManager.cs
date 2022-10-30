@@ -37,13 +37,11 @@ public class GameManager : MonoBehaviour
         Hexagon hex = Surface.PositionToHex(position);
         if (!JobScheduler.IsJobAlreadyCreated(hex.id))
         {
-            Debug.Log(hex.IsDigabble());
-            Debug.Log(hex.IsBuildable());
-            if (hex.IsDigabble())
+            if (hex.HexType == HEX_TYPE.SOIL)
             {
                 JobScheduler.AssignJob(new DigJob(hex, hex.transform.position, AssignmentFactory.CreateDigAssignment(hex)));
             }
-            else if (hex.IsBuildable())
+            else
             {
                 JobScheduler.AssignJob(new DigJob(hex, hex.transform.position, AssignmentFactory.CreateBuryAssignment(hex)));
             }

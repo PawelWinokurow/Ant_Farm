@@ -33,7 +33,7 @@ public class BuildWallsTest : MonoBehaviour
         {
             if (Random.Range(0, 100f) < wallPercentage)
             {
-                surf.AddWall(surf.allHex[i]);
+                surf.AddBlock(surf.allHex[i]);
             }
             else
             {

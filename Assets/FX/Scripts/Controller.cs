@@ -21,13 +21,13 @@ public class Controller : MonoBehaviour
         pos = Camera.main.ScreenToWorldPoint(pos);
         hex = Surface.PositionToHex(pos);
         marker.transform.position = hex.transform.position;
-        if (hex.isWall)
+        if (hex.HexType == HEX_TYPE.EMPTY)
         {
-            Surface.AddDig(hex);
+            Surface.Fill(hex);
         }
-        if (hex.isGround)
+        else
         {
-            Surface.AddBuild(hex);
+            Surface.Dig(hex);
         }
         GameManager.ProcessTap(pos);
     }
