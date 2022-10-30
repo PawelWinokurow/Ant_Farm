@@ -32,13 +32,21 @@ public class GameManager : MonoBehaviour
         JobScheduler.AddMob(Instantiate(DiggerPrefab, new Vector3(0, 0, 50), Quaternion.identity));
     }
 
-    public void ProcessHexagon(Vector3 position)
+    public void ProcessTap(Vector3 position)
     {
         Hexagon hex = Surface.PositionToHex(position);
         if (!JobScheduler.IsJobAlreadyCreated(hex.id))
         {
-            hex.AssignDig();
-            JobScheduler.AssignJob(new DigJob(hex, hex.transform.position));
+            Debug.Log(hex.IsDigabble());
+            Debug.Log(hex.IsBuildable());
+            if (hex.IsDigabble())
+            {
+                JobScheduler.AssignJob(new DigJob(hex, hex.transform.position, AssignmentFactory.CreateDigAssignment(hex)));
+            }
+            else if (hex.IsBuildable())
+            {
+                JobScheduler.AssignJob(new DigJob(hex, hex.transform.position, AssignmentFactory.CreateBuryAssignment(hex)));
+            }
         }
     }
 

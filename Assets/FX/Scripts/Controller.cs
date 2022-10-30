@@ -29,7 +29,7 @@ public class Controller : MonoBehaviour
         {
             Surface.AddBuild(hex);
         }
-        GameManager.ProcessHexagon(pos);
+        GameManager.ProcessTap(pos);
     }
 
 

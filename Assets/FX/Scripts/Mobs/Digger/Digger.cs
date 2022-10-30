@@ -33,33 +33,61 @@ public class Digger : MonoBehaviour, Mob
     }
 
 
-    void Update()
+    void DrawDebugPath()
     {
-        for (int i = 0; i < WayPoints.Count - 1; i++)
+        var path = new List<Vector3>() { CurrentPosition, };
+
+        for (int j = i + 1; j < WayPoints.Count - 1; j++)
         {
-            Debug.DrawLine(WayPoints[i], WayPoints[i + 1], Color.blue);
+            path.Add(WayPoints[j]);
         }
-
-
-        if (WayPoints.Count != 0 && i < WayPoints.Count - 1)
+        for (int i = 0; i < path.Count - 1; i++)
         {
-            if (t < 1f)
-            {
-                t += Time.deltaTime * 20f;
-                transform.position = Vector3.Lerp(WayPoints[i], WayPoints[i + 1], t);
-                CurrentPosition = transform.position;
-            }
-            else
-            {
-                i++;
-                t = 0;
-            }
+            Debug.DrawLine(path[i], path[i + 1], Color.blue);
+        }
+    }
+
+    void Move()
+    {
+        if (t < 1f)
+        {
+            t += Time.deltaTime * 20f;
+            transform.position = Vector3.Lerp(WayPoints[i], WayPoints[i + 1], t);
+            CurrentPosition = transform.position;
         }
         else
         {
-            WayPoints.Clear();
-            i = 0;
+            i++;
             t = 0;
+        }
+    }
+
+    void ResetMovement()
+    {
+        WayPoints.Clear();
+        i = 0;
+        t = 0;
+    }
+
+    void Update()
+    {
+        if (job != null)
+        {
+
+            DrawDebugPath();
+
+            if (WayPoints.Count != 0 && i < WayPoints.Count - 1)
+            {
+                Move();
+            }
+            else
+            {
+                ResetMovement();
+                if (job.Assignment != null)
+                {
+                    job.Assignment(this);
+                }
+            }
         }
     }
 

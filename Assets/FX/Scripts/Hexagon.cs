@@ -18,25 +18,25 @@ public class Hexagon : MonoBehaviour
 
     public bool IsDigabble()
     {
-        return isWall && !isGround && !isDig && !isBuild;
+        return isWall;
     }
 
     public bool IsBuildable()
     {
-        return isGround && !isWall && !isDig && !isBuild;
+        return isGround;
     }
     public bool IsInSpawnArea()
     {
         return isSpawn;
     }
-    public void AssignDig()
+    public void SetDigable()
     {
         isDig = true; ;
     }
-    public void AssignBuild()
+    public void SetBuildable()
     {
         isBuild = true; ;
     }
-    
+
 }
 

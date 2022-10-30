@@ -27,15 +27,9 @@ public class Surface : MonoBehaviour
 
     public Graph PathGraph;
 
-    public List<Hexagon> digList;
-    public List<Hexagon> buildList;
-
-
 
     public void Init(Graph PathGraph)
     {
-        digList = new List<Hexagon>();
-        buildList = new List<Hexagon>();
         this.PathGraph = PathGraph;
         cam = Camera.main;
 
@@ -124,16 +118,15 @@ public class Surface : MonoBehaviour
     public void AddGround(Hexagon hex)
     {
         HexagonClear(hex);
+        hex.SetBuildable();
         hex.isGround = true;
-        hex.cost = 1;
     }
 
 
     public void AddWall(Hexagon hex)
     {
         HexagonClear(hex);
-        hex.isWall = true;
-        hex.cost = -1;
+        hex.SetBuildable();
         PathGraph.ProhibitHexagon(hex.transform.position);
         Instantiate(wallPrefab, hex.transform.position, Quaternion.identity, hex.transform);
     }
@@ -141,10 +134,8 @@ public class Surface : MonoBehaviour
     public void AddDig(Hexagon hex)
     {
         HexagonClear(hex);
-        hex.isDig = true;
+        hex.SetDigable();
         hex.cost = -1;
-        digList.Add(hex);
-        //PathGraph.ProhibitHexagon(hex.transform.position);
         Instantiate(digPrefab, hex.transform.position, Quaternion.identity, hex.transform);
     }
     public void AddBuild(Hexagon hex)
@@ -152,7 +143,6 @@ public class Surface : MonoBehaviour
         HexagonClear(hex);
         hex.isBuild = true;
         hex.cost = 1;
-        buildList.Add(hex);
         // PathGraph.ProhibitHexagon(hex.transform.position);
         Instantiate(buildPrefab, hex.transform.position, Quaternion.identity, hex.transform);
     }
@@ -164,8 +154,6 @@ public class Surface : MonoBehaviour
         hex.isGround = false;
         hex.isBuild = false;
         hex.isSpawn = false;
-        digList.Remove(hex);
-        buildList.Remove(hex);
         for (int i = 0; i < hex.transform.childCount; i++)//удаляет чайлды старой графики
         {
             GameObject.Destroy(hex.transform.GetChild(i).gameObject);
