@@ -1,22 +1,22 @@
 using System.Collections;
 using UnityEngine;
 
-public class DigAssignment : Assignment
+
+public class FillAssignment : Assignment
 {
     private Hexagon hex;
     private Mob mob;
-    public AssignmentType Type { get; set; }
 
-    public DigAssignment(Hexagon hex)
+    public AssignmentType Type { get; set; }
+    public FillAssignment(Hexagon hex)
     {
         this.hex = hex;
         Type = AssignmentType.FILL;
     }
-
     public void Execute(Mob mob)
     {
         this.mob = mob;
-        Debug.Log("Dig");
+        Debug.Log("Fill");
     }
 
 }

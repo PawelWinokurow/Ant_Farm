@@ -2,13 +2,13 @@ using System;
 
 public class AssignmentFactory
 {
-    public static Action<Mob> CreateDigAssignment(Hexagon hex)
+    public static Assignment CreateDigAssignment(Hexagon hex)
     {
-        return new Action<Mob>((Mob mob) => new DigAssignment().DoWork(hex, mob));
+        return new DigAssignment(hex);
     }
-    public static Action<Mob> CreateBuryAssignment(Hexagon hex)
+    public static Assignment CreateFillAssignment(Hexagon hex)
     {
-        return new Action<Mob>((Mob mob) => new BuryAssignment().DoWork(hex, mob));
+        return new FillAssignment(hex);
 
     }
 }

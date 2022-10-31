@@ -35,17 +35,18 @@ public class GameManager : MonoBehaviour
     public void ProcessTap(Vector3 position)
     {
         Hexagon hex = Surface.PositionToHex(position);
-        if (!JobScheduler.IsJobAlreadyCreated(hex.id))
+        Surface.AddIcon(hex);
+
+        if (hex.IsEmpty)
         {
-            if (hex.HexType == HEX_TYPE.SOIL)
-            {
-                JobScheduler.AssignJob(new DigJob(hex, hex.transform.position, AssignmentFactory.CreateDigAssignment(hex)));
-            }
-            else
-            {
-                JobScheduler.AssignJob(new DigJob(hex, hex.transform.position, AssignmentFactory.CreateBuryAssignment(hex)));
-            }
+            JobScheduler.AssignJob(new DigJob(hex, hex.transform.position, AssignmentFactory.CreateFillAssignment(hex)));
         }
+        else if (hex.IsSoil)
+        {
+            JobScheduler.AssignJob(new DigJob(hex, hex.transform.position, AssignmentFactory.CreateFillAssignment(hex)));
+        }
+
+
     }
 
 

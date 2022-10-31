@@ -5,31 +5,37 @@ using UnityEngine;
 public class Digger : MonoBehaviour, Mob
 {
     public List<Vector3> WayPoints { set; get; }
-    float t = 0f;
-    int i = 0;
-
     public Vector3 CurrentPosition { set; get; }
     private Job job;
+    public Job Job { get; set; }
+    private Path path;
+    public Path Path { get; set; }
+    public State CurrentState { get; set; }
 
+
+    private float t = 0f;
+    private int i = 0;
     void Start()
     {
         CurrentPosition = transform.position;
-        WayPoints = new List<Vector3>();
+        SetState(new IdleState(this));
     }
 
-    public void SetPath(Path path)
+    public void SetState(State state)
     {
-        WayPoints = path.WayPoints;
+        if (CurrentState != null)
+            CurrentState.OnStateExit();
+
+        CurrentState = state;
+        gameObject.name = "Digger - " + state.GetType().Name;
+
+        if (CurrentState != null)
+            CurrentState.OnStateEnter();
     }
 
-    public bool HasJob()
+    public bool HasJob
     {
-        return job != null;
-    }
-
-    public void SetJob(Job job)
-    {
-        this.job = job;
+        get => Job != null;
     }
 
 
@@ -37,9 +43,9 @@ public class Digger : MonoBehaviour, Mob
     {
         var path = new List<Vector3>() { CurrentPosition, };
 
-        for (int j = i + 1; j < WayPoints.Count - 1; j++)
+        for (int j = i + 1; j < Path.WayPoints.Count - 1; j++)
         {
-            path.Add(WayPoints[j]);
+            path.Add(Path.WayPoints[j]);
         }
         for (int i = 0; i < path.Count - 1; i++)
         {
@@ -47,12 +53,14 @@ public class Digger : MonoBehaviour, Mob
         }
     }
 
-    void Move()
+    public void Move()
     {
+        DrawDebugPath();
+
         if (t < 1f)
         {
             t += Time.deltaTime * 20f;
-            transform.position = Vector3.Lerp(WayPoints[i], WayPoints[i + 1], t);
+            transform.position = Vector3.Lerp(Path.WayPoints[i], Path.WayPoints[i + 1], t);
             CurrentPosition = transform.position;
         }
         else
@@ -62,33 +70,39 @@ public class Digger : MonoBehaviour, Mob
         }
     }
 
-    void ResetMovement()
+    public void ResetMovement()
     {
-        WayPoints.Clear();
         i = 0;
         t = 0;
+    }
+    public void ResetWaypoints()
+    {
+        Path = null;
     }
 
     void Update()
     {
-        if (job != null)
+        CurrentState.Tick();
+    }
+
+    public bool IsGoalReached
+    {
+        get => !(Path.WayPoints.Count != 0 && i < Path.WayPoints.Count - 1);
+    }
+    public bool HasAsignment
+    {
+        get => HasJob && Job.Assignment != null;
+    }
+
+    public void ExecuteAssignment()
+    {
+        if (Job.Assignment != null)
         {
-
-            DrawDebugPath();
-
-            if (WayPoints.Count != 0 && i < WayPoints.Count - 1)
-            {
-                Move();
-            }
-            else
-            {
-                ResetMovement();
-                if (job.Assignment != null)
-                {
-                    job.Assignment(this);
-                }
-            }
+            Job.Assignment.Execute(this);
+            this.Job = null;
         }
+        SetState(new IdleState(this));
+
     }
 
 }

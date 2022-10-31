@@ -27,6 +27,7 @@ public class Surface : MonoBehaviour
 
     public Graph PathGraph;
 
+    public Dictionary<int, GameObject> Icons = new Dictionary<int, GameObject>();
 
     public void Init(Graph PathGraph)
     {
@@ -128,14 +129,25 @@ public class Surface : MonoBehaviour
         ClearHexagon(hex);
     }
 
-    public void Dig(Hexagon hex)
+    public void AddIcon(Hexagon hex)
     {
-        Instantiate(digPrefab, hex.transform.position, Quaternion.identity, hex.transform);
-    }
-
-    public void Fill(Hexagon hex)
-    {
-        Instantiate(wallPrefab, hex.transform.position, Quaternion.identity, hex.transform);
+        if (Icons.ContainsKey(hex.id))
+        {
+            var oldIcon = Icons[hex.id];
+            GameObject.Destroy(oldIcon);
+            Icons.Remove(hex.id);
+        }
+        else
+        {
+            if (hex.IsEmpty)
+            {
+                Icons.Add(hex.id, Instantiate(wallPrefab, hex.transform.position, Quaternion.identity, hex.transform));
+            }
+            else if (hex.IsSoil)
+            {
+                Icons.Add(hex.id, Instantiate(digPrefab, hex.transform.position, Quaternion.identity, hex.transform));
+            }
+        }
     }
 
     private void ClearHexagon(Hexagon hex)

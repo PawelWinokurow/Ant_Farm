@@ -76,11 +76,13 @@ public class JobScheduler : MonoBehaviour
         {
             if (SomeJobLeft())
             {
-                if (distance.Mob.WayPoints.Count == 0)
+                if (distance.Mob.CurrentState.Type == STATE.IDLE)
                 {
                     RemoveJob(distance.Job);
-                    distance.Mob.SetJob(distance.Job);
-                    distance.Mob.SetPath(distance.Path);
+                    distance.Mob.Job = distance.Job;
+                    distance.Mob.Path = distance.Path;
+                    //TODO make generic
+                    distance.Mob.SetState(new GoToState((Digger)distance.Mob));
                 }
             }
         });
