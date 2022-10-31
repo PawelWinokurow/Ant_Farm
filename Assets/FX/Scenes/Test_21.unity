@@ -394,7 +394,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ea4e4823307fe0468ca4ffe8f9e518c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wallPercentage: 25
+  wallPercentage: 10
 --- !u!4 &1176967604
 Transform:
   m_ObjectHideFlags: 0

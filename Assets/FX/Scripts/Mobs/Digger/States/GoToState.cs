@@ -4,6 +4,8 @@ public class GoToState : State
 {
 
     private Digger digger;
+    private int MOVEMENT_SPEED = 5;
+
 
     public GoToState(Digger digger) : base(digger)
     {
@@ -13,27 +15,23 @@ public class GoToState : State
 
     override public void OnStateEnter()
     {
-        Debug.Log("OnStateEnter GoTo State");
-        digger.ResetMovement();
     }
     override public void OnStateExit()
     {
-        Debug.Log("OnStateExit GoTo State");
         digger.ResetWaypoints();
     }
 
     public override void Tick()
     {
-        if (!digger.IsGoalReached)
+        if (digger.HasPath)
         {
-            digger.Move();
+            digger.Move(MOVEMENT_SPEED);
         }
         else if (digger.HasAsignment)
         {
             if (digger.Job.Assignment.Type == AssignmentType.DIG || digger.Job.Assignment.Type == AssignmentType.FILL)
             {
                 digger.SetState(new DigState(digger));
-
             }
         }
         else

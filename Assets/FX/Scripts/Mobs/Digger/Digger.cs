@@ -8,15 +8,31 @@ public class Digger : MonoBehaviour, Mob
     public Vector3 CurrentPosition { set; get; }
     private Job job;
     public Job Job { get; set; }
-    private Path path;
     public Path Path { get; set; }
     public State CurrentState { get; set; }
+    public Vector3 InitialPosition { get; set; }
 
+    public bool IsGoalReached
+    {
+        get; set;
+    }
+    public bool HasAsignment
+    {
+        get => HasJob && Job.Assignment != null;
+    }
+    public bool HasPath { get => Path != null; }
 
+    public bool HasJob
+    {
+        get => Job != null;
+    }
+
+    private float lerpDuration;
     private float t = 0f;
     private int i = 0;
     void Start()
     {
+        IsGoalReached = true;
         CurrentPosition = transform.position;
         SetState(new IdleState(this));
     }
@@ -33,10 +49,15 @@ public class Digger : MonoBehaviour, Mob
             CurrentState.OnStateEnter();
     }
 
-    public bool HasJob
+    public void SetPath(Path path)
     {
-        get => Job != null;
+        if (path != null)
+        {
+            Path = path;
+            ResetMovement();
+        }
     }
+
 
 
     void DrawDebugPath()
@@ -53,27 +74,37 @@ public class Digger : MonoBehaviour, Mob
         }
     }
 
-    public void Move()
+    public void Move(int speed)
     {
-        DrawDebugPath();
+        if (Path != null)
+        {
 
-        if (t < 1f)
-        {
-            transform.position = Vector3.Lerp(Path.WayPoints[i], Path.WayPoints[i + 1], t);
-            CurrentPosition = transform.position;
-            t += Time.deltaTime * 100;
-        }
-        else
-        {
-            i++;
-            t = 0;
+            DrawDebugPath();
+            if (t < lerpDuration)
+            {
+                transform.position = Vector3.Lerp(Path.WayPoints[i], Path.WayPoints[i + 1], t / lerpDuration);
+                CurrentPosition = transform.position;
+                t += Time.deltaTime * speed;
+            }
+            else if (i < Path.WayPoints.Count - 2)
+            {
+                i++;
+                t = 0f;
+                lerpDuration = Vector3.Distance(Path.WayPoints[i], Path.WayPoints[i + 1]);
+            }
+            else
+            {
+                ResetWaypoints();
+                IsGoalReached = true;
+            }
         }
     }
 
     public void ResetMovement()
     {
+        IsGoalReached = false;
         i = 0;
-        t = 0;
+        lerpDuration = Vector3.Distance(Path.WayPoints[0], Path.WayPoints[1]);
     }
     public void ResetWaypoints()
     {
@@ -83,15 +114,6 @@ public class Digger : MonoBehaviour, Mob
     void Update()
     {
         CurrentState.Tick();
-    }
-
-    public bool IsGoalReached
-    {
-        get => !(Path.WayPoints.Count != 0 && i < Path.WayPoints.Count - 1);
-    }
-    public bool HasAsignment
-    {
-        get => HasJob && Job.Assignment != null;
     }
 
     public void ExecuteAssignment()

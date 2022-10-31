@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,10 +29,11 @@ public class BuildWallsTest : MonoBehaviour
 
     void CreateWalls()
     {
+        UnityEngine.Random.InitState(Guid.NewGuid().GetHashCode());
         surf.PathGraph.ResetAllEdgesToWalkable();
         for (int i = 1; i < surf.allHex.Length - 1; i++)
         {
-            if (Random.Range(0, 100f) < wallPercentage)
+            if (UnityEngine.Random.Range(0, 100f) < wallPercentage)
             {
                 surf.AddBlock(surf.allHex[i]);
             }

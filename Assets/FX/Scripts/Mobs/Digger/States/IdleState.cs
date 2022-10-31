@@ -4,6 +4,7 @@ public class IdleState : State
 {
 
     private Digger digger;
+    private int MOVEMENT_SPEED = 3;
 
     public IdleState(Digger digger) : base(digger)
     {
@@ -12,15 +13,18 @@ public class IdleState : State
     }
     public override void Tick()
     {
-        Debug.Log("Tick Idle State");
+        if (digger.HasPath)
+        {
+            digger.Move(MOVEMENT_SPEED);
+        }
     }
 
     override public void OnStateEnter()
     {
-        Debug.Log("OnStateEnter Idle State");
+        digger.InitialPosition = digger.CurrentPosition;
     }
     override public void OnStateExit()
     {
-        Debug.Log("OnStateExit Idle State");
+        digger.ResetWaypoints();
     }
 }

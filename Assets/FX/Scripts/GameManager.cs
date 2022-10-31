@@ -19,17 +19,17 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         PathGraph = new Graph();
-        JobScheduler.SetGraph(PathGraph);
         Surface.Init(PathGraph);
+        JobScheduler.SetGraph(PathGraph);
         BuildWallsTest.Init(Surface);
         InstantiateTestMobs();
     }
 
     void InstantiateTestMobs()
     {
-        JobScheduler.AddMob(Instantiate(DiggerPrefab, new Vector3(0, 0, 0), Quaternion.identity));
-        JobScheduler.AddMob(Instantiate(DiggerPrefab, new Vector3(50, 0, 0), Quaternion.identity));
-        JobScheduler.AddMob(Instantiate(DiggerPrefab, new Vector3(0, 0, 50), Quaternion.identity));
+        JobScheduler.AddMob(Instantiate(DiggerPrefab, new Vector3(30, 0, 30), Quaternion.identity));
+        // JobScheduler.AddMob(Instantiate(DiggerPrefab, new Vector3(50, 0, 0), Quaternion.identity));
+        // JobScheduler.AddMob(Instantiate(DiggerPrefab, new Vector3(0, 0, 50), Quaternion.identity));
     }
 
     public void ProcessTap(Vector3 position)
@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
         }
         else if (hex.IsSoil)
         {
-            JobScheduler.AssignJob(new DigJob(hex, hex.transform.position, AssignmentFactory.CreateFillAssignment(hex)));
+            JobScheduler.AssignJob(new DigJob(hex, hex.transform.position, AssignmentFactory.CreateDigAssignment(hex)));
         }
 
 

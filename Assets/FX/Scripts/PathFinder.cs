@@ -8,6 +8,7 @@ public class Path
 {
     public List<Vector3> WayPoints = new List<Vector3>();
     public float OverallDistance = 0;
+
 }
 
 public class PathFinder
@@ -20,7 +21,31 @@ public class PathFinder
         this.pathGraph = pathGraph;
     }
 
+    public Path RandomWalk(Vector3 fromVec, Vector3 initialPosition, int numberOfSteps)
+    {
+        UnityEngine.Random.InitState(Guid.NewGuid().GetHashCode());
+        Path overallPath = new Path();
+        PathVertex from = pathGraph.NearestVertex(fromVec);
+        for (int i = 0; i < numberOfSteps; i++)
+        {
+            Path path = null;
+            PathVertex to = null;
+            do
+            {
+                double angle = UnityEngine.Random.Range(0, (float)(2 * Math.PI));
+                float x = initialPosition.x + 10 * (float)Math.Cos(angle);
+                float z = initialPosition.x + 10 * (float)Math.Sin(angle);
+                to = pathGraph.NearestVertex(new Vector3(x, 0, z));
+                path = Astar(from, to);
 
+            } while (path == null);
+            from = to;
+            overallPath.WayPoints.AddRange(path.WayPoints);
+            overallPath.OverallDistance += path.OverallDistance;
+        }
+        return overallPath;
+
+    }
     public Path FindPath(Vector3 fromVec, Vector3 toVec, bool findNearest = false)
     {
         PathVertex from = pathGraph.NearestVertex(fromVec);
@@ -97,7 +122,7 @@ public class PathFinder
             }
             path.WayPoints.Reverse();
             path.WayPoints.Add(goal.Position);
-            path.WayPoints = Utils.NormalizePath(path.WayPoints, 1f);
+            // path.WayPoints = Utils.NormalizePath(path.WayPoints, 1f);
             path.OverallDistance = costSoFar[goal.Id];
             return path;
         }

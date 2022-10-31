@@ -35,17 +35,14 @@ public class JobScheduler : MonoBehaviour
         this.pathGraph = pathGraph;
         pathFinder = new PathFinder(pathGraph);
     }
-    public void AddMob(Mob ant)
+    public void AddMob(Mob mob)
     {
-        mobs.Add(ant);
+        mobs.Add(mob);
     }
 
     public void Update()
     {
-        if (SomeJobLeft())
-        {
-            DistributeJobs();
-        }
+        DistributeJobs();
     }
 
     private bool SomeJobLeft()
@@ -55,6 +52,16 @@ public class JobScheduler : MonoBehaviour
 
 
     private void DistributeJobs()
+    {
+        if (SomeJobLeft())
+        {
+            AssignWork();
+        }
+        AssignIdle();
+
+    }
+
+    private void AssignWork()
     {
         List<JobMobDistance> distances = new List<JobMobDistance>();
         foreach (var job in jobsMap.Values)
@@ -80,15 +87,37 @@ public class JobScheduler : MonoBehaviour
                     var mob = distance.Mob;
                     var job = distance.Job;
                     mob.Job = job;
-                    //TODO make generic replace digger with mob
                     mob.Job.RemoveJob = () =>
                     {
                         mob.SetState(new IdleState((Digger)mob));
                         RemoveJob(job);
                     };
-                    mob.Path = distance.Path;
+                    Debug.Log(distance.Path.WayPoints.Count);
+                    mob.SetPath(distance.Path);
                     mob.SetState(new GoToState((Digger)mob));
                 }
+            }
+        });
+    }
+
+
+    private void AssignIdle()
+    {
+        mobs.ForEach(mob =>
+        {
+            if (mob.CurrentState.Type == STATE.IDLE)
+            {
+                if (!mob.HasPath)
+                {
+                    mob.SetPath(pathFinder.RandomWalk(mob.CurrentPosition, mob.InitialPosition, 10));
+                }
+                else if (mob.WayPoints?.Count == 0)
+                {
+                    var newPath = pathFinder.RandomWalk(mob.WayPoints[mob.WayPoints.Count - 1], mob.InitialPosition, 10);
+                    mob.Path.WayPoints.AddRange(newPath.WayPoints);
+                    mob.Path.OverallDistance += newPath.OverallDistance;
+                }
+
             }
         });
     }

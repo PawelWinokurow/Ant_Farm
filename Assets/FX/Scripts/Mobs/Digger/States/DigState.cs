@@ -12,19 +12,16 @@ public class DigState : State
 
     public override void Tick()
     {
-        Debug.Log("Tick Dig State");
         digger.ExecuteAssignment();
         digger.SetState(new IdleState(digger));
     }
 
     override public void OnStateEnter()
     {
-        Debug.Log("OnStateEnter Dig State");
     }
 
     override public void OnStateExit()
     {
-        Debug.Log("OnStateExit Dig State");
     }
 
 }
