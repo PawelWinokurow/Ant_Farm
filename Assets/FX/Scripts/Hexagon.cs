@@ -9,7 +9,7 @@ public enum HEX_TYPE
 
 public class Hexagon : MonoBehaviour
 {
-    public int id;
+    public string Id;
     public HEX_TYPE HexType { get; set; }
     public bool IsEmpty { get => HexType == HEX_TYPE.EMPTY; }
     public bool IsSoil { get => HexType == HEX_TYPE.SOIL; }

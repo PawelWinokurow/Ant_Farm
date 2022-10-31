@@ -59,9 +59,9 @@ public class Digger : MonoBehaviour, Mob
 
         if (t < 1f)
         {
-            t += Time.deltaTime * 20f;
             transform.position = Vector3.Lerp(Path.WayPoints[i], Path.WayPoints[i + 1], t);
             CurrentPosition = transform.position;
+            t += Time.deltaTime * 100;
         }
         else
         {

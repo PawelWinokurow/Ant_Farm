@@ -24,12 +24,10 @@ class JobMobDistance
 public class JobScheduler : MonoBehaviour
 {
 
-    private Dictionary<int, Job> jobsMap = new Dictionary<int, Job>();
+    private Dictionary<string, Job> jobsMap = new Dictionary<string, Job>();
 
     private Graph pathGraph;
     private PathFinder pathFinder;
-
-
     private List<Mob> mobs = new List<Mob>();
 
     public void SetGraph(Graph pathGraph)
@@ -63,7 +61,7 @@ public class JobScheduler : MonoBehaviour
         {
             foreach (var mob in mobs)
             {
-                Path path = pathFinder.FindPath(mob.CurrentPosition, job.Destination);
+                Path path = pathFinder.FindPath(mob.CurrentPosition, job.Destination, true);
                 if (path != null)
                 {
                     distances.Add(new JobMobDistance(job, mob, path));
@@ -76,19 +74,26 @@ public class JobScheduler : MonoBehaviour
         {
             if (SomeJobLeft())
             {
-                if (distance.Mob.CurrentState.Type == STATE.IDLE)
+                if (distance.Mob.CurrentState.Type == STATE.IDLE && !distance.Job.IsAssigned)
                 {
-                    RemoveJob(distance.Job);
-                    distance.Mob.Job = distance.Job;
-                    distance.Mob.Path = distance.Path;
-                    //TODO make generic
-                    distance.Mob.SetState(new GoToState((Digger)distance.Mob));
+                    distance.Job.IsAssigned = true;
+                    var mob = distance.Mob;
+                    var job = distance.Job;
+                    mob.Job = job;
+                    //TODO make generic replace digger with mob
+                    mob.Job.RemoveJob = () =>
+                    {
+                        mob.SetState(new IdleState((Digger)mob));
+                        RemoveJob(job);
+                    };
+                    mob.Path = distance.Path;
+                    mob.SetState(new GoToState((Digger)mob));
                 }
             }
         });
     }
 
-    public bool IsJobAlreadyCreated(int Id)
+    public bool IsJobAlreadyCreated(string Id)
     {
         return jobsMap.ContainsKey(Id);
     }
@@ -98,6 +103,10 @@ public class JobScheduler : MonoBehaviour
         if (!IsJobAlreadyCreated(job.Id))
         {
             jobsMap.Add(job.Id, job);
+        }
+        else
+        {
+            jobsMap[job.Id].RemoveJob();
         }
     }
 

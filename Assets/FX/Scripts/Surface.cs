@@ -27,8 +27,8 @@ public class Surface : MonoBehaviour
 
     public Graph PathGraph;
 
-    public Dictionary<int, GameObject> Icons = new Dictionary<int, GameObject>();
-    public Dictionary<int, GameObject> OldBlocks = new Dictionary<int, GameObject>();
+    public Dictionary<string, GameObject> Icons = new Dictionary<string, GameObject>();
+    public Dictionary<string, GameObject> OldBlocks = new Dictionary<string, GameObject>();
 
     public void Init(Graph PathGraph)
     {
@@ -61,6 +61,7 @@ public class Surface : MonoBehaviour
                 PathGraph.AddHexagonSubGraph(hexPosition, radius, $"x{x}z{z}");
 
                 Hexagon hex = Instantiate(hexPrefab, new Vector3(w * (x + (z % 2f) / 2f), 0f, z * h), Quaternion.identity, transform);
+                hex.Id = $"{x}_{z}";
                 allHexXZ[x, z] = hex;//двумерный массив
                 allHex[z * width + x] = hex;
 
@@ -68,22 +69,6 @@ public class Surface : MonoBehaviour
         }
 
         Camera.main.transform.parent.position = new Vector3((width - 0.5f) * w / 2f, 0, (height - 1) * h / 2f * (1f - 0.09f));
-
-
-        // for (int i = 0; i < allHex.Length; i++)//записываем соседей
-        // {
-        //     allHex[i].neighbors = new List<int>();
-        //     for (int j = 0; j < allHex.Length; j++)
-        //     {
-        //         if (Vector3.Distance(allHex[i].transform.position, allHex[j].transform.position) < 4f)
-        //         {
-        //             if (allHex[i] != allHex[j])
-        //             {
-        //                 allHex[i].neighbors.Add(j);
-        //             }
-        //         }
-        //     }
-        // }
     }
 
     void Update()
@@ -101,7 +86,6 @@ public class Surface : MonoBehaviour
                 {
                     Debug.DrawLine(edge.From.Position, edge.To.Position, Color.green);
                 }
-
             }
             );
         }
@@ -132,26 +116,25 @@ public class Surface : MonoBehaviour
 
     public void AddIcon(Hexagon hex)
     {
-        if (Icons.ContainsKey(hex.id))
+        if (Icons.ContainsKey(hex.Id))
         {
-            var oldIcon = Icons[hex.id];
+            var oldIcon = Icons[hex.Id];
             GameObject.Destroy(oldIcon);
-            Icons.Remove(hex.id);
-            //TODO
-            Instantiate(OldBlocks[hex.id], hex.transform.position, Quaternion.identity, hex.transform);
-            OldBlocks.Remove(hex.id);
+            Icons.Remove(hex.Id);
+            Instantiate(OldBlocks[hex.Id], hex.transform.position, Quaternion.identity, hex.transform);
+            OldBlocks.Remove(hex.Id);
         }
         else
         {
-            OldBlocks.Add(hex.id, hex.gameObject);
+            OldBlocks.Add(hex.Id, Instantiate(hex.gameObject));
             ClearHexagon(hex);
             if (hex.IsEmpty)
             {
-                Icons.Add(hex.id, Instantiate(fillPrefab, hex.transform.position, Quaternion.identity, hex.transform));
+                Icons.Add(hex.Id, Instantiate(fillPrefab, hex.transform.position, Quaternion.identity, hex.transform));
             }
             else if (hex.IsSoil)
             {
-                Icons.Add(hex.id, Instantiate(digPrefab, hex.transform.position, Quaternion.identity, hex.transform));
+                Icons.Add(hex.Id, Instantiate(digPrefab, hex.transform.position, Quaternion.identity, hex.transform));
             }
         }
     }

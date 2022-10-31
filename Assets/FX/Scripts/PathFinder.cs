@@ -21,15 +21,15 @@ public class PathFinder
     }
 
 
-    public Path FindPath(Vector3 fromVec, Vector3 toVec)
+    public Path FindPath(Vector3 fromVec, Vector3 toVec, bool findNearest = false)
     {
         PathVertex from = pathGraph.NearestVertex(fromVec);
         PathVertex to = pathGraph.NearestVertex(toVec);
         if (from.Id == to.Id) return null;
-        var path = Astar(from, to);
-        if (path != null)
+        Path path;
+        if (!findNearest)
         {
-            return path;
+            return Astar(from, to);
         }
         else
         {
@@ -97,7 +97,7 @@ public class PathFinder
             }
             path.WayPoints.Reverse();
             path.WayPoints.Add(goal.Position);
-            path.WayPoints = Utils.NormalizePath(path.WayPoints, 0.5f);
+            path.WayPoints = Utils.NormalizePath(path.WayPoints, 1f);
             path.OverallDistance = costSoFar[goal.Id];
             return path;
         }
