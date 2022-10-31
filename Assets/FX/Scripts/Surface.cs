@@ -28,6 +28,7 @@ public class Surface : MonoBehaviour
     public Graph PathGraph;
 
     public Dictionary<int, GameObject> Icons = new Dictionary<int, GameObject>();
+    public Dictionary<int, GameObject> OldBlocks = new Dictionary<int, GameObject>();
 
     public void Init(Graph PathGraph)
     {
@@ -136,9 +137,14 @@ public class Surface : MonoBehaviour
             var oldIcon = Icons[hex.id];
             GameObject.Destroy(oldIcon);
             Icons.Remove(hex.id);
+            //TODO
+            Instantiate(OldBlocks[hex.id], hex.transform.position, Quaternion.identity, hex.transform);
+            OldBlocks.Remove(hex.id);
         }
         else
         {
+            OldBlocks.Add(hex.id, hex.gameObject);
+            ClearHexagon(hex);
             if (hex.IsEmpty)
             {
                 Icons.Add(hex.id, Instantiate(fillPrefab, hex.transform.position, Quaternion.identity, hex.transform));
