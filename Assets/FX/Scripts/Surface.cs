@@ -11,7 +11,7 @@ public class Surface : MonoBehaviour
     public Hexagon hexPrefab;
     public GameObject wallPrefab;
     public GameObject digPrefab;
-    public GameObject buildPrefab;
+    public GameObject fillPrefab;
     private Camera cam;
     public int height = 10;
     public int width = 10;
@@ -141,7 +141,7 @@ public class Surface : MonoBehaviour
         {
             if (hex.IsEmpty)
             {
-                Icons.Add(hex.id, Instantiate(wallPrefab, hex.transform.position, Quaternion.identity, hex.transform));
+                Icons.Add(hex.id, Instantiate(fillPrefab, hex.transform.position, Quaternion.identity, hex.transform));
             }
             else if (hex.IsSoil)
             {
