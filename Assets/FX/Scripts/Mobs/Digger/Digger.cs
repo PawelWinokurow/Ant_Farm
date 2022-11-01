@@ -78,17 +78,20 @@ public class Digger : MonoBehaviour, Mob
         {
 
             // DrawDebugPath();
-            if (t < lerpDuration)
+            if (i < Path.WayPoints.Count - 2)
             {
-                transform.position = Vector3.Lerp(Path.WayPoints[i], Path.WayPoints[i + 1], t / lerpDuration);
-                CurrentPosition = transform.position;
-                t += Time.deltaTime * speed;
-            }
-            else if (i < Path.WayPoints.Count - 2)
-            {
-                i++;
-                t = 0f;
-                lerpDuration = Vector3.Distance(Path.WayPoints[i], Path.WayPoints[i + 1]);
+                if (t < lerpDuration)
+                {
+                    transform.position = Vector3.Lerp(Path.WayPoints[i], Path.WayPoints[i + 1], t / lerpDuration);
+                    CurrentPosition = transform.position;
+                    t += Time.deltaTime * speed;
+                }
+                else
+                {
+                    i++;
+                    t = 0f;
+                    if (i < Path.WayPoints.Count - 2) lerpDuration = Vector3.Distance(Path.WayPoints[i], Path.WayPoints[i + 1]);
+                }
             }
             else
             {
