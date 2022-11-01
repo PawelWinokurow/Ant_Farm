@@ -30,7 +30,7 @@ public class Digger : MonoBehaviour, Mob
     private float lerpDuration;
     private float t = 0f;
     private int i = 0;
-    void Start()
+    void Awake()
     {
         IsGoalReached = true;
         CurrentPosition = transform.position;
