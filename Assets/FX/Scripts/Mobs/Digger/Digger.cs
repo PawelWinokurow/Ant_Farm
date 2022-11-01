@@ -77,7 +77,7 @@ public class Digger : MonoBehaviour, Mob
         if (Path != null)
         {
 
-            DrawDebugPath();
+            // DrawDebugPath();
             if (t < lerpDuration)
             {
                 transform.position = Vector3.Lerp(Path.WayPoints[i], Path.WayPoints[i + 1], t / lerpDuration);
@@ -109,7 +109,7 @@ public class Digger : MonoBehaviour, Mob
         Path = null;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         CurrentState.Tick();
     }

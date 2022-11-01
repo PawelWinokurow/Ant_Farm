@@ -4,7 +4,7 @@ public class IdleState : State
 {
 
     private Digger digger;
-    private int MOVEMENT_SPEED = 3;
+    private int MOVEMENT_SPEED = 2;
 
     public IdleState(Digger digger) : base(digger)
     {
