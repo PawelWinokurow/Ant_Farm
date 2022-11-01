@@ -16,10 +16,21 @@ public class GameManager : MonoBehaviour
 
     public Graph PathGraph;
 
+
     void Awake()
     {
-        PathGraph = new Graph();
-        Surface.Init(PathGraph);
+        PathGraph = null;
+        if (StoreService.DoesGraphExist())
+        {
+            PathGraph = StoreService.LoadGraph();
+            Surface.Init(PathGraph, false);
+        }
+        else
+        {
+            PathGraph = new Graph();
+            Surface.Init(PathGraph, true);
+            StoreService.SaveGraph(PathGraph);
+        }
         JobScheduler.SetGraph(PathGraph);
         BuildWallsTest.Init(Surface);
     }

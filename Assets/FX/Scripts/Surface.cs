@@ -30,7 +30,7 @@ public class Surface : MonoBehaviour
     public Dictionary<string, GameObject> Icons = new Dictionary<string, GameObject>();
     public Dictionary<string, GameObject> OldBlocks = new Dictionary<string, GameObject>();
 
-    public void Init(Graph PathGraph)
+    public void Init(Graph PathGraph, bool generateGraph = true)
     {
         this.PathGraph = PathGraph;
         cam = Camera.main;
@@ -58,7 +58,7 @@ public class Surface : MonoBehaviour
             for (int x = 0; x < width; x++)
             {
                 Vector3 hexPosition = new Vector3(w * (x + (z % 2f) / 2f), 0f, z * h);
-                PathGraph.AddHexagonSubGraph(hexPosition, radius, $"x{x}z{z}");
+                if (generateGraph) PathGraph.AddHexagonSubGraph(hexPosition, radius, $"x{x}z{z}");
 
                 Hexagon hex = Instantiate(hexPrefab, new Vector3(w * (x + (z % 2f) / 2f), 0f, z * h), Quaternion.identity, transform);
                 hex.Id = $"{x}_{z}";

@@ -7,11 +7,11 @@ using UnityEngine;
 public class Graph
 {
     public Dictionary<Vector3, PathVertex> PathVerticesMap;
-    public List<Edge> AdjacencyList { get; set; }
+    public List<PathEdge> AdjacencyList { get; set; }
     public List<PathVertex> PathVertices { get; set; }
     public Graph()
     {
-        AdjacencyList = new List<Edge>();
+        AdjacencyList = new List<PathEdge>();
         PathVertices = new List<PathVertex>();
         PathVerticesMap = new Dictionary<Vector3, PathVertex>();
     }
@@ -42,8 +42,8 @@ public class Graph
 
     public void AddEdge(PathVertex v1, PathVertex v2, float edgeWeight)
     {
-        Edge v1Edge = new Edge(v1, v2, edgeWeight);
-        Edge v2Edge = new Edge(v2, v1, edgeWeight);
+        PathEdge v1Edge = new PathEdge(v1, v2, edgeWeight);
+        PathEdge v2Edge = new PathEdge(v2, v1, edgeWeight);
         v1.Edges.Add(v1Edge);
         v2.Edges.Add(v2Edge);
         AdjacencyList.Add(v1Edge);
@@ -74,13 +74,13 @@ public class Graph
         GetHexagonEdges(hexagonPosition).ForEach(edge => edge.IsWalkable = false);
     }
 
-    private List<Edge> GetHexagonEdges(Vector3 hexagonPosition)
+    private List<PathEdge> GetHexagonEdges(Vector3 hexagonPosition)
     {
         PathVertex centerVertex = PathVerticesMap[hexagonPosition];
         List<PathVertex> hexagonVertices = centerVertex.Edges.Select(edge => edge.To).ToList();
         hexagonVertices.Add(centerVertex);
         var Ids = hexagonVertices.Select(vertex => vertex.Id);
-        return hexagonVertices.Aggregate(new List<Edge>(), (acc, vertex) => acc.Concat(vertex.Edges).ToList()).Where(edge => Ids.Contains(edge.From.Id) && Ids.Contains(edge.To.Id)).ToList();
+        return hexagonVertices.Aggregate(new List<PathEdge>(), (acc, vertex) => acc.Concat(vertex.Edges).ToList()).Where(edge => Ids.Contains(edge.From.Id) && Ids.Contains(edge.To.Id)).ToList();
     }
 
     public PathVertex NearestVertex(Vector3 position)
