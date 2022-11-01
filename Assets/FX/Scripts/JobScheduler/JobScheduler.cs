@@ -58,7 +58,6 @@ public class JobScheduler : MonoBehaviour
             AssignWork();
         }
         AssignIdle();
-
     }
 
     private void AssignWork()
@@ -92,9 +91,8 @@ public class JobScheduler : MonoBehaviour
                         mob.SetState(new IdleState((Digger)mob));
                         RemoveJob(job);
                     };
-                    Debug.Log(distance.Path.WayPoints.Count);
-                    mob.SetPath(distance.Path);
                     mob.SetState(new GoToState((Digger)mob));
+                    mob.SetPath(distance.Path);
                 }
             }
         });

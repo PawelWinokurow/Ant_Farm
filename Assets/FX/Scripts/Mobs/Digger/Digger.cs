@@ -58,8 +58,6 @@ public class Digger : MonoBehaviour, Mob
         }
     }
 
-
-
     void DrawDebugPath()
     {
         var path = new List<Vector3>() { CurrentPosition, };

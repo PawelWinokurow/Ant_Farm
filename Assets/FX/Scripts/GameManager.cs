@@ -22,14 +22,16 @@ public class GameManager : MonoBehaviour
         Surface.Init(PathGraph);
         JobScheduler.SetGraph(PathGraph);
         BuildWallsTest.Init(Surface);
+    }
+    void Start()
+    {
         InstantiateTestMobs();
     }
-
     void InstantiateTestMobs()
     {
         JobScheduler.AddMob(Instantiate(DiggerPrefab, new Vector3(30, 0, 30), Quaternion.identity));
-        // JobScheduler.AddMob(Instantiate(DiggerPrefab, new Vector3(50, 0, 0), Quaternion.identity));
-        // JobScheduler.AddMob(Instantiate(DiggerPrefab, new Vector3(0, 0, 50), Quaternion.identity));
+        JobScheduler.AddMob(Instantiate(DiggerPrefab, new Vector3(50, 0, 0), Quaternion.identity));
+        JobScheduler.AddMob(Instantiate(DiggerPrefab, new Vector3(0, 0, 50), Quaternion.identity));
     }
 
     public void ProcessTap(Vector3 position)

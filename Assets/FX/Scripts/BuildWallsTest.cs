@@ -9,7 +9,7 @@ public class BuildWallsTest : MonoBehaviour
     private Surface surf;
     [Range(0, 100)]
     public int wallPercentage = 25;
-    private int wallPercentageOld;
+    private int wallPercentageOld = 25;
 
     public void Init(Surface surf)
     {
