@@ -52,9 +52,10 @@ public class GameManager : MonoBehaviour
         JobScheduler.AddMob(Instantiate(DiggerPrefab, new Vector3(0, 0, 50), Quaternion.identity));
     }
 
-    public void ProcessTap(Vector3 position)
+    public void ProcessTap(Vector3 pos)
     {
-        Hexagon hex = Surface.PositionToHex(position);
+        Hexagon hex = Surface.PositionToHex(pos);
+
         Surface.AddIcon(hex);
 
         if (hex.IsEmpty)

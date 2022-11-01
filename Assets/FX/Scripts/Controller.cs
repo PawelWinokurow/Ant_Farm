@@ -18,7 +18,6 @@ public class Controller : MonoBehaviour
     public void Tap(Vector3 pos)
     {
         pos = Camera.main.ScreenToWorldPoint(pos);
-        Hexagon hex = Surface.PositionToHex(pos);
         GameManager.ProcessTap(pos);
     }
 

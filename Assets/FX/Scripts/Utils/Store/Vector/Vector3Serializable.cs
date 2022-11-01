@@ -14,8 +14,4 @@ public class Vector3Serializable
         this.z = z;
     }
 
-    public override string ToString()
-    {
-        return $"{x}_{y}_{z}";
-    }
 }

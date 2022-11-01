@@ -82,16 +82,15 @@ public class Surface : MonoBehaviour
 
     void LoadHexagons(HexagonSerializable[] hexagons)
     {
-        foreach (var hexSerializable in hexagons)
+        for (var i = 0; i < hexagons.Length; i++)
         {
-            var hex = Hexagon.CreateHexagon(hexSerializable.Id, hexPrefab, VectorTransform.FromSerializable(hexSerializable.Position), transform, HEX_TYPE.EMPTY);
-            Hexagons.Append(hex);
-            if (hexSerializable.HexType == HEX_TYPE.EMPTY)
+            var hex = Hexagon.CreateHexagon(hexagons[i].Id, hexPrefab, VectorTransform.FromSerializable(hexagons[i].Position), transform, HEX_TYPE.EMPTY);
+            Hexagons[i] = hex;
+            if (hexagons[i].HexType == HEX_TYPE.EMPTY)
             {
                 AddGround(hex);
-
             }
-            else if (hexSerializable.HexType == HEX_TYPE.SOIL)
+            else if (hexagons[i].HexType == HEX_TYPE.SOIL)
             {
                 AddBlock(hex);
             }

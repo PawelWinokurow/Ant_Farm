@@ -17,11 +17,11 @@ public class BuildWallsTest : MonoBehaviour
 
     private void Update()
     {
-        if (wallPercentage != wallPercentageOld)
-        {
-            CreateWalls();
-            wallPercentageOld = wallPercentage;
-        }
+        // if (wallPercentage != wallPercentageOld)
+        // {
+        //     CreateWalls();
+        //     wallPercentageOld = wallPercentage;
+        // }
     }
 
 
