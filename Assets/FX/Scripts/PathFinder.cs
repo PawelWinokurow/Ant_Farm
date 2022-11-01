@@ -112,8 +112,10 @@ public class PathFinder
         }
         if (isGoalFound)
         {
-            var path = new Path();
-            path.OverallDistance = costSoFar[goal.Id];
+            var path = new Path()
+            {
+                OverallDistance = costSoFar[goal.Id]
+            };
             var next = cameFrom[goal.Id];
             while (next != null)
             {
