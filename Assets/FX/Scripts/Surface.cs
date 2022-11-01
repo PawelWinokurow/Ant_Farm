@@ -13,8 +13,8 @@ public class Surface : MonoBehaviour
     public GameObject digPrefab;
     public GameObject fillPrefab;
     private Camera cam;
-    public int height = 10;
-    public int width = 10;
+    private int height;
+    private int width;
     public Vector3 ld;
     public Vector3 rd;
     public Vector3 lu;
@@ -22,7 +22,6 @@ public class Surface : MonoBehaviour
     public float w;
     public float h;
 
-    private Hexagon[,] allHexXZ;//это для счета к какому хексу мышка наиближе
     public Hexagon[] allHex;//это хексы логики
 
     public Graph PathGraph;
@@ -30,7 +29,7 @@ public class Surface : MonoBehaviour
     public Dictionary<string, GameObject> Icons = new Dictionary<string, GameObject>();
     public Dictionary<string, GameObject> OldBlocks = new Dictionary<string, GameObject>();
 
-    public void Init(Graph PathGraph, bool generateGraph = true)
+    public void Init(Graph PathGraph)
     {
         this.PathGraph = PathGraph;
         cam = Camera.main;
@@ -50,7 +49,6 @@ public class Surface : MonoBehaviour
         height = Mathf.CeilToInt((lu.z - ld.z) / h) - 1;//находим количество шестиугольников в ширину и длину
         width = Mathf.CeilToInt((rd.x - ld.x) / w) - 1;
 
-        allHexXZ = new Hexagon[width, height];
         allHex = new Hexagon[width * height];
 
         for (int z = 0; z < height; z++)
@@ -58,17 +56,19 @@ public class Surface : MonoBehaviour
             for (int x = 0; x < width; x++)
             {
                 Vector3 hexPosition = new Vector3(w * (x + (z % 2f) / 2f), 0f, z * h);
-                if (generateGraph) PathGraph.AddHexagonSubGraph(hexPosition, radius, $"x{x}z{z}");
-
-                Hexagon hex = Instantiate(hexPrefab, new Vector3(w * (x + (z % 2f) / 2f), 0f, z * h), Quaternion.identity, transform);
-                hex.Id = $"{x}_{z}";
-                allHexXZ[x, z] = hex;//двумерный массив
+                PathGraph.AddHexagonSubGraph(hexPosition, radius, $"x{x}z{z}");
+                Hexagon hex = Hexagon.CreateHexagon($"{x}_{z}", hexPrefab, hexPosition, transform);
                 allHex[z * width + x] = hex;
 
             }
         }
 
         Camera.main.transform.parent.position = new Vector3((width - 0.5f) * w / 2f, 0, (height - 1) * h / 2f * (1f - 0.09f));
+    }
+
+    public void Init(Graph PathGraph, Hexagon[] allHex)
+    {
+
     }
 
     void Update()
@@ -95,9 +95,9 @@ public class Surface : MonoBehaviour
     {
         int z = (int)Mathf.Round(pos.z / h);
         int x = (int)Mathf.Round((pos.x - (z % 2) * 0.5f * w) / w);
-        z = Mathf.Clamp(z, 0, allHexXZ.GetLength(1) - 1);
-        x = Mathf.Clamp(x, 0, allHexXZ.GetLength(0) - 1);
-        return allHexXZ[x, z];
+        z = Mathf.Clamp(z, 0, height - 1);
+        x = Mathf.Clamp(x, 0, width - 1);
+        return allHex[z * width + x];
     }
 
 
