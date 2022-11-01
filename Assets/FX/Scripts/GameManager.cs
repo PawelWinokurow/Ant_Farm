@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
         {
             GenerateData();
         }
+        InstantiateTestMobs();
     }
 
     private void LoadData()
@@ -41,10 +42,6 @@ public class GameManager : MonoBehaviour
         StoreService.SaveHexagons(Surface.Hexagons);
     }
 
-    void Start()
-    {
-        InstantiateTestMobs();
-    }
     void InstantiateTestMobs()
     {
         JobScheduler.AddMob(Instantiate(DiggerPrefab, new Vector3(30, 0, 30), Quaternion.identity));
