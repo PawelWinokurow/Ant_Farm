@@ -16,6 +16,6 @@ public class Vector3Serializable
 
     public override string ToString()
     {
-        return $"{x} {y} {z}";
+        return $"{x}_{y}_{z}";
     }
 }

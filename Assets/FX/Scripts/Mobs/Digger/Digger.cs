@@ -60,7 +60,7 @@ public class Digger : MonoBehaviour, Mob
 
     void DrawDebugPath()
     {
-        var path = new List<Vector3>() { CurrentPosition, };
+        var path = new List<Vector3>() { CurrentPosition };
 
         for (int j = i + 1; j < Path.WayPoints.Count - 1; j++)
         {

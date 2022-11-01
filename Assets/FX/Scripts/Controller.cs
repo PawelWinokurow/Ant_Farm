@@ -6,7 +6,6 @@ using UnityEngine;
 public class Controller : MonoBehaviour
 {
 
-    public Transform marker;
     private Hexagon hex;
     public GameManager GameManager;
     public Surface Surface;
@@ -19,8 +18,7 @@ public class Controller : MonoBehaviour
     public void Tap(Vector3 pos)
     {
         pos = Camera.main.ScreenToWorldPoint(pos);
-        hex = Surface.PositionToHex(pos);
-        marker.transform.position = hex.transform.position;
+        Hexagon hex = Surface.PositionToHex(pos);
         GameManager.ProcessTap(pos);
     }
 

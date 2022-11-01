@@ -3,15 +3,15 @@ using System;
 [Serializable]
 public class PathEdgeSerializable
 {
-    public PathVertexSerializable From;
-    public PathVertexSerializable To;
+    public Vector3Serializable FromPosition;
+    public Vector3Serializable ToPosition;
     public float EdgeWeight;
     public bool IsWalkable;
 
     public PathEdgeSerializable(PathVertexSerializable From, PathVertexSerializable To, float EdgeWeight)
     {
-        this.From = From;
-        this.To = To;
+        this.FromPosition = From.Position;
+        this.ToPosition = To.Position;
         this.EdgeWeight = EdgeWeight;
         this.IsWalkable = true;
     }
