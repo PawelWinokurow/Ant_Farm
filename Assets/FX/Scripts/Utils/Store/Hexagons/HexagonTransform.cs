@@ -12,8 +12,5 @@ public class HexagonTransform
         hexagonSerializable.Position = VectorTransform.ToSerializable(hexagon.Position);
         return hexagonSerializable;
     }
-    public static Hexagon FromSerializable(HexagonSerializable hexagonSerializable, Object hexPrefab, Transform parent)
-    {
-        return Hexagon.CreateHexagon(hexagonSerializable.Id, hexPrefab, VectorTransform.FromSerializable(hexagonSerializable.Position), parent);
-    }
+
 }

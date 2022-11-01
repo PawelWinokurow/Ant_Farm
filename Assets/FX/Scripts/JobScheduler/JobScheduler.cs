@@ -107,15 +107,14 @@ public class JobScheduler : MonoBehaviour
             {
                 if (!mob.HasPath)
                 {
-                    mob.SetPath(pathFinder.RandomWalk(mob.CurrentPosition, mob.InitialPosition, 10));
+                    mob.SetPath(pathFinder.RandomWalk(mob.CurrentPosition, mob.InitialPosition, 5));
                 }
                 else if (mob.WayPoints?.Count == 0)
                 {
-                    var newPath = pathFinder.RandomWalk(mob.WayPoints[mob.WayPoints.Count - 1], mob.InitialPosition, 10);
+                    var newPath = pathFinder.RandomWalk(mob.CurrentPosition, mob.InitialPosition, 5);
                     mob.Path.WayPoints.AddRange(newPath.WayPoints);
                     mob.Path.OverallDistance += newPath.OverallDistance;
                 }
-
             }
         });
     }

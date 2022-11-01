@@ -25,19 +25,19 @@ public class BuildWallsTest : MonoBehaviour
     }
 
 
-    void CreateWalls()
+    public void CreateWalls()
     {
         UnityEngine.Random.InitState(Guid.NewGuid().GetHashCode());
         surf.PathGraph.ResetAllEdgesToWalkable();
-        for (int i = 1; i < surf.allHex.Length - 1; i++)
+        for (int i = 1; i < surf.Hexagons.Length - 1; i++)
         {
             if (UnityEngine.Random.Range(0, 100f) < wallPercentage)
             {
-                surf.AddBlock(surf.allHex[i]);
+                surf.AddBlock(surf.Hexagons[i]);
             }
             else
             {
-                surf.AddGround(surf.allHex[i]);
+                surf.AddGround(surf.Hexagons[i]);
             }
         }
     }

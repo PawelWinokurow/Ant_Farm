@@ -9,6 +9,7 @@ public enum HEX_TYPE
 
 public class Hexagon : MonoBehaviour
 {
+    public static float Radius = 2f;
     public string Id { get; set; }
     public HEX_TYPE HexType { get; set; }
     public Vector3 Position { get; set; }
@@ -16,12 +17,12 @@ public class Hexagon : MonoBehaviour
     public bool IsSoil { get => HexType == HEX_TYPE.SOIL; }
 
 
-    public static Hexagon CreateHexagon(string Id, Object hexPrefab, Vector3 hexPosition, Transform parent)
+    public static Hexagon CreateHexagon(string Id, Hexagon hexPrefab, Vector3 hexPosition, Transform parent, HEX_TYPE hexType)
     {
-        Hexagon hex = (Hexagon)Instantiate(hexPrefab, hexPosition, Quaternion.identity, parent);
+        Hexagon hex = Instantiate(hexPrefab, hexPosition, Quaternion.identity, parent);
         hex.Position = hexPosition;
         hex.Id = Id;
-        hex.HexType = HEX_TYPE.EMPTY;
+        hex.HexType = hexType;
         return hex;
     }
 }

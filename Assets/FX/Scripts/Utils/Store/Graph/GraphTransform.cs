@@ -17,9 +17,19 @@ public class GraphTransform
     {
         var graph = new Graph();
         graph.PathVertices = graphSerializable.PathVertices.Select(vertex => FromSerializable(vertex)).ToList();
-        graph.AdjacencyList = graphSerializable.AdjacencyList.Select(edge => FromSerializable(edge)).ToList();
         graph.PathVerticesMap = new Dictionary<Vector3, PathVertex>();
-        graph.PathVertices.ForEach(vertex => graph.PathVerticesMap[vertex.Position] = vertex);
+        graph.PathVertices.ForEach(vertex =>
+        {
+            graph.PathVerticesMap[vertex.Position] = vertex;
+        });
+        graph.AdjacencyList = graphSerializable.AdjacencyList.Select(edge =>
+        {
+            var serializedEdge = FromSerializable(edge);
+            serializedEdge.From = graph.PathVerticesMap[serializedEdge.From.Position];
+            serializedEdge.To = graph.PathVerticesMap[serializedEdge.To.Position];
+            graph.PathVerticesMap[serializedEdge.From.Position].Edges.Add(serializedEdge);
+            return serializedEdge;
+        }).ToList();
         return graph;
     }
     private static PathEdgeSerializable ToSerializable(PathEdge edge)

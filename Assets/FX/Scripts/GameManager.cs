@@ -1,9 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.AI;
 
 
 public class GameManager : MonoBehaviour
@@ -18,24 +13,34 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        PathGraph = null;
-        // if (StoreService.DoesGraphExist())
-        // {
-        // PathGraph = StoreService.LoadGraph();
-        //     PathGraph = new Graph();
-        //     Surface.Init(PathGraph, false);
-        // }
-        // else
-        // {
-        //     PathGraph = new Graph();
-        //     Surface.Init(PathGraph, true);
-        // StoreService.SaveGraph(PathGraph);
-        // }
+        if (StoreService.DoesGraphExist() && StoreService.DoHexagonsExist())
+        {
+            LoadData();
+        }
+        else
+        {
+            GenerateData();
+        }
+    }
+
+    private void LoadData()
+    {
+        PathGraph = StoreService.LoadGraph();
+        HexagonSerializable[] hexagons = StoreService.LoadHexagons();
+        Surface.Init(PathGraph, hexagons);
+        JobScheduler.SetGraph(PathGraph);
+    }
+
+    private void GenerateData()
+    {
         PathGraph = new Graph();
         Surface.Init(PathGraph);
-        JobScheduler.SetGraph(PathGraph);
         BuildWallsTest.Init(Surface);
+        JobScheduler.SetGraph(PathGraph);
+        // StoreService.SaveGraph(PathGraph);
+        // StoreService.SaveHexagons(Surface.Hexagons);
     }
+
     void Start()
     {
         InstantiateTestMobs();
@@ -60,8 +65,6 @@ public class GameManager : MonoBehaviour
         {
             JobScheduler.AssignJob(new DigJob(hex, hex.transform.position, AssignmentFactory.CreateDigAssignment(hex)));
         }
-
-
     }
 
 
