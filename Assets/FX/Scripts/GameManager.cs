@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
         HexagonSerializable[] hexagons = StoreService.LoadHexagons();
         Surface.Init(PathGraph, hexagons);
         JobScheduler.SetGraph(PathGraph);
+        JobScheduler.SetSurface(Surface);
     }
 
     private void GenerateData()
@@ -38,6 +39,7 @@ public class GameManager : MonoBehaviour
         Surface.Init(PathGraph);
         BuildWallsTest.Init(Surface);
         JobScheduler.SetGraph(PathGraph);
+        JobScheduler.SetSurface(Surface);
         StoreService.SaveGraph(PathGraph);
         StoreService.SaveHexagons(Surface.Hexagons);
     }
@@ -47,15 +49,22 @@ public class GameManager : MonoBehaviour
     {
         Hexagon hex = Surface.PositionToHex(pos);
 
-        Surface.AddIcon(hex);
-
-        if (hex.IsEmpty)
+        if (JobScheduler.IsJobAlreadyCreated(hex.Id))
         {
-            JobScheduler.AssignJob(new DiggerJob(hex, hex.transform.position, AssignmentFactory.CreateFillAssignment(hex)));
+            Surface.RemoveIcon(hex);
+            JobScheduler.CancelJob(hex.Id);
         }
-        else if (hex.IsSoil)
+        else
         {
-            JobScheduler.AssignJob(new DiggerJob(hex, hex.transform.position, AssignmentFactory.CreateDigAssignment(hex)));
+            if (hex.IsEmpty)
+            {
+                JobScheduler.AssignJob(new DiggerJob(hex, hex.transform.position, JobType.FILL));
+            }
+            else if (hex.IsSoil)
+            {
+                JobScheduler.AssignJob(new DiggerJob(hex, hex.transform.position, JobType.DIG));
+            }
+            Surface.AddIcon(hex);
         }
     }
 

@@ -33,6 +33,7 @@ public class JobScheduler : MonoBehaviour
 
 
     private Graph pathGraph;
+    private Surface surface;
     private PathFinder pathFinder;
     private List<Mob> busyMobs = new List<Mob>();
     private List<Mob> freeMobs = new List<Mob>();
@@ -50,6 +51,10 @@ public class JobScheduler : MonoBehaviour
     {
         this.pathGraph = pathGraph;
         pathFinder = new PathFinder(pathGraph);
+    }
+    public void SetSurface(Surface surface)
+    {
+        this.surface = surface;
     }
     public void AddMob(Mob mob)
     {
@@ -90,8 +95,6 @@ public class JobScheduler : MonoBehaviour
             for (int i = unassignedJobsQueue.Count - 1; i >= 0; i--)
             {
                 var job = unassignedJobsQueue[i];
-                if (job.IsAssigned) continue;
-                if (mob.HasJob) continue;
                 Path path = pathFinder.FindPath(mob.CurrentPosition, job.Destination, true);
                 if (path != null && (minDistance == null || path.OverallDistance < minDistance.Path.OverallDistance))
                 {
@@ -132,18 +135,19 @@ public class JobScheduler : MonoBehaviour
     {
         var mob = distance.Mob;
         var job = distance.Job;
-        distance.Job.IsAssigned = true;
         mob.Job = job;
-        mob.Job.RemoveJob = () =>
+        job.Mob = mob;
+        job.Execute = () =>
         {
-            RemoveJob(job);
-            MoveBusyMobToFreeMobs(mob);
-            mob.SetState(new IdleState((Digger)mob));
+            surface.StartHexJobExecution(((DiggerJob)job).Hex, mob);
+        };
+        job.Remove = () =>
+        {
+            CancelJob(job);
         };
         mob.SetState(new GoToState((Digger)mob));
         Path path = pathFinder.FindPath(mob.CurrentPosition, job.Destination, true);
         mob.SetPath(distance.Path);
-
     }
 
 
@@ -165,24 +169,50 @@ public class JobScheduler : MonoBehaviour
     {
         return jobMap.ContainsKey(job.Id);
     }
+    public bool IsJobAlreadyCreated(string jobId)
+    {
+        return jobMap.ContainsKey(jobId);
+    }
 
-    public bool IsJobInQueue(Job job)
+    public bool IsJobUnassigned(Job job)
     {
         return unassignedJobsQueue.Any(item => item.Id == job.Id);
+    }
+    public bool IsJobAssigned(Job job)
+    {
+        return assignedJobsQueue.Any(item => item.Id == job.Id);
     }
 
     public void AssignJob(Job job)
     {
-        if (!IsJobAlreadyCreated(job) && !IsJobInQueue(job))
+        if (!IsJobAlreadyCreated(job) && !IsJobUnassigned(job))
         {
-            unassignedJobsQueue.Add(job);
             jobMap.Add(job.Id, job);
+            unassignedJobsQueue.Add(job);
         }
     }
 
-    public void RemoveJob(Job job)
+    public void CancelJob(string jobId)
+    {
+        var job = jobMap[jobId];
+        var mob = job.Mob;
+        Remove(job);
+        MoveBusyMobToFreeMobs(mob);
+        job.Mob.SetState(new IdleState((Digger)mob));
+    }
+    public void CancelJob(Job job)
+    {
+        var mob = job.Mob;
+        Remove(job);
+        MoveBusyMobToFreeMobs(mob);
+        job.Mob.SetState(new IdleState((Digger)mob));
+    }
+
+    public void Remove(Job job)
     {
         assignedJobsQueue.Remove(job);
+        unassignedJobsQueue.Remove(job);
         jobMap.Remove(job.Id);
     }
+
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Digger : MonoBehaviour, Mob
 {
+    public int ConstructionSpeed = 20;
     public List<Vector3> WayPoints { set; get; }
     public Vector3 CurrentPosition { set; get; }
     private Job job;
@@ -11,18 +12,8 @@ public class Digger : MonoBehaviour, Mob
     public Path Path { get; set; }
     public State CurrentState { get; set; }
     public Vector3 InitialPosition { get; set; }
-
-    public bool HasAsignment
-    {
-        get => HasJob && Job.Assignment != null;
-    }
     public bool HasPath { get => Path != null; }
-
-    public bool HasJob
-    {
-        get => Job != null;
-    }
-
+    public bool HasJob { get => Job != null; }
     private float lerpDuration;
     private float t = 0f;
     private int i = 0;
@@ -109,15 +100,6 @@ public class Digger : MonoBehaviour, Mob
     void Update()
     {
         CurrentState.Tick();
-    }
-
-    public void ExecuteAssignment()
-    {
-        if (Job.Assignment != null)
-        {
-            Job.Assignment.Execute(this);
-            this.Job = null;
-        }
     }
 
 }

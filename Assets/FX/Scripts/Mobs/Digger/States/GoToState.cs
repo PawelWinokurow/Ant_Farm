@@ -27,20 +27,14 @@ public class GoToState : State
         {
             digger.Move(MOVEMENT_SPEED);
         }
-        else if (digger.HasAsignment)
+        else if (digger.HasJob && (digger.Job.Type == JobType.DIG || digger.Job.Type == JobType.FILL))
         {
-            if (digger.Job.Assignment.Type == AssignmentType.DIG || digger.Job.Assignment.Type == AssignmentType.FILL)
-            {
-                digger.SetState(new DigState(digger));
-            }
+            digger.SetState(new DigState(digger));
         }
         else
         {
             digger.SetState(new IdleState(digger));
         }
     }
-
-
-
 
 }

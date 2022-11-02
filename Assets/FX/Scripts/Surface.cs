@@ -1,13 +1,13 @@
-using System.Linq;
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class Surface : MonoBehaviour
 {
     public Hexagon hexPrefab;
     public Hexagon wallPrefab;
-    public GameObject digPrefab;
-    public GameObject fillPrefab;
+    public Hexagon digPrefab;
+    public Hexagon fillPrefab;
     private Camera cam;
     private int height;
     private int width;
@@ -22,8 +22,7 @@ public class Surface : MonoBehaviour
 
     public Graph PathGraph;
 
-    public Dictionary<string, GameObject> Icons = new Dictionary<string, GameObject>();
-    public Dictionary<string, GameObject> OldBlocks = new Dictionary<string, GameObject>();
+    public Dictionary<string, Hexagon> IconOldHexagons = new Dictionary<string, Hexagon>();
 
     public void Init(Graph PathGraph)
     {
@@ -117,6 +116,57 @@ public class Surface : MonoBehaviour
         }
     }
 
+    public void StartHexJobExecution(Hexagon hex, Mob mob)
+    {
+        if (mob.Job.Type == JobType.DIG)
+        {
+            StartCoroutine(Dig(hex, (Digger)mob));
+        }
+        else if (mob.Job.Type == JobType.FILL)
+        {
+            StartCoroutine(Fill(hex, (Digger)mob));
+        }
+    }
+
+    IEnumerator Dig(Hexagon hex, Digger digger)
+    {
+        while (true)
+        {
+            if (hex.Work <= 0)
+            {
+                AddIcon(hex);
+                AddGround(hex);
+                digger.Job.Remove();
+                yield return null;
+            }
+            hex.Work -= digger.ConstructionSpeed;
+            yield return new WaitForSeconds(1f);
+        }
+    }
+
+    IEnumerator Fill(Hexagon hex, Digger digger)
+    {
+        while (true)
+        {
+            if (hex.Work <= 0)
+            {
+                AddIcon(hex);
+                ClearHexagon(hex);
+                // AddGround(hex);
+                AddBlock(hex);
+                Debug.Log("done");
+                digger.Job.Remove();
+                Debug.Log("remove");
+                yield return null;
+            }
+            hex.Work -= digger.ConstructionSpeed;
+            yield return new WaitForSeconds(1f);
+        }
+    }
+
+
+
+
     public Hexagon PositionToHex(Vector3 pos)
     {
         int z = (int)Mathf.Round(pos.z / h);
@@ -129,39 +179,43 @@ public class Surface : MonoBehaviour
     public void AddBlock(Hexagon hex)
     {
         hex.HexType = HEX_TYPE.SOIL;
+        hex.Work = 50;
         PathGraph.ProhibitHexagon(hex.transform.position);
         Instantiate(wallPrefab, hex.transform.position, Quaternion.identity, hex.transform);
     }
 
+
+
     public void AddGround(Hexagon hex)
     {
         hex.HexType = HEX_TYPE.EMPTY;
+        hex.Work = 50;
+        PathGraph.AllowHexagon(hex.transform.position);
         ClearHexagon(hex);
     }
 
     public void AddIcon(Hexagon hex)
     {
-        if (Icons.ContainsKey(hex.Id))
+        var clonedHex = Instantiate(hex).AssignProperties(hex);
+        IconOldHexagons.Add(clonedHex.Id, clonedHex);
+        Hexagon prefab = null;
+        if (hex.IsEmpty)
         {
-            var oldIcon = Icons[hex.Id];
-            GameObject.Destroy(oldIcon);
-            Icons.Remove(hex.Id);
-            Instantiate(OldBlocks[hex.Id], hex.transform.position, Quaternion.identity, hex.transform);
-            OldBlocks.Remove(hex.Id);
+            prefab = fillPrefab;
         }
-        else
+        else if (hex.IsSoil)
         {
-            OldBlocks.Add(hex.Id, Instantiate(hex.gameObject));
-            ClearHexagon(hex);
-            if (hex.IsEmpty)
-            {
-                Icons.Add(hex.Id, Instantiate(fillPrefab, hex.transform.position, Quaternion.identity, hex.transform));
-            }
-            else if (hex.IsSoil)
-            {
-                Icons.Add(hex.Id, Instantiate(digPrefab, hex.transform.position, Quaternion.identity, hex.transform));
-            }
+            prefab = digPrefab;
         }
+        ClearHexagon(hex);
+        var newHex = Instantiate(prefab, hex.transform.position, Quaternion.identity, hex.transform).AssignProperties(clonedHex);
+    }
+    public void RemoveIcon(Hexagon hex)
+    {
+        var oldIcon = IconOldHexagons[hex.Id];
+        ClearHexagon(hex);
+        IconOldHexagons.Remove(hex.Id);
+        Instantiate(oldIcon, hex.transform.position, Quaternion.identity, hex.transform);
     }
 
     private void ClearHexagon(Hexagon hex)

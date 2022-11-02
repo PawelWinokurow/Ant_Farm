@@ -3,18 +3,18 @@ using UnityEngine;
 public class DiggerJob : Job
 {
     public string Id { set; get; }
-    public bool IsAssigned { get; set; }
     public Vector3 Destination { set; get; }
     public Hexagon Hex { get; set; }
-    public Assignment Assignment { get; set; }
-    public Action RemoveJob { get; set; }
+    public Action Remove { get; set; }
+    public Action Execute { get; set; }
+    public Mob Mob { get; set; }
+    public JobType Type { get; set; }
 
-    public DiggerJob(Hexagon hex, Vector3 destination, Assignment assignment)
+    public DiggerJob(Hexagon hex, Vector3 destination, JobType type)
     {
         Id = hex.Id;
         Hex = hex;
         Destination = destination;
-        Assignment = assignment;
-        IsAssigned = false;
+        Type = type;
     }
 }

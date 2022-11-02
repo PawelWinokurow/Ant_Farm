@@ -12,11 +12,11 @@ public class DigState : State
 
     public override void Tick()
     {
-        digger.ExecuteAssignment();
     }
 
     override public void OnStateEnter()
     {
+        digger.Job.Execute();
     }
 
     override public void OnStateExit()
