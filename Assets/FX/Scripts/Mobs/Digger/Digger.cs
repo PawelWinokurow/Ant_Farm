@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Digger : MonoBehaviour, Mob
 {
-    public int ConstructionSpeed = 20;
+    public int ConstructionSpeed = 2;
     public List<Vector3> WayPoints { set; get; }
     public Vector3 CurrentPosition { set; get; }
     private Job job;

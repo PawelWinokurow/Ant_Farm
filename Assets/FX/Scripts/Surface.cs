@@ -132,15 +132,16 @@ public class Surface : MonoBehaviour
     {
         while (true)
         {
+            hex.Work -= digger.ConstructionSpeed;
             if (hex.Work <= 0)
             {
-                AddIcon(hex);
+                ClearHexagon(hex);
+                IconOldHexagons.Remove(hex.Id);
                 AddGround(hex);
                 digger.Job.Remove();
                 yield return null;
             }
-            hex.Work -= digger.ConstructionSpeed;
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.1f);
         }
     }
 
@@ -148,19 +149,16 @@ public class Surface : MonoBehaviour
     {
         while (true)
         {
+            hex.Work -= digger.ConstructionSpeed;
             if (hex.Work <= 0)
             {
-                AddIcon(hex);
                 ClearHexagon(hex);
-                // AddGround(hex);
+                IconOldHexagons.Remove(hex.Id);
                 AddBlock(hex);
-                Debug.Log("done");
                 digger.Job.Remove();
-                Debug.Log("remove");
                 yield return null;
             }
-            hex.Work -= digger.ConstructionSpeed;
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.1f);
         }
     }
 
