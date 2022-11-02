@@ -91,7 +91,7 @@ public class Digger : MonoBehaviour, Mob
     public void ResetMovement()
     {
         i = 0;
-        if (Path != null)
+        if (Path != null && Path.WayPoints.Count >= 2)
             lerpDuration = Vector3.Distance(Path.WayPoints[0], Path.WayPoints[1]);
     }
     public void RemovePath()

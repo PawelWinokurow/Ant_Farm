@@ -69,6 +69,7 @@ public class JobScheduler : MonoBehaviour
 
     private void DistributeJobs()
     {
+        Debug.Log(unassignedJobsQueue.Count);
         if (SomeJobLeft())
         {
             AssignWork();
@@ -89,10 +90,11 @@ public class JobScheduler : MonoBehaviour
 
     private void AssignWork()
     {
-        foreach (var mob in freeMobs)
+
+        for (int i = unassignedJobsQueue.Count - 1; i >= 0; i--)
         {
             JobMobDistance minDistance = null;
-            for (int i = unassignedJobsQueue.Count - 1; i >= 0; i--)
+            foreach (var mob in freeMobs)
             {
                 var job = unassignedJobsQueue[i];
                 Path path = pathFinder.FindPath(mob.CurrentPosition, job.Destination, true);
