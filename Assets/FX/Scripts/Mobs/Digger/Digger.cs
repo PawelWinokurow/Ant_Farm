@@ -12,10 +12,6 @@ public class Digger : MonoBehaviour, Mob
     public State CurrentState { get; set; }
     public Vector3 InitialPosition { get; set; }
 
-    public bool IsGoalReached
-    {
-        get; set;
-    }
     public bool HasAsignment
     {
         get => HasJob && Job.Assignment != null;
@@ -32,7 +28,6 @@ public class Digger : MonoBehaviour, Mob
     private int i = 0;
     void Awake()
     {
-        IsGoalReached = true;
         CurrentPosition = transform.position;
         SetState(new IdleState(this));
     }
@@ -96,19 +91,17 @@ public class Digger : MonoBehaviour, Mob
             }
             else
             {
-                ResetWaypoints();
-                IsGoalReached = true;
+                RemovePath();
             }
         }
     }
 
     public void ResetMovement()
     {
-        IsGoalReached = false;
         i = 0;
         lerpDuration = Vector3.Distance(Path.WayPoints[0], Path.WayPoints[1]);
     }
-    public void ResetWaypoints()
+    public void RemovePath()
     {
         Path = null;
     }
@@ -125,8 +118,6 @@ public class Digger : MonoBehaviour, Mob
             Job.Assignment.Execute(this);
             this.Job = null;
         }
-        SetState(new IdleState(this));
-
     }
 
 }

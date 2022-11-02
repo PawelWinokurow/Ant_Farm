@@ -26,13 +26,16 @@ public class JobScheduler : MonoBehaviour
 {
 
     private Dictionary<string, Job> jobMap = new Dictionary<string, Job>();
-    private List<Job> notStartedJobsQueue = new List<Job>();
-    private List<Job> startedJobsQueue = new List<Job>();
+    private List<Job> unassignedJobsQueue = new List<Job>();
+    private List<Job> assignedJobsQueue = new List<Job>();
     private List<JobMobDistance> distancesQueue = new List<JobMobDistance>();
+
+
 
     private Graph pathGraph;
     private PathFinder pathFinder;
-    private List<Mob> mobs = new List<Mob>();
+    private List<Mob> busyMobs = new List<Mob>();
+    private List<Mob> freeMobs = new List<Mob>();
 
     IEnumerator Start()
     {
@@ -50,12 +53,12 @@ public class JobScheduler : MonoBehaviour
     }
     public void AddMob(Mob mob)
     {
-        mobs.Add(mob);
+        freeMobs.Add(mob);
     }
 
     private bool SomeJobLeft()
     {
-        return notStartedJobsQueue.Count != 0 && mobs.Count != 0;
+        return unassignedJobsQueue.Count != 0 && freeMobs.Count != 0;
     }
 
 
@@ -72,19 +75,21 @@ public class JobScheduler : MonoBehaviour
     {
         if (distancesQueue.Count != 0)
         {
-            SetJobToWorker(distancesQueue[0]);
+            var distance = distancesQueue[0];
+            SetJobToWorker(distance);
+            MoveFreeMobToBusyMobs(distance.Mob);
             distancesQueue.RemoveAt(0);
         }
     }
 
     private void AssignWork()
     {
-        foreach (var mob in mobs)
+        foreach (var mob in freeMobs)
         {
             JobMobDistance minDistance = null;
-            for (int i = notStartedJobsQueue.Count - 1; i >= 0; i--)
+            for (int i = unassignedJobsQueue.Count - 1; i >= 0; i--)
             {
-                var job = notStartedJobsQueue[i];
+                var job = unassignedJobsQueue[i];
                 if (job.IsAssigned) continue;
                 if (mob.HasJob) continue;
                 Path path = pathFinder.FindPath(mob.CurrentPosition, job.Destination, true);
@@ -96,15 +101,31 @@ public class JobScheduler : MonoBehaviour
             if (minDistance != null)
             {
                 distancesQueue.Add(minDistance);
-                moveJobToStartedJobs(minDistance.Job);
+                MoveUnassignedJobToAssignedJobs(minDistance.Job);
             }
         }
     }
 
-    private void moveJobToStartedJobs(Job notStartedJob)
+    private void MoveFreeMobToBusyMobs(Mob freeMob)
     {
-        notStartedJobsQueue.Remove(notStartedJob);
-        startedJobsQueue.Add(notStartedJob);
+        freeMobs.Remove(freeMob);
+        busyMobs.Add(freeMob);
+    }
+    private void MoveBusyMobToFreeMobs(Mob busyMob)
+    {
+        busyMobs.Remove(busyMob);
+        freeMobs.Add(busyMob);
+    }
+
+    private void MoveUnassignedJobToAssignedJobs(Job unassignedJob)
+    {
+        unassignedJobsQueue.Remove(unassignedJob);
+        assignedJobsQueue.Add(unassignedJob);
+    }
+    private void MoveAssignedJobToUnssignedJobs(Job assignedJob)
+    {
+        assignedJobsQueue.Remove(assignedJob);
+        unassignedJobsQueue.Add(assignedJob);
     }
 
     private void SetJobToWorker(JobMobDistance distance)
@@ -115,8 +136,9 @@ public class JobScheduler : MonoBehaviour
         mob.Job = job;
         mob.Job.RemoveJob = () =>
         {
-            mob.SetState(new IdleState((Digger)mob));
             RemoveJob(job);
+            MoveBusyMobToFreeMobs(mob);
+            mob.SetState(new IdleState((Digger)mob));
         };
         mob.SetState(new GoToState((Digger)mob));
         Path path = pathFinder.FindPath(mob.CurrentPosition, job.Destination, true);
@@ -127,11 +149,11 @@ public class JobScheduler : MonoBehaviour
 
     private void AssignIdle()
     {
-        mobs.ForEach(mob =>
+        freeMobs.ForEach(mob =>
         {
             if (mob.CurrentState.Type == STATE.IDLE)
             {
-                if (!mob.HasPath || mob.WayPoints?.Count == 0)
+                if (!mob.HasPath)
                 {
                     mob.SetPath(pathFinder.RandomWalk(mob.CurrentPosition, mob.InitialPosition, 5));
                 }
@@ -146,21 +168,21 @@ public class JobScheduler : MonoBehaviour
 
     public bool IsJobInQueue(Job job)
     {
-        return notStartedJobsQueue.Any(item => item.Id == job.Id);
+        return unassignedJobsQueue.Any(item => item.Id == job.Id);
     }
 
     public void AssignJob(Job job)
     {
         if (!IsJobAlreadyCreated(job) && !IsJobInQueue(job))
         {
-            notStartedJobsQueue.Add(job);
+            unassignedJobsQueue.Add(job);
             jobMap.Add(job.Id, job);
         }
     }
 
     public void RemoveJob(Job job)
     {
-        notStartedJobsQueue.Remove(job);
+        assignedJobsQueue.Remove(job);
         jobMap.Remove(job.Id);
     }
 }

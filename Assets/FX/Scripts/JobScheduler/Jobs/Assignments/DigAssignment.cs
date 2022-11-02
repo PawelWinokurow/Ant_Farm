@@ -17,6 +17,7 @@ public class DigAssignment : Assignment
     {
         this.mob = mob;
         Debug.Log("Dig");
+        mob.Job.RemoveJob();
     }
 
 }

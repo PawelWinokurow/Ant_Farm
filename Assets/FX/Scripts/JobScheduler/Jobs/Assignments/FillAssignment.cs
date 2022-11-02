@@ -17,6 +17,8 @@ public class FillAssignment : Assignment
     {
         this.mob = mob;
         Debug.Log("Fill");
+        mob.Job.RemoveJob();
+
     }
 
 }

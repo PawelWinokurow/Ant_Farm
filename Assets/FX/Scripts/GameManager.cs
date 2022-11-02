@@ -51,11 +51,11 @@ public class GameManager : MonoBehaviour
 
         if (hex.IsEmpty)
         {
-            JobScheduler.AssignJob(new DigJob(hex, hex.transform.position, AssignmentFactory.CreateFillAssignment(hex)));
+            JobScheduler.AssignJob(new DiggerJob(hex, hex.transform.position, AssignmentFactory.CreateFillAssignment(hex)));
         }
         else if (hex.IsSoil)
         {
-            JobScheduler.AssignJob(new DigJob(hex, hex.transform.position, AssignmentFactory.CreateDigAssignment(hex)));
+            JobScheduler.AssignJob(new DiggerJob(hex, hex.transform.position, AssignmentFactory.CreateDigAssignment(hex)));
         }
     }
 

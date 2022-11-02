@@ -10,7 +10,7 @@ namespace AntFarm
         public JobScheduler JobScheduler;
         public Digger DiggerPrefab;
 
-        public void AddAnt()
+        public void AddMob()
         {
             StartCoroutine(SpawnMob());
         }

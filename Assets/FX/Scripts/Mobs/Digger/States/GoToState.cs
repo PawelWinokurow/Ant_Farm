@@ -18,7 +18,7 @@ public class GoToState : State
     }
     override public void OnStateExit()
     {
-        digger.ResetWaypoints();
+        digger.RemovePath();
     }
 
     public override void Tick()

@@ -21,10 +21,10 @@ public class IdleState : State
 
     override public void OnStateEnter()
     {
+        digger.RemovePath();
         digger.InitialPosition = digger.CurrentPosition;
     }
     override public void OnStateExit()
     {
-        digger.ResetWaypoints();
     }
 }

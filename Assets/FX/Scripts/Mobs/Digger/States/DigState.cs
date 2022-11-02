@@ -13,7 +13,6 @@ public class DigState : State
     public override void Tick()
     {
         digger.ExecuteAssignment();
-        digger.SetState(new IdleState(digger));
     }
 
     override public void OnStateEnter()
