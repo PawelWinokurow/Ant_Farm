@@ -4,7 +4,7 @@ public class IdleState : State
 {
 
     private Digger digger;
-    private int MOVEMENT_SPEED = 2;
+    private int MOVEMENT_SPEED = 5;
 
     public IdleState(Digger digger) : base(digger)
     {
@@ -21,8 +21,8 @@ public class IdleState : State
 
     override public void OnStateEnter()
     {
-        digger.RemovePath();
         digger.InitialPosition = digger.CurrentPosition;
+        digger.RemovePath();
     }
     override public void OnStateExit()
     {

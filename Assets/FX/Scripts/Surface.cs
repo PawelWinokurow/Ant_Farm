@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using System;
 
 public class Surface : MonoBehaviour
 {
@@ -118,17 +119,20 @@ public class Surface : MonoBehaviour
 
     public void StartHexJobExecution(Hexagon hex, Mob mob)
     {
-        if (mob.Job.Type == JobType.DIG)
+        Action<Hexagon> func = null;
+        switch (mob.Job.Type)
         {
-            StartCoroutine(Dig(hex, (Digger)mob));
+            case JobType.DIG:
+                func = AddBlock;
+                break;
+            case JobType.FILL:
+                func = AddGround;
+                break;
         }
-        else if (mob.Job.Type == JobType.FILL)
-        {
-            StartCoroutine(Fill(hex, (Digger)mob));
-        }
+        StartCoroutine(DigFill(hex, (Digger)mob, func));
     }
 
-    IEnumerator Dig(Hexagon hex, Digger digger)
+    IEnumerator DigFill(Hexagon hex, Digger digger, Action<Hexagon> func)
     {
         while (true)
         {
@@ -139,31 +143,11 @@ public class Surface : MonoBehaviour
                 IconOldHexagons.Remove(hex.Id);
                 AddGround(hex);
                 digger.Job.Remove();
-                yield return null;
+                yield break;
             }
             yield return new WaitForSeconds(0.1f);
         }
     }
-
-    IEnumerator Fill(Hexagon hex, Digger digger)
-    {
-        while (true)
-        {
-            hex.Work -= digger.ConstructionSpeed;
-            if (hex.Work <= 0)
-            {
-                ClearHexagon(hex);
-                IconOldHexagons.Remove(hex.Id);
-                AddBlock(hex);
-                digger.Job.Remove();
-                yield return null;
-            }
-            yield return new WaitForSeconds(0.1f);
-        }
-    }
-
-
-
 
     public Hexagon PositionToHex(Vector3 pos)
     {
@@ -181,8 +165,6 @@ public class Surface : MonoBehaviour
         PathGraph.ProhibitHexagon(hex.transform.position);
         Instantiate(wallPrefab, hex.transform.position, Quaternion.identity, hex.transform);
     }
-
-
 
     public void AddGround(Hexagon hex)
     {

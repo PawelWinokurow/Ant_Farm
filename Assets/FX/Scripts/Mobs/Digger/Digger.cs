@@ -5,7 +5,6 @@ using UnityEngine;
 public class Digger : MonoBehaviour, Mob
 {
     public int ConstructionSpeed = 2;
-    public List<Vector3> WayPoints { set; get; }
     public Vector3 CurrentPosition { set; get; }
     private Job job;
     public Job Job { get; set; }
@@ -90,7 +89,8 @@ public class Digger : MonoBehaviour, Mob
     public void ResetMovement()
     {
         i = 0;
-        lerpDuration = Vector3.Distance(Path.WayPoints[0], Path.WayPoints[1]);
+        if (Path != null)
+            lerpDuration = Vector3.Distance(Path.WayPoints[0], Path.WayPoints[1]);
     }
     public void RemovePath()
     {

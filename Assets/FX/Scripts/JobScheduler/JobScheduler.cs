@@ -194,21 +194,17 @@ public class JobScheduler : MonoBehaviour
 
     public void CancelJob(string jobId)
     {
-        var job = jobMap[jobId];
-        var mob = job.Mob;
-        Remove(job);
-        if (mob != null)
-        {
-            MoveBusyMobToFreeMobs(mob);
-            job.Mob.SetState(new IdleState((Digger)mob));
-        }
+        CancelJob(jobMap[jobId]);
     }
     public void CancelJob(Job job)
     {
-        var mob = job.Mob;
         Remove(job);
-        MoveBusyMobToFreeMobs(mob);
-        job.Mob.SetState(new IdleState((Digger)mob));
+        if (job.Mob != null)
+        {
+            MoveBusyMobToFreeMobs(job.Mob);
+            job.Mob.SetState(new IdleState((Digger)job.Mob));
+        }
+
     }
 
     public void Remove(Job job)
