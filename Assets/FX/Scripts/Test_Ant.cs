@@ -26,11 +26,11 @@ public class Test_Ant : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
-          
+            GetComponent<AntAnimator>().Idle();
         }
         if (Input.GetKeyDown(KeyCode.Q))
         {
-          
+            GetComponent<AntAnimator>().Run();
         }
     }
 }
