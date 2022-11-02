@@ -15,7 +15,7 @@ public class Hexagon : MonoBehaviour, Constructable
     public Vector3 Position { get; set; }
     public bool IsEmpty { get => HexType == HEX_TYPE.EMPTY; }
     public bool IsSoil { get => HexType == HEX_TYPE.SOIL; }
-    public int Work { get; set; }
+    public float Work { get; set; }
 
     public Hexagon AssignProperties(Hexagon hex)
     {
@@ -32,8 +32,17 @@ public class Hexagon : MonoBehaviour, Constructable
         hex.Position = hexPosition;
         hex.Id = Id;
         hex.HexType = hexType;
-        hex.Work = 50;
+        hex.Work = 50f;
         return hex;
     }
+
+    public void ClearHexagon()
+    {
+        for (int i = 0; i < this.transform.childCount; i++)//удаляет чайлды старой графики
+        {
+            GameObject.Destroy(this.transform.GetChild(i).gameObject);
+        }
+    }
+
 }
 

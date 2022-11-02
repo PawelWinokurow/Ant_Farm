@@ -25,6 +25,7 @@ public class GoToState : State
     {
         if (digger.HasPath)
         {
+            digger.AntAnimator.Run();
             digger.Move(MOVEMENT_SPEED);
         }
         else if (digger.HasJob && (digger.Job.Type == JobType.DIG || digger.Job.Type == JobType.FILL))

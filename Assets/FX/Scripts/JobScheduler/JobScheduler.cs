@@ -145,6 +145,10 @@ public class JobScheduler : MonoBehaviour
         {
             CancelJob(job);
         };
+        job.NotComplete = () =>
+        {
+            CancelNotCompleteJob(job);
+        };
         mob.SetState(new GoToState((Digger)mob));
         Path path = pathFinder.FindPath(mob.CurrentPosition, job.Destination, true);
         mob.SetPath(distance.Path);
@@ -205,6 +209,10 @@ public class JobScheduler : MonoBehaviour
             job.Mob.SetState(new IdleState((Digger)job.Mob));
         }
 
+    }
+    public void CancelNotCompleteJob(Job job)
+    {
+        MoveAssignedJobToUnssignedJobs(job);
     }
 
     public void Remove(Job job)

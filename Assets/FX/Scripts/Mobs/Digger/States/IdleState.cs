@@ -15,6 +15,7 @@ public class IdleState : State
     {
         if (digger.HasPath)
         {
+            digger.AntAnimator.Run();
             digger.Move(MOVEMENT_SPEED);
         }
     }

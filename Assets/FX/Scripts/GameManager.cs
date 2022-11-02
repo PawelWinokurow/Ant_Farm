@@ -40,8 +40,8 @@ public class GameManager : MonoBehaviour
         BuildWallsTest.Init(Surface);
         JobScheduler.SetGraph(PathGraph);
         JobScheduler.SetSurface(Surface);
-        StoreService.SaveGraph(PathGraph);
-        StoreService.SaveHexagons(Surface.Hexagons);
+        // StoreService.SaveGraph(PathGraph);
+        // StoreService.SaveHexagons(Surface.Hexagons);
     }
 
 

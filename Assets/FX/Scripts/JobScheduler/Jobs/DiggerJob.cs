@@ -7,6 +7,7 @@ public class DiggerJob : Job
     public Hexagon Hex { get; set; }
     public Action Remove { get; set; }
     public Action Execute { get; set; }
+    public Action NotComplete { get; set; }
     public Mob Mob { get; set; }
     public JobType Type { get; set; }
 

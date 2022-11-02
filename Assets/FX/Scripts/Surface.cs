@@ -7,6 +7,7 @@ public class Surface : MonoBehaviour
 {
     public Hexagon hexPrefab;
     public Hexagon wallPrefab;
+    public Hexagon wallPrefabScaled;
     public Hexagon digPrefab;
     public Hexagon fillPrefab;
     private Camera cam;
@@ -119,29 +120,46 @@ public class Surface : MonoBehaviour
 
     public void StartHexJobExecution(Hexagon hex, Mob mob)
     {
-        Action<Hexagon> func = null;
         switch (mob.Job.Type)
         {
             case JobType.DIG:
-                func = AddBlock;
+                StartCoroutine(Dig(hex, (Digger)mob));
                 break;
             case JobType.FILL:
-                func = AddGround;
+                StartCoroutine(Fill(hex, (Digger)mob));
                 break;
         }
-        StartCoroutine(DigFill(hex, (Digger)mob, func));
     }
 
-    IEnumerator DigFill(Hexagon hex, Digger digger, Action<Hexagon> func)
+    IEnumerator Dig(Hexagon hex, Digger digger)
     {
+        IconOldHexagons.Remove(hex.Id);
+        hex.ClearHexagon();
+        AddBlock(hex);
         while (true)
         {
             hex.Work -= digger.ConstructionSpeed;
+            hex.transform.GetChild(0).localScale = Vector3.one * hex.Work / 50;
             if (hex.Work <= 0)
             {
-                ClearHexagon(hex);
-                IconOldHexagons.Remove(hex.Id);
                 AddGround(hex);
+                digger.Job.Remove();
+                yield break;
+            }
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+    IEnumerator Fill(Hexagon hex, Digger digger)
+    {
+        hex.ClearHexagon();
+        IconOldHexagons.Remove(hex.Id);
+        AddScaledBlock(hex);
+        while (true)
+        {
+            hex.Work -= digger.ConstructionSpeed;
+            hex.transform.GetChild(0).localScale = Vector3.one * (1 - hex.Work / 50f);
+            if (hex.Work <= 0)
+            {
                 digger.Job.Remove();
                 yield break;
             }
@@ -161,17 +179,24 @@ public class Surface : MonoBehaviour
     public void AddBlock(Hexagon hex)
     {
         hex.HexType = HEX_TYPE.SOIL;
-        hex.Work = 50;
+        hex.Work = 50f;
         PathGraph.ProhibitHexagon(hex.transform.position);
         Instantiate(wallPrefab, hex.transform.position, Quaternion.identity, hex.transform);
+    }
+    public void AddScaledBlock(Hexagon hex)
+    {
+        hex.HexType = HEX_TYPE.SOIL;
+        hex.Work = 50f;
+        PathGraph.ProhibitHexagon(hex.transform.position);
+        Instantiate(wallPrefabScaled, hex.transform.position, Quaternion.identity, hex.transform);
     }
 
     public void AddGround(Hexagon hex)
     {
         hex.HexType = HEX_TYPE.EMPTY;
-        hex.Work = 50;
+        hex.Work = 50f;
         PathGraph.AllowHexagon(hex.transform.position);
-        ClearHexagon(hex);
+        hex.ClearHexagon();
     }
 
     public void AddIcon(Hexagon hex)
@@ -187,23 +212,15 @@ public class Surface : MonoBehaviour
         {
             prefab = digPrefab;
         }
-        ClearHexagon(hex);
+        hex.ClearHexagon();
         var newHex = Instantiate(prefab, hex.transform.position, Quaternion.identity, hex.transform).AssignProperties(clonedHex);
     }
     public void RemoveIcon(Hexagon hex)
     {
         var oldIcon = IconOldHexagons[hex.Id];
-        ClearHexagon(hex);
+        hex.ClearHexagon();
         IconOldHexagons.Remove(hex.Id);
         Instantiate(oldIcon, hex.transform.position, Quaternion.identity, hex.transform);
-    }
-
-    private void ClearHexagon(Hexagon hex)
-    {
-        for (int i = 0; i < hex.transform.childCount; i++)//удаляет чайлды старой графики
-        {
-            GameObject.Destroy(hex.transform.GetChild(i).gameObject);
-        }
     }
 
 }

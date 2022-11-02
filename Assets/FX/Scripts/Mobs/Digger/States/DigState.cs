@@ -12,6 +12,7 @@ public class DigState : State
 
     public override void Tick()
     {
+        digger.AntAnimator.Idle();
     }
 
     override public void OnStateEnter()
@@ -21,6 +22,7 @@ public class DigState : State
 
     override public void OnStateExit()
     {
+
     }
 
 }

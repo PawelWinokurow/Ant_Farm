@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Digger : MonoBehaviour, Mob
 {
-    public int ConstructionSpeed = 2;
+    public float ConstructionSpeed = 2f;
+    public AntAnimator AntAnimator;
     public Vector3 CurrentPosition { set; get; }
     private Job job;
     public Job Job { get; set; }
@@ -19,6 +20,7 @@ public class Digger : MonoBehaviour, Mob
     void Awake()
     {
         CurrentPosition = transform.position;
+        AntAnimator = GetComponent<AntAnimator>();
         SetState(new IdleState(this));
     }
 
