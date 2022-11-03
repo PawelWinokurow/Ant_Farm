@@ -8,7 +8,7 @@ using Unity.Jobs;
 
 public class Path
 {
-    public List<Vector3> WayPoints = new List<Vector3>();
+    public List<PathVertex> WayPoints = new List<PathVertex>();
     public float OverallDistance = 0;
 
 }
@@ -148,11 +148,11 @@ public class PathFinder
             var next = cameFrom[goal.Id];
             while (next != null)
             {
-                path.WayPoints.Add(next.Position);
+                path.WayPoints.Add(next);
                 next = cameFrom[next.Id];
             }
             path.WayPoints.Reverse();
-            path.WayPoints.Add(goal.Position);
+            path.WayPoints.Add(goal);
             // path.WayPoints = Utils.NormalizePath(path.WayPoints, 1f);
             path.OverallDistance = costSoFar[goal.Id];
             return path;

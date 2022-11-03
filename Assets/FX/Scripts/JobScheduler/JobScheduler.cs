@@ -90,8 +90,6 @@ public class JobScheduler : MonoBehaviour
 
     private void AssignWork()
     {
-
-        var watch = System.Diagnostics.Stopwatch.StartNew();
         var job = unassignedJobsQueue[0];
         var parallelJob = CreateParallelPathFinderJob(freeMobs.Select(mod => mod.CurrentPosition).ToList(), job.Destination);
         JobHandle handle = parallelJob.Schedule(freeMobs.Count, 1);
@@ -111,9 +109,6 @@ public class JobScheduler : MonoBehaviour
             SetJobToWorker(minPath);
         }
         FreePathFinderJobMemory(parallelJob);
-        watch.Stop();
-        var elapsedMs = watch.ElapsedMilliseconds;
-        Debug.Log(elapsedMs);
     }
 
     private PathFinderJob CreateParallelPathFinderJob(List<Vector3> fromDestinations, Vector3 destination)
@@ -187,7 +182,6 @@ public class JobScheduler : MonoBehaviour
         Path path = pathFinder.FindPath(mob.CurrentPosition, job.Destination, true);
         mob.SetPath(distance.Path);
     }
-
 
     private void AssignIdle()
     {

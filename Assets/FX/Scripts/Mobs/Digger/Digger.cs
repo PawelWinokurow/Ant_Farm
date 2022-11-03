@@ -51,7 +51,7 @@ public class Digger : MonoBehaviour, Mob
 
         for (int j = i + 1; j < Path.WayPoints.Count - 1; j++)
         {
-            path.Add(Path.WayPoints[j]);
+            path.Add(Path.WayPoints[j].Position);
         }
         for (int i = 0; i < path.Count - 1; i++)
         {
@@ -70,7 +70,7 @@ public class Digger : MonoBehaviour, Mob
                 if (t < lerpDuration)
                 {
                     var a = (float)Mathf.Min(t / lerpDuration, 1f);
-                    transform.position = Vector3.Lerp(Path.WayPoints[i], Path.WayPoints[i + 1], a);
+                    transform.position = Vector3.Lerp(Path.WayPoints[i].Position, Path.WayPoints[i + 1].Position, a);
                     CurrentPosition = transform.position;
                     t += Time.deltaTime * speed;
                 }
@@ -78,7 +78,7 @@ public class Digger : MonoBehaviour, Mob
                 {
                     i++;
                     t -= lerpDuration;
-                    if (i < Path.WayPoints.Count - 2) lerpDuration = Vector3.Distance(Path.WayPoints[i], Path.WayPoints[i + 1]);
+                    if (i < Path.WayPoints.Count - 2) lerpDuration = Vector3.Distance(Path.WayPoints[i].Position, Path.WayPoints[i + 1].Position);
                 }
             }
             else
@@ -92,7 +92,7 @@ public class Digger : MonoBehaviour, Mob
     {
         i = 0;
         if (Path != null && Path.WayPoints.Count >= 2)
-            lerpDuration = Vector3.Distance(Path.WayPoints[0], Path.WayPoints[1]);
+            lerpDuration = Vector3.Distance(Path.WayPoints[0].Position, Path.WayPoints[1].Position);
     }
     public void RemovePath()
     {
