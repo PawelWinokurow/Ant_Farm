@@ -10,8 +10,8 @@ namespace AntFarm
         public float zoomOutMin = 50f;
         public float zoomOutMax = 100f;
         private Vector3 touchStart;
-        private float heightMin;
-        private float widthMin;
+        private float boundZ;
+        private float boundX;
         private Camera cam;
         private float zoomL;//линейный
         private float zoom;//синусоидный
@@ -20,15 +20,23 @@ namespace AntFarm
         {
             cam = Camera.main;
 
-            heightMin = 2f * zoomOutMin*(1f-0.09f);
-            widthMin = 2f * zoomOutMin * cam.aspect;
+            float  heightMin = 2f * zoomOutMin*(1f-0.09f);
+            float widthMin = 2f * zoomOutMin * cam.aspect;
+
+            float heightMax = 2f * zoomOutMax * (1f - 0.09f);
+            float widthMax = 2f * zoomOutMax * cam.aspect;
+
+            boundZ = (heightMax - heightMin) / 2f;
+            boundX = (widthMax - widthMin) / 2f;
+
             Camera.main.orthographicSize = zoomOutMin;
         }
 
         Vector3 Clamp(Vector3 pos)//задаем границы чтоб камера не уехала за поле
         {
-            float z = Mathf.Clamp(pos.z, -heightMin* (1f - 0.09f) / 2f*(1f - zoom) , (heightMin*(1f + 0.09f) / 2f) *(1f - zoom) );
-            float x = Mathf.Clamp(pos.x, -widthMin / 2f * (1f - zoom) , widthMin / 2f * (1f - zoom) );
+  
+             float z = Mathf.Clamp(pos.z, -boundZ * (1f - 0.09f) *(1f - zoom) , boundZ * (1f + 0.09f)  *(1f - zoom) );
+             float x = Mathf.Clamp(pos.x, -boundX * (1f - zoom) , boundX * (1f - zoom) );
             return new Vector3(x, 0, z);
         }
 
