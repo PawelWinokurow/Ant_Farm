@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ public class Digger : MonoBehaviour, Mob
     public Path Path { get; set; }
     public State CurrentState { get; set; }
     public Vector3 InitialPosition { get; set; }
+    public Action Rerouting { get; set; }
     public bool HasPath { get => Path != null; }
     public bool HasJob { get => Job != null; }
     private float lerpDuration;
@@ -64,7 +66,7 @@ public class Digger : MonoBehaviour, Mob
         if (Path != null)
         {
 
-            // DrawDebugPath();
+            DrawDebugPath();
             if (i < Path.WayPoints.Count - 2)
             {
                 if (t < lerpDuration)

@@ -90,10 +90,13 @@ public class Surface : MonoBehaviour
             if (hexagons[i].HexType == HEX_TYPE.EMPTY)
             {
                 AddGround(hex);
+                PathGraph.AllowHexagon(hex.transform.position);
+
             }
             else if (hexagons[i].HexType == HEX_TYPE.SOIL)
             {
                 AddBlock(hex);
+                PathGraph.ProhibitHexagon(hex.transform.position);
             }
         }
     }
@@ -143,6 +146,7 @@ public class Surface : MonoBehaviour
             if (hex.Work <= 0)
             {
                 AddGround(hex);
+                PathGraph.AllowHexagon(hex.transform.position);
                 digger.Job.Remove();
                 yield break;
             }
@@ -156,10 +160,13 @@ public class Surface : MonoBehaviour
         AddScaledBlock(hex);
         while (true)
         {
+            RerouteMobsInRadius(hex.Position, Hexagon.Radius);
             hex.Work -= digger.ConstructionSpeed;
             hex.transform.GetChild(0).localScale = Vector3.one * (1 - hex.Work / 50f);
             if (hex.Work <= 0)
             {
+                hex.ClearHexagon();
+                AddBlock(hex);
                 digger.Job.Remove();
                 yield break;
             }
@@ -180,14 +187,12 @@ public class Surface : MonoBehaviour
     {
         hex.HexType = HEX_TYPE.SOIL;
         hex.Work = 50f;
-        PathGraph.ProhibitHexagon(hex.transform.position);
         Instantiate(wallPrefab, hex.transform.position, Quaternion.identity, hex.transform);
     }
     public void AddScaledBlock(Hexagon hex)
     {
         hex.HexType = HEX_TYPE.SOIL;
         hex.Work = 50f;
-        PathGraph.ProhibitHexagon(hex.transform.position);
         Instantiate(wallPrefabScaled, hex.transform.position, Quaternion.identity, hex.transform);
     }
 
@@ -195,8 +200,19 @@ public class Surface : MonoBehaviour
     {
         hex.HexType = HEX_TYPE.EMPTY;
         hex.Work = 50f;
-        PathGraph.AllowHexagon(hex.transform.position);
         hex.ClearHexagon();
+    }
+
+    private void RerouteMobsInRadius(Vector3 position, float radius)
+    {
+        var mobs = GameObject.FindGameObjectsWithTag("Mob");
+        foreach (var mob in mobs)
+        {
+            if (Vector3.Distance(mob.gameObject.transform.position, position) <= radius)
+            {
+                mob.GetComponent<Digger>().Rerouting();
+            }
+        }
     }
 
     public void AddIcon(Hexagon hex)

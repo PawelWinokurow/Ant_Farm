@@ -104,7 +104,7 @@ public class JobScheduler : MonoBehaviour
     private PathFinderJob CreateParallelPathFinderJob(List<Vector3> fromPositions, Vector3 destinationPosition)
     {
         var length = fromPositions.Count;
-        ManagedObjectWorld.Clear();
+        // ManagedObjectWorld.Clear();
         NativeArray<Vector3> from = new NativeArray<Vector3>(length, Allocator.TempJob);
         NativeArray<Vector3> to = new NativeArray<Vector3>(length, Allocator.TempJob);
         NativeArray<ManagedObjectRef<Path>> result = new NativeArray<ManagedObjectRef<Path>>(length, Allocator.TempJob);
@@ -164,6 +164,19 @@ public class JobScheduler : MonoBehaviour
         {
             CancelNotCompleteJob(job);
         };
+        mob.Rerouting = () =>
+        {
+            var path = pathFinder.FindPath(mob.CurrentPosition, mob.Path.WayPoints[mob.Path.WayPoints.Count - 1].Position, true);
+            if (path != null)
+            {
+                mob.SetPath(path);
+                mob.Job = job;
+            }
+            else
+            {
+                CancelJob(job);
+            }
+        };
         mob.SetState(new GoToState((Digger)mob));
         Path path = pathFinder.FindPath(mob.CurrentPosition, job.Destination, true);
         mob.SetPath(distance.Path);
@@ -178,6 +191,9 @@ public class JobScheduler : MonoBehaviour
                 if (!mob.HasPath)
                 {
                     mob.SetPath(pathFinder.RandomWalk(mob.CurrentPosition, mob.InitialPosition, 5));
+                    mob.Rerouting = () =>
+                    mob.SetPath(pathFinder.FindPath(mob.CurrentPosition, mob.Path.WayPoints[mob.Path.WayPoints.Count - 1].Position, true));
+
                 }
             }
         });

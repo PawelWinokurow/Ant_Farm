@@ -13,21 +13,6 @@ public class Path
 
 }
 
-// public PathUnmanaged ToUnmanaged(Path path)
-// {
-//     var unmanaged = new PathUnmanaged()
-//     {
-//         OverallDistance = OverallDistance,
-//         IsSuccessfull = true
-//     };
-//     var waypoints = new ManagedObjectWorld();
-//     path.WayPoints.ForEach(waypoint => waypoints.Add<Vector3>(waypoint));
-//     {
-
-//         path.WayPoints
-// }
-// }
-
 public struct PathFinderJob : IJobParallelFor
 {
     public ManagedObjectRef<PathFinder> PathFinder;

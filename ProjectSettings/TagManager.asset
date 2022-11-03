@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Hexagon
+  - Mob
   layers:
   - Default
   - TransparentFX
