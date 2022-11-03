@@ -180,12 +180,14 @@ public class Surface : MonoBehaviour
     {
         hex.HexType = HEX_TYPE.SOIL;
         hex.Work = 50f;
+        PathGraph.ProhibitHexagon(hex.transform.position);
         Instantiate(wallPrefab, hex.transform.position, Quaternion.identity, hex.transform);
     }
     public void AddScaledBlock(Hexagon hex)
     {
         hex.HexType = HEX_TYPE.SOIL;
         hex.Work = 50f;
+        PathGraph.ProhibitHexagon(hex.transform.position);
         Instantiate(wallPrefabScaled, hex.transform.position, Quaternion.identity, hex.transform);
     }
 

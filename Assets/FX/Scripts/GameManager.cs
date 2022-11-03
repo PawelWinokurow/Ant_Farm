@@ -56,7 +56,6 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            PathGraph.ProhibitHexagon(hex.transform.position);
             if (hex.IsEmpty)
             {
                 JobScheduler.AssignJob(new DiggerJob(hex, hex.transform.position, JobType.FILL));
