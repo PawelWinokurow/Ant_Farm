@@ -3,12 +3,42 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using PriorityQueue;
+using Unity.Collections;
+using Unity.Jobs;
 
 public class Path
 {
     public List<Vector3> WayPoints = new List<Vector3>();
     public float OverallDistance = 0;
 
+}
+
+// public PathUnmanaged ToUnmanaged(Path path)
+// {
+//     var unmanaged = new PathUnmanaged()
+//     {
+//         OverallDistance = OverallDistance,
+//         IsSuccessfull = true
+//     };
+//     var waypoints = new ManagedObjectWorld();
+//     path.WayPoints.ForEach(waypoint => waypoints.Add<Vector3>(waypoint));
+//     {
+
+//         path.WayPoints
+// }
+// }
+
+public struct PathFinderJob : IJobParallelFor
+{
+    public ManagedObjectRef<PathFinder> PathFinder;
+    public NativeArray<Vector3> From;
+    public NativeArray<Vector3> To;
+    public NativeArray<ManagedObjectRef<Path>> Result;
+
+    public void Execute(int i)
+    {
+        Result[i] = ManagedObjectWorld.Add(ManagedObjectWorld.Get(PathFinder).FindPath(From[i], To[i], true));
+    }
 }
 
 public class PathFinder
@@ -37,7 +67,6 @@ public class PathFinder
                 float z = initialPosition.x + 10 * (float)Math.Sin(angle);
                 to = pathGraph.NearestVertex(new Vector3(x, 0, z));
                 path = Astar(from, to);
-
             } while (path == null);
             from = to;
             overallPath.WayPoints.AddRange(path.WayPoints);
