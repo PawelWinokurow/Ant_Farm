@@ -1,11 +1,9 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using UnityEngine;
-using UnityEngine.AI;
-using PriorityQueue;
+using Unity.Collections;
+using Unity.Jobs;
 
 class JobMobDistance
 {
@@ -21,6 +19,8 @@ class JobMobDistance
     }
 
 }
+
+
 
 public class JobScheduler : MonoBehaviour
 {
@@ -69,7 +69,6 @@ public class JobScheduler : MonoBehaviour
 
     private void DistributeJobs()
     {
-        Debug.Log(unassignedJobsQueue.Count);
         if (SomeJobLeft())
         {
             AssignWork();
@@ -79,36 +78,70 @@ public class JobScheduler : MonoBehaviour
 
     void Update()
     {
-        if (distancesQueue.Count != 0)
-        {
-            var distance = distancesQueue[0];
-            SetJobToWorker(distance);
-            MoveFreeMobToBusyMobs(distance.Mob);
-            distancesQueue.RemoveAt(0);
-        }
+        // if (distancesQueue.Count != 0)
+        // {
+        // var distance = distancesQueue[0];
+        // SetJobToWorker(distance);
+        // MoveFreeMobToBusyMobs(distance.Mob);
+        // distancesQueue.RemoveAt(0);
+        // }
     }
 
     private void AssignWork()
     {
-
         for (int i = unassignedJobsQueue.Count - 1; i >= 0; i--)
         {
-            JobMobDistance minDistance = null;
-            foreach (var mob in freeMobs)
+            var job = unassignedJobsQueue[i];
+            var parallelJob = CreateParallelPathFinderJob(freeMobs.Select(mod => mod.CurrentPosition).ToList(), job.Destination);
+            JobHandle handle = parallelJob.Schedule(freeMobs.Count, 1);
+            handle.Complete();
+
+            for (int j = 0; j < freeMobs.Count; j++)
             {
-                var job = unassignedJobsQueue[i];
-                Path path = pathFinder.FindPath(mob.CurrentPosition, job.Destination, true);
+                var path = ManagedObjectWorld.Get(parallelJob.Result[j]);
+                JobMobDistance minDistance = null;
                 if (path != null && (minDistance == null || path.OverallDistance < minDistance.Path.OverallDistance))
                 {
-                    minDistance = new JobMobDistance(job, mob, path);
+                    minDistance = new JobMobDistance(job, freeMobs[j], path);
+                }
+
+                if (minDistance != null)
+                {
+
+                    SetJobToWorker(minDistance);
+                    MoveFreeMobToBusyMobs(minDistance.Mob);
+                    MoveUnassignedJobToAssignedJobs(minDistance.Job);
                 }
             }
-            if (minDistance != null)
-            {
-                distancesQueue.Add(minDistance);
-                MoveUnassignedJobToAssignedJobs(minDistance.Job);
-            }
+            FreePathFinderJobMemory(parallelJob);
         }
+    }
+
+    private PathFinderJob CreateParallelPathFinderJob(List<Vector3> fromDestinations, Vector3 destination)
+    {
+        var length = fromDestinations.Count;
+        ManagedObjectWorld.Init();
+        ManagedObjectRef<PathFinder> pathFinderRef = ManagedObjectWorld.Add(pathFinder);
+        PathFinderJob job = new PathFinderJob() { PathFinder = pathFinderRef };
+        NativeArray<Vector3> from = new NativeArray<Vector3>(length, Allocator.TempJob);
+        NativeArray<Vector3> to = new NativeArray<Vector3>(length, Allocator.TempJob);
+        NativeArray<ManagedObjectRef<Path>> result = new NativeArray<ManagedObjectRef<Path>>(length, Allocator.TempJob);
+        for (int i = 0; i < length; i++)
+        {
+            from[i] = fromDestinations[i];
+            to[i] = destination;
+        }
+        job.From = from;
+        job.To = to;
+        job.Result = result;
+        return job;
+    }
+
+    private void FreePathFinderJobMemory(PathFinderJob job)
+    {
+        job.From.Dispose();
+        job.To.Dispose();
+        job.Result.Dispose();
     }
 
     private void MoveFreeMobToBusyMobs(Mob freeMob)
