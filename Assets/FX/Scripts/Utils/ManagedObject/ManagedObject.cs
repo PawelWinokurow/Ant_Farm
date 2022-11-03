@@ -22,6 +22,13 @@ public class ManagedObjectWorld
         m_Objects = new Dictionary<int, object>(initialCapacity);
     }
 
+    public static void Clear()
+    {
+        m_NextId = 1;
+        m_Objects.Clear();
+    }
+
+
     public static ManagedObjectRef<T> Add<T>(T obj)
         where T : class
     {

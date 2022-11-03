@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
         Surface.Init(PathGraph, hexagons);
         JobScheduler.SetGraph(PathGraph);
         JobScheduler.SetSurface(Surface);
+        JobScheduler.StartJobScheuler();
     }
 
     private void GenerateData()
@@ -40,6 +41,7 @@ public class GameManager : MonoBehaviour
         BuildWallsTest.Init(Surface);
         JobScheduler.SetGraph(PathGraph);
         JobScheduler.SetSurface(Surface);
+        JobScheduler.StartJobScheuler();
         // StoreService.SaveGraph(PathGraph);
         // StoreService.SaveHexagons(Surface.Hexagons);
     }

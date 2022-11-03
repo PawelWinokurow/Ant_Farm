@@ -37,7 +37,8 @@ public struct PathFinderJob : IJobParallelFor
 
     public void Execute(int i)
     {
-        Result[i] = ManagedObjectWorld.Add(ManagedObjectWorld.Get(PathFinder).FindPath(From[i], To[i], true));
+        Path path = ManagedObjectWorld.Get(PathFinder).FindPath(From[i], To[i], true);
+        Result[i] = ManagedObjectWorld.Add(path);
     }
 }
 

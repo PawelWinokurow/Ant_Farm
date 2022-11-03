@@ -21,17 +21,12 @@ class JobMobDistance
 
 }
 
-
-
 public class JobScheduler : MonoBehaviour
 {
 
     private Dictionary<string, Job> jobMap = new Dictionary<string, Job>();
     private List<Job> unassignedJobsQueue = new List<Job>();
     private List<Job> assignedJobsQueue = new List<Job>();
-    private List<JobMobDistance> distancesQueue = new List<JobMobDistance>();
-
-
 
     private Graph pathGraph;
     private Surface surface;
@@ -39,19 +34,26 @@ public class JobScheduler : MonoBehaviour
     private List<Mob> busyMobs = new List<Mob>();
     private List<Mob> freeMobs = new List<Mob>();
 
-    IEnumerator Start()
+    public void StartJobScheuler()
+    {
+        StartCoroutine(DistributeJobsCoroutine());
+    }
+    IEnumerator DistributeJobsCoroutine()
     {
         while (true)
         {
-            yield return new WaitForSeconds(0.5f);
             DistributeJobs();
+            yield return new WaitForSeconds(0.5f);
         }
     }
+
 
     public void SetGraph(Graph pathGraph)
     {
         this.pathGraph = pathGraph;
         pathFinder = new PathFinder(pathGraph);
+        ManagedObjectWorld.Init();
+
     }
     public void SetSurface(Surface surface)
     {
@@ -77,17 +79,6 @@ public class JobScheduler : MonoBehaviour
         AssignIdle();
     }
 
-    void Update()
-    {
-        // if (distancesQueue.Count != 0)
-        // {
-        // var distance = distancesQueue[0];
-        // SetJobToWorker(distance);
-        // MoveFreeMobToBusyMobs(distance.Mob);
-        // distancesQueue.RemoveAt(0);
-        // }
-    }
-
     private void AssignWork()
     {
         var job = unassignedJobsQueue[0];
@@ -103,7 +94,6 @@ public class JobScheduler : MonoBehaviour
         var minPath = minPaths.Dequeue();
         if (minPath != null)
         {
-
             MoveUnassignedJobToAssignedJobs(minPath.Job);
             MoveFreeMobToBusyMobs(minPath.Mob);
             SetJobToWorker(minPath);
@@ -111,24 +101,20 @@ public class JobScheduler : MonoBehaviour
         FreePathFinderJobMemory(parallelJob);
     }
 
-    private PathFinderJob CreateParallelPathFinderJob(List<Vector3> fromDestinations, Vector3 destination)
+    private PathFinderJob CreateParallelPathFinderJob(List<Vector3> fromPositions, Vector3 destinationPosition)
     {
-        var length = fromDestinations.Count;
-        ManagedObjectWorld.Init();
-        ManagedObjectRef<PathFinder> pathFinderRef = ManagedObjectWorld.Add(pathFinder);
-        PathFinderJob job = new PathFinderJob() { PathFinder = pathFinderRef };
+        var length = fromPositions.Count;
+        ManagedObjectWorld.Clear();
         NativeArray<Vector3> from = new NativeArray<Vector3>(length, Allocator.TempJob);
         NativeArray<Vector3> to = new NativeArray<Vector3>(length, Allocator.TempJob);
         NativeArray<ManagedObjectRef<Path>> result = new NativeArray<ManagedObjectRef<Path>>(length, Allocator.TempJob);
+
         for (int i = 0; i < length; i++)
         {
-            from[i] = fromDestinations[i];
-            to[i] = destination;
+            from[i] = fromPositions[i];
+            to[i] = destinationPosition;
         }
-        job.From = from;
-        job.To = to;
-        job.Result = result;
-        return job;
+        return new PathFinderJob() { PathFinder = ManagedObjectWorld.Add(pathFinder), From = from, To = to, Result = result };
     }
 
     private void FreePathFinderJobMemory(PathFinderJob job)
