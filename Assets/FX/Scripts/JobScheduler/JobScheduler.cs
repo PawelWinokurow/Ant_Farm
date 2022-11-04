@@ -192,6 +192,7 @@ public class JobScheduler : MonoBehaviour
     private void SetJobToWorker(Job job)
     {
         var mob = job.Mob;
+        mob.Job = job;
         var path = job.Path;
         job.Execute = () =>
         {
