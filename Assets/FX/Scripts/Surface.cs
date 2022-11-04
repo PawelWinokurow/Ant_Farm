@@ -24,7 +24,7 @@ public class Surface : MonoBehaviour
 
     public Graph PathGraph;
 
-    public Dictionary<string, Hexagon> IconOldHexagons = new Dictionary<string, Hexagon>();
+    public Dictionary<string, Hexagon> OldHexagons = new Dictionary<string, Hexagon>();
 
     public void Init(Graph PathGraph)
     {
@@ -136,7 +136,7 @@ public class Surface : MonoBehaviour
 
     public IEnumerator Dig(Hexagon hex, Digger digger)
     {
-        IconOldHexagons.Remove(hex.Id);
+        OldHexagons.Remove(hex.Id);
         hex.ClearHexagon();
         AddBlock(hex);
         while (true)
@@ -147,7 +147,7 @@ public class Surface : MonoBehaviour
             {
                 AddGround(hex);
                 PathGraph.AllowHexagon(hex.transform.position);
-                digger.Job.Remove();
+                digger.Job.CancelJob();
                 yield break;
             }
             yield return new WaitForSeconds(0.1f);
@@ -157,7 +157,7 @@ public class Surface : MonoBehaviour
     public IEnumerator Fill(Hexagon hex, Digger digger)
     {
         hex.ClearHexagon();
-        IconOldHexagons.Remove(hex.Id);
+        OldHexagons.Remove(hex.Id);
         AddScaledBlock(hex);
         while (true)
         {
@@ -167,7 +167,8 @@ public class Surface : MonoBehaviour
             {
                 hex.ClearHexagon();
                 AddBlock(hex);
-                digger.Job.Remove();
+                digger.Job.CancelJob();
+                yield break;
             }
             yield return new WaitForSeconds(0.1f);
         }
@@ -202,13 +203,19 @@ public class Surface : MonoBehaviour
         hex.ClearHexagon();
     }
 
+    public bool IsInOldHexagons(Hexagon hex)
+    {
+        return OldHexagons.ContainsKey(hex.Id);
+    }
+
     public void AddIcon(Hexagon hex)
     {
         var clonedHex = Instantiate(hex).AssignProperties(hex);
-        IconOldHexagons.Add(clonedHex.Id, clonedHex);
+        OldHexagons.Add(clonedHex.Id, clonedHex);
         Hexagon prefab = null;
         if (hex.IsEmpty)
         {
+            PathGraph.ProhibitHexagon(hex.transform.position);
             prefab = fillPrefab;
         }
         else if (hex.IsSoil)
@@ -216,13 +223,21 @@ public class Surface : MonoBehaviour
             prefab = digPrefab;
         }
         hex.ClearHexagon();
-        var newHex = Instantiate(prefab, hex.transform.position, Quaternion.identity, hex.transform).AssignProperties(clonedHex);
+        Instantiate(prefab, hex.transform.position, Quaternion.identity, hex.transform).AssignProperties(clonedHex);
     }
     public void RemoveIcon(Hexagon hex)
     {
-        var oldIcon = IconOldHexagons[hex.Id];
+        var oldIcon = OldHexagons[hex.Id];
+        if (oldIcon.IsEmpty)
+        {
+            PathGraph.AllowHexagon(hex.transform.position);
+        }
+        else if (oldIcon.IsSoil)
+        {
+            PathGraph.ProhibitHexagon(hex.transform.position);
+        }
         hex.ClearHexagon();
-        IconOldHexagons.Remove(hex.Id);
+        OldHexagons.Remove(hex.Id);
         Instantiate(oldIcon, hex.transform.position, Quaternion.identity, hex.transform);
     }
 

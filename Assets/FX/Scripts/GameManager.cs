@@ -52,23 +52,25 @@ public class GameManager : MonoBehaviour
     {
         Hexagon hex = Surface.PositionToHex(pos);
 
-        if (JobScheduler.IsJobAlreadyCreated(hex.Id))
+        if (Surface.IsInOldHexagons(hex))
         {
             Surface.RemoveIcon(hex);
+        }
+        if (JobScheduler.IsJobAlreadyCreated(hex.Id))
+        {
             JobScheduler.CancelJob(hex.Id);
         }
         else
         {
+            Surface.AddIcon(hex);
             if (hex.IsEmpty)
             {
-                PathGraph.ProhibitHexagon(hex.transform.position);
                 JobScheduler.AssignJob(new DiggerJob(hex, hex.transform.position, JobType.FILL));
             }
             else if (hex.IsSoil)
             {
                 JobScheduler.AssignJob(new DiggerJob(hex, hex.transform.position, JobType.DIG));
             }
-            Surface.AddIcon(hex);
         }
     }
 

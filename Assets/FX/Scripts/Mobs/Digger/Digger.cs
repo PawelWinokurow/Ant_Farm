@@ -17,7 +17,7 @@ public class Digger : MonoBehaviour, Mob
     public bool HasJob { get => Job != null; }
     private float lerpDuration;
     private float t = 0f;
-    private int i = 0;
+    private Edge currentPathEdge;
     void Awake()
     {
         CurrentPosition = transform.position;
@@ -44,20 +44,47 @@ public class Digger : MonoBehaviour, Mob
 
     public void SetPath(Path path)
     {
-        if (path != null)
+        if (path != null && path.HasWaypoints)
         {
             Path = path;
-            ResetMovement();
+            SetCurrentPathEdge();
+            SetLerpDuration();
         }
+        else
+        {
+            if (Job != null)
+            {
+                Job.CancelJob();
+            }
+            else
+            {
+                SetState(new IdleState(this));
+            }
+        }
+    }
+
+    private void SetCurrentPathEdge()
+    {
+        currentPathEdge = Path.WayPoints[0];
+        Path.WayPoints.RemoveAt(0);
+    }
+
+    public void SetLerpDuration()
+    {
+        lerpDuration = Vector3.Distance(currentPathEdge.From.Position, currentPathEdge.To.Position);
+    }
+    public void RemovePath()
+    {
+        Path = null;
     }
 
     void DrawDebugPath()
     {
-        if (i < Path.WayPoints.Count)
+        if (Path.HasWaypoints)
         {
-            var path = new List<Edge>() { new Edge() { From = new Vertex("", CurrentPosition), To = Path.WayPoints[i].To } };
+            var path = new List<Edge>() { new Edge() { From = new Vertex("", CurrentPosition), To = currentPathEdge.To } };
 
-            for (int j = i + 1; j < Path.WayPoints.Count; j++)
+            for (int j = 1; j < Path.WayPoints.Count; j++)
             {
                 path.Add(Path.WayPoints[j]);
             }
@@ -77,44 +104,37 @@ public class Digger : MonoBehaviour, Mob
     {
         if (Path != null)
         {
-
             DrawDebugPath();
-            if (i < Path.WayPoints.Count)
+
+            if (t < lerpDuration)
             {
-                if (t < lerpDuration)
-                {
-                    var a = (float)Mathf.Min(t / lerpDuration, 1f);
-                    transform.position = Vector3.Lerp(Path.WayPoints[i].From.Position, Path.WayPoints[i].To.Position, a);
-                    CurrentPosition = transform.position;
-                    t += Time.deltaTime * speed;
-                }
-                else
-                {
-                    i++;
-                    t -= lerpDuration;
-                    if (i < Path.WayPoints.Count && !Path.WayPoints[i].IsWalkable)
-                    {
-                        SetPath(Pathfinder.FindPath(CurrentPosition, Path.WayPoints[Path.WayPoints.Count - 1].To.Position));
-                    }
-                }
+                var a = (float)Mathf.Min(t / lerpDuration, 1f);
+                transform.position = Vector3.Lerp(currentPathEdge.From.Position, currentPathEdge.To.Position, a);
+                CurrentPosition = transform.position;
+                t += Time.deltaTime * speed;
             }
             else
             {
-                RemovePath();
+                t -= lerpDuration;
+                if (Path.HasWaypoints)
+                {
+                    SetCurrentPathEdge();
+                    if (!currentPathEdge.IsWalkable)
+                    {
+                        var to = Path.HasWaypoints ? Path.WayPoints[Path.WayPoints.Count - 1].To.Position : currentPathEdge.To.Position;
+                        SetPath(Pathfinder.FindPath(CurrentPosition, to, HasJob ? true : false));
+                    }
+                }
+                else
+                {
+                    RemovePath();
+                }
+
             }
         }
     }
 
-    public void ResetMovement()
-    {
-        i = 0;
-        if (Path != null)
-            lerpDuration = Vector3.Distance(Path.WayPoints[0].From.Position, Path.WayPoints[0].To.Position);
-    }
-    public void RemovePath()
-    {
-        Path = null;
-    }
+
 
     void Update()
     {

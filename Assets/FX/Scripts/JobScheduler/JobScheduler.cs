@@ -205,11 +205,11 @@ public class JobScheduler : MonoBehaviour
         {
             surface.StartHexJobExecution(((DiggerJob)job).Hex, mob);
         };
-        job.Remove = () =>
+        job.CancelJob = () =>
         {
             CancelJob(job);
         };
-        job.NotComplete = () =>
+        job.CancelNotCompleteJob = () =>
         {
             CancelNotCompleteJob(job);
         };

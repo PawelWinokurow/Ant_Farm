@@ -10,6 +10,7 @@ public class Path
 {
     public List<Edge> WayPoints = new List<Edge>();
     public float Length = 0;
+    public bool HasWaypoints { get => WayPoints.Count != 0; }
 
 }
 
