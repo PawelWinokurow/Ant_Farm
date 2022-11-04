@@ -79,6 +79,7 @@ public class Surface : MonoBehaviour
                 Hexagons[z * width + x] = hex;
             }
         }
+        PathGraph.SetNeighbours();
     }
 
     void LoadHexagons(HexagonSerializable[] hexagons)
@@ -105,21 +106,26 @@ public class Surface : MonoBehaviour
     {
         if (PathGraph != null)
         {
-
-            PathGraph.AdjacencyList.ForEach(edge =>
-            {
-                if (!edge.IsWalkable)
-                {
-                    Debug.DrawLine(edge.From.Position, edge.To.Position, Color.red);
-                }
-                else
-                {
-                    Debug.DrawLine(edge.From.Position, edge.To.Position, Color.green);
-                }
-            }
-            );
+            DrawDebugSurface();
         }
     }
+
+    private void DrawDebugSurface()
+    {
+        PathGraph.AdjacencyList.ForEach(edge =>
+        {
+            if (!edge.IsWalkable)
+            {
+                Debug.DrawLine(edge.From.Position, edge.To.Position, Color.red);
+            }
+            else
+            {
+                Debug.DrawLine(edge.From.Position, edge.To.Position, Color.green);
+            }
+        }
+        );
+    }
+
 
     public void StartHexJobExecution(Hexagon hex, Mob mob)
     {

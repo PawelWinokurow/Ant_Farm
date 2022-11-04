@@ -74,8 +74,7 @@ public class Pathfinder
         }
         else
         {
-            var neighbors = pathGraph.GetNeighbors(to);
-            var paths = neighbors.Select(vertex => Astar(from, vertex)).Where(path => path != null).ToList();
+            var paths = to.Neighbours.Select(vertex => Astar(from, vertex)).Where(path => path != null).ToList();
             if (paths.Count() != 0)
             {
                 path = paths.Aggregate(paths[0], (acc, p) =>

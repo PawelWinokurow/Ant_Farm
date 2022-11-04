@@ -10,6 +10,8 @@ public class DiggerJob : Job
     public Action CancelNotCompleteJob { get; set; }
     public Mob Mob { get; set; }
     public JobType Type { get; set; }
+    public Path Path { get; set; }
+
 
     public DiggerJob(Hexagon hex, Vector3 destination, JobType type)
     {

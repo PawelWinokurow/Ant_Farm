@@ -37,6 +37,10 @@ public class GraphTransform
             graph.PathVerticesMap[edge.From.Position].Edges.Add(edge);
             return edge;
         }).ToList();
+        for (int i = 0; i < graph.PathVertices.Count; i++)
+        {
+            graph.PathVertices[i].Neighbours.AddRange(graphSerializable.PathVertices[i].Neighbours.Select(vertex => graph.PathVerticesMap[VectorTransform.FromSerializable(vertex)]));
+        }
         return graph;
     }
     private static EdgeSerializable ToSerializable(Edge edge)
@@ -51,14 +55,11 @@ public class GraphTransform
     }
     private static VertexSerializable ToSerializable(Vertex vertex)
     {
-        return new VertexSerializable(vertex.Id, VectorTransform.ToSerializable(vertex.Position))
-        {
-            PathWeight = vertex.PathWeight
-        };
+        return new VertexSerializable(vertex.Id, VectorTransform.ToSerializable(vertex.Position), vertex.Neighbours.Select(v => VectorTransform.ToSerializable(v.Position)).ToList(), vertex.IsCentralVertex);
     }
     private static Vertex FromSerializable(VertexSerializable vertexSerializable)
     {
-        return new Vertex(vertexSerializable.Id, VectorTransform.FromSerializable(vertexSerializable.Position))
+        return new Vertex(vertexSerializable.Id, VectorTransform.FromSerializable(vertexSerializable.Position), vertexSerializable.IsCentralVertex)
         {
             PathWeight = vertexSerializable.PathWeight
         };

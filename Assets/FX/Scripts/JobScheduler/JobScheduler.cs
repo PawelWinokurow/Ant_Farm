@@ -32,6 +32,17 @@ public class JobScheduler : MonoBehaviour
     private List<Mob> busyMobs = new List<Mob>();
     private List<Mob> freeMobs = new List<Mob>();
 
+    void Update()
+    {
+        if (assignedJobsQueue.Count != 0)
+        {
+            var job = assignedJobsQueue[0];
+            assignedJobsQueue.RemoveAt(0);
+            MoveFreeMobToBusyMobs(job.Mob);
+            SetJobToWorker(job);
+        }
+    }
+
     public void StartJobScheuler()
     {
         StartCoroutine(DistributeJobsCoroutine());
@@ -41,7 +52,7 @@ public class JobScheduler : MonoBehaviour
         while (true)
         {
             DistributeJobs();
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.1f);
         }
     }
 
@@ -78,25 +89,6 @@ public class JobScheduler : MonoBehaviour
 
     private void AssignWork()
     {
-        // var job = unassignedJobsQueue[0];
-        // var parallelJob = CreateParallelPathfinderJob(freeMobs.Select(mod => mod.CurrentPosition).ToList(), job.Destination);
-        // JobHandle handle = parallelJob.Schedule(freeMobs.Count, 1);
-        // handle.Complete();
-        // PriorityQueue<JobMobDistance, float> minPaths = new PriorityQueue<JobMobDistance, float>(0);
-        // for (var i = 0; i < parallelJob.Result.Length; i++)
-        // {
-        //     var path = ManagedObjectWorld.Get(parallelJob.Result[i]);
-        //     minPaths.Enqueue(new JobMobDistance(job, freeMobs[i], path), path.Length);
-        // }
-        // var minPath = minPaths.Dequeue();
-        // if (minPath != null)
-        // {
-        //     MoveUnassignedJobToAssignedJobs(minPath.Job);
-        //     MoveFreeMobToBusyMobs(minPath.Mob);
-        //     SetJobToWorker(minPath);
-        // }
-        // FreePathfinderJobMemory(parallelJob);
-
         var job = unassignedJobsQueue[0];
         var parallelJob = CreateParallelDistancesJob(freeMobs.Select(mod => mod.CurrentPosition).ToList(), job.Destination);
         JobHandle handle = parallelJob.Schedule(freeMobs.Count, 1);
@@ -114,9 +106,9 @@ public class JobScheduler : MonoBehaviour
             path = pathfinder.FindPath(minDistance.Mob.CurrentPosition, minDistance.Job.Destination, true);
             if (path != null)
             {
-                MoveUnassignedJobToAssignedJobs(minDistance.Job);
-                MoveFreeMobToBusyMobs(minDistance.Mob);
-                SetJobToWorker(minDistance.Mob, minDistance.Job, path);
+                job.Mob = minDistance.Mob;
+                job.Path = path; ;
+                MoveUnassignedJobToAssignedJobs(job);
                 break;
             }
         }
@@ -197,10 +189,10 @@ public class JobScheduler : MonoBehaviour
         unassignedJobsQueue.Add(assignedJob);
     }
 
-    private void SetJobToWorker(Mob mob, Job job, Path path)
+    private void SetJobToWorker(Job job)
     {
-        mob.Job = job;
-        job.Mob = mob;
+        var mob = job.Mob;
+        var path = job.Path;
         job.Execute = () =>
         {
             surface.StartHexJobExecution(((DiggerJob)job).Hex, mob);

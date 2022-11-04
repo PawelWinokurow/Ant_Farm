@@ -15,4 +15,5 @@ public interface Job
     public Action CancelJob { get; set; }
     public Action CancelNotCompleteJob { get; set; }
     public Action Execute { get; set; }
+    public Path Path { get; set; }
 }

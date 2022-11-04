@@ -50,6 +50,25 @@ public class Graph
         AdjacencyList.Add(v2Edge);
     }
 
+    public void SetNeighbours()
+    {
+        PathVertices.Where(vertex => vertex.IsCentralVertex).ToList().ForEach(center =>
+        {
+            var visited = new Dictionary<string, bool>();
+            foreach (var edge1 in center.Edges)
+            {
+                foreach (var edge2 in edge1.To.Edges)
+                {
+                    if (edge2.To.IsCentralVertex && !visited.ContainsKey(edge2.To.Id))
+                    {
+                        visited[edge2.To.Id] = true;
+                        center.Neighbours.Add(edge2.To);
+                    }
+                }
+            }
+        });
+    }
+
     public void AllowHexagon(Vector3 hexagonPosition)
     {
         GetHexagonEdges(hexagonPosition).ForEach(edge => edge.IsWalkable = true);
@@ -82,34 +101,30 @@ public class Graph
         });
     }
 
-    public List<Vertex> GetNeighbors(Vertex center)
-    {
-        return center.Edges.Select(edge => edge.To).ToList();
-    }
-
     private static float GetDistance(Vertex from, Vertex to)
     {
         return Vector3.Distance(from.Position, to.Position);
     }
 
-    public void AddHexagonSubGraph(Vector3 center, float R, string id)
+    public Vertex AddHexagonSubGraph(Vector3 center, float R, string id)
     {
         float r = (float)Math.Sqrt(3) * R / 2;
 
-        var centerPathPoint = AddVertex(new Vertex($"{id}0", center));
+        var centerPathPoint = AddVertex(new Vertex($"{id}0", center, true));
         List<Vertex> pathPoints = new List<Vertex>();
         for (int n = 0; n < 6; n++)
         {
             float angle = (float)(Math.PI * (n * 60) / 180.0);
             float x = r * (float)Math.Cos(angle);
             float z = r * (float)Math.Sin(angle);
-            pathPoints.Add(AddVertex(new Vertex($"{id}{n + 1}", center + new Vector3(x, 0, z))));
+            pathPoints.Add(AddVertex(new Vertex($"{id}{n + 1}", center + new Vector3(x, 0, z), false)));
         }
         for (int i = 0; i < pathPoints.Count; i++)
         {
             AddEdge(centerPathPoint, pathPoints[i], Vector3.Distance(centerPathPoint.Position, pathPoints[i].Position));
             AddEdge(pathPoints[i], pathPoints[(i + 2) % pathPoints.Count], Vector3.Distance(pathPoints[i].Position, pathPoints[(i + 2) % pathPoints.Count].Position));
         }
+        return centerPathPoint;
     }
 
 }

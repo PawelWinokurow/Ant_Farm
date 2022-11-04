@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 [Serializable]
 public class HexagonSerializable
@@ -8,6 +9,5 @@ public class HexagonSerializable
     public Vector3Serializable Position { get; set; }
     public bool IsEmpty { get => HexType == HEX_TYPE.EMPTY; }
     public bool IsSoil { get => HexType == HEX_TYPE.SOIL; }
-
 }
 

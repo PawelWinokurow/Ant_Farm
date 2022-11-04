@@ -82,7 +82,7 @@ public class Digger : MonoBehaviour, Mob
     {
         if (Path.HasWaypoints)
         {
-            var path = new List<Edge>() { new Edge() { From = new Vertex("", CurrentPosition), To = currentPathEdge.To } };
+            var path = new List<Edge>() { new Edge() { From = new Vertex("", CurrentPosition, false), To = currentPathEdge.To } };
 
             for (int j = 1; j < Path.WayPoints.Count; j++)
             {
