@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -10,7 +9,6 @@ public class MobFactory : MonoBehaviour
     public Digger DiggerPrefab;
     public void AddMob()
     {
-        Debug.Log("In");
         for (int i = 0; i < 10; i++)
         {
             StartCoroutine(SpawnDigger());
