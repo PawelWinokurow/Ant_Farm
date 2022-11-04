@@ -6,14 +6,14 @@ using UnityEngine;
 
 public class Graph
 {
-    public Dictionary<Vector3, PathVertex> PathVerticesMap;
-    public List<PathEdge> AdjacencyList { get; set; }
-    public List<PathVertex> PathVertices { get; set; }
+    public Dictionary<Vector3, Vertex> PathVerticesMap;
+    public List<Edge> AdjacencyList { get; set; }
+    public List<Vertex> PathVertices { get; set; }
     public Graph()
     {
-        AdjacencyList = new List<PathEdge>();
-        PathVertices = new List<PathVertex>();
-        PathVerticesMap = new Dictionary<Vector3, PathVertex>();
+        AdjacencyList = new List<Edge>();
+        PathVertices = new List<Vertex>();
+        PathVerticesMap = new Dictionary<Vector3, Vertex>();
     }
 
     public void ResetPathWeights()
@@ -26,12 +26,12 @@ public class Graph
         AdjacencyList.ForEach(edge => edge.IsWalkable = true);
     }
 
-    public PathVertex GetVertexByPoistion(Vector3 position)
+    public Vertex GetVertexByPoistion(Vector3 position)
     {
         return PathVerticesMap.GetValueOrDefault(position);
     }
 
-    public PathVertex AddVertex(PathVertex newVertex)
+    public Vertex AddVertex(Vertex newVertex)
     {
         int index = PathVertices.FindIndex(vertex => Vector3.Distance(vertex.Position, newVertex.Position) < 0.1f ? true : false);
         if (index >= 0) return PathVertices[index];
@@ -40,30 +40,15 @@ public class Graph
         return newVertex;
     }
 
-    public void AddEdge(PathVertex v1, PathVertex v2, float edgeWeight)
+    public void AddEdge(Vertex v1, Vertex v2, float edgeWeight)
     {
-        PathEdge v1Edge = new PathEdge(v1, v2, edgeWeight);
-        PathEdge v2Edge = new PathEdge(v2, v1, edgeWeight);
+        Edge v1Edge = new Edge($"{v1.Id}{v2.Id}", v1, v2, edgeWeight);
+        Edge v2Edge = new Edge($"{v2.Id}{v1.Id}", v2, v1, edgeWeight);
         v1.Edges.Add(v1Edge);
         v2.Edges.Add(v2Edge);
         AdjacencyList.Add(v1Edge);
         AdjacencyList.Add(v2Edge);
     }
-
-    public void RemoveEdge(PathVertex v1, PathVertex v2)
-    {
-        int index = AdjacencyList.FindIndex(e => e.From.Id == v1.Id && e.To.Id == v2.Id);
-        if (index >= 0) AdjacencyList.RemoveAt(index);
-        index = AdjacencyList.FindIndex(e => e.From.Id == v2.Id && e.To.Id == v1.Id);
-        if (index >= 0) AdjacencyList.RemoveAt(index);
-
-        v1.Edges.FindIndex(e => e.To.Id == v2.Id);
-        if (index >= 0) v1.Edges.RemoveAt(index);
-
-        v2.Edges.FindIndex(e => e.To.Id == v1.Id);
-        if (index >= 0) v2.Edges.RemoveAt(index);
-    }
-
 
     public void AllowHexagon(Vector3 hexagonPosition)
     {
@@ -74,16 +59,16 @@ public class Graph
         GetHexagonEdges(hexagonPosition).ForEach(edge => edge.IsWalkable = false);
     }
 
-    private List<PathEdge> GetHexagonEdges(Vector3 hexagonPosition)
+    private List<Edge> GetHexagonEdges(Vector3 hexagonPosition)
     {
-        PathVertex centerVertex = PathVerticesMap[hexagonPosition];
-        List<PathVertex> hexagonVertices = centerVertex.Edges.Select(edge => edge.To).ToList();
+        Vertex centerVertex = PathVerticesMap[hexagonPosition];
+        List<Vertex> hexagonVertices = centerVertex.Edges.Select(edge => edge.To).ToList();
         hexagonVertices.Add(centerVertex);
         var Ids = hexagonVertices.Select(vertex => vertex.Id);
-        return hexagonVertices.Aggregate(new List<PathEdge>(), (acc, vertex) => acc.Concat(vertex.Edges).ToList()).Where(edge => Ids.Contains(edge.From.Id) && Ids.Contains(edge.To.Id)).ToList();
+        return hexagonVertices.Aggregate(new List<Edge>(), (acc, vertex) => acc.Concat(vertex.Edges).ToList()).Where(edge => Ids.Contains(edge.From.Id) && Ids.Contains(edge.To.Id)).ToList();
     }
 
-    public PathVertex NearestVertex(Vector3 position)
+    public Vertex NearestVertex(Vector3 position)
     {
         if (PathVerticesMap.ContainsKey(position))
         {
@@ -97,12 +82,12 @@ public class Graph
         });
     }
 
-    public List<PathVertex> GetNeighbors(PathVertex center)
+    public List<Vertex> GetNeighbors(Vertex center)
     {
         return center.Edges.Select(edge => edge.To).ToList();
     }
 
-    private static float GetDistance(PathVertex from, PathVertex to)
+    private static float GetDistance(Vertex from, Vertex to)
     {
         return Vector3.Distance(from.Position, to.Position);
     }
@@ -111,14 +96,14 @@ public class Graph
     {
         float r = (float)Math.Sqrt(3) * R / 2;
 
-        var centerPathPoint = AddVertex(new PathVertex($"{id}0", center));
-        List<PathVertex> pathPoints = new List<PathVertex>();
+        var centerPathPoint = AddVertex(new Vertex($"{id}0", center));
+        List<Vertex> pathPoints = new List<Vertex>();
         for (int n = 0; n < 6; n++)
         {
             float angle = (float)(Math.PI * (n * 60) / 180.0);
             float x = r * (float)Math.Cos(angle);
             float z = r * (float)Math.Sin(angle);
-            pathPoints.Add(AddVertex(new PathVertex($"{id}{n + 1}", center + new Vector3(x, 0, z))));
+            pathPoints.Add(AddVertex(new Vertex($"{id}{n + 1}", center + new Vector3(x, 0, z))));
         }
         for (int i = 0; i < pathPoints.Count; i++)
         {

@@ -134,7 +134,7 @@ public class Surface : MonoBehaviour
         }
     }
 
-    IEnumerator Dig(Hexagon hex, Digger digger)
+    public IEnumerator Dig(Hexagon hex, Digger digger)
     {
         IconOldHexagons.Remove(hex.Id);
         hex.ClearHexagon();
@@ -153,14 +153,14 @@ public class Surface : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
     }
-    IEnumerator Fill(Hexagon hex, Digger digger)
+
+    public IEnumerator Fill(Hexagon hex, Digger digger)
     {
         hex.ClearHexagon();
         IconOldHexagons.Remove(hex.Id);
         AddScaledBlock(hex);
         while (true)
         {
-            RerouteMobsInRadius(hex.Position, Hexagon.Radius);
             hex.Work -= digger.ConstructionSpeed;
             hex.transform.GetChild(0).localScale = Vector3.one * (1 - hex.Work / 50f);
             if (hex.Work <= 0)
@@ -168,7 +168,6 @@ public class Surface : MonoBehaviour
                 hex.ClearHexagon();
                 AddBlock(hex);
                 digger.Job.Remove();
-                yield break;
             }
             yield return new WaitForSeconds(0.1f);
         }
@@ -201,18 +200,6 @@ public class Surface : MonoBehaviour
         hex.HexType = HEX_TYPE.EMPTY;
         hex.Work = 50f;
         hex.ClearHexagon();
-    }
-
-    private void RerouteMobsInRadius(Vector3 position, float radius)
-    {
-        var mobs = GameObject.FindGameObjectsWithTag("Mob");
-        foreach (var mob in mobs)
-        {
-            if (Vector3.Distance(mob.gameObject.transform.position, position) <= radius)
-            {
-                mob.GetComponent<Digger>().Rerouting();
-            }
-        }
     }
 
     public void AddIcon(Hexagon hex)

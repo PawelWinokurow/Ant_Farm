@@ -9,10 +9,9 @@ namespace AntFarm
     {
         public JobScheduler JobScheduler;
         public Digger DiggerPrefab;
-
         public void AddMob()
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 1; i++)
             {
                 StartCoroutine(SpawnMob());
             }

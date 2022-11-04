@@ -6,9 +6,7 @@ public class GameManager : MonoBehaviour
     public Surface Surface;
     public BuildWallsTest BuildWallsTest;
     public JobScheduler JobScheduler;
-
     public Digger DiggerPrefab;
-
     public Graph PathGraph;
 
     void Awake()
@@ -29,7 +27,7 @@ public class GameManager : MonoBehaviour
         PathGraph = StoreService.LoadGraph();
         HexagonSerializable[] hexagons = StoreService.LoadHexagons();
         Surface.Init(PathGraph, hexagons);
-        JobScheduler.SetGraph(PathGraph);
+        JobScheduler.SetPathFinder(new PathFinder(PathGraph));
         JobScheduler.SetSurface(Surface);
         JobScheduler.StartJobScheuler();
     }
@@ -39,7 +37,7 @@ public class GameManager : MonoBehaviour
         PathGraph = new Graph();
         Surface.Init(PathGraph);
         BuildWallsTest.Init(Surface);
-        JobScheduler.SetGraph(PathGraph);
+        JobScheduler.SetPathFinder(new PathFinder(PathGraph));
         JobScheduler.SetSurface(Surface);
         JobScheduler.StartJobScheuler();
         // StoreService.SaveGraph(PathGraph);

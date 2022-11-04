@@ -16,6 +16,7 @@ public class Hexagon : MonoBehaviour, Constructable
     public bool IsEmpty { get => HexType == HEX_TYPE.EMPTY; }
     public bool IsSoil { get => HexType == HEX_TYPE.SOIL; }
     public float Work { get; set; }
+    public bool IsProhibit = false;
 
     public Hexagon AssignProperties(Hexagon hex)
     {
@@ -23,6 +24,7 @@ public class Hexagon : MonoBehaviour, Constructable
         HexType = hex.HexType;
         Position = hex.Position;
         Work = hex.Work;
+        IsProhibit = hex.IsProhibit;
         return this;
     }
 

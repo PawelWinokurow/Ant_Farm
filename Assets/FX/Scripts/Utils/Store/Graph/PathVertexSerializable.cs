@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 
 [Serializable]
-public class PathVertexSerializable
+public class VertexSerializable
 {
     public string Id;
     public Vector3Serializable Position;
     public float PathWeight;
 
-    public PathVertexSerializable(string id, Vector3Serializable position)
+    public VertexSerializable(string id, Vector3Serializable position)
     {
         Id = id;
         Position = position;

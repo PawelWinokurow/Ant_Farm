@@ -1,14 +1,14 @@
 using System;
 
 [Serializable]
-public class PathEdgeSerializable
+public class EdgeSerializable
 {
     public Vector3Serializable FromPosition;
     public Vector3Serializable ToPosition;
     public float EdgeWeight;
     public bool IsWalkable;
 
-    public PathEdgeSerializable(PathVertexSerializable From, PathVertexSerializable To, float EdgeWeight)
+    public EdgeSerializable(VertexSerializable From, VertexSerializable To, float EdgeWeight)
     {
         this.FromPosition = From.Position;
         this.ToPosition = To.Position;

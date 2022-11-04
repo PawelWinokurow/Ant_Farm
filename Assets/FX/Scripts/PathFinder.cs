@@ -8,7 +8,7 @@ using Unity.Jobs;
 
 public class Path
 {
-    public List<PathVertex> WayPoints = new List<PathVertex>();
+    public List<Edge> WayPoints = new List<Edge>();
     public float OverallDistance = 0;
 
 }
@@ -41,11 +41,11 @@ public class PathFinder
     {
         UnityEngine.Random.InitState(Guid.NewGuid().GetHashCode());
         Path overallPath = new Path();
-        PathVertex from = pathGraph.NearestVertex(fromVec);
+        Vertex from = pathGraph.NearestVertex(fromVec);
         for (int i = 0; i < numberOfSteps; i++)
         {
             Path path = null;
-            PathVertex to = null;
+            Vertex to = null;
             do
             {
                 double angle = UnityEngine.Random.Range(0, (float)(2 * Math.PI));
@@ -63,8 +63,8 @@ public class PathFinder
     }
     public Path FindPath(Vector3 fromVec, Vector3 toVec, bool findNearest = false)
     {
-        PathVertex from = pathGraph.NearestVertex(fromVec);
-        PathVertex to = pathGraph.NearestVertex(toVec);
+        Vertex from = pathGraph.NearestVertex(fromVec);
+        Vertex to = pathGraph.NearestVertex(toVec);
         if (from.Id == to.Id) return null;
         Path path;
         if (!findNearest)
@@ -91,12 +91,13 @@ public class PathFinder
         }
     }
 
-    private Path Astar(PathVertex start, PathVertex goal)
+    private Path Astar(Vertex start, Vertex goal)
     {
-        PriorityQueue<PathVertex, float> frontier = new PriorityQueue<PathVertex, float>(0);
+        PriorityQueue<Vertex, float> frontier = new PriorityQueue<Vertex, float>(0);
         frontier.Enqueue(start, 0);
 
-        var cameFrom = new Dictionary<string, PathVertex>();
+        var cameFrom = new Dictionary<string, Vertex>();
+        var cameThrough = new Dictionary<string, Edge>();
         var costSoFar = new Dictionary<string, float>();
 
         cameFrom[start.Id] = null;
@@ -122,6 +123,7 @@ public class PathFinder
                     var priority = newCost + GetDistance(next, goal);
                     frontier.Enqueue(next, priority);
                     cameFrom[next.Id] = current;
+                    cameThrough[nextEdge.Id] = nextEdge;
                 }
             }
         }
@@ -131,15 +133,15 @@ public class PathFinder
             {
                 OverallDistance = costSoFar[goal.Id]
             };
-            var next = cameFrom[goal.Id];
-            while (next != null)
+            var to = goal;
+            var from = cameFrom[to.Id];
+            while (from != null)
             {
-                path.WayPoints.Add(next);
-                next = cameFrom[next.Id];
+                path.WayPoints.Add(cameThrough[$"{from.Id}{to.Id}"]);
+                to = from;
+                from = cameFrom[from.Id];
             }
             path.WayPoints.Reverse();
-            path.WayPoints.Add(goal);
-            // path.WayPoints = Utils.NormalizePath(path.WayPoints, 1f);
             path.OverallDistance = costSoFar[goal.Id];
             return path;
         }
@@ -149,7 +151,7 @@ public class PathFinder
         }
     }
 
-    private static float GetDistance(PathVertex from, PathVertex to)
+    private static float GetDistance(Vertex from, Vertex to)
     {
         return Vector3.Distance(from.Position, to.Position);
     }

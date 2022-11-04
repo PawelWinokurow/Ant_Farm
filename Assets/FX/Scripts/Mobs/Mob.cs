@@ -10,7 +10,7 @@ public interface Mob
     public Path Path { get; set; }
     public bool HasPath { get; }
     public Vector3 InitialPosition { get; set; }
-    public Action Rerouting { get; set; }
+    public PathFinder Pathfinder { get; set; }
     public void SetState(State state);
     public void SetPath(Path path);
 

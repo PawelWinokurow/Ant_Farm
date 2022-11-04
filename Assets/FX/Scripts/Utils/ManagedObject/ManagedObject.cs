@@ -15,7 +15,7 @@ public class ManagedObjectWorld
 {
     private static int m_NextId;
     private static Dictionary<int, object> m_Objects;
-
+    private static readonly object syncLock = new object();
     public static void Init(int initialCapacity = 1000)
     {
         m_NextId = 1;
@@ -28,12 +28,17 @@ public class ManagedObjectWorld
         m_Objects.Clear();
     }
 
+    private static void IncrementId()
+    {
+
+
+    }
 
     public static ManagedObjectRef<T> Add<T>(T obj)
         where T : class
     {
         int id = m_NextId;
-        m_NextId++;
+        lock (syncLock) { m_NextId++; }
         m_Objects[id] = obj;
         return new ManagedObjectRef<T>(id);
     }

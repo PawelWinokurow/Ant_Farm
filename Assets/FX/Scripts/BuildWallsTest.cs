@@ -34,6 +34,7 @@ public class BuildWallsTest : MonoBehaviour
             if (UnityEngine.Random.Range(0, 100f) < wallPercentage)
             {
                 surf.AddBlock(surf.Hexagons[i]);
+                surf.PathGraph.ProhibitHexagon(surf.Hexagons[i].Position);
             }
             else
             {

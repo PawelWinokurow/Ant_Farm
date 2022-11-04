@@ -18,7 +18,7 @@ public class GraphTransform
         var graph = new Graph()
         {
             PathVertices = graphSerializable.PathVertices.Select(vertex => FromSerializable(vertex)).ToList(),
-            PathVerticesMap = new Dictionary<Vector3, PathVertex>()
+            PathVerticesMap = new Dictionary<Vector3, Vertex>()
         };
         graph.PathVertices.ForEach(vertex =>
         {
@@ -27,7 +27,7 @@ public class GraphTransform
         graph.AdjacencyList = graphSerializable.AdjacencyList.Select(serializedEdge =>
         {
 
-            var edge = new PathEdge()
+            var edge = new Edge()
             {
                 From = graph.PathVerticesMap[VectorTransform.FromSerializable(serializedEdge.FromPosition)],
                 To = graph.PathVerticesMap[VectorTransform.FromSerializable(serializedEdge.ToPosition)],
@@ -39,26 +39,26 @@ public class GraphTransform
         }).ToList();
         return graph;
     }
-    private static PathEdgeSerializable ToSerializable(PathEdge edge)
+    private static EdgeSerializable ToSerializable(Edge edge)
     {
         var from = ToSerializable(edge.From);
         var to = ToSerializable(edge.To);
-        var pathEdgeSerializable = new PathEdgeSerializable(from, to, edge.EdgeWeight)
+        var pathEdgeSerializable = new EdgeSerializable(from, to, edge.EdgeWeight)
         {
             IsWalkable = edge.IsWalkable
         };
         return pathEdgeSerializable;
     }
-    private static PathVertexSerializable ToSerializable(PathVertex vertex)
+    private static VertexSerializable ToSerializable(Vertex vertex)
     {
-        return new PathVertexSerializable(vertex.Id, VectorTransform.ToSerializable(vertex.Position))
+        return new VertexSerializable(vertex.Id, VectorTransform.ToSerializable(vertex.Position))
         {
             PathWeight = vertex.PathWeight
         };
     }
-    private static PathVertex FromSerializable(PathVertexSerializable vertexSerializable)
+    private static Vertex FromSerializable(VertexSerializable vertexSerializable)
     {
-        return new PathVertex(vertexSerializable.Id, VectorTransform.FromSerializable(vertexSerializable.Position))
+        return new Vertex(vertexSerializable.Id, VectorTransform.FromSerializable(vertexSerializable.Position))
         {
             PathWeight = vertexSerializable.PathWeight
         };
