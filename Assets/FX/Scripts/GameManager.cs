@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
         PathGraph = new Graph();
         Surface.Init(PathGraph);
         BuildWallsTest.Init(Surface);
+        pathfinder = new Pathfinder(PathGraph);
         JobScheduler.SetPathfinder(pathfinder);
         JobScheduler.SetSurface(Surface);
         JobScheduler.StartJobScheuler();

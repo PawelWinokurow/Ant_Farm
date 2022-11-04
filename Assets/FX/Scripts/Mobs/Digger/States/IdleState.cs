@@ -18,6 +18,10 @@ public class IdleState : State
             digger.AntAnimator.Run();
             digger.Move(MOVEMENT_SPEED);
         }
+        else
+        {
+            digger.RandomWalk();
+        }
     }
 
     override public void OnStateEnter()

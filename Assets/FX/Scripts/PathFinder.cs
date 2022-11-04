@@ -9,7 +9,7 @@ using Unity.Jobs;
 public class Path
 {
     public List<Edge> WayPoints = new List<Edge>();
-    public float OverallDistance = 0;
+    public float Length = 0;
 
 }
 
@@ -56,7 +56,7 @@ public class Pathfinder
             } while (path == null);
             from = to;
             overallPath.WayPoints.AddRange(path.WayPoints);
-            overallPath.OverallDistance += path.OverallDistance;
+            overallPath.Length += path.Length;
         }
         return overallPath;
 
@@ -80,7 +80,7 @@ public class Pathfinder
                 path = paths.Aggregate(paths[0], (acc, p) =>
                 {
                     {
-                        if (p.OverallDistance < acc.OverallDistance) return p;
+                        if (p.Length < acc.Length) return p;
                         else return acc;
                     }
 
@@ -131,7 +131,7 @@ public class Pathfinder
         {
             var path = new Path()
             {
-                OverallDistance = costSoFar[goal.Id]
+                Length = costSoFar[goal.Id]
             };
             var to = goal;
             var from = cameFrom[to.Id];
@@ -142,7 +142,7 @@ public class Pathfinder
                 from = cameFrom[from.Id];
             }
             path.WayPoints.Reverse();
-            path.OverallDistance = costSoFar[goal.Id];
+            path.Length = costSoFar[goal.Id];
             return path;
         }
         else

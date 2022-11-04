@@ -589,7 +589,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6615026124615880072, guid: 465f21d7f82950741b51465480634072, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6615026124615880072, guid: 465f21d7f82950741b51465480634072, type: 3}
       propertyPath: Click.m_PersistentCalls.m_Calls.Array.size
@@ -597,7 +597,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6615026124615880072, guid: 465f21d7f82950741b51465480634072, type: 3}
       propertyPath: Click.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6615026124615880072, guid: 465f21d7f82950741b51465480634072, type: 3}
       propertyPath: Click.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
@@ -606,7 +606,7 @@ PrefabInstance:
     - target: {fileID: 6615026124615880072, guid: 465f21d7f82950741b51465480634072, type: 3}
       propertyPath: Click.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 11500000, guid: 2de94028d5ca40548b2e37795c346a7d, type: 3}
+      objectReference: {fileID: 2071582712}
     - target: {fileID: 6615026124615880072, guid: 465f21d7f82950741b51465480634072, type: 3}
       propertyPath: Click.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -617,11 +617,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6615026124615880072, guid: 465f21d7f82950741b51465480634072, type: 3}
       propertyPath: Click.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: set_name
+      value: AddMob
       objectReference: {fileID: 0}
     - target: {fileID: 6615026124615880072, guid: 465f21d7f82950741b51465480634072, type: 3}
       propertyPath: Click.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
+      value: MobFactory, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6615026124615880072, guid: 465f21d7f82950741b51465480634072, type: 3}
       propertyPath: Click.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName

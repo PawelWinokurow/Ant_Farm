@@ -58,7 +58,6 @@ public class JobScheduler : MonoBehaviour
     }
     public void AddMob(Mob mob)
     {
-        Debug.Log(mob);
         mob.Pathfinder = pathfinder;
         freeMobs.Add(mob);
     }
@@ -75,7 +74,6 @@ public class JobScheduler : MonoBehaviour
         {
             AssignWork();
         }
-        AssignIdle();
     }
 
     private void AssignWork()
@@ -88,7 +86,7 @@ public class JobScheduler : MonoBehaviour
         // for (var i = 0; i < parallelJob.Result.Length; i++)
         // {
         //     var path = ManagedObjectWorld.Get(parallelJob.Result[i]);
-        //     minPaths.Enqueue(new JobMobDistance(job, freeMobs[i], path), path.OverallDistance);
+        //     minPaths.Enqueue(new JobMobDistance(job, freeMobs[i], path), path.Length);
         // }
         // var minPath = minPaths.Dequeue();
         // if (minPath != null)
@@ -119,6 +117,7 @@ public class JobScheduler : MonoBehaviour
                 MoveUnassignedJobToAssignedJobs(minDistance.Job);
                 MoveFreeMobToBusyMobs(minDistance.Mob);
                 SetJobToWorker(minDistance.Mob, minDistance.Job, path);
+                break;
             }
         }
 
@@ -216,20 +215,6 @@ public class JobScheduler : MonoBehaviour
         };
         mob.SetState(new GoToState((Digger)mob));
         mob.SetPath(path);
-    }
-
-    private void AssignIdle()
-    {
-        freeMobs.ForEach(mob =>
-        {
-            if (mob.CurrentState.Type == STATE.IDLE)
-            {
-                if (!mob.HasPath)
-                {
-                    mob.SetPath(pathfinder.RandomWalk(mob.CurrentPosition, mob.InitialPosition, 5));
-                }
-            }
-        });
     }
 
     public bool IsJobAlreadyCreated(Job job)

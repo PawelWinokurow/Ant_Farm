@@ -68,6 +68,11 @@ public class Digger : MonoBehaviour, Mob
         }
     }
 
+    public void RandomWalk()
+    {
+        SetPath(Pathfinder.RandomWalk(CurrentPosition, InitialPosition, 5));
+    }
+
     public void Move(int speed)
     {
         if (Path != null)
@@ -89,8 +94,7 @@ public class Digger : MonoBehaviour, Mob
                     t -= lerpDuration;
                     if (i < Path.WayPoints.Count && !Path.WayPoints[i].IsWalkable)
                     {
-                        Path = Pathfinder.FindPath(CurrentPosition, Path.WayPoints[Path.WayPoints.Count - 1].To.Position);
-                        ResetMovement();
+                        SetPath(Pathfinder.FindPath(CurrentPosition, Path.WayPoints[Path.WayPoints.Count - 1].To.Position));
                     }
                 }
             }
