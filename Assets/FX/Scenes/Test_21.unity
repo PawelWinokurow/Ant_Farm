@@ -302,7 +302,6 @@ MonoBehaviour:
   Surface: {fileID: 685065891}
   BuildWallsTest: {fileID: 1176967603}
   JobScheduler: {fileID: 348439228}
-  DiggerPrefab: {fileID: -8269178080199528486, guid: d76627fe718a559439689ca54c475515, type: 3}
 --- !u!1001 &1124990943
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -512,28 +511,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2071582711}
-  - component: {fileID: 2071582710}
+  - component: {fileID: 2071582712}
   m_Layer: 0
-  m_Name: AntsManager
+  m_Name: MobFactory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2071582710
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2071582709}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5159224e54a10eb478e4417f7d0dd4f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  JobScheduler: {fileID: 348439228}
-  DiggerPrefab: {fileID: -7619036694779697723, guid: d76627fe718a559439689ca54c475515, type: 3}
 --- !u!4 &2071582711
 Transform:
   m_ObjectHideFlags: 0
@@ -549,6 +534,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2071582712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2071582709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2de94028d5ca40548b2e37795c346a7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  JobScheduler: {fileID: 348439228}
+  DiggerPrefab: {fileID: -7619036694779697723, guid: d76627fe718a559439689ca54c475515, type: 3}
 --- !u!1001 &1248071470075308892
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -599,14 +598,14 @@ PrefabInstance:
     - target: {fileID: 6615026124615880072, guid: 465f21d7f82950741b51465480634072, type: 3}
       propertyPath: Click.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2071582710}
+      objectReference: {fileID: 11500000, guid: dd984d5e93b06f7408a594ac94cd8e46, type: 3}
     - target: {fileID: 6615026124615880072, guid: 465f21d7f82950741b51465480634072, type: 3}
       propertyPath: Click.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6615026124615880072, guid: 465f21d7f82950741b51465480634072, type: 3}
       propertyPath: Click.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: AddMob
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6615026124615880072, guid: 465f21d7f82950741b51465480634072, type: 3}
       propertyPath: Click.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName

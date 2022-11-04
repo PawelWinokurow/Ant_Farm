@@ -13,26 +13,26 @@ public class Path
 
 }
 
-public struct PathFinderJob : IJobParallelFor
+public struct PathfinderJob : IJobParallelFor
 {
-    public ManagedObjectRef<PathFinder> PathFinder;
+    public ManagedObjectRef<Pathfinder> Pathfinder;
     public NativeArray<Vector3> From;
     public NativeArray<Vector3> To;
     public NativeArray<ManagedObjectRef<Path>> Result;
 
     public void Execute(int i)
     {
-        Path path = ManagedObjectWorld.Get(PathFinder).FindPath(From[i], To[i], true);
+        Path path = ManagedObjectWorld.Get(Pathfinder).FindPath(From[i], To[i], true);
         Result[i] = ManagedObjectWorld.Add(path);
     }
 }
 
-public class PathFinder
+public class Pathfinder
 {
 
     private Graph pathGraph { get; set; }
 
-    public PathFinder(Graph pathGraph)
+    public Pathfinder(Graph pathGraph)
     {
         this.pathGraph = pathGraph;
     }

@@ -12,7 +12,7 @@ public class Digger : MonoBehaviour, Mob
     public Path Path { get; set; }
     public State CurrentState { get; set; }
     public Vector3 InitialPosition { get; set; }
-    public PathFinder Pathfinder { get; set; }
+    public Pathfinder Pathfinder { get; set; }
     public bool HasPath { get => Path != null; }
     public bool HasJob { get => Job != null; }
     private float lerpDuration;
@@ -23,6 +23,11 @@ public class Digger : MonoBehaviour, Mob
         CurrentPosition = transform.position;
         AntAnimator = GetComponent<AntAnimator>();
         SetState(new IdleState(this));
+    }
+
+    public void SetPathfinder(Pathfinder pathfinder)
+    {
+        Pathfinder = pathfinder;
     }
 
     public void SetState(State state)
@@ -48,15 +53,18 @@ public class Digger : MonoBehaviour, Mob
 
     void DrawDebugPath()
     {
-        var path = new List<Edge>() { new Edge() { From = new Vertex("", CurrentPosition), To = Path.WayPoints[i].To } };
+        if (i < Path.WayPoints.Count)
+        {
+            var path = new List<Edge>() { new Edge() { From = new Vertex("", CurrentPosition), To = Path.WayPoints[i].To } };
 
-        for (int j = i + 1; j < Path.WayPoints.Count; j++)
-        {
-            path.Add(Path.WayPoints[j]);
-        }
-        for (int i = 0; i < path.Count; i++)
-        {
-            Debug.DrawLine(path[i].From.Position, path[i].To.Position, Color.blue);
+            for (int j = i + 1; j < Path.WayPoints.Count; j++)
+            {
+                path.Add(Path.WayPoints[j]);
+            }
+            for (int i = 0; i < path.Count; i++)
+            {
+                Debug.DrawLine(path[i].From.Position, path[i].To.Position, Color.blue);
+            }
         }
     }
 
