@@ -105,6 +105,19 @@ public class JobScheduler : MonoBehaviour
     {
         var mob = job.Mob;
         var path = job.Path;
+        if (job.Type == JobType.CARRYING)
+        {
+            var carrierJob = (CarrierJob)job;
+            carrierJob.Return = () =>
+            {
+                var swap = carrierJob.Destination;
+                carrierJob.Destination = carrierJob.Departure;
+                carrierJob.Departure = swap;
+                mob.SetPath(Pathfinder.FindPath(mob.CurrentPosition, carrierJob.Destination, true));
+                mob.SetState(new GoToState((Worker)mob));
+                Debug.Log("return");
+            };
+        }
         job.Execute = () =>
         {
             surface.StartJobExecution(job.Hex, mob);

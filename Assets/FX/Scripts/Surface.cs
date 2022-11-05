@@ -144,7 +144,6 @@ public class Surface : MonoBehaviour
 
     public void StartJobExecution(FloorHexagon hex, Mob mob)
     {
-        Debug.Log(mob.Job.Type);
         switch (mob.Job.Type)
         {
             case JobType.DIG:
@@ -163,6 +162,10 @@ public class Surface : MonoBehaviour
     public IEnumerator Carry(FloorHexagon hex, Worker worker)
     {
         yield return new WaitForSeconds(5f);
+        var foodHex = (FoodHexagon)(hex.Child);
+        foodHex.Food -= worker.CarryWeight;
+        if (foodHex.Food <= 0) worker.Job.CancelJob();
+        else worker.Job.Return();
     }
     public IEnumerator Dig(FloorHexagon hex, Worker worker)
     {

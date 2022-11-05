@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
                 }
                 else if (hex.Type == HEX_TYPE.FOOD)
                 {
-                    JobScheduler.AssignJob(new CarrierJob(hex, hex.transform.position, Surface.BaseHex.Position));
+                    JobScheduler.AssignJob(new CarrierJob(hex, Surface.BaseHex.Position, hex.transform.position));
                 }
             }
         }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class Worker : MonoBehaviour, Mob
 {
     public float ConstructionSpeed = 2f;
+    public float CarryWeight = 100f;
     public AntAnimator AntAnimator { get; set; }
     public Vector3 CurrentPosition { get => transform.position; }
     public Job Job { get; set; }
@@ -37,7 +38,7 @@ public class Worker : MonoBehaviour, Mob
     public void SetPath(Path path)
     {
         Path = path;
-        if (Path.HasWaypoints)
+        if (Path != null && Path.HasWaypoints)
         {
             SetCurrentPathEdge();
         }

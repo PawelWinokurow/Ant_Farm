@@ -9,7 +9,7 @@ public class GoToState : State
 
     public GoToState(Worker worker) : base(worker)
     {
-        this.Type = STATE.CARRYING;
+        this.Type = STATE.GOTO;
         this.worker = worker;
     }
 
