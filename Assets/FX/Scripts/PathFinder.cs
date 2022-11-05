@@ -14,20 +14,6 @@ public class Path
 
 }
 
-public struct PathfinderJob : IJobParallelFor
-{
-    public ManagedObjectRef<Pathfinder> Pathfinder;
-    public NativeArray<Vector3> From;
-    public NativeArray<Vector3> To;
-    public NativeArray<ManagedObjectRef<Path>> Result;
-
-    public void Execute(int i)
-    {
-        Path path = ManagedObjectWorld.Get(Pathfinder).FindPath(From[i], To[i], true);
-        Result[i] = ManagedObjectWorld.Add(path);
-    }
-}
-
 public class Pathfinder
 {
 
