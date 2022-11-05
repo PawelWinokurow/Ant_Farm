@@ -52,11 +52,15 @@ public class JobScheduler : MonoBehaviour
     {
         while (true)
         {
+            var watch = System.Diagnostics.Stopwatch.StartNew();
             if (SomeJobLeft())
             {
                 AssignWork();
             }
-            yield return new WaitForSeconds(0.1f);
+            watch.Stop();
+            var elapsedMs = watch.ElapsedMilliseconds;
+            yield return new WaitForSeconds(1f);
+            Debug.Log($"Job scheduling task took {elapsedMs} ms");
         }
     }
 
@@ -80,7 +84,7 @@ public class JobScheduler : MonoBehaviour
     {
         var job = unassignedJobsQueue[0];
         var parallelJob = ParallelComputations.CreateParallelDistancesJob(freeMobs.Select(mod => mod.CurrentPosition).ToList(), job.Destination);
-        JobHandle handle = parallelJob.Schedule(freeMobs.Count, 1);
+        JobHandle handle = parallelJob.Schedule(freeMobs.Count, 4);
         handle.Complete();
         PriorityQueue<JobMobDistance, float> minDistances = new PriorityQueue<JobMobDistance, float>(0);
 

@@ -50,7 +50,6 @@ public class GameManager : MonoBehaviour
 
     public void ProcessTap(Vector3 pos)
     {
-
         Hexagon hex = Surface.PositionToHex(pos);
         if (AreNoMobsInHex(hex))
         {
@@ -75,6 +74,8 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+
+
     }
 
     private bool AreNoMobsInHex(Hexagon hex)
