@@ -8,7 +8,6 @@ public class GameManager : MonoBehaviour
     public BuildWallsTest BuildWallsTest;
     public JobScheduler JobScheduler;
     public Graph PathGraph;
-
     private Pathfinder pathfinder;
 
     void Awake()

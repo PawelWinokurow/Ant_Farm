@@ -167,6 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f5e9ca48c925554ba990a49d3e1ead6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  marker: {fileID: 8814868800950481170, guid: e3fce081860e446a99419c8b74afe6a0, type: 3}
 --- !u!1 &685065889
 GameObject:
   m_ObjectHideFlags: 0
@@ -302,6 +303,7 @@ MonoBehaviour:
   Surface: {fileID: 685065891}
   BuildWallsTest: {fileID: 1176967603}
   JobScheduler: {fileID: 348439228}
+  marker: {fileID: 8814868800950481170, guid: e3fce081860e446a99419c8b74afe6a0, type: 3}
 --- !u!1001 &1124990943
 PrefabInstance:
   m_ObjectHideFlags: 0

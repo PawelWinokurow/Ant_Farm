@@ -23,7 +23,7 @@ public class GoToState : State
 
     public override void Tick()
     {
-        if (digger.HasPath && digger.Path.HasWaypoints)
+        if (digger.HasPath)
         {
             digger.AntAnimator.Run();
             digger.Move(MOVEMENT_SPEED);

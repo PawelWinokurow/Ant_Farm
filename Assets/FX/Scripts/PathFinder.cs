@@ -129,11 +129,10 @@ public class Pathfinder
             var from = cameFrom[to.Id];
             while (from != null)
             {
-                path.WayPoints.Add(cameThrough[$"{from.Id}{to.Id}"]);
+                path.WayPoints.Insert(0, (cameThrough[$"{from.Id}{to.Id}"]));
                 to = from;
                 from = cameFrom[from.Id];
             }
-            path.WayPoints.Reverse();
             path.Length = costSoFar[goal.Id];
             return path;
         }

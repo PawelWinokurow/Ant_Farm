@@ -13,7 +13,7 @@ public class Digger : MonoBehaviour, Mob
     public State CurrentState { get; set; }
     public Vector3 InitialPosition { get; set; }
     public Pathfinder Pathfinder { get; set; }
-    public bool HasPath { get => Path != null; }
+    public bool HasPath { get => currentPathEdge != null; }
     public bool HasJob { get => Job != null; }
     private float lerpDuration;
     private float t = 0f;
@@ -62,7 +62,6 @@ public class Digger : MonoBehaviour, Mob
         Path = null;
     }
 
-
     public void SetRandomWalk()
     {
         SetPath(Pathfinder.RandomWalk(CurrentPosition, 10));
@@ -70,6 +69,7 @@ public class Digger : MonoBehaviour, Mob
 
     public void Move(int speed)
     {
+        DrawDebugPath();
         if (!currentPathEdge.IsWalkable)
         {
             Rerouting();
@@ -85,13 +85,19 @@ public class Digger : MonoBehaviour, Mob
             t -= lerpDuration;
             SetCurrentPathEdge();
         }
+        else
+        {
+            currentPathEdge = null;
+        }
     }
 
     private void SetCurrentPathEdge()
     {
+
         currentPathEdge = Path.WayPoints[0];
         Path.WayPoints.RemoveAt(0);
         lerpDuration = Vector3.Distance(currentPathEdge.From.Position, currentPathEdge.To.Position);
+
     }
 
     void Rerouting()
