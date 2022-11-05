@@ -6,7 +6,7 @@ using UnityEngine;
 public class Controller : MonoBehaviour
 {
 
-    private Hexagon hex;
+    private FloorHexagon hex;
     public GameManager GameManager;
     public Surface Surface;
     private void Start()

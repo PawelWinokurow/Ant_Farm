@@ -9,7 +9,7 @@ public class HexagonTransform
         return new HexagonSerializable()
         {
             Id = hexagon.Id,
-            HexType = hexagon.HexType,
+            HexType = hexagon.Type,
             Position = VectorTransform.ToSerializable(hexagon.Position)
         };
     }

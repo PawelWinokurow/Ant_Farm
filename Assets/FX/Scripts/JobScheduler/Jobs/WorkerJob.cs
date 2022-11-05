@@ -4,7 +4,7 @@ public class WorkerJob : Job
 {
     public string Id { set; get; }
     public Vector3 Destination { set; get; }
-    public Hexagon Hex { get; set; }
+    public FloorHexagon Hex { get; set; }
     public Action CancelJob { get; set; }
     public Action Execute { get; set; }
     public Action CancelNotCompleteJob { get; set; }
@@ -13,7 +13,7 @@ public class WorkerJob : Job
     public Path Path { get; set; }
 
 
-    public WorkerJob(Hexagon hex, Vector3 destination, JobType type)
+    public WorkerJob(FloorHexagon hex, Vector3 destination, JobType type)
     {
         Id = hex.Id;
         Hex = hex;

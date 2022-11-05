@@ -3,37 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class BaseHexagon : MonoBehaviour
+public class BaseHexagon : MonoBehaviour, Hexagon
 {
-    public static float Radius = 2f;
     public string Id { get; set; }
-    public HEX_TYPE HexType { get; set; }
+    public FloorHexagon FloorHexagon { get; set; }
     public Vector3 Position { get; set; }
+    public HEX_TYPE Type { get => FloorHexagon.Type; set => FloorHexagon.Type = value; }
 
-    public BaseHexagon AssignProperties(FoodHexagon hex)
-    {
-        Id = hex.Id;
-        HexType = hex.HexType;
-        Position = hex.Position;
-        HexType = hex.HexType;
-        return this;
-    }
 
-    public static BaseHexagon CreateHexagon(string Id, BaseHexagon baseHexPrefab, Vector3 hexPosition, Transform parent)
+    public static BaseHexagon CreateHexagon(FloorHexagon parent, BaseHexagon baseHexPrefab)
     {
-        BaseHexagon hex = Instantiate(baseHexPrefab, hexPosition, Quaternion.identity, parent);
-        hex.Position = hexPosition;
-        hex.Id = Id;
-        hex.HexType = HEX_TYPE.BASE;
+        BaseHexagon hex = Instantiate(baseHexPrefab, parent.Position, Quaternion.identity, parent.transform);
+        hex.FloorHexagon = parent;
+        hex.Position = parent.Position;
+        hex.Id = parent.Id;
+        hex.FloorHexagon.Child = hex;
         return hex;
     }
 
-    public void Clear()
+    public BaseHexagon AssignProperties(BaseHexagon hex)
     {
-        for (int i = 0; i < this.transform.childCount; i++)//удаляет чайлды старой графики
-        {
-            GameObject.Destroy(this.transform.GetChild(i).gameObject);
-        }
+        Id = hex.Id;
+        Type = hex.Type;
+        Position = hex.Position;
+        return this;
     }
 
 }

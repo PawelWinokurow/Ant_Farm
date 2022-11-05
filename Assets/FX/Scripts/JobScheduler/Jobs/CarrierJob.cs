@@ -5,7 +5,7 @@ public class CarrierJob : Job
     public string Id { set; get; }
     public Vector3 Destination { set; get; }
     public Vector3 Departure { set; get; }
-    public Hexagon Hex { get; set; }
+    public FloorHexagon Hex { get; set; }
     public Action CancelJob { get; set; }
     public Action Execute { get; set; }
     public Action CancelNotCompleteJob { get; set; }
@@ -15,7 +15,7 @@ public class CarrierJob : Job
     public Path Path { get; set; }
 
 
-    public CarrierJob(Hexagon hex, Vector3 departure, Vector3 destination)
+    public CarrierJob(FloorHexagon hex, Vector3 departure, Vector3 destination)
     {
         Id = hex.Id;
         Hex = hex;

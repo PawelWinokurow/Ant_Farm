@@ -1,33 +1,32 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
-public class FoodHexagon : MonoBehaviour, Hexagon
+public class WorkHexagon : MonoBehaviour, Hexagon
 {
     public string Id { get; set; }
     public HEX_TYPE Type { get => FloorHexagon.Type; set => FloorHexagon.Type = value; }
     public Vector3 Position { get; set; }
-    public float Food { get; set; }
     public FloorHexagon FloorHexagon { get; set; }
+    public float Work { get; set; }
 
-    public static FoodHexagon CreateHexagon(FloorHexagon parent, FoodHexagon workHexPrefab)
+
+    public static WorkHexagon CreateHexagon(FloorHexagon parent, WorkHexagon workHexPrefab)
     {
-        FoodHexagon hex = Instantiate(workHexPrefab, parent.Position, Quaternion.identity, parent.transform);
+        WorkHexagon hex = Instantiate(workHexPrefab, parent.Position, Quaternion.identity, parent.transform);
         hex.FloorHexagon = parent;
         hex.Position = parent.Position;
         hex.Id = parent.Id;
-        hex.Food = 1000f;
+        hex.Work = parent.Work;
         hex.FloorHexagon.Child = hex;
         return hex;
     }
 
-    public FoodHexagon AssignProperties(FoodHexagon hex)
+    public WorkHexagon AssignProperties(WorkHexagon hex)
     {
         Id = hex.Id;
         Type = hex.Type;
         Position = hex.Position;
-        Food = hex.Food;
+        Work = hex.Work;
         return this;
     }
 

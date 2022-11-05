@@ -101,39 +101,13 @@ public class JobScheduler : MonoBehaviour
         ParallelComputations.FreeDistancesJobMemory(parallelJob);
     }
 
-    // private void SetJobToWorker(Job job)
-    // {
-    //     var mob = job.Mob;
-    //     var path = job.Path;
-    //     if (job.Type == JobType.DIG || job.Type == JobType.FILL)
-    //     {
-    //     }
-    //     else if (job.Type == JobType.CARRYING)
-    //     {
-    //     }
-    //     job.Execute = () =>
-    //     {
-    //         surface.StartJobExecution(job.Hex, mob);
-    //     };
-    //     job.CancelJob = () =>
-    //     {
-    //         CancelJob(job);
-    //     };
-    //     job.CancelNotCompleteJob = () =>
-    //     {
-    //         CancelNotCompleteJob(job);
-    //     };
-    //     mob.SetState(new GoToState((Worker)mob));
-    //     mob.SetPath(path);
-    // }
-
     private void SetJobToWorker(Job job)
     {
         var mob = job.Mob;
         var path = job.Path;
         job.Execute = () =>
         {
-            surface.StartJobExecution(((WorkerJob)job).Hex, mob);
+            surface.StartJobExecution(job.Hex, mob);
         };
         job.CancelJob = () =>
         {

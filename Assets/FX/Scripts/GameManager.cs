@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
 
     public void ProcessTap(Vector3 pos)
     {
-        Hexagon hex = Surface.PositionToHex(pos);
+        FloorHexagon hex = Surface.PositionToHex(pos);
         if (AreNoMobsInHex(hex))
         {
             if (Surface.IsInOldHexagons(hex))
@@ -63,15 +63,15 @@ public class GameManager : MonoBehaviour
             else
             {
                 Surface.AddIcon(hex);
-                if (hex.IsEmpty)
+                if (hex.Type == HEX_TYPE.EMPTY)
                 {
                     JobScheduler.AssignJob(new WorkerJob(hex, hex.transform.position, JobType.FILL));
                 }
-                else if (hex.IsSoil)
+                else if (hex.Type == HEX_TYPE.SOIL)
                 {
                     JobScheduler.AssignJob(new WorkerJob(hex, hex.transform.position, JobType.DIG));
                 }
-                else if (hex.IsFood)
+                else if (hex.Type == HEX_TYPE.FOOD)
                 {
                     JobScheduler.AssignJob(new CarrierJob(hex, hex.transform.position, Surface.BaseHex.Position));
                 }

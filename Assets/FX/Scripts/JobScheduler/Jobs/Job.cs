@@ -10,7 +10,7 @@ public interface Job
 {
     public string Id { get; set; }
     public Vector3 Destination { get; set; }
-    public Hexagon Hex { get; set; }
+    public FloorHexagon Hex { get; set; }
     public Mob Mob { get; set; }
     public JobType Type { get; set; }
     public Action CancelJob { get; set; }

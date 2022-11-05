@@ -42,8 +42,8 @@ public class BuildWallsTest : MonoBehaviour
                 Surface.AddGround(Surface.Hexagons[i]);
             }
         }
-        Surface.AddBaseHex();
-        Surface.AddFoodHex();
+        Surface.AddBase();
+        Surface.AddFood();
     }
 
 }
