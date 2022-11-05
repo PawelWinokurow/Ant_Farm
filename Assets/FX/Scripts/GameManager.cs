@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 
@@ -20,7 +21,6 @@ public class GameManager : MonoBehaviour
         {
             GenerateData();
         }
-
     }
 
     private void LoadData()
@@ -50,31 +50,36 @@ public class GameManager : MonoBehaviour
 
     public void ProcessTap(Vector3 pos)
     {
-        Hexagon hex = Surface.PositionToHex(pos);
 
-        if (Surface.IsInOldHexagons(hex))
+        Hexagon hex = Surface.PositionToHex(pos);
+        if (AreNoMobsInHex(hex))
         {
-            Surface.RemoveIcon(hex);
-        }
-        if (JobScheduler.IsJobAlreadyCreated(hex.Id))
-        {
-            JobScheduler.CancelJob(hex.Id);
-        }
-        else
-        {
-            Surface.AddIcon(hex);
-            if (hex.IsEmpty)
+            if (Surface.IsInOldHexagons(hex))
             {
-                JobScheduler.AssignJob(new DiggerJob(hex, hex.transform.position, JobType.FILL));
+                Surface.RemoveIcon(hex);
             }
-            else if (hex.IsSoil)
+            if (JobScheduler.IsJobAlreadyCreated(hex.Id))
             {
-                JobScheduler.AssignJob(new DiggerJob(hex, hex.transform.position, JobType.DIG));
+                JobScheduler.CancelJob(hex.Id);
+            }
+            else
+            {
+                Surface.AddIcon(hex);
+                if (hex.IsEmpty)
+                {
+                    JobScheduler.AssignJob(new DiggerJob(hex, hex.transform.position, JobType.FILL));
+                }
+                else if (hex.IsSoil)
+                {
+                    JobScheduler.AssignJob(new DiggerJob(hex, hex.transform.position, JobType.DIG));
+                }
             }
         }
     }
 
-
-
+    private bool AreNoMobsInHex(Hexagon hex)
+    {
+        return JobScheduler.AllMobs.All(mob => Surface.PositionToHex(mob.CurrentPosition).Id != hex.Id);
+    }
 }
 

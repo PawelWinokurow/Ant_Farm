@@ -31,6 +31,7 @@ public class JobScheduler : MonoBehaviour
     public Pathfinder Pathfinder { get; set; }
     private List<Mob> busyMobs = new List<Mob>();
     private List<Mob> freeMobs = new List<Mob>();
+    public List<Mob> AllMobs = new List<Mob>();
 
     void Update()
     {
@@ -67,6 +68,7 @@ public class JobScheduler : MonoBehaviour
     {
         mob.Pathfinder = Pathfinder;
         freeMobs.Add(mob);
+        AllMobs.Add(mob);
     }
 
     private bool SomeJobLeft()
