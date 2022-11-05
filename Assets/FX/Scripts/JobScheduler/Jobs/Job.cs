@@ -3,7 +3,7 @@ using UnityEngine;
 
 public enum JobType
 {
-    DIG, FILL
+    DIG, FILL, CARRYING
 }
 
 public interface Job

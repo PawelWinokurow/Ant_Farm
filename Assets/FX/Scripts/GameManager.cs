@@ -71,6 +71,10 @@ public class GameManager : MonoBehaviour
                 {
                     JobScheduler.AssignJob(new WorkerJob(hex, hex.transform.position, JobType.DIG));
                 }
+                else if (hex.IsFood)
+                {
+                    JobScheduler.AssignJob(new CarryingJob(hex, hex.transform.position, Surface.BaseHex.Position));
+                }
             }
         }
 

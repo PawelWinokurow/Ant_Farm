@@ -143,7 +143,7 @@ public class Surface : MonoBehaviour
     }
 
 
-    public void StartHexJobExecution(Hexagon hex, Mob mob)
+    public void StartJobExecution(Hexagon hex, Mob mob)
     {
         switch (mob.Job.Type)
         {
@@ -153,9 +153,17 @@ public class Surface : MonoBehaviour
             case JobType.FILL:
                 StartCoroutine(Fill(hex, (Worker)mob));
                 break;
+            case JobType.CARRYING:
+                StartCoroutine(Carry(hex, (Worker)mob));
+                break;
         }
     }
 
+
+    public IEnumerator Carry(Hexagon hex, Worker worker)
+    {
+        yield return new WaitForSeconds(5f);
+    }
     public IEnumerator Dig(Hexagon hex, Worker worker)
     {
         OldHexagons.Remove(hex.Id);

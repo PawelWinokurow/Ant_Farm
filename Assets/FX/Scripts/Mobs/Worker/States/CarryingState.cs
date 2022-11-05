@@ -1,37 +1,27 @@
-using UnityEngine;
 
-public class GoToState : State
+public class CarryingState : State
 {
-
     private Worker worker;
-    private int MOVEMENT_SPEED = 5;
 
-
-    public GoToState(Worker worker) : base(worker)
+    public CarryingState(Worker worker) : base(worker)
     {
-        this.Type = STATE.GOTO;
+        this.Type = STATE.CARRYING;
         this.worker = worker;
-    }
-
-    override public void OnStateEnter()
-    {
-    }
-    override public void OnStateExit()
-    {
-        worker.RemovePath();
     }
 
     public override void Tick()
     {
-        if (worker.HasPath)
-        {
-            worker.AntAnimator.Run();
-            worker.Move(MOVEMENT_SPEED);
-        }
-        else
-        {
-            worker.SetState(new DigState(worker));
-        }
+        worker.AntAnimator.Idle();
+    }
+
+    override public void OnStateEnter()
+    {
+        worker.Job.Execute();
+    }
+
+    override public void OnStateExit()
+    {
+
     }
 
 }

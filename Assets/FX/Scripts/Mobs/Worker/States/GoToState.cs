@@ -1,13 +1,13 @@
 using UnityEngine;
 
-public class CarryingState : State
+public class GoToState : State
 {
 
     private Worker worker;
     private int MOVEMENT_SPEED = 5;
 
 
-    public CarryingState(Worker worker) : base(worker)
+    public GoToState(Worker worker) : base(worker)
     {
         this.Type = STATE.CARRYING;
         this.worker = worker;
@@ -30,7 +30,15 @@ public class CarryingState : State
         }
         else
         {
-            worker.SetState(new IdleState(worker));
+            if (worker.Job.Type == JobType.DIG || worker.Job.Type == JobType.FILL)
+            {
+                worker.SetState(new IdleState(worker));
+
+            }
+            else if (worker.Job.Type == JobType.CARRYING)
+            {
+                worker.SetState(new CarryingState(worker));
+            }
         }
     }
 

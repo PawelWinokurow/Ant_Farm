@@ -3,6 +3,7 @@ using System;
 
 public interface Mob
 {
+    public AntAnimator AntAnimator { get; set; }
     public Vector3 CurrentPosition { get; }
     public bool HasJob { get; }
     public State CurrentState { get; set; }
@@ -12,5 +13,7 @@ public interface Mob
     public Pathfinder Pathfinder { get; set; }
     public void SetState(State state);
     public void SetPath(Path path);
+    public void Move(int speed);
+    public void RemovePath();
 
 }

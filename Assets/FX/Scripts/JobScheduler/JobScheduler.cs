@@ -109,19 +109,38 @@ public class JobScheduler : MonoBehaviour
     {
         var mob = job.Mob;
         var path = job.Path;
-        job.Execute = () =>
+        if (job.Type == JobType.DIG || job.Type == JobType.FILL)
         {
-            surface.StartHexJobExecution(((WorkerJob)job).Hex, mob);
-        };
+            var workerJob = (WorkerJob)job;
+            job.Execute = () =>
+            {
+                surface.StartJobExecution((workerJob).Hex, mob);
+            };
+            mob.SetState(new GoToState((Worker)mob));
+        }
+        else if (job.Type == JobType.CARRYING)
+        {
+            var carryingJob = (CarryingJob)job;
+
+            carryingJob.Execute = () =>
+            {
+                surface.StartJobExecution((carryingJob).Hex, mob);
+            };
+            carryingJob.Return = () =>
+            {
+
+            };
+
+            mob.SetState(new CarryingState((Worker)mob));
+        }
         job.CancelJob = () =>
-        {
-            CancelJob(job);
-        };
+{
+    CancelJob(job);
+};
         job.CancelNotCompleteJob = () =>
         {
             CancelNotCompleteJob(job);
         };
-        mob.SetState(new GoToState((Worker)mob));
         mob.SetPath(path);
     }
 

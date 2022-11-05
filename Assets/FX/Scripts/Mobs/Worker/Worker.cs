@@ -5,7 +5,7 @@ using UnityEngine;
 public class Worker : MonoBehaviour, Mob
 {
     public float ConstructionSpeed = 2f;
-    public AntAnimator AntAnimator;
+    public AntAnimator AntAnimator { get; set; }
     public Vector3 CurrentPosition { get => transform.position; }
     public Job Job { get; set; }
     public Path Path { get; set; }

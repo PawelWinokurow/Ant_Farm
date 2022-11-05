@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum HEX_TYPE
 {
-    EMPTY, SOIL, BUILDING, FOOD
+    EMPTY, SOIL, BUILDING, FOOD, BASE
 }
 
 public class Hexagon : MonoBehaviour, Constructable
@@ -16,8 +16,8 @@ public class Hexagon : MonoBehaviour, Constructable
     public bool IsEmpty { get => HexType == HEX_TYPE.EMPTY; }
     public bool IsSoil { get => HexType == HEX_TYPE.SOIL; }
     public bool IsFood { get => HexType == HEX_TYPE.FOOD; }
+    public bool IsBase { get => HexType == HEX_TYPE.BASE; }
     public float Work { get; set; }
-    public bool IsProhibit = false;
 
     public Hexagon AssignProperties(Hexagon hex)
     {
@@ -25,7 +25,6 @@ public class Hexagon : MonoBehaviour, Constructable
         HexType = hex.HexType;
         Position = hex.Position;
         Work = hex.Work;
-        IsProhibit = hex.IsProhibit;
         return this;
     }
 
