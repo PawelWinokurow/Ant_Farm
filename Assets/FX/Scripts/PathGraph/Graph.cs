@@ -75,6 +75,7 @@ public class Graph
     }
     public void ProhibitHexagon(Vector3 hexagonPosition)
     {
+
         GetHexagonEdges(hexagonPosition).ForEach(edge => edge.IsWalkable = false);
     }
 

@@ -81,6 +81,7 @@ public class Surface : MonoBehaviour
                 Vector3 hexPosition = new Vector3(w * (x + (z % 2f) / 2f), 0f, z * h);
                 PathGraph.AddHexagonSubGraph(hexPosition, Hexagon.Radius, $"x{x}z{z}");
                 Hexagon hex = Hexagon.CreateHexagon($"{x}_{z}", hexPrefab, hexPosition, transform, HEX_TYPE.EMPTY);
+                Hexagon.CreateHexagon(hex.Id, wallPrefab, hex.Position, hex.transform, HEX_TYPE.BASE);
                 Hexagons[z * width + x] = hex;
             }
         }
@@ -92,12 +93,9 @@ public class Surface : MonoBehaviour
         Camera.main.transform.parent.position = new Vector3((width - 0.5f) * w / 2f, 0, (height - 1) * h / 2f * (1f - 0.09f));
     }
 
-    private void SetBaseHex()
+    public void SetBaseHex()
     {
         BaseHex = PositionToHex(Camera.main.transform.parent.position);
-        BaseHex.ClearHexagon();
-        BaseHexagon.CreateHexagon(BaseHex.Id, basePrefab, BaseHex.Position, BaseHex.transform, HEX_TYPE.BASE);
-        PathGraph.ProhibitHexagon(BaseHex.Position);
     }
 
     void LoadHexagons(HexagonSerializable[] hexagons)
@@ -147,6 +145,7 @@ public class Surface : MonoBehaviour
 
     public void StartJobExecution(Hexagon hex, Mob mob)
     {
+        Debug.Log(mob.Job.Type);
         switch (mob.Job.Type)
         {
             case JobType.DIG:
@@ -169,7 +168,7 @@ public class Surface : MonoBehaviour
     public IEnumerator Dig(Hexagon hex, Worker worker)
     {
         OldHexagons.Remove(hex.Id);
-        hex.ClearHexagon();
+        hex.Clear();
         AddBlock(hex);
         while (true)
         {
@@ -188,7 +187,7 @@ public class Surface : MonoBehaviour
 
     public IEnumerator Fill(Hexagon hex, Worker worker)
     {
-        hex.ClearHexagon();
+        hex.Clear();
         OldHexagons.Remove(hex.Id);
         AddScaledBlock(hex);
         while (true)
@@ -197,7 +196,7 @@ public class Surface : MonoBehaviour
             hex.transform.GetChild(0).localScale = Vector3.one * (1 - hex.Work / 50f);
             if (hex.Work <= 0)
             {
-                hex.ClearHexagon();
+                hex.Clear();
                 AddBlock(hex);
                 worker.Job.CancelJob();
                 yield break;
@@ -232,7 +231,21 @@ public class Surface : MonoBehaviour
     {
         hex.HexType = HEX_TYPE.EMPTY;
         hex.Work = 50f;
-        hex.ClearHexagon();
+        hex.Clear();
+    }
+
+    public void AddBaseHex()
+    {
+        BaseHex.Clear();
+        BaseHexagon.CreateHexagon(BaseHex.Id, basePrefab, BaseHex.Position, BaseHex.transform);
+        PathGraph.ProhibitHexagon(BaseHex.Position);
+    }
+    public void AddFoodHex()
+    {
+        Hexagon hex = PositionToHex(BaseHex.Position + new Vector3(30, 0, 30));
+        hex.Clear();
+        FoodHexagon.CreateHexagon(hex.Id, foodPrefab, hex.Position, hex.transform);
+        PathGraph.ProhibitHexagon(BaseHex.Position);
     }
 
     public bool IsInOldHexagons(Hexagon hex)
@@ -254,7 +267,7 @@ public class Surface : MonoBehaviour
         {
             prefab = digPrefab;
         }
-        hex.ClearHexagon();
+        hex.Clear();
         Instantiate(prefab, hex.transform.position, Quaternion.identity, hex.transform).AssignProperties(clonedHex);
     }
     public void RemoveIcon(Hexagon hex)
@@ -268,7 +281,7 @@ public class Surface : MonoBehaviour
         {
             PathGraph.ProhibitHexagon(hex.transform.position);
         }
-        hex.ClearHexagon();
+        hex.Clear();
         OldHexagons.Remove(hex.Id);
         Instantiate(oldIcon, hex.transform.position, Quaternion.identity, hex.transform);
     }

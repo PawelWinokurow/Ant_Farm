@@ -16,21 +16,22 @@ public class FoodHexagon : MonoBehaviour
         Id = hex.Id;
         HexType = hex.HexType;
         Position = hex.Position;
+        HexType = hex.HexType;
         Food = hex.Food;
         return this;
     }
 
-    public static FoodHexagon CreateHexagon(string Id, FoodHexagon foodHexPrefab, Vector3 hexPosition, Transform parent, HEX_TYPE hexType)
+    public static FoodHexagon CreateHexagon(string Id, FoodHexagon foodHexPrefab, Vector3 hexPosition, Transform parent)
     {
         FoodHexagon hex = Instantiate(foodHexPrefab, hexPosition, Quaternion.identity, parent);
         hex.Position = hexPosition;
         hex.Id = Id;
-        hex.HexType = hexType;
+        hex.HexType = HEX_TYPE.FOOD;
         hex.Food = 1000f;
         return hex;
     }
 
-    public void ClearHexagon()
+    public void Clear()
     {
         for (int i = 0; i < this.transform.childCount; i++)//удаляет чайлды старой графики
         {

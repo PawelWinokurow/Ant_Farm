@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class BuildWallsTest : MonoBehaviour
 {
-    private Surface surf;
+
+    private Surface Surface;
     [Range(0, 100)]
     public int wallPercentage = 25;
     private int wallPercentageOld = 25;
 
-    public void Init(Surface surf)
+    public void Init(Surface Surface)
     {
-        this.surf = surf;
+        this.Surface = Surface;
         CreateWalls();
     }
 
@@ -28,18 +29,21 @@ public class BuildWallsTest : MonoBehaviour
     public void CreateWalls()
     {
         UnityEngine.Random.InitState(Guid.NewGuid().GetHashCode());
-        surf.PathGraph.ResetAllEdgesToWalkable();
-        for (int i = 1; i < surf.Hexagons.Length - 1; i++)
+        Surface.PathGraph.ResetAllEdgesToWalkable();
+        for (int i = 1; i < Surface.Hexagons.Length - 1; i++)
         {
             if (UnityEngine.Random.Range(0, 100f) < wallPercentage)
             {
-                surf.AddBlock(surf.Hexagons[i]);
-                surf.PathGraph.ProhibitHexagon(surf.Hexagons[i].Position);
+                Surface.AddBlock(Surface.Hexagons[i]);
+                Surface.PathGraph.ProhibitHexagon(Surface.Hexagons[i].Position);
             }
             else
             {
-                surf.AddGround(surf.Hexagons[i]);
+                Surface.AddGround(Surface.Hexagons[i]);
             }
         }
+        Surface.AddBaseHex();
+        Surface.AddFoodHex();
     }
+
 }

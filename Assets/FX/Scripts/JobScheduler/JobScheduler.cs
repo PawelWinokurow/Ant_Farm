@@ -50,11 +50,7 @@ public class JobScheduler : MonoBehaviour
         {
             if (SomeJobLeft())
             {
-                var watch = System.Diagnostics.Stopwatch.StartNew();
                 AssignWork();
-                watch.Stop();
-                var elapsedMs = watch.ElapsedMilliseconds;
-                Debug.Log($"Job scheduling task took {elapsedMs} ms");
             }
             yield return new WaitForSeconds(0.5f);
         }
@@ -105,42 +101,49 @@ public class JobScheduler : MonoBehaviour
         ParallelComputations.FreeDistancesJobMemory(parallelJob);
     }
 
+    // private void SetJobToWorker(Job job)
+    // {
+    //     var mob = job.Mob;
+    //     var path = job.Path;
+    //     if (job.Type == JobType.DIG || job.Type == JobType.FILL)
+    //     {
+    //     }
+    //     else if (job.Type == JobType.CARRYING)
+    //     {
+    //     }
+    //     job.Execute = () =>
+    //     {
+    //         surface.StartJobExecution(job.Hex, mob);
+    //     };
+    //     job.CancelJob = () =>
+    //     {
+    //         CancelJob(job);
+    //     };
+    //     job.CancelNotCompleteJob = () =>
+    //     {
+    //         CancelNotCompleteJob(job);
+    //     };
+    //     mob.SetState(new GoToState((Worker)mob));
+    //     mob.SetPath(path);
+    // }
+
     private void SetJobToWorker(Job job)
     {
         var mob = job.Mob;
         var path = job.Path;
-        if (job.Type == JobType.DIG || job.Type == JobType.FILL)
+        job.Execute = () =>
         {
-            var workerJob = (WorkerJob)job;
-            job.Execute = () =>
-            {
-                surface.StartJobExecution((workerJob).Hex, mob);
-            };
-            mob.SetState(new GoToState((Worker)mob));
-        }
-        else if (job.Type == JobType.CARRYING)
-        {
-            var carryingJob = (CarrierJob)job;
-
-            carryingJob.Execute = () =>
-            {
-                surface.StartJobExecution((carryingJob).Hex, mob);
-            };
-            carryingJob.Return = () =>
-            {
-
-            };
-
-            mob.SetState(new CarryingState((Worker)mob));
-        }
+            surface.StartJobExecution(((WorkerJob)job).Hex, mob);
+        };
         job.CancelJob = () =>
-{
-    CancelJob(job);
-};
+        {
+            CancelJob(job);
+        };
         job.CancelNotCompleteJob = () =>
         {
             CancelNotCompleteJob(job);
         };
+        mob.SetState(new GoToState((Worker)mob));
         mob.SetPath(path);
     }
 

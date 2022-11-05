@@ -32,7 +32,7 @@ public class GoToState : State
         {
             if (worker.Job.Type == JobType.DIG || worker.Job.Type == JobType.FILL)
             {
-                worker.SetState(new IdleState(worker));
+                worker.SetState(new DigState(worker));
 
             }
             else if (worker.Job.Type == JobType.CARRYING)

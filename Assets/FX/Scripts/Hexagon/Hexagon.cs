@@ -38,7 +38,7 @@ public class Hexagon : MonoBehaviour, Constructable
         return hex;
     }
 
-    public void ClearHexagon()
+    public void Clear()
     {
         for (int i = 0; i < this.transform.childCount; i++)//удаляет чайлды старой графики
         {

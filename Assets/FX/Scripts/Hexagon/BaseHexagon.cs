@@ -15,19 +15,20 @@ public class BaseHexagon : MonoBehaviour
         Id = hex.Id;
         HexType = hex.HexType;
         Position = hex.Position;
+        HexType = hex.HexType;
         return this;
     }
 
-    public static BaseHexagon CreateHexagon(string Id, BaseHexagon baseHexPrefab, Vector3 hexPosition, Transform parent, HEX_TYPE hexType)
+    public static BaseHexagon CreateHexagon(string Id, BaseHexagon baseHexPrefab, Vector3 hexPosition, Transform parent)
     {
         BaseHexagon hex = Instantiate(baseHexPrefab, hexPosition, Quaternion.identity, parent);
         hex.Position = hexPosition;
         hex.Id = Id;
-        hex.HexType = hexType;
+        hex.HexType = HEX_TYPE.BASE;
         return hex;
     }
 
-    public void ClearHexagon()
+    public void Clear()
     {
         for (int i = 0; i < this.transform.childCount; i++)//удаляет чайлды старой графики
         {
