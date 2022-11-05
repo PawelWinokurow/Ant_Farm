@@ -10,8 +10,8 @@ public class Surface : MonoBehaviour
     public Hexagon wallPrefabScaled;
     public Hexagon digPrefab;
     public Hexagon fillPrefab;
-    public Hexagon basePrefab;
-    public Hexagon foodPrefab;
+    public BaseHexagon basePrefab;
+    public FoodHexagon foodPrefab;
     private Camera cam;
     private int height;
     private int width;
@@ -96,6 +96,8 @@ public class Surface : MonoBehaviour
     {
         BaseHex = PositionToHex(Camera.main.transform.parent.position);
         BaseHex.ClearHexagon();
+        BaseHexagon.CreateHexagon(BaseHex.Id, basePrefab, BaseHex.Position, BaseHex.transform, HEX_TYPE.BASE);
+        PathGraph.ProhibitHexagon(BaseHex.Position);
     }
 
     void LoadHexagons(HexagonSerializable[] hexagons)

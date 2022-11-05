@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-public class CarryingJob : Job
+public class CarrierJob : Job
 {
     public string Id { set; get; }
     public Vector3 Destination { set; get; }
@@ -15,7 +15,7 @@ public class CarryingJob : Job
     public Path Path { get; set; }
 
 
-    public CarryingJob(Hexagon hex, Vector3 departure, Vector3 destination)
+    public CarrierJob(Hexagon hex, Vector3 departure, Vector3 destination)
     {
         Id = hex.Id;
         Hex = hex;

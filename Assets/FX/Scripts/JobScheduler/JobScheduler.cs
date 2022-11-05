@@ -120,7 +120,7 @@ public class JobScheduler : MonoBehaviour
         }
         else if (job.Type == JobType.CARRYING)
         {
-            var carryingJob = (CarryingJob)job;
+            var carryingJob = (CarrierJob)job;
 
             carryingJob.Execute = () =>
             {

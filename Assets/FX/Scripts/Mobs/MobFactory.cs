@@ -6,6 +6,7 @@ using UnityEngine;
 public class MobFactory : MonoBehaviour
 {
     public JobScheduler JobScheduler;
+    public Surface Surface;
     public Worker WorkerPrefab;
     public void AddMob()
     {
@@ -17,7 +18,7 @@ public class MobFactory : MonoBehaviour
 
     IEnumerator SpawnWorker()
     {
-        JobScheduler.AddMob(Instantiate(WorkerPrefab, new Vector3(30, 0, 30), Quaternion.identity));
+        JobScheduler.AddMob(Instantiate(WorkerPrefab, Surface.BaseHex.Position + new Vector3(5, 0, 5), Quaternion.identity));
         yield break;
     }
 }
