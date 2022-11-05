@@ -3,14 +3,14 @@ using UnityEngine;
 public class GoToState : State
 {
 
-    private Digger digger;
+    private Worker worker;
     private int MOVEMENT_SPEED = 5;
 
 
-    public GoToState(Digger digger) : base(digger)
+    public GoToState(Worker worker) : base(worker)
     {
         this.Type = STATE.GOTO;
-        this.digger = digger;
+        this.worker = worker;
     }
 
     override public void OnStateEnter()
@@ -18,19 +18,19 @@ public class GoToState : State
     }
     override public void OnStateExit()
     {
-        digger.RemovePath();
+        worker.RemovePath();
     }
 
     public override void Tick()
     {
-        if (digger.HasPath)
+        if (worker.HasPath)
         {
-            digger.AntAnimator.Run();
-            digger.Move(MOVEMENT_SPEED);
+            worker.AntAnimator.Run();
+            worker.Move(MOVEMENT_SPEED);
         }
         else
         {
-            digger.SetState(new DigState(digger));
+            worker.SetState(new DigState(worker));
         }
     }
 

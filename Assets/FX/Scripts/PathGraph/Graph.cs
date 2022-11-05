@@ -33,7 +33,7 @@ public class Graph
 
     public Vertex AddVertex(Vertex newVertex)
     {
-        int index = PathVertices.FindIndex(vertex => Vector3.Distance(vertex.Position, newVertex.Position) < 0.1f ? true : false);
+        int index = PathVertices.FindIndex(vertex => Distance.Manhattan(vertex.Position, newVertex.Position) < 0.1f ? true : false);
         if (index >= 0) return PathVertices[index];
         PathVertices.Add(newVertex);
         PathVerticesMap.Add(newVertex.Position, newVertex);
@@ -95,15 +95,26 @@ public class Graph
         }
         return PathVertices.Aggregate(PathVertices[0], (acc, vertex) =>
         {
-            if (Vector3.Distance(vertex.Position, position) <
-            Vector3.Distance(acc.Position, position)) return vertex;
+            if (Distance.Manhattan(vertex.Position, position) <
+            Distance.Manhattan(acc.Position, position)) return vertex;
+            else return acc;
+        });
+    }
+    public Vertex NearestNeighbour(Vertex from, Vertex to)
+    {
+        var toNeighbours = to.Neighbours.Where(vertex => vertex.Edges.All(edge => edge.IsWalkable)).ToList();
+        if (toNeighbours.Count == 0) return null;
+        return toNeighbours.Aggregate(toNeighbours[0], (acc, vertex) =>
+        {
+            if (Distance.Manhattan(vertex.Position, from.Position) <
+            Distance.Manhattan(acc.Position, from.Position)) return vertex;
             else return acc;
         });
     }
 
     private static float GetDistance(Vertex from, Vertex to)
     {
-        return Vector3.Distance(from.Position, to.Position);
+        return Distance.Manhattan(from.Position, to.Position);
     }
 
     public Vertex AddHexagonSubGraph(Vector3 center, float R, string id)
@@ -121,8 +132,8 @@ public class Graph
         }
         for (int i = 0; i < pathPoints.Count; i++)
         {
-            AddEdge(centerPathPoint, pathPoints[i], Vector3.Distance(centerPathPoint.Position, pathPoints[i].Position));
-            AddEdge(pathPoints[i], pathPoints[(i + 2) % pathPoints.Count], Vector3.Distance(pathPoints[i].Position, pathPoints[(i + 2) % pathPoints.Count].Position));
+            AddEdge(centerPathPoint, pathPoints[i], Distance.Manhattan(centerPathPoint.Position, pathPoints[i].Position));
+            AddEdge(pathPoints[i], pathPoints[(i + 2) % pathPoints.Count], Distance.Manhattan(pathPoints[i].Position, pathPoints[(i + 2) % pathPoints.Count].Position));
         }
         return centerPathPoint;
     }

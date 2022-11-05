@@ -2,22 +2,22 @@ using UnityEngine;
 
 public class DigState : State
 {
-    private Digger digger;
+    private Worker worker;
 
-    public DigState(Digger digger) : base(digger)
+    public DigState(Worker worker) : base(worker)
     {
         this.Type = STATE.DIG;
-        this.digger = digger;
+        this.worker = worker;
     }
 
     public override void Tick()
     {
-        digger.AntAnimator.Idle();
+        worker.AntAnimator.Idle();
     }
 
     override public void OnStateEnter()
     {
-        digger.Job.Execute();
+        worker.Job.Execute();
     }
 
     override public void OnStateExit()

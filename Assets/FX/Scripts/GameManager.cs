@@ -65,11 +65,11 @@ public class GameManager : MonoBehaviour
                 Surface.AddIcon(hex);
                 if (hex.IsEmpty)
                 {
-                    JobScheduler.AssignJob(new DiggerJob(hex, hex.transform.position, JobType.FILL));
+                    JobScheduler.AssignJob(new WorkerJob(hex, hex.transform.position, JobType.FILL));
                 }
                 else if (hex.IsSoil)
                 {
-                    JobScheduler.AssignJob(new DiggerJob(hex, hex.transform.position, JobType.DIG));
+                    JobScheduler.AssignJob(new WorkerJob(hex, hex.transform.position, JobType.DIG));
                 }
             }
         }

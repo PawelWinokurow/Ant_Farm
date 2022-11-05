@@ -9,7 +9,6 @@ public interface Mob
     public Job Job { get; set; }
     public Path Path { get; set; }
     public bool HasPath { get; }
-    public Vector3 InitialPosition { get; set; }
     public Pathfinder Pathfinder { get; set; }
     public void SetState(State state);
     public void SetPath(Path path);

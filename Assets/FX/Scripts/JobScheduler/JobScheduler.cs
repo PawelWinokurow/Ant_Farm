@@ -2,23 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Unity.Collections;
 using Unity.Jobs;
 using PriorityQueue;
 
-class JobMobDistance
+class JobMob
 {
     public Job Job;
     public Mob Mob;
-    public float Distance;
 
-    public JobMobDistance(Job job, Mob mob, float distance)
+    public JobMob(Job job, Mob mob)
     {
         Job = job;
         Mob = mob;
-        Distance = distance;
     }
-
 }
 
 public class JobScheduler : MonoBehaviour
@@ -52,15 +48,15 @@ public class JobScheduler : MonoBehaviour
     {
         while (true)
         {
-            var watch = System.Diagnostics.Stopwatch.StartNew();
             if (SomeJobLeft())
             {
+                var watch = System.Diagnostics.Stopwatch.StartNew();
                 AssignWork();
+                watch.Stop();
+                var elapsedMs = watch.ElapsedMilliseconds;
+                Debug.Log($"Job scheduling task took {elapsedMs} ms");
             }
-            watch.Stop();
-            var elapsedMs = watch.ElapsedMilliseconds;
-            yield return new WaitForSeconds(1f);
-            Debug.Log($"Job scheduling task took {elapsedMs} ms");
+            yield return new WaitForSeconds(0.5f);
         }
     }
 
@@ -86,20 +82,21 @@ public class JobScheduler : MonoBehaviour
         var parallelJob = ParallelComputations.CreateParallelDistancesJob(freeMobs.Select(mod => mod.CurrentPosition).ToList(), job.Destination);
         JobHandle handle = parallelJob.Schedule(freeMobs.Count, 4);
         handle.Complete();
-        PriorityQueue<JobMobDistance, float> minDistances = new PriorityQueue<JobMobDistance, float>(0);
+
+        PriorityQueue<JobMob, float> minDistances = new PriorityQueue<JobMob, float>(0);
 
         for (var i = 0; i < parallelJob.Result.Length; i++)
         {
-            minDistances.Enqueue(new JobMobDistance(job, freeMobs[i], parallelJob.Result[i]), parallelJob.Result[i]);
+            minDistances.Enqueue(new JobMob(job, freeMobs[i]), parallelJob.Result[i]);
         }
-        Path path = null;
         while (minDistances.Count != 0)
         {
             var minDistance = minDistances.Dequeue();
-            path = Pathfinder.FindPath(minDistance.Mob.CurrentPosition, minDistance.Job.Destination, true);
+            var path = Pathfinder.FindPath(minDistance.Mob.CurrentPosition, minDistance.Job.Destination, true);
             if (path != null)
             {
                 job.Mob = minDistance.Mob;
+                job.Mob.Job = job;
                 job.Path = path; ;
                 MoveUnassignedJobToAssignedJobs(job);
                 break;
@@ -108,16 +105,13 @@ public class JobScheduler : MonoBehaviour
         ParallelComputations.FreeDistancesJobMemory(parallelJob);
     }
 
-
-
     private void SetJobToWorker(Job job)
     {
         var mob = job.Mob;
-        mob.Job = job;
         var path = job.Path;
         job.Execute = () =>
         {
-            surface.StartHexJobExecution(((DiggerJob)job).Hex, mob);
+            surface.StartHexJobExecution(((WorkerJob)job).Hex, mob);
         };
         job.CancelJob = () =>
         {
@@ -127,7 +121,7 @@ public class JobScheduler : MonoBehaviour
         {
             CancelNotCompleteJob(job);
         };
-        mob.SetState(new GoToState((Digger)mob));
+        mob.SetState(new GoToState((Worker)mob));
         mob.SetPath(path);
     }
 
@@ -167,7 +161,7 @@ public class JobScheduler : MonoBehaviour
         if (job.Mob != null)
         {
             MoveBusyMobToFreeMobs(job.Mob);
-            job.Mob.SetState(new IdleState((Digger)job.Mob));
+            job.Mob.SetState(new IdleState((Worker)job.Mob));
         }
 
     }

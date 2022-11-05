@@ -3,30 +3,30 @@ using UnityEngine;
 public class IdleState : State
 {
 
-    private Digger digger;
+    private Worker worker;
     private int MOVEMENT_SPEED = 5;
 
-    public IdleState(Digger digger) : base(digger)
+    public IdleState(Worker worker) : base(worker)
     {
         this.Type = STATE.IDLE;
-        this.digger = digger;
+        this.worker = worker;
     }
     public override void Tick()
     {
-        if (digger.HasPath)
+        if (worker.HasPath)
         {
-            digger.AntAnimator.Run();
-            digger.Move(MOVEMENT_SPEED);
+            worker.AntAnimator.Run();
+            worker.Move(MOVEMENT_SPEED);
         }
         else
         {
-            digger.SetRandomWalk();
+            worker.SetRandomWalk();
         }
     }
 
     override public void OnStateEnter()
     {
-        digger.RemovePath();
+        worker.RemovePath();
     }
     override public void OnStateExit()
     {

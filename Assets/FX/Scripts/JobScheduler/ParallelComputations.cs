@@ -28,7 +28,8 @@ class ParallelComputations
 
         public void Execute(int i)
         {
-            Result[i] = Vector3.Distance(From[i], To[i]);
+            // Result[i] = Distance.Manhattan(From[i], To[i]);
+            Result[i] = Distance.Manhattan(From[i], To[i]);
         }
     }
 

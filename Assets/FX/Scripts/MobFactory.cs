@@ -6,18 +6,18 @@ using UnityEngine;
 public class MobFactory : MonoBehaviour
 {
     public JobScheduler JobScheduler;
-    public Digger DiggerPrefab;
+    public Worker WorkerPrefab;
     public void AddMob()
     {
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 100; i++)
         {
-            StartCoroutine(SpawnDigger());
+            StartCoroutine(SpawnWorker());
         }
     }
 
-    IEnumerator SpawnDigger()
+    IEnumerator SpawnWorker()
     {
-        JobScheduler.AddMob(Instantiate(DiggerPrefab, new Vector3(30, 0, 30), Quaternion.identity));
+        JobScheduler.AddMob(Instantiate(WorkerPrefab, new Vector3(30, 0, 30), Quaternion.identity));
         yield break;
     }
 }

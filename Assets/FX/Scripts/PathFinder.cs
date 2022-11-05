@@ -44,29 +44,21 @@ public class Pathfinder
     {
         Vertex from = pathGraph.NearestVertex(fromVec);
         Vertex to = pathGraph.NearestVertex(toVec);
-        if (from.Id == to.Id) return null;
-        Path path;
+        Path path = null;
+        if (from.Id == to.Id) return path;
         if (!findNearest)
         {
-            return Astar(from, to);
+            path = Astar(from, to);
         }
         else
         {
-            var paths = to.Neighbours.Select(vertex => Astar(from, vertex)).Where(path => path != null).ToList();
-            if (paths.Count() != 0)
+            var nearestNeighbour = pathGraph.NearestNeighbour(from, to);
+            if (nearestNeighbour != null)
             {
-                path = paths.Aggregate(paths[0], (acc, p) =>
-                {
-                    {
-                        if (p.Length < acc.Length) return p;
-                        else return acc;
-                    }
-
-                });
-                return path;
+                path = Astar(from, nearestNeighbour);
             }
-            return null;
         }
+        return path;
     }
 
     private Path Astar(Vertex start, Vertex goal)
@@ -130,7 +122,7 @@ public class Pathfinder
 
     private static float GetDistance(Vertex from, Vertex to)
     {
-        return Vector3.Distance(from.Position, to.Position);
+        return Distance.Manhattan(from.Position, to.Position);
     }
 
 }

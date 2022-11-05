@@ -132,48 +132,48 @@ public class Surface : MonoBehaviour
         switch (mob.Job.Type)
         {
             case JobType.DIG:
-                StartCoroutine(Dig(hex, (Digger)mob));
+                StartCoroutine(Dig(hex, (Worker)mob));
                 break;
             case JobType.FILL:
-                StartCoroutine(Fill(hex, (Digger)mob));
+                StartCoroutine(Fill(hex, (Worker)mob));
                 break;
         }
     }
 
-    public IEnumerator Dig(Hexagon hex, Digger digger)
+    public IEnumerator Dig(Hexagon hex, Worker worker)
     {
         OldHexagons.Remove(hex.Id);
         hex.ClearHexagon();
         AddBlock(hex);
         while (true)
         {
-            hex.Work -= digger.ConstructionSpeed;
+            hex.Work -= worker.ConstructionSpeed;
             hex.transform.GetChild(0).localScale = Vector3.one * hex.Work / 50;
             if (hex.Work <= 0)
             {
                 AddGround(hex);
                 PathGraph.AllowHexagon(hex.transform.position);
-                digger.Job.CancelJob();
+                worker.Job.CancelJob();
                 yield break;
             }
             yield return new WaitForSeconds(0.1f);
         }
     }
 
-    public IEnumerator Fill(Hexagon hex, Digger digger)
+    public IEnumerator Fill(Hexagon hex, Worker worker)
     {
         hex.ClearHexagon();
         OldHexagons.Remove(hex.Id);
         AddScaledBlock(hex);
         while (true)
         {
-            hex.Work -= digger.ConstructionSpeed;
+            hex.Work -= worker.ConstructionSpeed;
             hex.transform.GetChild(0).localScale = Vector3.one * (1 - hex.Work / 50f);
             if (hex.Work <= 0)
             {
                 hex.ClearHexagon();
                 AddBlock(hex);
-                digger.Job.CancelJob();
+                worker.Job.CancelJob();
                 yield break;
             }
             yield return new WaitForSeconds(0.1f);

@@ -1,9 +1,8 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Digger : MonoBehaviour, Mob
+public class Worker : MonoBehaviour, Mob
 {
     public float ConstructionSpeed = 2f;
     public AntAnimator AntAnimator;
@@ -11,7 +10,6 @@ public class Digger : MonoBehaviour, Mob
     public Job Job { get; set; }
     public Path Path { get; set; }
     public State CurrentState { get; set; }
-    public Vector3 InitialPosition { get; set; }
     public Pathfinder Pathfinder { get; set; }
     public bool HasPath { get => currentPathEdge != null; }
     public bool HasJob { get => Job != null; }
@@ -30,7 +28,7 @@ public class Digger : MonoBehaviour, Mob
             CurrentState.OnStateExit();
 
         CurrentState = state;
-        gameObject.name = "Digger - " + state.GetType().Name;
+        gameObject.name = "Worker - " + state.GetType().Name;
 
         if (CurrentState != null)
             CurrentState.OnStateEnter();
@@ -96,7 +94,7 @@ public class Digger : MonoBehaviour, Mob
 
         currentPathEdge = Path.WayPoints[0];
         Path.WayPoints.RemoveAt(0);
-        lerpDuration = Vector3.Distance(currentPathEdge.From.Position, currentPathEdge.To.Position);
+        lerpDuration = Distance.Manhattan(currentPathEdge.From.Position, currentPathEdge.To.Position);
 
     }
 

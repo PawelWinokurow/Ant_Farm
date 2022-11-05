@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-public class DiggerJob : Job
+public class WorkerJob : Job
 {
     public string Id { set; get; }
     public Vector3 Destination { set; get; }
@@ -13,7 +13,7 @@ public class DiggerJob : Job
     public Path Path { get; set; }
 
 
-    public DiggerJob(Hexagon hex, Vector3 destination, JobType type)
+    public WorkerJob(Hexagon hex, Vector3 destination, JobType type)
     {
         Id = hex.Id;
         Hex = hex;
