@@ -10,6 +10,8 @@ public class Surface : MonoBehaviour
     public Hexagon wallPrefabScaled;
     public Hexagon digPrefab;
     public Hexagon fillPrefab;
+    public Hexagon basePrefab;
+    public Hexagon foodPrefab;
     private Camera cam;
     private int height;
     private int width;
@@ -20,6 +22,7 @@ public class Surface : MonoBehaviour
     public float w;
     public float h;
 
+    public Hexagon BaseHex { get; set; }
     public Hexagon[] Hexagons;
 
     public Graph PathGraph;
@@ -32,7 +35,8 @@ public class Surface : MonoBehaviour
         SetupCamera();
         CalculateSizes();
         GenerateHexagons();
-        Camera.main.transform.parent.position = new Vector3((width - 0.5f) * w / 2f, 0, (height - 1) * h / 2f * (1f - 0.09f));
+        SetCameraPositionToCenter();
+        SetBaseHex();
     }
 
     public void Init(Graph PathGraph, HexagonSerializable[] hexagons)
@@ -41,7 +45,8 @@ public class Surface : MonoBehaviour
         SetupCamera();
         CalculateSizes();
         LoadHexagons(hexagons);
-        Camera.main.transform.parent.position = new Vector3((width - 0.5f) * w / 2f, 0, (height - 1) * h / 2f * (1f - 0.09f));
+        SetCameraPositionToCenter();
+        SetBaseHex();
     }
 
     public void SetupCamera()
@@ -80,6 +85,17 @@ public class Surface : MonoBehaviour
             }
         }
         PathGraph.SetNeighbours();
+    }
+
+    private void SetCameraPositionToCenter()
+    {
+        Camera.main.transform.parent.position = new Vector3((width - 0.5f) * w / 2f, 0, (height - 1) * h / 2f * (1f - 0.09f));
+    }
+
+    private void SetBaseHex()
+    {
+        BaseHex = PositionToHex(Camera.main.transform.parent.position);
+        BaseHex.ClearHexagon();
     }
 
     void LoadHexagons(HexagonSerializable[] hexagons)

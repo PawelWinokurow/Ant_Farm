@@ -92,9 +92,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4135837485797866615}
-  - component: {fileID: 239454578239907000}
   - component: {fileID: 239454578239907001}
   - component: {fileID: 4427935875788969122}
+  - component: {fileID: 994342916951097199}
   m_Layer: 0
   m_Name: Worker
   m_TagString: Mob
@@ -118,22 +118,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &239454578239907000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4135837485797866603}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 562f0172651f7a243b8329b2ea84d75e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  run: {fileID: 11400000, guid: bdc6aceed5d541a459ffd6cb15c59064, type: 2}
-  idle: {fileID: 11400000, guid: a02a82089797691498dc1b5d0bde4e94, type: 2}
-  mf: {fileID: 2383876763917858186}
-  angl: {fileID: 5335103204996291558}
 --- !u!114 &239454578239907001
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,6 +144,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ConstructionSpeed: 2
   AntAnimator: {fileID: 0}
+--- !u!114 &994342916951097199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4135837485797866603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48012dff1dab0764d8082920cf4c5e10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  run: {fileID: 11400000, guid: bdc6aceed5d541a459ffd6cb15c59064, type: 2}
+  idle: {fileID: 11400000, guid: a02a82089797691498dc1b5d0bde4e94, type: 2}
+  mf: {fileID: 2383876763917858186}
+  angl: {fileID: 5335103204996291558}
 --- !u!1 &5335103204996291557
 GameObject:
   m_ObjectHideFlags: 0
