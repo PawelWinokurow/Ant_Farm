@@ -38,26 +38,18 @@ public class Pathfinder
         this.pathGraph = pathGraph;
     }
 
-    public Path RandomWalk(Vector3 fromVec, Vector3 initialPosition, int numberOfSteps)
+    public Path RandomWalk(Vector3 fromVec, int numberOfSteps)
     {
         UnityEngine.Random.InitState(Guid.NewGuid().GetHashCode());
         Path overallPath = new Path();
         Vertex from = pathGraph.NearestVertex(fromVec);
         for (int i = 0; i < numberOfSteps; i++)
         {
-            Path path = null;
-            Vertex to = null;
-            do
-            {
-                double angle = UnityEngine.Random.Range(0, (float)(2 * Math.PI));
-                float x = initialPosition.x + 10 * (float)Math.Cos(angle);
-                float z = initialPosition.x + 10 * (float)Math.Sin(angle);
-                to = pathGraph.NearestVertex(new Vector3(x, 0, z));
-                path = Astar(from, to);
-            } while (path == null);
-            from = to;
-            overallPath.WayPoints.AddRange(path.WayPoints);
-            overallPath.Length += path.Length;
+            var edgesToGo = from.Edges.Where(edge => edge.IsWalkable).ToList();
+            var edgeChosen = edgesToGo[UnityEngine.Random.Range(0, edgesToGo.Count)];
+            from = edgeChosen.To;
+            overallPath.WayPoints.Add(edgeChosen);
+            overallPath.Length += edgeChosen.EdgeWeight;
         }
         return overallPath;
 

@@ -28,7 +28,7 @@ public class JobScheduler : MonoBehaviour
     private List<Job> assignedJobsQueue = new List<Job>();
     private Graph pathGraph;
     private Surface surface;
-    private Pathfinder pathfinder;
+    public Pathfinder Pathfinder { get; set; }
     private List<Mob> busyMobs = new List<Mob>();
     private List<Mob> freeMobs = new List<Mob>();
 
@@ -51,16 +51,12 @@ public class JobScheduler : MonoBehaviour
     {
         while (true)
         {
-            DistributeJobs();
+            if (SomeJobLeft())
+            {
+                AssignWork();
+            }
             yield return new WaitForSeconds(0.1f);
         }
-    }
-
-
-    public void SetPathfinder(Pathfinder pathfinder)
-    {
-        this.pathfinder = pathfinder;
-        ManagedObjectWorld.Init();
     }
 
     public void SetSurface(Surface surface)
@@ -69,7 +65,7 @@ public class JobScheduler : MonoBehaviour
     }
     public void AddMob(Mob mob)
     {
-        mob.Pathfinder = pathfinder;
+        mob.Pathfinder = Pathfinder;
         freeMobs.Add(mob);
     }
 
@@ -78,19 +74,10 @@ public class JobScheduler : MonoBehaviour
         return unassignedJobsQueue.Count != 0 && freeMobs.Count != 0;
     }
 
-
-    private void DistributeJobs()
-    {
-        if (SomeJobLeft())
-        {
-            AssignWork();
-        }
-    }
-
     private void AssignWork()
     {
         var job = unassignedJobsQueue[0];
-        var parallelJob = CreateParallelDistancesJob(freeMobs.Select(mod => mod.CurrentPosition).ToList(), job.Destination);
+        var parallelJob = ParallelComputations.CreateParallelDistancesJob(freeMobs.Select(mod => mod.CurrentPosition).ToList(), job.Destination);
         JobHandle handle = parallelJob.Schedule(freeMobs.Count, 1);
         handle.Complete();
         PriorityQueue<JobMobDistance, float> minDistances = new PriorityQueue<JobMobDistance, float>(0);
@@ -103,7 +90,7 @@ public class JobScheduler : MonoBehaviour
         while (minDistances.Count != 0)
         {
             var minDistance = minDistances.Dequeue();
-            path = pathfinder.FindPath(minDistance.Mob.CurrentPosition, minDistance.Job.Destination, true);
+            path = Pathfinder.FindPath(minDistance.Mob.CurrentPosition, minDistance.Job.Destination, true);
             if (path != null)
             {
                 job.Mob = minDistance.Mob;
@@ -112,82 +99,10 @@ public class JobScheduler : MonoBehaviour
                 break;
             }
         }
-
-        parallelJob.From.Dispose();
-        parallelJob.To.Dispose();
-        parallelJob.Result.Dispose();
+        ParallelComputations.FreeDistancesJobMemory(parallelJob);
     }
 
-    private PathfinderJob CreateParallelPathfinderJob(List<Vector3> fromPositions, Vector3 destinationPosition)
-    {
-        var length = fromPositions.Count;
-        ManagedObjectWorld.Clear();
-        NativeArray<Vector3> from = new NativeArray<Vector3>(length, Allocator.TempJob);
-        NativeArray<Vector3> to = new NativeArray<Vector3>(length, Allocator.TempJob);
-        NativeArray<ManagedObjectRef<Path>> result = new NativeArray<ManagedObjectRef<Path>>(length, Allocator.TempJob);
 
-        for (int i = 0; i < length; i++)
-        {
-            from[i] = fromPositions[i];
-            to[i] = destinationPosition;
-        }
-        return new PathfinderJob() { Pathfinder = ManagedObjectWorld.Add(pathfinder), From = from, To = to, Result = result };
-    }
-    private DistancesJob CreateParallelDistancesJob(List<Vector3> fromPositions, Vector3 destinationPosition)
-    {
-        var length = fromPositions.Count;
-        NativeArray<Vector3> from = new NativeArray<Vector3>(length, Allocator.TempJob);
-        NativeArray<Vector3> to = new NativeArray<Vector3>(length, Allocator.TempJob);
-        NativeArray<float> result = new NativeArray<float>(length, Allocator.TempJob);
-
-        for (int i = 0; i < length; i++)
-        {
-            from[i] = fromPositions[i];
-            to[i] = destinationPosition;
-        }
-        return new DistancesJob() { From = from, To = to, Result = result };
-    }
-
-    public struct DistancesJob : IJobParallelFor
-    {
-        public NativeArray<Vector3> From;
-        public NativeArray<Vector3> To;
-        public NativeArray<float> Result;
-
-        public void Execute(int i)
-        {
-            Result[i] = Vector3.Distance(From[i], To[i]);
-        }
-    }
-
-    private void FreePathfinderJobMemory(PathfinderJob job)
-    {
-        job.From.Dispose();
-        job.To.Dispose();
-        job.Result.Dispose();
-    }
-
-    private void MoveFreeMobToBusyMobs(Mob freeMob)
-    {
-        freeMobs.Remove(freeMob);
-        busyMobs.Add(freeMob);
-    }
-    private void MoveBusyMobToFreeMobs(Mob busyMob)
-    {
-        busyMobs.Remove(busyMob);
-        freeMobs.Add(busyMob);
-    }
-
-    private void MoveUnassignedJobToAssignedJobs(Job unassignedJob)
-    {
-        unassignedJobsQueue.Remove(unassignedJob);
-        assignedJobsQueue.Add(unassignedJob);
-    }
-    private void MoveAssignedJobToUnssignedJobs(Job assignedJob)
-    {
-        assignedJobsQueue.Remove(assignedJob);
-        unassignedJobsQueue.Add(assignedJob);
-    }
 
     private void SetJobToWorker(Job job)
     {
@@ -260,6 +175,28 @@ public class JobScheduler : MonoBehaviour
         assignedJobsQueue.Remove(job);
         unassignedJobsQueue.Remove(job);
         jobMap.Remove(job.Id);
+    }
+
+    private void MoveFreeMobToBusyMobs(Mob freeMob)
+    {
+        freeMobs.Remove(freeMob);
+        busyMobs.Add(freeMob);
+    }
+    private void MoveBusyMobToFreeMobs(Mob busyMob)
+    {
+        busyMobs.Remove(busyMob);
+        freeMobs.Add(busyMob);
+    }
+
+    private void MoveUnassignedJobToAssignedJobs(Job unassignedJob)
+    {
+        unassignedJobsQueue.Remove(unassignedJob);
+        assignedJobsQueue.Add(unassignedJob);
+    }
+    private void MoveAssignedJobToUnssignedJobs(Job assignedJob)
+    {
+        assignedJobsQueue.Remove(assignedJob);
+        unassignedJobsQueue.Add(assignedJob);
     }
 
 }

@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
         HexagonSerializable[] hexagons = StoreService.LoadHexagons();
         Surface.Init(PathGraph, hexagons);
         pathfinder = new Pathfinder(PathGraph);
-        JobScheduler.SetPathfinder(pathfinder);
+        JobScheduler.Pathfinder = pathfinder;
         JobScheduler.SetSurface(Surface);
         JobScheduler.StartJobScheuler();
     }
@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
         Surface.Init(PathGraph);
         BuildWallsTest.Init(Surface);
         pathfinder = new Pathfinder(PathGraph);
-        JobScheduler.SetPathfinder(pathfinder);
+        JobScheduler.Pathfinder = pathfinder;
         JobScheduler.SetSurface(Surface);
         JobScheduler.StartJobScheuler();
         // StoreService.SaveGraph(PathGraph);

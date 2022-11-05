@@ -3,7 +3,7 @@ using System;
 
 public interface Mob
 {
-    public Vector3 CurrentPosition { get; set; }
+    public Vector3 CurrentPosition { get; }
     public bool HasJob { get; }
     public State CurrentState { get; set; }
     public Job Job { get; set; }

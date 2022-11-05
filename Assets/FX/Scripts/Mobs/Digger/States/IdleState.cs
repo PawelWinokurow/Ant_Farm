@@ -13,20 +13,19 @@ public class IdleState : State
     }
     public override void Tick()
     {
-        if (digger.HasPath)
+        if (digger.HasPath && digger.Path.HasWaypoints)
         {
             digger.AntAnimator.Run();
             digger.Move(MOVEMENT_SPEED);
         }
         else
         {
-            digger.RandomWalk();
+            digger.SetRandomWalk();
         }
     }
 
     override public void OnStateEnter()
     {
-        digger.InitialPosition = digger.CurrentPosition;
         digger.RemovePath();
     }
     override public void OnStateExit()

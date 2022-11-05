@@ -7,7 +7,7 @@ public class Digger : MonoBehaviour, Mob
 {
     public float ConstructionSpeed = 2f;
     public AntAnimator AntAnimator;
-    public Vector3 CurrentPosition { set; get; }
+    public Vector3 CurrentPosition { get => transform.position; }
     public Job Job { get; set; }
     public Path Path { get; set; }
     public State CurrentState { get; set; }
@@ -20,14 +20,8 @@ public class Digger : MonoBehaviour, Mob
     private Edge currentPathEdge;
     void Awake()
     {
-        CurrentPosition = transform.position;
         AntAnimator = GetComponent<AntAnimator>();
         SetState(new IdleState(this));
-    }
-
-    public void SetPathfinder(Pathfinder pathfinder)
-    {
-        Pathfinder = pathfinder;
     }
 
     public void SetState(State state)
@@ -44,15 +38,14 @@ public class Digger : MonoBehaviour, Mob
 
     public void SetPath(Path path)
     {
-        if (path != null && path.HasWaypoints)
+        Path = path;
+        if (Path.HasWaypoints)
         {
-            Path = path;
             SetCurrentPathEdge();
-            SetLerpDuration();
         }
         else
         {
-            if (Job != null)
+            if (HasJob)
             {
                 Job.CancelJob();
             }
@@ -61,28 +54,65 @@ public class Digger : MonoBehaviour, Mob
                 SetState(new IdleState(this));
             }
         }
+
+    }
+
+    public void RemovePath()
+    {
+        Path = null;
+    }
+
+
+    public void SetRandomWalk()
+    {
+        SetPath(Pathfinder.RandomWalk(CurrentPosition, 10));
+    }
+
+    public void Move(int speed)
+    {
+        if (!currentPathEdge.IsWalkable)
+        {
+            Rerouting();
+        }
+        else if (t < lerpDuration)
+        {
+            var a = (float)Mathf.Min(t / lerpDuration, 1f);
+            transform.position = Vector3.Lerp(currentPathEdge.From.Position, currentPathEdge.To.Position, a);
+            t += Time.deltaTime * speed;
+        }
+        else if (Path.HasWaypoints)
+        {
+            t -= lerpDuration;
+            SetCurrentPathEdge();
+        }
     }
 
     private void SetCurrentPathEdge()
     {
         currentPathEdge = Path.WayPoints[0];
         Path.WayPoints.RemoveAt(0);
-    }
-
-    public void SetLerpDuration()
-    {
         lerpDuration = Vector3.Distance(currentPathEdge.From.Position, currentPathEdge.To.Position);
     }
-    public void RemovePath()
+
+    void Rerouting()
     {
-        Path = null;
+        var to = Path.HasWaypoints ? Path.WayPoints[Path.WayPoints.Count - 1].To.Position : currentPathEdge.To.Position;
+        var path = Pathfinder.FindPath(transform.position, to, HasJob ? true : false);
+        SetPath(path);
     }
+
+    void Update()
+    {
+        CurrentState.Tick();
+    }
+
+
 
     void DrawDebugPath()
     {
-        if (Path.HasWaypoints)
+        if (Path != null && Path.HasWaypoints)
         {
-            var path = new List<Edge>() { new Edge() { From = new Vertex("", CurrentPosition, false), To = currentPathEdge.To } };
+            var path = new List<Edge>() { new Edge() { From = new Vertex("", transform.position, false), To = currentPathEdge.To } };
 
             for (int j = 1; j < Path.WayPoints.Count; j++)
             {
@@ -93,52 +123,6 @@ public class Digger : MonoBehaviour, Mob
                 Debug.DrawLine(path[i].From.Position, path[i].To.Position, Color.blue);
             }
         }
-    }
-
-    public void RandomWalk()
-    {
-        SetPath(Pathfinder.RandomWalk(CurrentPosition, InitialPosition, 5));
-    }
-
-    public void Move(int speed)
-    {
-        if (Path != null)
-        {
-            DrawDebugPath();
-
-            if (t < lerpDuration)
-            {
-                var a = (float)Mathf.Min(t / lerpDuration, 1f);
-                transform.position = Vector3.Lerp(currentPathEdge.From.Position, currentPathEdge.To.Position, a);
-                CurrentPosition = transform.position;
-                t += Time.deltaTime * speed;
-            }
-            else
-            {
-                t -= lerpDuration;
-                if (Path.HasWaypoints)
-                {
-                    SetCurrentPathEdge();
-                    if (!currentPathEdge.IsWalkable)
-                    {
-                        var to = Path.HasWaypoints ? Path.WayPoints[Path.WayPoints.Count - 1].To.Position : currentPathEdge.To.Position;
-                        SetPath(Pathfinder.FindPath(CurrentPosition, to, HasJob ? true : false));
-                    }
-                }
-                else
-                {
-                    RemovePath();
-                }
-
-            }
-        }
-    }
-
-
-
-    void Update()
-    {
-        CurrentState.Tick();
     }
 
 }
