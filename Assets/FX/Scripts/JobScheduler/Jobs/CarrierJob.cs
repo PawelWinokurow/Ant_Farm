@@ -15,9 +15,9 @@ public class CarrierJob : Job
     public JobType Type { get; set; }
     public Path Path { get; set; }
 
-    public CarrierJob(FloorHexagon hex, Vector3 departure, Vector3 destination)
+    public CarrierJob(string id, FloorHexagon hex, Vector3 departure, Vector3 destination)
     {
-        Id = hex.Id;
+        Id = id;
         Hex = hex;
         Departure = departure;
         Destination = destination;

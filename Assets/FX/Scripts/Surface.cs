@@ -167,6 +167,7 @@ public class Surface : MonoBehaviour
             //On base
             var baseHex = (BaseHexagon)(BaseHex.Child);
             baseHex.Storage += worker.CarryingWeight;
+            Debug.Log("Storage: " + baseHex.Storage);
             worker.CarryingWeight = 0;
             if (hex.Type == HEX_TYPE.FOOD && ((FoodHexagon)(hex.Child)).Food > 0)
             {
@@ -182,8 +183,8 @@ public class Surface : MonoBehaviour
         {
             //On food
             var foodHex = (FoodHexagon)(hex.Child);
-            var weightCanCarry = (worker.MaxCarryingWeight - worker.CarryingWeight);
-            if (weightCanCarry > foodHex.Food)
+            var workerCanCarry = worker.MaxCarryingWeight - worker.CarryingWeight;
+            if (workerCanCarry > foodHex.Food)
             {
                 worker.CarryingWeight = foodHex.Food;
                 foodHex.Food = 0;
@@ -192,12 +193,11 @@ public class Surface : MonoBehaviour
             }
             else
             {
-                worker.CarryingWeight = weightCanCarry;
-                foodHex.Food -= weightCanCarry;
+                worker.CarryingWeight = workerCanCarry;
+                foodHex.Food -= workerCanCarry;
                 worker.Job.Return();
             }
-
-
+            Debug.Log("Food: " + foodHex.Food);
         }
     }
     public IEnumerator Dig(FloorHexagon hex, Worker worker)
@@ -271,9 +271,8 @@ public class Surface : MonoBehaviour
         BaseHexagon.CreateHexagon(BaseHex, basePrefab).Type = HEX_TYPE.BASE;
         PathGraph.ProhibitHexagon(BaseHex.Position);
     }
-    public void AddFood()
+    public void AddFood(FloorHexagon hex)
     {
-        FloorHexagon hex = PositionToHex(BaseHex.Position + new Vector3(30, 0, 30));
         hex.RemoveChildren();
         FoodHexagon.CreateHexagon(hex, foodPrefab).Type = HEX_TYPE.FOOD; ;
         PathGraph.ProhibitHexagon(BaseHex.Position);

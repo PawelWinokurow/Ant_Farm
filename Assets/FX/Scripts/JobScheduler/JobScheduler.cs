@@ -170,11 +170,11 @@ public class JobScheduler : MonoBehaviour
 
     public void AssignJob(Job job)
     {
-        if (!IsJobAlreadyCreated(job) && !IsJobUnassigned(job))
-        {
-            jobMap.Add(job.Id, job);
-            unassignedJobsQueue.Add(job);
-        }
+        // if (!IsJobAlreadyCreated(job) && !IsJobUnassigned(job))
+        // {
+        jobMap.Add(job.Id, job);
+        unassignedJobsQueue.Add(job);
+        // }
     }
 
     public void CancelJob(string jobId)
