@@ -3,8 +3,9 @@ using System;
 
 public interface Mob
 {
+    public string Id { get; set; }
     public AntAnimator AntAnimator { get; set; }
-    public Vector3 CurrentPosition { get; }
+    public Vector3 Position { get; }
     public bool HasJob { get; }
     public State CurrentState { get; set; }
     public Job Job { get; set; }

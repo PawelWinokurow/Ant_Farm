@@ -10,6 +10,7 @@ public class IdleState : State
     {
         this.Type = STATE.IDLE;
         this.worker = worker;
+        worker.Path = null;
     }
     public override void Tick()
     {

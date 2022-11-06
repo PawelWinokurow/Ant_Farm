@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class Worker : MonoBehaviour, Mob
 {
+    public string Id { get; set; }
     public float ConstructionSpeed = 2f;
     public int MaxCarryingWeight = 100;
     public int CarryingWeight = 0;
     public AntAnimator AntAnimator { get; set; }
-    public Vector3 CurrentPosition { get => transform.position; }
+    public Vector3 Position { get => transform.position; }
     public Job Job { get; set; }
     public Path Path { get; set; }
     public State CurrentState { get; set; }
@@ -64,7 +65,7 @@ public class Worker : MonoBehaviour, Mob
 
     public void SetRandomWalk()
     {
-        SetPath(Pathfinder.RandomWalk(CurrentPosition, 10));
+        SetPath(Pathfinder.RandomWalk(Position, 10));
     }
 
     public void Move(int speed)

@@ -53,10 +53,10 @@ public class GameManager : MonoBehaviour
 
         if (hex.Type == HEX_TYPE.FOOD)
         {
-            var asssignedCarriersNum = ((FoodHexagon)(hex.Child)).Carriers.Count;
+            var asssignedCarriersNum = ((CollectingHexagon)(hex.Child)).Carriers.Count;
             if (asssignedCarriersNum <= 3)
             {
-                JobScheduler.AssignJob(new CarrierJob($"{hex.Id}_{asssignedCarriersNum + 1}", hex, Surface.BaseHex.Position, hex.transform.position));
+                JobScheduler.AssignJob(new CarrierJob($"{hex.Id}_{asssignedCarriersNum + 1}", hex, Surface.BaseHex.Position, hex.Position));
             }
         }
         else if (hex.Type == HEX_TYPE.EMPTY || hex.Type == HEX_TYPE.SOIL)
@@ -90,7 +90,7 @@ public class GameManager : MonoBehaviour
 
     private bool AreNoMobsInHex(Hexagon hex)
     {
-        return JobScheduler.AllMobs.All(mob => Surface.PositionToHex(mob.CurrentPosition).Id != hex.Id);
+        return JobScheduler.AllMobs.All(mob => Surface.PositionToHex(mob.Position).Id != hex.Id);
     }
 }
 

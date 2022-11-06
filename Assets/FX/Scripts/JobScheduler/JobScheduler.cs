@@ -8,12 +8,12 @@ using PriorityQueue;
 class JobMob
 {
     public Job Job;
-    public Mob Mob;
+    public Worker Worker;
 
-    public JobMob(Job job, Mob mob)
+    public JobMob(Job job, Worker worker)
     {
         Job = job;
-        Mob = mob;
+        Worker = worker;
     }
 }
 
@@ -25,9 +25,9 @@ public class JobScheduler : MonoBehaviour
     private Graph pathGraph;
     private Surface surface;
     public Pathfinder Pathfinder { get; set; }
-    private List<Mob> busyMobs = new List<Mob>();
-    private List<Mob> freeMobs = new List<Mob>();
-    public List<Mob> AllMobs = new List<Mob>();
+    private List<Worker> busyMobs = new List<Worker>();
+    private List<Worker> freeMobs = new List<Worker>();
+    public List<Worker> AllMobs = new List<Worker>();
 
     void Update()
     {
@@ -35,7 +35,7 @@ public class JobScheduler : MonoBehaviour
         {
             var job = assignedJobsQueue[0];
             assignedJobsQueue.RemoveAt(0);
-            MoveFreeMobToBusyMobs(job.Mob);
+            MoveFreeMobToBusyMobs(job.Worker);
             SetJobToWorker(job);
         }
     }
@@ -60,11 +60,11 @@ public class JobScheduler : MonoBehaviour
     {
         this.surface = surface;
     }
-    public void AddMob(Mob mob)
+    public void AddMob(Worker worker)
     {
-        mob.Pathfinder = Pathfinder;
-        freeMobs.Add(mob);
-        AllMobs.Add(mob);
+        worker.Pathfinder = Pathfinder;
+        freeMobs.Add(worker);
+        AllMobs.Add(worker);
     }
 
     private bool SomeJobLeft()
@@ -75,7 +75,7 @@ public class JobScheduler : MonoBehaviour
     private void AssignWork()
     {
         var job = unassignedJobsQueue[0];
-        var parallelJob = ParallelComputations.CreateParallelDistancesJob(freeMobs.Select(mod => mod.CurrentPosition).ToList(), job.Destination);
+        var parallelJob = ParallelComputations.CreateParallelDistancesJob(freeMobs.Select(mod => mod.Position).ToList(), job.Destination);
         JobHandle handle = parallelJob.Schedule(freeMobs.Count, 4);
         handle.Complete();
 
@@ -88,11 +88,11 @@ public class JobScheduler : MonoBehaviour
         while (minDistances.Count != 0)
         {
             var minDistance = minDistances.Dequeue();
-            var path = Pathfinder.FindPath(minDistance.Mob.CurrentPosition, minDistance.Job.Destination, true);
+            var path = Pathfinder.FindPath(minDistance.Worker.Position, minDistance.Job.Destination, true);
             if (path != null)
             {
-                job.Mob = minDistance.Mob;
-                job.Mob.Job = job;
+                job.Worker = minDistance.Worker;
+                job.Worker.Job = job;
                 job.Path = path; ;
                 MoveUnassignedJobToAssignedJobs(job);
                 break;
@@ -103,54 +103,69 @@ public class JobScheduler : MonoBehaviour
 
     private void SetJobToWorker(Job job)
     {
-        var mob = job.Mob;
+        if (job.Type == JobType.CARRYING) SetCarryingJob((CarrierJob)job);
+        else if (job.Type == JobType.FILL || job.Type == JobType.DIG) SetWorkerJob((WorkerJob)job);
+    }
+
+    private void SetCarryingJob(CarrierJob job)
+    {
+        var worker = job.Worker;
         var path = job.Path;
-        if (job.Type == JobType.CARRYING)
+        job.Direction = Direction.COLLECTING;
+        var collectingHex = (CollectingHexagon)(job.Hex.Child);
+        collectingHex.AssignWorker(worker);
+        job.Return = () =>
         {
-            var carrierJob = (CarrierJob)job;
-            var foodHex = (FoodHexagon)(carrierJob.Hex.Child);
-            foodHex.AssignWorker((Worker)mob);
-            carrierJob.Return = () =>
-            {
-                var swap = carrierJob.Destination;
-                carrierJob.Destination = carrierJob.Departure;
-                carrierJob.Departure = swap;
-                mob.SetPath(Pathfinder.FindPath(mob.CurrentPosition, carrierJob.Destination, true));
-                mob.SetState(new GoToState((Worker)mob));
-            };
-            carrierJob.CancelJob = () =>
-            {
-                if (((Worker)mob).CarryingWeight != 0)
-                {
-                    mob.SetPath(Pathfinder.FindPath(mob.CurrentPosition, carrierJob.Departure, true));
-                    mob.SetState(new GoToState((Worker)mob));
-                }
-                else
-                {
-                    CancelJob(job);
-                }
-            };
-        }
-        else if (job.Type == JobType.FILL || job.Type == JobType.DIG)
+            job.Direction = job.Direction == Direction.STORAGE ? Direction.COLLECTING : Direction.STORAGE;
+            job.Destination = job.Direction == Direction.STORAGE ? job.StoragePosition : job.CollectingPointPosition;
+            worker.SetPath(Pathfinder.FindPath(worker.Position, job.Destination, true));
+            worker.SetState(new GoToState(worker));
+        };
+        job.CancelJob = () =>
         {
-            job.CancelJob = () =>
+            if (worker.CarryingWeight == 0 || job.Direction == Direction.COLLECTING)
             {
+                job.Direction = Direction.CANCELED;
                 CancelJob(job);
-            };
-        }
+            }
+        };
+
         job.Execute = () =>
         {
-            surface.StartJobExecution(job.Hex, mob);
+            surface.StartJobExecution(job.Hex, worker);
         };
 
         job.CancelNotCompleteJob = () =>
         {
             CancelNotCompleteJob(job);
         };
-        mob.SetState(new GoToState((Worker)mob));
-        mob.SetPath(path);
+        worker.SetState(new GoToState(worker));
+        worker.SetPath(path);
     }
+    private void SetWorkerJob(WorkerJob job)
+    {
+        var mob = job.Worker;
+        var path = job.Path;
 
+        {
+            job.CancelJob = () =>
+            {
+                CancelJob(job);
+            };
+
+            job.Execute = () =>
+            {
+                surface.StartJobExecution(job.Hex, mob);
+            };
+
+            job.CancelNotCompleteJob = () =>
+            {
+                CancelNotCompleteJob(job);
+            };
+            mob.SetState(new GoToState((Worker)mob));
+            mob.SetPath(path);
+        }
+    }
     public bool IsJobAlreadyCreated(Job job)
     {
         return jobMap.ContainsKey(job.Id);
@@ -181,13 +196,14 @@ public class JobScheduler : MonoBehaviour
     {
         CancelJob(jobMap[jobId]);
     }
+
     public void CancelJob(Job job)
     {
         Remove(job);
-        if (job.Mob != null)
+        if (job.Worker != null)
         {
-            MoveBusyMobToFreeMobs(job.Mob);
-            job.Mob.SetState(new IdleState((Worker)job.Mob));
+            MoveBusyMobToFreeMobs(job.Worker);
+            job.Worker.SetState(new IdleState((Worker)job.Worker));
         }
 
     }
@@ -203,15 +219,15 @@ public class JobScheduler : MonoBehaviour
         jobMap.Remove(job.Id);
     }
 
-    private void MoveFreeMobToBusyMobs(Mob freeMob)
+    private void MoveFreeMobToBusyMobs(Worker freeWorker)
     {
-        freeMobs.Remove(freeMob);
-        busyMobs.Add(freeMob);
+        freeMobs.Remove(freeWorker);
+        busyMobs.Add(freeWorker);
     }
-    private void MoveBusyMobToFreeMobs(Mob busyMob)
+    private void MoveBusyMobToFreeMobs(Worker busyWorker)
     {
-        busyMobs.Remove(busyMob);
-        freeMobs.Add(busyMob);
+        busyMobs.Remove(busyWorker);
+        freeMobs.Add(busyWorker);
     }
 
     private void MoveUnassignedJobToAssignedJobs(Job unassignedJob)
