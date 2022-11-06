@@ -215,8 +215,7 @@ public class Surface : MonoBehaviour
         hex.RemoveChildren();
         var oldIcon = OldHexagons[hex.Id];
         var wallHex = AddBlock(hex).AssignProperties((WorkHexagon)oldIcon);
-        OldHexagons.Remove(hex.Id);
-        while (true)
+        while (wallHex != null)
         {
             wallHex.Work -= worker.ConstructionSpeed;
             wallHex.transform.localScale = Vector3.one * wallHex.Work / WorkHexagon.MaxWork;
@@ -224,19 +223,23 @@ public class Surface : MonoBehaviour
             {
                 AddGround(hex);
                 PathGraph.AllowHexagon(wallHex.FloorHexagon);
+                OldHexagons.Remove(hex.Id);
                 worker.Job.CancelJob();
                 yield break;
             }
             yield return new WaitForSeconds(0.1f);
         }
+        wallHex = AddBlock(hex).AssignProperties((WorkHexagon)oldIcon);
+        OldHexagons.Remove(hex.Id);
+        worker.Job.CancelJob();
     }
 
     public IEnumerator Fill(FloorHexagon hex, Worker worker)
     {
         hex.RemoveChildren();
-        OldHexagons.Remove(hex.Id);
+        // OldHexagons.Remove(hex.Id);
         var scaledBlock = AddScaledBlock(hex);
-        while (true)
+        while (scaledBlock != null)
         {
             scaledBlock.Work -= worker.ConstructionSpeed;
             scaledBlock.transform.localScale = Vector3.one * (1 - scaledBlock.Work / WorkHexagon.MaxWork);
@@ -249,6 +252,9 @@ public class Surface : MonoBehaviour
             }
             yield return new WaitForSeconds(0.1f);
         }
+        // AddGround(hex);
+        PathGraph.AllowHexagon(hex);
+        worker.Job.CancelJob();
     }
 
     public FloorHexagon PositionToHex(Vector3 pos)

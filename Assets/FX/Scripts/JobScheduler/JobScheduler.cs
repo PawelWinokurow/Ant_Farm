@@ -19,7 +19,6 @@ class JobMob
 
 public class JobScheduler : MonoBehaviour
 {
-    private Dictionary<string, Job> jobMap = new Dictionary<string, Job>();
     private List<Job> unassignedJobsQueue = new List<Job>();
     private List<Job> assignedJobsQueue = new List<Job>();
     private Graph pathGraph;
@@ -31,10 +30,10 @@ public class JobScheduler : MonoBehaviour
 
     void Update()
     {
-        if (assignedJobsQueue.Count != 0)
+        while (assignedJobsQueue.Count != 0)
         {
             var job = assignedJobsQueue[0];
-            assignedJobsQueue.RemoveAt(0);
+            assignedJobsQueue.Remove(job);
             MoveFreeMobToBusyMobs(job.Worker);
             SetJobToWorker(job);
         }
@@ -52,7 +51,7 @@ public class JobScheduler : MonoBehaviour
             {
                 AssignWork();
             }
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.3f);
         }
     }
 
@@ -74,17 +73,19 @@ public class JobScheduler : MonoBehaviour
 
     private void AssignWork()
     {
+        var freeMobsClone = new List<Worker>(freeMobs);
         var job = unassignedJobsQueue[0];
-        var parallelJob = ParallelComputations.CreateParallelDistancesJob(freeMobs.Select(mod => mod.Position).ToList(), job.Destination);
-        JobHandle handle = parallelJob.Schedule(freeMobs.Count, 4);
+        var parallelJob = ParallelComputations.CreateParallelDistancesJob(freeMobsClone.Select(mod => mod.Position).ToList(), job.Destination);
+        JobHandle handle = parallelJob.Schedule(freeMobsClone.Count, 4);
         handle.Complete();
 
         PriorityQueue<JobMob, float> minDistances = new PriorityQueue<JobMob, float>(0);
 
         for (var i = 0; i < parallelJob.Result.Length; i++)
         {
-            minDistances.Enqueue(new JobMob(job, freeMobs[i]), parallelJob.Result[i]);
+            minDistances.Enqueue(new JobMob(job, freeMobsClone[i]), parallelJob.Result[i]);
         }
+        ParallelComputations.FreeDistancesJobMemory(parallelJob);
         while (minDistances.Count != 0)
         {
             var minDistance = minDistances.Dequeue();
@@ -95,10 +96,13 @@ public class JobScheduler : MonoBehaviour
                 job.Worker.Job = job;
                 job.Path = path; ;
                 MoveUnassignedJobToAssignedJobs(job);
-                break;
+                // MoveFreeMobToBusyMobs(job.Worker);
+                // SetJobToWorker(job);
+                return;
             }
         }
-        ParallelComputations.FreeDistancesJobMemory(parallelJob);
+        unassignedJobsQueue.Remove(job);
+        unassignedJobsQueue.Add(job);
     }
 
     private void SetJobToWorker(Job job)
@@ -168,33 +172,41 @@ public class JobScheduler : MonoBehaviour
     }
     public bool IsJobAlreadyCreated(Job job)
     {
-        return jobMap.ContainsKey(job.Id);
+        return IsJobAlreadyCreated(job.Id);
     }
     public bool IsJobAlreadyCreated(string jobId)
     {
-        return jobMap.ContainsKey(jobId);
+        return assignedJobsQueue.Concat(unassignedJobsQueue).Any(job => job.Id == jobId);
     }
     public bool IsJobUnassigned(Job job)
     {
-        return unassignedJobsQueue.Any(item => item.Id == job.Id);
+        return IsJobUnassigned(job.Id);
+    }
+    public bool IsJobUnassigned(string jobId)
+    {
+        return unassignedJobsQueue.Any(item => item.Id == jobId);
     }
     public bool IsJobAssigned(Job job)
     {
-        return assignedJobsQueue.Any(item => item.Id == job.Id);
+        return IsJobAssigned(job.Id);
+    }
+    public bool IsJobAssigned(string jobId)
+    {
+        return assignedJobsQueue.Any(item => item.Id == jobId);
     }
 
     public void AssignJob(Job job)
     {
         if (!IsJobAlreadyCreated(job) && !IsJobUnassigned(job))
         {
-            jobMap.Add(job.Id, job);
             unassignedJobsQueue.Add(job);
         }
     }
 
     public void CancelJob(string jobId)
     {
-        CancelJob(jobMap[jobId]);
+        var jobs = assignedJobsQueue.Concat(unassignedJobsQueue).Where(job => job.Id == jobId).ToList();
+        if (jobs.Count != 0) CancelJob(jobs[0]);
     }
 
     public void CancelJob(Job job)
@@ -204,6 +216,7 @@ public class JobScheduler : MonoBehaviour
         {
             MoveBusyMobToFreeMobs(job.Worker);
             job.Worker.SetState(new IdleState((Worker)job.Worker));
+            job.Worker.Path = null;
         }
 
     }
@@ -216,7 +229,6 @@ public class JobScheduler : MonoBehaviour
     {
         assignedJobsQueue.Remove(job);
         unassignedJobsQueue.Remove(job);
-        jobMap.Remove(job.Id);
     }
 
     private void MoveFreeMobToBusyMobs(Worker freeWorker)
