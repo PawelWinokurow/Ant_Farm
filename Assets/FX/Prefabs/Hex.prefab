@@ -93,15 +93,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 3979305149763370760}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88d5a24f8ff15d3489b55e4230c41418, type: 3}
+  m_Script: {fileID: 11500000, guid: 8779d311b937cd540bbc05a0841cc5f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isWall: 0
-  isDig: 0
-  isGround: 1
-  isBuild: 0
-  isSpawn: 0
-  hp: 1
-  id: 0
-  cost: 1
-  neighbors: 

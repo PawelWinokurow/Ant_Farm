@@ -3,14 +3,15 @@ using UnityEngine;
 
 public enum JobType
 {
-    DIG, FILL
+    DIG, FILL, CARRYING
 }
 
 public interface Job
 {
     public string Id { get; set; }
     public Vector3 Destination { get; set; }
-    public Mob Mob { get; set; }
+    public FloorHexagon Hex { get; set; }
+    public Worker Worker { get; set; }
     public JobType Type { get; set; }
     public Action CancelJob { get; set; }
     public Action CancelNotCompleteJob { get; set; }

@@ -3,15 +3,18 @@ using System;
 
 public interface Mob
 {
-    public Vector3 CurrentPosition { get; }
+    public string Id { get; set; }
+    public AntAnimator AntAnimator { get; set; }
+    public Vector3 Position { get; }
     public bool HasJob { get; }
     public State CurrentState { get; set; }
     public Job Job { get; set; }
     public Path Path { get; set; }
     public bool HasPath { get; }
-    public Vector3 InitialPosition { get; set; }
     public Pathfinder Pathfinder { get; set; }
     public void SetState(State state);
     public void SetPath(Path path);
+    public void Move(int speed);
+    public void RemovePath();
 
 }
