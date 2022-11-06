@@ -7,12 +7,12 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Sand
-  m_Shader: {fileID: 4800000, guid: 8fdc71820a583b74fa86db0651e1855d, type: 3}
+  m_Name: Base_Ant
+  m_Shader: {fileID: 4800000, guid: 6df5731ebadb5e140ba06c2c38f13a0f, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -41,15 +41,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 2c3f39e6857a62f4d80c22ab76d88913, type: 3}
-        m_Scale: {x: 0.05, y: 0.05}
-        m_Offset: {x: 0, y: 0}
-    - _MainTexture:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Matcap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: fa9784bf53dee4322b5fd85d1dd1c77a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -61,10 +57,6 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Texture:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -82,19 +74,13 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _Matcap_Intensity: 0
+    - _Matcap_Intensity: 0.502
     - _Metallic: 0
     - _Mode: 0
     - _Mult: 1
-    - _Multiply: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _Pow: 1
-    - _Pow1: 2
-    - _Pow2: 0.65
-    - _ScaleUV: 0.15
-    - _ScaleUV1: 1
-    - _ScaleUV2: 1
+    - _Shading: 0.299
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -102,7 +88,7 @@ Material:
     - _ZWrite: 1
     - __dirty: 0
     m_Colors:
-    - _Color: {r: 0.8207547, g: 0.8207547, b: 0.8207547, a: 1}
+    - _Color: {r: 0.2169811, g: 0.08383361, b: 0, a: 1}
+    - _Color1: {r: 0.5660378, g: 0.2308546, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _ShadowColor: {r: 0.21568628, g: 0.03295701, b: 0, a: 1}
   m_BuildTextureStacks: []

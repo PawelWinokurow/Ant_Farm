@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public Surface Surface;
-    public BuildWallsTest BuildWallsTest;
+    public BuildTestMap BuildWallsTest;
     public JobScheduler JobScheduler;
     public Graph PathGraph;
     private Pathfinder pathfinder;
@@ -54,10 +54,9 @@ public class GameManager : MonoBehaviour
         if (hex.Type == HEX_TYPE.FOOD)
         {
             var asssignedCarriersNum = ((FoodHexagon)(hex.Child)).Carriers.Count;
-            Debug.Log(asssignedCarriersNum);
             if (asssignedCarriersNum <= 3)
             {
-                JobScheduler.AssignJob(new CarrierJob($"{hex.Id}{asssignedCarriersNum + 1}", hex, Surface.BaseHex.Position, hex.transform.position));
+                JobScheduler.AssignJob(new CarrierJob($"{hex.Id}_{asssignedCarriersNum + 1}", hex, Surface.BaseHex.Position, hex.transform.position));
             }
         }
         else if (hex.Type == HEX_TYPE.EMPTY || hex.Type == HEX_TYPE.SOIL)

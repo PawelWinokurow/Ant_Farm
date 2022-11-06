@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 
-public class BuildWallsTest : MonoBehaviour
+public class BuildTestMap : MonoBehaviour
 {
 
     private Surface Surface;

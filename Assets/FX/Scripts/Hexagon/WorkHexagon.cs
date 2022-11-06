@@ -3,29 +3,25 @@ using UnityEngine;
 
 public class WorkHexagon : MonoBehaviour, Hexagon
 {
-    public string Id { get; set; }
+    public string Id { get => FloorHexagon.Id; set => FloorHexagon.Id = value; }
+    public Vector3 Position { get => FloorHexagon.Position; set => FloorHexagon.Position = value; }
     public HEX_TYPE Type { get => FloorHexagon.Type; set => FloorHexagon.Type = value; }
-    public Vector3 Position { get; set; }
     public FloorHexagon FloorHexagon { get; set; }
     public float Work { get; set; }
+    public static float MaxWork = 50f;
 
 
     public static WorkHexagon CreateHexagon(FloorHexagon parent, WorkHexagon workHexPrefab)
     {
         WorkHexagon hex = Instantiate(workHexPrefab, parent.Position, Quaternion.identity, parent.transform);
         hex.FloorHexagon = parent;
-        hex.Position = parent.Position;
-        hex.Id = parent.Id;
-        hex.Work = parent.Work;
         hex.FloorHexagon.Child = hex;
+        hex.Work = MaxWork;
         return hex;
     }
 
     public WorkHexagon AssignProperties(WorkHexagon hex)
     {
-        Id = hex.Id;
-        Type = hex.Type;
-        Position = hex.Position;
         Work = hex.Work;
         return this;
     }

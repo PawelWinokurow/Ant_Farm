@@ -177,17 +177,17 @@ public class Surface : MonoBehaviour
             {
                 worker.Job.CancelJob();
             }
-
         }
         else
         {
             //On food
             var foodHex = (FoodHexagon)(hex.Child);
             var workerCanCarry = worker.MaxCarryingWeight - worker.CarryingWeight;
-            if (workerCanCarry > foodHex.Food)
+            if (workerCanCarry >= foodHex.Food)
             {
                 worker.CarryingWeight = foodHex.Food;
                 foodHex.Food = 0;
+                hex.RemoveChildren();
                 //Cancel all workers
                 foodHex.Carriers.ForEach(worker => worker.Job.CancelJob());
             }
@@ -202,17 +202,18 @@ public class Surface : MonoBehaviour
     }
     public IEnumerator Dig(FloorHexagon hex, Worker worker)
     {
-        OldHexagons.Remove(hex.Id);
         hex.RemoveChildren();
-        AddBlock(hex);
+        var oldIcon = OldHexagons[hex.Id];
+        var wallHex = AddBlock(hex).AssignProperties((WorkHexagon)oldIcon);
+        OldHexagons.Remove(hex.Id);
         while (true)
         {
-            hex.Work -= worker.ConstructionSpeed;
-            hex.transform.GetChild(0).localScale = Vector3.one * hex.Work / 50;
-            if (hex.Work <= 0)
+            wallHex.Work -= worker.ConstructionSpeed;
+            wallHex.transform.localScale = Vector3.one * wallHex.Work / WorkHexagon.MaxWork;
+            if (wallHex.Work <= 0)
             {
                 AddGround(hex);
-                PathGraph.AllowHexagon(hex.transform.position);
+                PathGraph.AllowHexagon(wallHex.Position);
                 worker.Job.CancelJob();
                 yield break;
             }
@@ -224,12 +225,12 @@ public class Surface : MonoBehaviour
     {
         hex.RemoveChildren();
         OldHexagons.Remove(hex.Id);
-        AddScaledBlock(hex);
+        var scaledBlock = AddScaledBlock(hex);
         while (true)
         {
-            hex.Work -= worker.ConstructionSpeed;
-            hex.transform.GetChild(0).localScale = Vector3.one * (1 - hex.Work / 50f);
-            if (hex.Work <= 0)
+            scaledBlock.Work -= worker.ConstructionSpeed;
+            scaledBlock.transform.localScale = Vector3.one * (1 - scaledBlock.Work / WorkHexagon.MaxWork);
+            if (scaledBlock.Work <= 0)
             {
                 hex.RemoveChildren();
                 AddBlock(hex);
@@ -249,27 +250,35 @@ public class Surface : MonoBehaviour
         return Hexagons[z * width + x];
     }
 
-    public void AddBlock(FloorHexagon hex)
+    public WorkHexagon AddBlock(FloorHexagon hex)
     {
-        WorkHexagon.CreateHexagon(hex, wallPrefab).Type = HEX_TYPE.SOIL;
+        var block = WorkHexagon.CreateHexagon(hex, wallPrefab);
+        block.Type = HEX_TYPE.SOIL;
+        block.Work = WorkHexagon.MaxWork;
+        return block;
     }
-    public void AddScaledBlock(FloorHexagon hex)
+    public WorkHexagon AddScaledBlock(FloorHexagon hex)
     {
-        WorkHexagon.CreateHexagon(hex, wallPrefabScaled).Type = HEX_TYPE.SOIL;
+        var scaledBlock = WorkHexagon.CreateHexagon(hex, wallPrefabScaled);
+        scaledBlock.Type = HEX_TYPE.SOIL;
+        scaledBlock.Work = WorkHexagon.MaxWork;
+        return scaledBlock;
     }
 
     public void AddGround(FloorHexagon hex)
     {
         hex.RemoveChildren();
         hex.Type = HEX_TYPE.EMPTY;
-        hex.Work = 50f;
+        hex.Work = WorkHexagon.MaxWork;
     }
 
     public void AddBase()
     {
+        PathGraph.NearestVertex(BaseHex.Position).Neighbours.ForEach(vertex => PositionToHex(vertex.Position).RemoveChildren());
         BaseHex.RemoveChildren();
         BaseHexagon.CreateHexagon(BaseHex, basePrefab).Type = HEX_TYPE.BASE;
         PathGraph.ProhibitHexagon(BaseHex.Position);
+
     }
     public void AddFood(FloorHexagon hex)
     {

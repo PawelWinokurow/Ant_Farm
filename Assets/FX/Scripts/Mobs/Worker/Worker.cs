@@ -13,7 +13,7 @@ public class Worker : MonoBehaviour, Mob
     public Path Path { get; set; }
     public State CurrentState { get; set; }
     public Pathfinder Pathfinder { get; set; }
-    public bool HasPath { get => currentPathEdge != null; }
+    public bool HasPath { get => Path != null && currentPathEdge != null; }
     public bool HasJob { get => Job != null; }
     private float lerpDuration;
     private float t = 0f;

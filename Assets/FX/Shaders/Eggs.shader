@@ -1,6 +1,6 @@
 // Made with Amplify Shader Editor
 // Available at the Unity Asset Store - http://u3d.as/y3X 
-Shader "Custom/Ant"
+Shader "Custom/Eggs"
 {
 	Properties
 	{
@@ -30,8 +30,8 @@ Shader "Custom/Ant"
 		Stencil
 		{
 			Ref 1
-			Comp Always
-			Pass Replace
+			Comp NotEqual
+			Pass Keep
 			Fail Keep
 			ZFail Keep
 		}
@@ -142,7 +142,7 @@ Shader "Custom/Ant"
 }
 /*ASEBEGIN
 Version=18500
-985.3334;80;905.3334;729;1947.347;1977.36;2.800437;True;False
+985.3334;80;905.3334;729;2106.973;2052.338;3.100437;True;False
 Node;AmplifyShaderEditor.VertexColorNode;135;-2650.863,-459.0574;Inherit;False;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.Vector3Node;138;-1839.669,-502.1556;Inherit;False;Constant;_Vector0;Vector 0;0;0;Create;True;0;0;False;0;False;-1,0,0;0,0,0;0;4;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3
 Node;AmplifyShaderEditor.Vector3Node;175;-1974.911,-280.5346;Inherit;False;Constant;_Vector1;Vector 1;0;0;Create;True;0;0;False;0;False;0,0,1;0,0,0;0;4;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3
@@ -166,7 +166,7 @@ Node;AmplifyShaderEditor.OneMinusNode;189;31.93726,-423.0994;Inherit;False;1;0;F
 Node;AmplifyShaderEditor.SimpleAddOpNode;182;-21.24303,-683.9905;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
 Node;AmplifyShaderEditor.RangedFloatNode;147;-26.86963,-114.0597;Inherit;False;Property;_Shading;Shading;2;0;Create;True;0;0;False;0;False;1;0.299;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;188;143.3839,-564.4464;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;134;506.7751,-460.3226;Float;False;True;-1;2;ASEMaterialInspector;100;1;Custom/Ant;0770190933193b94aaa3065e307002fa;True;Unlit;0;0;Unlit;2;True;0;1;False;-1;0;False;-1;0;1;False;-1;0;False;-1;True;0;False;-1;0;False;-1;False;False;False;False;False;False;True;0;False;-1;True;0;False;-1;True;True;True;True;True;0;False;-1;False;False;False;True;True;1;False;-1;255;False;-1;255;False;-1;7;False;-1;3;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;True;1;False;-1;True;3;False;-1;True;True;0;False;-1;0;False;-1;True;1;RenderType=Opaque=RenderType;True;2;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=ForwardBase;False;0;;0;0;Standard;1;Vertex Position,InvertActionOnDeselection;1;0;1;True;False;;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;134;506.7751,-460.3226;Float;False;True;-1;2;ASEMaterialInspector;100;1;Custom/Eggs;0770190933193b94aaa3065e307002fa;True;Unlit;0;0;Unlit;2;True;0;1;False;-1;0;False;-1;0;1;False;-1;0;False;-1;True;0;False;-1;0;False;-1;False;False;False;False;False;False;True;0;False;-1;True;0;False;-1;True;True;True;True;True;0;False;-1;False;False;False;True;True;1;False;-1;255;False;-1;255;False;-1;6;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;True;1;False;-1;True;3;False;-1;True;True;0;False;-1;0;False;-1;True;1;RenderType=Opaque=RenderType;True;2;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=ForwardBase;False;0;;0;0;Standard;1;Vertex Position,InvertActionOnDeselection;1;0;1;True;False;;False;0
 WireConnection;179;0;138;0
 WireConnection;136;0;135;0
 WireConnection;180;0;175;0
@@ -192,4 +192,4 @@ WireConnection;188;0;182;0
 WireConnection;188;1;189;0
 WireConnection;134;0;188;0
 ASEEND*/
-//CHKSM=CA6D73D048303CEB17EEDC52DB4FC112959CA7A4
+//CHKSM=E39C469D00602B4351D2ABBF5353B44194905278
