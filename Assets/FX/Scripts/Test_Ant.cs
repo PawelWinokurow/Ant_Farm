@@ -32,6 +32,10 @@ public class Test_Ant : MonoBehaviour
         {
             GetComponent<AntAnimator>().Run();
         }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            GetComponent<AntAnimator>().RunFood();
+        }
     }
 }
 
