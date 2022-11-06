@@ -26,7 +26,7 @@ public class BuildTestMap : MonoBehaviour
             if (probability <= wallProbability)
             {
                 Surface.AddBlock(Surface.Hexagons[i]);
-                Surface.PathGraph.ProhibitHexagon(Surface.Hexagons[i].Position);
+                Surface.PathGraph.ProhibitHexagon(Surface.Hexagons[i]);
             }
             else if (probability <= wallProbability + foodProbability)
             {

@@ -167,6 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f5e9ca48c925554ba990a49d3e1ead6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AllMobs: []
 --- !u!1 &685065889
 GameObject:
   m_ObjectHideFlags: 0
@@ -218,7 +219,7 @@ MonoBehaviour:
   fillPrefab: {fileID: -4772042401286267067, guid: 99821c0ed144a4324828715eca72ccaf, type: 3}
   basePrefab: {fileID: -5532710869948626715, guid: 85d0259e7c2e04b44a32ac1b47c6b554, type: 3}
   foodPrefab: {fileID: 6430889120838161730, guid: b6796502f5525184d99c83ee5ae6b91d, type: 3}
-  carryingPrefab: {fileID: 5742658808433947181, guid: 1f0ddcd050ef58d40b2db90f456a8624, type: 3}
+  carryingPrefab: {fileID: 885855770167225291, guid: b6796502f5525184d99c83ee5ae6b91d, type: 3}
   ld: {x: 0, y: 0, z: 0}
   rd: {x: 0, y: 0, z: 0}
   lu: {x: 0, y: 0, z: 0}

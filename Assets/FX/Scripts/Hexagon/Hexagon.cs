@@ -6,5 +6,4 @@ public interface Hexagon
     public string Id { get; set; }
     public HEX_TYPE Type { get; set; }
     public Vector3 Position { get; set; }
-
 }

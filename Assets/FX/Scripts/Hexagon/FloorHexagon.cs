@@ -14,7 +14,7 @@ public class FloorHexagon : MonoBehaviour, Hexagon
     public Vector3 Position { get; set; }
     public float Work { get; set; }
     public Hexagon Child { get; set; }
-
+    public Vertex Vertex { get; set; }
 
     public static FloorHexagon CreateHexagon(string id, FloorHexagon hexPrefab, Vector3 hexPosition, Transform parent, HEX_TYPE hexType, float work)
     {

@@ -69,23 +69,25 @@ public class Graph
         });
     }
 
-    public void AllowHexagon(Vector3 hexagonPosition)
+    public void AllowHexagon(FloorHexagon hex)
     {
-        GetHexagonEdges(hexagonPosition).ForEach(edge => edge.IsWalkable = true);
+        GetHexagonEdges(hex).ForEach(edge => edge.IsWalkable = true);
     }
-    public void ProhibitHexagon(Vector3 hexagonPosition)
+    public void ProhibitHexagon(FloorHexagon hex)
     {
 
-        GetHexagonEdges(hexagonPosition).ForEach(edge => edge.IsWalkable = false);
+        GetHexagonEdges(hex).ForEach(edge => edge.IsWalkable = false);
     }
 
-    private List<Edge> GetHexagonEdges(Vector3 hexagonPosition)
+    private List<Edge> GetHexagonEdges(FloorHexagon hex)
     {
-        Vertex centerVertex = PathVerticesMap[hexagonPosition];
+        Vertex centerVertex = hex.Vertex;
         List<Vertex> hexagonVertices = centerVertex.Edges.Select(edge => edge.To).ToList();
         hexagonVertices.Add(centerVertex);
         var Ids = hexagonVertices.Select(vertex => vertex.Id);
-        return hexagonVertices.Aggregate(new List<Edge>(), (acc, vertex) => acc.Concat(vertex.Edges).ToList()).Where(edge => Ids.Contains(edge.From.Id) && Ids.Contains(edge.To.Id)).ToList();
+        return hexagonVertices
+            .Aggregate(new List<Edge>(), (acc, vertex) => acc.Concat(vertex.Edges).ToList())
+            .Where(edge => Ids.Contains(edge.From.Id) && Ids.Contains(edge.To.Id)).ToList();
     }
 
     public Vertex NearestVertex(Vector3 position)
@@ -118,11 +120,13 @@ public class Graph
         return Distance.Manhattan(from.Position, to.Position);
     }
 
-    public Vertex AddHexagonSubGraph(Vector3 center, float R, string id)
+    public Vertex AddHexagonSubGraph(FloorHexagon hex, float R, string id)
     {
+        var center = hex.Position;
         float r = (float)Math.Sqrt(3) * R / 2;
 
         var centerPathPoint = AddVertex(new Vertex($"{id}0", center, true));
+        hex.Vertex = centerPathPoint;
         List<Vertex> pathPoints = new List<Vertex>();
         for (int n = 0; n < 6; n++)
         {

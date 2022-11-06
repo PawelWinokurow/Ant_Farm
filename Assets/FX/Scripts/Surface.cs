@@ -80,8 +80,8 @@ public class Surface : MonoBehaviour
             for (int x = 0; x < width; x++)
             {
                 Vector3 hexPosition = new Vector3(w * (x + (z % 2f) / 2f), 0f, z * h);
-                PathGraph.AddHexagonSubGraph(hexPosition, Hexagon.Radius, $"x{x}z{z}");
                 FloorHexagon hex = FloorHexagon.CreateHexagon($"{x}_{z}", hexPrefab, hexPosition, transform, HEX_TYPE.EMPTY, 50f);
+                PathGraph.AddHexagonSubGraph(hex, Hexagon.Radius, $"x{x}z{z}");
                 Hexagons[z * width + x] = hex;
             }
         }
@@ -223,7 +223,7 @@ public class Surface : MonoBehaviour
             if (wallHex.Work <= 0)
             {
                 AddGround(hex);
-                PathGraph.AllowHexagon(wallHex.Position);
+                PathGraph.AllowHexagon(wallHex.FloorHexagon);
                 worker.Job.CancelJob();
                 yield break;
             }
@@ -284,18 +284,19 @@ public class Surface : MonoBehaviour
 
     public void AddBase()
     {
-        PathGraph.NearestVertex(BaseHex.Position).Neighbours.ForEach(vertex =>
+        BaseHex.Vertex.Neighbours.ForEach(vertex =>
         {
             PositionToHex(vertex.Position).RemoveChildren();
-            PathGraph.NearestVertex(vertex.Position).Neighbours.ForEach(vertex =>
+            vertex.Neighbours.ForEach(vertex =>
             {
-                PositionToHex(vertex.Position).RemoveChildren();
-                PathGraph.AllowHexagon(vertex.Position);
+                var hex = PositionToHex(vertex.Position);
+                hex.RemoveChildren();
+                PathGraph.AllowHexagon(hex);
             });
         });
         BaseHex.RemoveChildren();
         BaseHexagon.CreateHexagon(BaseHex, basePrefab).Type = HEX_TYPE.BASE;
-        PathGraph.ProhibitHexagon(BaseHex.Position);
+        PathGraph.ProhibitHexagon(BaseHex);
 
     }
     public void AddFood(FloorHexagon hex, float angle)
@@ -304,7 +305,6 @@ public class Surface : MonoBehaviour
         var collectingHex = CollectingHexagon.CreateHexagon(hex, foodPrefab);
         collectingHex.Type = HEX_TYPE.FOOD;
         collectingHex.transform.Rotate(0f, angle, 0f, Space.Self);
-        PathGraph.ProhibitHexagon(BaseHex.Position);
     }
 
     public bool IsInOldHexagons(FloorHexagon hex)
@@ -319,7 +319,7 @@ public class Surface : MonoBehaviour
             var clonedHex = Instantiate(hex).AssignProperties(hex);
             OldHexagons.Add(clonedHex.Id, clonedHex);
             hex.RemoveChildren();
-            PathGraph.ProhibitHexagon(hex.transform.position);
+            PathGraph.ProhibitHexagon(hex);
             WorkHexagon.CreateHexagon(hex, fillPrefab);
         }
         else if (hex.Type == HEX_TYPE.SOIL)
@@ -345,12 +345,12 @@ public class Surface : MonoBehaviour
         var oldIcon = OldHexagons[hex.Id];
         if (oldIcon.Type == HEX_TYPE.EMPTY)
         {
-            PathGraph.AllowHexagon(hex.transform.position);
+            PathGraph.AllowHexagon(hex);
             hex.AssignProperties((FloorHexagon)oldIcon);
         }
         else if (oldIcon.Type == HEX_TYPE.SOIL)
         {
-            PathGraph.ProhibitHexagon(hex.transform.position);
+            PathGraph.ProhibitHexagon(hex);
             WorkHexagon.CreateHexagon(hex, wallPrefab).AssignProperties((WorkHexagon)oldIcon);
         }
         else if (oldIcon.Type == HEX_TYPE.FOOD)

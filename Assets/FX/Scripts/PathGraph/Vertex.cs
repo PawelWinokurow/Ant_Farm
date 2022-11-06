@@ -9,7 +9,7 @@ public class Vertex
     public List<Edge> Edges { get; set; }
     public List<Vertex> Neighbours = new List<Vertex>();
     public bool IsCentralVertex { get; set; }
-
+    public FloorHexagon FloorHexagon { get; set; }
     public Vertex(string id, Vector3 position, bool isCentralVertex)
     {
         Id = id;
