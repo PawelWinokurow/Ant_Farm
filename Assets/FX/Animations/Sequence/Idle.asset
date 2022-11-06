@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b0ee8f9237704487a5a454eafc95284, type: 3}
   m_Name: Idle
   m_EditorClassIdentifier: 
-  speed: 2
+  materials:
+  - {fileID: 2100000, guid: 7edf216d4215d1349b2d0d0703fe49df, type: 2}
   sequence:
   - {fileID: 1173195612105422223, guid: f56d3277cceb3264b943865d9461a520, type: 3}
   - {fileID: 5191405655100960002, guid: f56d3277cceb3264b943865d9461a520, type: 3}
