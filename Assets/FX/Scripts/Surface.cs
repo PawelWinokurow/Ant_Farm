@@ -161,11 +161,44 @@ public class Surface : MonoBehaviour
 
     public IEnumerator Carry(FloorHexagon hex, Worker worker)
     {
-        yield return new WaitForSeconds(5f);
-        var foodHex = (FoodHexagon)(hex.Child);
-        foodHex.Food -= worker.CarryWeight;
-        if (foodHex.Food <= 0) worker.Job.CancelJob();
-        else worker.Job.Return();
+        yield return new WaitForSeconds(2f);
+        if (Distance.Manhattan(worker.Job.Destination, BaseHex.Position) < 1)
+        {
+            //On base
+            var baseHex = (BaseHexagon)(BaseHex.Child);
+            baseHex.Storage += worker.CarryingWeight;
+            worker.CarryingWeight = 0;
+            if (hex.Type == HEX_TYPE.FOOD && ((FoodHexagon)(hex.Child)).Food > 0)
+            {
+                worker.Job.Return();
+            }
+            else
+            {
+                worker.Job.CancelJob();
+            }
+
+        }
+        else
+        {
+            //On food
+            var foodHex = (FoodHexagon)(hex.Child);
+            var weightCanCarry = (worker.MaxCarryingWeight - worker.CarryingWeight);
+            if (weightCanCarry > foodHex.Food)
+            {
+                worker.CarryingWeight = foodHex.Food;
+                foodHex.Food = 0;
+                //Cancel all workers
+                foodHex.Carriers.ForEach(worker => worker.Job.CancelJob());
+            }
+            else
+            {
+                worker.CarryingWeight = weightCanCarry;
+                foodHex.Food -= weightCanCarry;
+                worker.Job.Return();
+            }
+
+
+        }
     }
     public IEnumerator Dig(FloorHexagon hex, Worker worker)
     {

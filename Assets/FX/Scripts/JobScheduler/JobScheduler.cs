@@ -108,6 +108,8 @@ public class JobScheduler : MonoBehaviour
         if (job.Type == JobType.CARRYING)
         {
             var carrierJob = (CarrierJob)job;
+            var foodHex = (FoodHexagon)(carrierJob.Hex.Child);
+            foodHex.AssignWorker((Worker)mob);
             carrierJob.Return = () =>
             {
                 var swap = carrierJob.Destination;
@@ -115,17 +117,32 @@ public class JobScheduler : MonoBehaviour
                 carrierJob.Departure = swap;
                 mob.SetPath(Pathfinder.FindPath(mob.CurrentPosition, carrierJob.Destination, true));
                 mob.SetState(new GoToState((Worker)mob));
-                Debug.Log("return");
+            };
+            carrierJob.CancelJob = () =>
+            {
+                if (((Worker)mob).CarryingWeight != 0)
+                {
+                    mob.SetPath(Pathfinder.FindPath(mob.CurrentPosition, carrierJob.Departure, true));
+                    mob.SetState(new GoToState((Worker)mob));
+                }
+                else
+                {
+                    CancelJob(job);
+                }
+            };
+        }
+        else if (job.Type == JobType.FILL || job.Type == JobType.DIG)
+        {
+            job.CancelJob = () =>
+            {
+                CancelJob(job);
             };
         }
         job.Execute = () =>
         {
             surface.StartJobExecution(job.Hex, mob);
         };
-        job.CancelJob = () =>
-        {
-            CancelJob(job);
-        };
+
         job.CancelNotCompleteJob = () =>
         {
             CancelNotCompleteJob(job);

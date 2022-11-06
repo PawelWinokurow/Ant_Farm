@@ -8,8 +8,9 @@ public class FoodHexagon : MonoBehaviour, Hexagon
     public string Id { get; set; }
     public HEX_TYPE Type { get => FloorHexagon.Type; set => FloorHexagon.Type = value; }
     public Vector3 Position { get; set; }
-    public float Food { get; set; }
+    public int Food { get; set; }
     public FloorHexagon FloorHexagon { get; set; }
+    public List<Worker> Carriers { get; set; }
 
     public static FoodHexagon CreateHexagon(FloorHexagon parent, FoodHexagon workHexPrefab)
     {
@@ -17,8 +18,9 @@ public class FoodHexagon : MonoBehaviour, Hexagon
         hex.FloorHexagon = parent;
         hex.Position = parent.Position;
         hex.Id = parent.Id;
-        hex.Food = 1000f;
+        hex.Food = 1000;
         hex.FloorHexagon.Child = hex;
+        hex.Carriers = new List<Worker>();
         return hex;
     }
 
@@ -29,6 +31,11 @@ public class FoodHexagon : MonoBehaviour, Hexagon
         Position = hex.Position;
         Food = hex.Food;
         return this;
+    }
+
+    public void AssignWorker(Worker worker)
+    {
+        Carriers.Add(worker);
     }
 
 }

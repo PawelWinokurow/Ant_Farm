@@ -5,7 +5,8 @@ using UnityEngine;
 public class Worker : MonoBehaviour, Mob
 {
     public float ConstructionSpeed = 2f;
-    public float CarryWeight = 100f;
+    public int MaxCarryingWeight = 100;
+    public int CarryingWeight = 0;
     public AntAnimator AntAnimator { get; set; }
     public Vector3 CurrentPosition { get => transform.position; }
     public Job Job { get; set; }

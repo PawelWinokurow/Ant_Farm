@@ -10,6 +10,7 @@ public class BaseHexagon : MonoBehaviour, Hexagon
     public Vector3 Position { get; set; }
     public HEX_TYPE Type { get => FloorHexagon.Type; set => FloorHexagon.Type = value; }
 
+    public int Storage { get; set; }
 
     public static BaseHexagon CreateHexagon(FloorHexagon parent, BaseHexagon baseHexPrefab)
     {
