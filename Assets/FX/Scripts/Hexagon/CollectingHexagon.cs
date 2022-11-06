@@ -9,7 +9,7 @@ public class CollectingHexagon : MonoBehaviour, Hexagon
     public Vector3 Position { get => FloorHexagon.Position; set => FloorHexagon.Position = value; }
     public HEX_TYPE Type { get => FloorHexagon.Type; set => FloorHexagon.Type = value; }
     public int Quantity { get; set; }
-    public static int MaxQuantity = 200;
+    public static int MaxQuantity = 1000;
     public FloorHexagon FloorHexagon { get; set; }
     public List<Worker> Carriers { get; set; }
 

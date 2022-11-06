@@ -25,6 +25,11 @@ public class GoToState : State
     {
         if (worker.HasPath)
         {
+            if (worker.HasJob && worker.Job.Type == JobType.CARRYING)
+            {
+                worker.AntAnimator.RunFood();
+            }
+
             worker.AntAnimator.Run();
             worker.Move(MOVEMENT_SPEED);
         }
