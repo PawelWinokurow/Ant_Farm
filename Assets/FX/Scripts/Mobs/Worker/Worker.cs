@@ -40,9 +40,10 @@ public class Worker : MonoBehaviour, Mob
     public void SetPath(Path path)
     {
         Path = path;
-        if (Path != null && Path.HasWaypoints)
+        if (Path != null)
         {
-            SetCurrentPathEdge();
+            if (Path.HasWaypoints) SetCurrentPathEdge();
+            else Job.Execute();
         }
         else
         {

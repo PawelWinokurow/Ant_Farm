@@ -96,8 +96,6 @@ public class JobScheduler : MonoBehaviour
                 job.Worker.Job = job;
                 job.Path = path; ;
                 MoveUnassignedJobToAssignedJobs(job);
-                // MoveFreeMobToBusyMobs(job.Worker);
-                // SetJobToWorker(job);
                 return;
             }
         }
