@@ -18,9 +18,10 @@ public class Worker : MonoBehaviour, Mob
     public bool HasJob { get => Job != null; }
     private float lerpDuration;
     private float t = 0f;
-    private Edge currentPathEdge;
+    public Edge currentPathEdge;
     void Awake()
     {
+
         AntAnimator = GetComponent<AntAnimator>();
         SetState(new IdleState(this));
     }

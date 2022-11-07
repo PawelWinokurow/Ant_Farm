@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class AntAnimator : MonoBehaviour
 {
+
+    public Worker worker;
     private AnimationsScriptableObject current;
     public AnimationsScriptableObject run;
     public AnimationsScriptableObject idle;
@@ -48,21 +50,22 @@ public class AntAnimator : MonoBehaviour
         f = (int)(Time.time * 30f * 1.5f) % current.sequence.Length;
         mf.mesh = current.sequence[f];
 
-
-        Vector3 pos = transform.position;
-        if (pos != posOld)
+        if (worker.currentPathEdge == null)
         {
-            forward = ((pos - posOld).normalized + antBaseForwardOld * 0.001f).normalized;
-            antBaseForwardOld = mf.transform.forward;
-            posOld = pos;
+            forward = worker.Job.Destination- transform.position;
+        }
+        else
+        {
+            forward = worker.currentPathEdge.To.Position- transform.position;
         }
 
 
-        Quaternion rot = Quaternion.LookRotation(forward, angl.up);
-        smoothRot = Quaternion.Slerp(smoothRot, rot, Time.deltaTime * 10f);
-        mf.transform.rotation = smoothRot;
+            Quaternion rot = Quaternion.LookRotation(angl.up, forward);
+            smoothRot = Quaternion.Slerp(smoothRot, rot, Time.deltaTime * 10f);
+            mf.transform.rotation = smoothRot;
+            mf.transform.Rotate(new Vector3(-90f, 0f, 180f), Space.Self);
+
+        }
+
 
     }
-
-
-}
