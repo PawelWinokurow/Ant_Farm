@@ -7,14 +7,14 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Food_Ground
-  m_Shader: {fileID: 4800000, guid: 61b6dfe1adc3dd348af159e27d3b0a41, type: 3}
+  m_Name: Food_Point
+  m_Shader: {fileID: 4800000, guid: c7b631351e98c6240bca9c180e3a2950, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2002
   stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
@@ -41,19 +41,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 2c3f39e6857a62f4d80c22ab76d88913, type: 3}
-        m_Scale: {x: 0.05, y: 0.05}
-        m_Offset: {x: 0, y: 0}
-    - _MainTex1:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTexture:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Matcap:
-        m_Texture: {fileID: 2800000, guid: fa9784bf53dee4322b5fd85d1dd1c77a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -68,8 +56,8 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _Texture:
-        m_Texture: {fileID: 0}
+    - _TextureSample0:
+        m_Texture: {fileID: 2800000, guid: fa9784bf53dee4322b5fd85d1dd1c77a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _texcoord:
@@ -78,36 +66,29 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _AlphaBlend: 0.6
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _Emission: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _Matcap_Intensity: 0
+    - _InvFade: 1
     - _Metallic: 0
     - _Mode: 0
     - _Mult: 1
-    - _Multiply: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _Pow: 1
-    - _Pow1: 2
-    - _Pow2: 0.65
-    - _ScaleUV: 0.15
-    - _ScaleUV1: 0.15
-    - _ScaleUV2: 1
+    - _Power: 1.35
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
-    - __dirty: 0
     m_Colors:
-    - _Color: {r: 0.735849, g: 0.6655478, b: 0.60163754, a: 1}
-    - _Color1: {r: 0, g: 0, b: 0, a: 0}
+    - _Color: {r: 0.87496, g: 1, b: 0.85534585, a: 1}
+    - _Color1: {r: 0.060956456, g: 0.4627451, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _ShadowColor: {r: 0.21568628, g: 0.03295701, b: 0, a: 1}
+    - _TintColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
