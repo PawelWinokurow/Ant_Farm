@@ -26,20 +26,39 @@ public class Pathfinder
 
     public Path RandomWalk(Vector3 fromVec, int numberOfSteps)
     {
-        UnityEngine.Random.InitState(Guid.NewGuid().GetHashCode());
         Path overallPath = new Path();
         Vertex from = pathGraph.NearestVertex(fromVec);
         for (int i = 0; i < numberOfSteps; i++)
         {
-            var edgesToGo = from.Edges.Where(edge => edge.IsWalkable).ToList();
-            var edgeChosen = edgesToGo[UnityEngine.Random.Range(0, edgesToGo.Count)];
-            from = edgeChosen.To;
-            overallPath.WayPoints.Add(edgeChosen);
-            overallPath.Length += edgeChosen.EdgeWeight;
+            var path = PathToSomeNeighbour(from);
+            from.Neighbours.ForEach(n => Debug.Log(n.Id));
+            if (path != null)
+            {
+                overallPath.WayPoints.AddRange(path.WayPoints);
+                overallPath.Length += path.Length;
+            }
+            else
+            {
+                //TODO teleport
+            }
+            from = path.WayPoints[path.WayPoints.Count - 1].To;
         }
         return overallPath;
-
     }
+
+    private Path PathToSomeNeighbour(Vertex from)
+    {
+        var neighbours = from.Neighbours.OrderBy(a => Guid.NewGuid()).ToList();
+        foreach (var to in neighbours)
+        {
+            if (to.Edges[0].IsWalkable)
+            {
+                return FindPath(from.Position, to.Position);
+            }
+        }
+        return null;
+    }
+
     public Path FindPath(Vector3 fromVec, Vector3 toVec, bool findNearest = false)
     {
         Vertex from = pathGraph.NearestVertex(fromVec);

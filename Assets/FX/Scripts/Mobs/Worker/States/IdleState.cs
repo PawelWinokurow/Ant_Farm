@@ -14,9 +14,14 @@ public class IdleState : State
     }
     public override void Tick()
     {
+        worker.Animation();
         if (worker.HasPath)
         {
             worker.Move(MOVEMENT_SPEED);
+            if (worker.Path.WayPoints.Count == 1)
+            {
+                worker.ExpandRandomWalk();
+            }
         }
         else
         {
@@ -27,10 +32,7 @@ public class IdleState : State
     override public void OnStateEnter()
     {
         worker.RemovePath();
-        if (worker.AntAnimator != null)
-        {
-            worker.SetRunAnimation();
-        }
+        worker.SetRunAnimation();
     }
     override public void OnStateExit()
     {

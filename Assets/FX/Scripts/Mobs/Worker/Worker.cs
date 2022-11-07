@@ -61,7 +61,6 @@ public class Worker : MonoBehaviour, Mob
                 SetState(new IdleState(this));
             }
         }
-
     }
 
     public void RemovePath()
@@ -71,7 +70,14 @@ public class Worker : MonoBehaviour, Mob
 
     public void SetRandomWalk()
     {
-        SetPath(Pathfinder.RandomWalk(Position, 10));
+        SetPath(Pathfinder.RandomWalk(Position, 5));
+    }
+
+    public void ExpandRandomWalk()
+    {
+        var newRandomWalk = Pathfinder.RandomWalk(Path.WayPoints[Path.WayPoints.Count - 1].To.Position, 5);
+        Path.Length += newRandomWalk.Length;
+        Path.WayPoints.AddRange(newRandomWalk.WayPoints);
     }
 
     public void Move(int speed)
