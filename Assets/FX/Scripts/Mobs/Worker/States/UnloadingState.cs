@@ -17,6 +17,7 @@ public class UnloadingState : State
         if (IsDone)
         {
             Worker.SetPath(Worker.Pathfinder.FindPath(Worker.Position, job.Destination, true));
+            Worker.SetRunAnimation();
             Worker.SetState(new GoToState(Worker));
         }
         else if (!IsDone)
@@ -49,6 +50,7 @@ public class UnloadingState : State
     {
         IsDone = false;
         job = (CarrierJob)Worker.Job;
+        Worker.SetIdleAnimation();
     }
 
     override public void OnStateExit()

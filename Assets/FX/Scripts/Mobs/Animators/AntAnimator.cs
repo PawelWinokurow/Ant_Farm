@@ -46,26 +46,26 @@ public class AntAnimator : MonoBehaviour
     }
     void Update()
     {
-        //t += Time.deltaTime / (1f / 30f) * current.speed;
-        f = (int)(Time.time * 30f * 1.5f) % current.sequence.Length;
-        mf.mesh = current.sequence[f];
-
-        if (worker.currentPathEdge == null)
+        if (worker != null)
         {
-            forward = worker.Job.Destination- transform.position;
-        }
-        else
-        {
-            forward = worker.currentPathEdge.To.Position- transform.position;
-        }
 
+            //t += Time.deltaTime / (1f / 30f) * current.speed;
+            f = (int)(Time.time * 30f * 1.5f) % current.sequence.Length;
+            mf.mesh = current.sequence[f];
+
+            if (worker.CurrentPathEdge != null)
+            {
+                forward = worker.CurrentPathEdge.To.Position - transform.position;
+            }
+            else
+            {
+                forward = worker.Job.Destination - transform.position;
+            }
 
             Quaternion rot = Quaternion.LookRotation(angl.up, forward);
             smoothRot = Quaternion.Slerp(smoothRot, rot, Time.deltaTime * 10f);
             mf.transform.rotation = smoothRot;
             mf.transform.Rotate(new Vector3(-90f, 0f, 180f), Space.Self);
-
         }
-
-
     }
+}

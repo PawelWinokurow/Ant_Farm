@@ -13,12 +13,11 @@ public class LoadingState : State
 
     public override void Tick()
     {
-        Worker.AntAnimator.Idle();
         if (IsDone)
         {
             job.SwapDestination();
-            //TODO set animation
             Worker.SetPath(Worker.Pathfinder.FindPath(Worker.Position, job.Destination, true));
+            Worker.SetRunFoodAnimation();
             Worker.SetState(new GoToState(Worker));
         }
         else if (!IsDone)
@@ -38,6 +37,7 @@ public class LoadingState : State
         if (Worker.CarryingWeight != 0)
         {
             Worker.SetPath(Worker.Pathfinder.FindPath(Worker.Position, job.StorageHexagon.Position, true));
+            Worker.SetRunAnimation();
             Worker.SetState(new GoToState(Worker));
         }
         else
@@ -50,6 +50,7 @@ public class LoadingState : State
     {
         IsDone = false;
         job = (CarrierJob)Worker.Job;
+        Worker.SetIdleAnimation();
     }
 
     override public void OnStateExit()

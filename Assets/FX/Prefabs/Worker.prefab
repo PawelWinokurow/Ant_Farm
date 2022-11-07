@@ -92,9 +92,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4135837485797866615}
-  - component: {fileID: 239454578239907000}
   - component: {fileID: 239454578239907001}
   - component: {fileID: -7619036694779697723}
+  - component: {fileID: -8210300535694150561}
   m_Layer: 0
   m_Name: Worker
   m_TagString: Mob
@@ -118,25 +118,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &239454578239907000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4135837485797866603}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48012dff1dab0764d8082920cf4c5e10, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  run: {fileID: 11400000, guid: bdc6aceed5d541a459ffd6cb15c59064, type: 2}
-  idle: {fileID: 11400000, guid: a02a82089797691498dc1b5d0bde4e94, type: 2}
-  runFood: {fileID: 11400000, guid: 50db63c6c3fb22843b79e91ad0c96a88, type: 2}
-  mf: {fileID: 2383876763917858186}
-  mr: {fileID: 2360862903416325171}
-  angl: {fileID: 5335103204996291558}
-  worker: {fileID: -7619036694779697723}
 --- !u!114 &239454578239907001
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,7 +125,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4135837485797866603}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dff0636e8387d774189a91e4269404f1, type: 3}
   m_Name: 
@@ -162,8 +143,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ConstructionSpeed: 2
+  LoadingSpeed: 50
   MaxCarryingWeight: 100
   CarryingWeight: 0
+--- !u!114 &-8210300535694150561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4135837485797866603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48012dff1dab0764d8082920cf4c5e10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  worker: {fileID: -7619036694779697723}
+  run: {fileID: 11400000, guid: bdc6aceed5d541a459ffd6cb15c59064, type: 2}
+  idle: {fileID: 11400000, guid: a02a82089797691498dc1b5d0bde4e94, type: 2}
+  runFood: {fileID: 11400000, guid: 50db63c6c3fb22843b79e91ad0c96a88, type: 2}
+  mf: {fileID: 2383876763917858186}
+  mr: {fileID: 2360862903416325171}
+  angl: {fileID: 5335103204996291558}
 --- !u!1 &5335103204996291557
 GameObject:
   m_ObjectHideFlags: 0

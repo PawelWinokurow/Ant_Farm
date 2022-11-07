@@ -16,7 +16,6 @@ public class IdleState : State
     {
         if (worker.HasPath)
         {
-            worker.AntAnimator.Run();
             worker.Move(MOVEMENT_SPEED);
         }
         else
@@ -28,6 +27,10 @@ public class IdleState : State
     override public void OnStateEnter()
     {
         worker.RemovePath();
+        if (worker.AntAnimator != null)
+        {
+            worker.SetRunAnimation();
+        }
     }
     override public void OnStateExit()
     {

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,21 +11,22 @@ public class Worker : MonoBehaviour, Mob
     public int MaxCarryingWeight = 100;
     public float CarryingWeight = 0;
     public AntAnimator AntAnimator { get; set; }
+    public Action Animation { get; set; }
     public Vector3 Position { get => transform.position; }
     public Job Job { get; set; }
     public Path Path { get; set; }
     public State CurrentState { get; set; }
     public Pathfinder Pathfinder { get; set; }
     public SurfaceOperations SurfaceOperations { get; set; }
-    public bool HasPath { get => Path != null && currentPathEdge != null; }
+    public bool HasPath { get => Path != null && CurrentPathEdge != null; }
     public bool HasJob { get => Job != null; }
     private float lerpDuration;
     private float t = 0f;
-    public Edge currentPathEdge;
+    public Edge CurrentPathEdge;
     void Awake()
     {
-
         AntAnimator = GetComponent<AntAnimator>();
+        AntAnimator.worker = this;
         SetState(new IdleState(this));
     }
 
@@ -75,14 +77,14 @@ public class Worker : MonoBehaviour, Mob
     public void Move(int speed)
     {
         DrawDebugPath();
-        if (!currentPathEdge.IsWalkable)
+        if (!CurrentPathEdge.IsWalkable)
         {
             Rerouting();
         }
         else if (t < lerpDuration)
         {
             var a = (float)Mathf.Min(t / lerpDuration, 1f);
-            transform.position = Vector3.Lerp(currentPathEdge.From.Position, currentPathEdge.To.Position, a);
+            transform.position = Vector3.Lerp(CurrentPathEdge.From.Position, CurrentPathEdge.To.Position, a);
             t += Time.deltaTime * speed;
         }
         else if (Path.HasWaypoints)
@@ -92,17 +94,16 @@ public class Worker : MonoBehaviour, Mob
         }
         else
         {
-            currentPathEdge = null;
+            CurrentPathEdge = null;
         }
     }
 
     private void SetCurrentPathEdge()
     {
 
-        currentPathEdge = Path.WayPoints[0];
+        CurrentPathEdge = Path.WayPoints[0];
         Path.WayPoints.RemoveAt(0);
-        lerpDuration = Distance.Manhattan(currentPathEdge.From.Position, currentPathEdge.To.Position);
-
+        lerpDuration = Distance.Manhattan(CurrentPathEdge.From.Position, CurrentPathEdge.To.Position);
     }
 
     public void CancelJob()
@@ -112,7 +113,7 @@ public class Worker : MonoBehaviour, Mob
 
     void Rerouting()
     {
-        var to = Path.HasWaypoints ? Path.WayPoints[Path.WayPoints.Count - 1].To.Position : currentPathEdge.To.Position;
+        var to = Path.HasWaypoints ? Path.WayPoints[Path.WayPoints.Count - 1].To.Position : CurrentPathEdge.To.Position;
         var path = Pathfinder.FindPath(transform.position, to, HasJob ? true : false);
         SetPath(path);
     }
@@ -122,13 +123,24 @@ public class Worker : MonoBehaviour, Mob
         CurrentState.Tick();
     }
 
-
+    public void SetRunAnimation()
+    {
+        Animation = AntAnimator.Run;
+    }
+    public void SetRunFoodAnimation()
+    {
+        Animation = AntAnimator.RunFood;
+    }
+    public void SetIdleAnimation()
+    {
+        Animation = AntAnimator.Idle;
+    }
 
     void DrawDebugPath()
     {
         if (Path != null && Path.HasWaypoints)
         {
-            var path = new List<Edge>() { new Edge() { From = new Vertex("", transform.position, false), To = currentPathEdge.To } };
+            var path = new List<Edge>() { new Edge() { From = new Vertex("", transform.position, false), To = CurrentPathEdge.To } };
 
             for (int j = 1; j < Path.WayPoints.Count; j++)
             {

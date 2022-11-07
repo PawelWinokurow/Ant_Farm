@@ -126,11 +126,12 @@ public class JobScheduler : MonoBehaviour
         };
 
         worker.SetPath(path);
+        worker.SetRunAnimation();
         worker.SetState(new GoToState(worker));
     }
     private void SetWorkerJob(WorkerJob job)
     {
-        var mob = job.Worker;
+        var worker = job.Worker;
         var path = job.Path;
 
         job.Cancel = () =>
@@ -138,8 +139,9 @@ public class JobScheduler : MonoBehaviour
             CancelJob(job);
         };
 
-        mob.SetState(new GoToState((Worker)mob));
-        mob.SetPath(path);
+        worker.SetRunAnimation();
+        worker.SetState(new GoToState(worker));
+        worker.SetPath(path);
     }
 
     public bool IsJobAlreadyCreated(Job job)

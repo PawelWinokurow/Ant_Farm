@@ -35,7 +35,7 @@ public class GoToState : State
     {
         if (worker.HasPath)
         {
-            worker.AntAnimator.Run();
+            worker.Animation();
             worker.Move(MOVEMENT_SPEED);
         }
         else
