@@ -599,6 +599,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   JobScheduler: {fileID: 348439228}
   Surface: {fileID: 685065891}
+  SurfaceOperations: {fileID: 1531417191}
   WorkerPrefab: {fileID: -7619036694779697723, guid: d76627fe718a559439689ca54c475515, type: 3}
 --- !u!1001 &1248071470075308892
 PrefabInstance:

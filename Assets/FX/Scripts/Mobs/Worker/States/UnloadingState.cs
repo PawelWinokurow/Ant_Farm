@@ -1,24 +1,54 @@
 using UnityEngine;
 public class UnloadingState : State
 {
-    private Worker worker;
+    public Worker Worker;
+    public bool IsDone;
+    private CarrierJob job;
 
     public UnloadingState(Worker worker) : base(worker)
     {
-        this.Type = STATE.UNLOADING;
-        this.worker = worker;
+        Type = STATE.UNLOADING;
+        Worker = worker;
     }
 
     public override void Tick()
     {
-        worker.AntAnimator.Idle();
+        Worker.AntAnimator.Idle();
+        if (IsDone)
+        {
+            Worker.SetPath(Worker.Pathfinder.FindPath(Worker.Position, job.Destination, true));
+            Worker.SetState(new GoToState(Worker));
+        }
+        else if (!IsDone)
+        {
+            Worker.SurfaceOperations.Unloading(job.StorageHexagon, this, job);
+        }
     }
 
+    public void Done()
+    {
+
+        if (job.CollectingHexagon.FloorHexagon.Type == HEX_TYPE.FOOD)
+        {
+            job.SwapDestination();
+        }
+        else
+        {
+            CancelJob();
+        }
+        IsDone = true;
+    }
+    override public void CancelJob()
+    {
+        if (Worker.CarryingWeight == 0)
+        {
+            job.Cancel();
+        }
+    }
     override public void OnStateEnter()
     {
-        // surface.StartJobExecution(job.Hex, worker);
-
-        // worker.Job.Execute();
+        IsDone = false;
+        job = (CarrierJob)Worker.Job;
     }
 
     override public void OnStateExit()

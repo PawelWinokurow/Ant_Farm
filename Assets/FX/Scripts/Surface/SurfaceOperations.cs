@@ -19,60 +19,44 @@ public class SurfaceOperations : MonoBehaviour
             case JobType.FILL:
                 StartCoroutine(Fill(hex, worker));
                 break;
-            case JobType.CARRYING:
-                Carrying(hex, worker);
-                break;
         }
     }
-
-
-    public void Carrying(FloorHexagon hex, Worker worker)
+    public void Loading(CollectingHexagon collectingHex, LoadingState state, CarrierJob job)
     {
-        var job = (CarrierJob)worker.Job;
-        if (job.Direction == Direction.COLLECTING)
+        var worker = state.Worker;
+        var workerMaxCanTake = state.Worker.MaxCarryingWeight - worker.CarryingWeight;
+        var canTake = Mathf.Min((worker.LoadingSpeed * Time.deltaTime), workerMaxCanTake);
+        if (canTake >= collectingHex.Quantity)
         {
-            StartCoroutine(Loading((CollectingHexagon)(hex.Child), (BaseHexagon)(Surface.BaseHex.Child), worker, job));
-        }
-        else if (job.Direction == Direction.STORAGE)
-        {
-            StartCoroutine(Unloading((CollectingHexagon)(hex.Child), (BaseHexagon)(Surface.BaseHex.Child), worker, job));
-        }
-    }
-
-    private IEnumerator Loading(CollectingHexagon collectingHexagon, BaseHexagon baseHexagon, Worker worker, CarrierJob job)
-    {
-        var workerCanCarry = worker.MaxCarryingWeight - worker.CarryingWeight;
-        if (workerCanCarry >= collectingHexagon.Quantity)
-        {
-            worker.CarryingWeight = collectingHexagon.Quantity;
-            collectingHexagon.Quantity = 0;
-            collectingHexagon.Carriers.Where(w => w.Id != worker.Id && w.CurrentState.Type == STATE.GOTO).ToList().ForEach(w => w.Job.CancelJob());
-            collectingHexagon.Type = HEX_TYPE.EMPTY;
-            yield return new WaitForSeconds(2f);
-            collectingHexagon.FloorHexagon.RemoveChildren();
+            worker.CarryingWeight += collectingHex.Quantity;
+            collectingHex.Quantity = 0;
+            collectingHex.Carriers.Where(w => w.Id != worker.Id).ToList().ForEach(w => w.CancelJob());
+            collectingHex.Type = HEX_TYPE.EMPTY;
+            collectingHex.FloorHexagon.RemoveChildren();
+            state.Done();
         }
         else
         {
-            worker.CarryingWeight = workerCanCarry;
-            collectingHexagon.Quantity -= workerCanCarry;
-            yield return new WaitForSeconds(2f);
-            collectingHexagon.transform.localScale = Vector3.one * collectingHexagon.Quantity / CollectingHexagon.MaxQuantity;
-            collectingHexagon.transform.Rotate(0f, 30f, 0f, Space.Self);
+            var toTake = Mathf.Min(canTake, workerMaxCanTake);
+            worker.CarryingWeight += toTake;
+            collectingHex.Quantity -= toTake;
+            if (worker.CarryingWeight >= state.Worker.MaxCarryingWeight)
+            {
+                state.Done();
+            }
         }
-        job.Return();
     }
-    private IEnumerator Unloading(CollectingHexagon collectingHexagon, BaseHexagon baseHexagon, Worker worker, CarrierJob job)
+    public void Unloading(BaseHexagon storageHex, UnloadingState state, CarrierJob job)
     {
-        baseHexagon.Storage += worker.CarryingWeight;
-        worker.CarryingWeight = 0;
-        yield return new WaitForSeconds(2f);
-        if (collectingHexagon.Type == HEX_TYPE.FOOD)
+        var worker = state.Worker;
+        var toStore = Mathf.Min((worker.LoadingSpeed * Time.deltaTime), worker.CarryingWeight);
+        storageHex.Storage += toStore;
+        Debug.Log(storageHex.Storage);
+        worker.CarryingWeight -= toStore;
+        if (worker.CarryingWeight <= 0)
         {
-            job.Return();
-        }
-        else
-        {
-            job.CancelJob();
+            worker.CarryingWeight = 0;
+            state.Done();
         }
     }
 
@@ -90,14 +74,14 @@ public class SurfaceOperations : MonoBehaviour
                 Surface.AddGround(hex);
                 Surface.PathGraph.AllowHexagon(wallHex.FloorHexagon);
                 OldHexagons.Remove(hex.Id);
-                worker.Job.CancelJob();
+                worker.Job.Cancel();
                 yield break;
             }
             yield return new WaitForSeconds(0.1f);
         }
         wallHex = Surface.AddBlock(hex).AssignProperties((WorkHexagon)oldIcon);
         OldHexagons.Remove(hex.Id);
-        worker.Job.CancelJob();
+        worker.Job.Cancel();
     }
 
     public IEnumerator Fill(FloorHexagon hex, Worker worker)
@@ -113,19 +97,25 @@ public class SurfaceOperations : MonoBehaviour
             {
                 hex.RemoveChildren();
                 Surface.AddBlock(hex);
-                worker.Job.CancelJob();
+                worker.Job.Cancel();
                 yield break;
             }
             yield return new WaitForSeconds(0.1f);
         }
         // AddGround(hex);
         Surface.PathGraph.AllowHexagon(hex);
-        worker.Job.CancelJob();
+        worker.Job.Cancel();
     }
 
     public bool IsInOldHexagons(FloorHexagon hex)
     {
         return OldHexagons.ContainsKey(hex.Id);
+    }
+
+    public BaseHexagon NearestBaseHexagon()
+    {
+        //TODO implement
+        return (BaseHexagon)Surface.BaseHex.Child;
     }
 
 }

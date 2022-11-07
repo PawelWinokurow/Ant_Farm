@@ -25,4 +25,9 @@ public class DigState : State
 
     }
 
+    override public void CancelJob()
+    {
+
+    }
+
 }

@@ -6,8 +6,9 @@ public class Worker : MonoBehaviour, Mob
 {
     public string Id { get; set; }
     public float ConstructionSpeed = 2f;
+    public int LoadingSpeed = 50;
     public int MaxCarryingWeight = 100;
-    public int CarryingWeight = 0;
+    public float CarryingWeight = 0;
     public AntAnimator AntAnimator { get; set; }
     public Vector3 Position { get => transform.position; }
     public Job Job { get; set; }
@@ -50,7 +51,7 @@ public class Worker : MonoBehaviour, Mob
         {
             if (HasJob)
             {
-                Job.CancelJob();
+                Job.Cancel();
             }
             else
             {
@@ -101,6 +102,11 @@ public class Worker : MonoBehaviour, Mob
         Path.WayPoints.RemoveAt(0);
         lerpDuration = Distance.Manhattan(currentPathEdge.From.Position, currentPathEdge.To.Position);
 
+    }
+
+    public void CancelJob()
+    {
+        CurrentState.CancelJob();
     }
 
     void Rerouting()

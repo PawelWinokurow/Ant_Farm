@@ -32,4 +32,9 @@ public class IdleState : State
     override public void OnStateExit()
     {
     }
+
+    override public void CancelJob()
+    {
+
+    }
 }

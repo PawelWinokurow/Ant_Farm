@@ -6,7 +6,7 @@ public class BuildTestMap : MonoBehaviour
 {
 
     private Surface Surface;
-    public int wallProbability = 70;
+    public int wallProbability = 50;
     public int foodProbability = 1;
 
     public void Init(Surface Surface)

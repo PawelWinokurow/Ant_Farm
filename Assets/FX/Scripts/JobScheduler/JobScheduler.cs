@@ -62,6 +62,7 @@ public class JobScheduler : MonoBehaviour
     }
     public void AddMob(Worker worker)
     {
+        worker.SurfaceOperations = SurfaceOperations;
         worker.Pathfinder = Pathfinder;
         freeMobs.Add(worker);
         AllMobs.Add(worker);
@@ -114,36 +115,18 @@ public class JobScheduler : MonoBehaviour
     {
         var worker = job.Worker;
         var path = job.Path;
-        job.Direction = Direction.COLLECTING;
-        var collectingHex = (CollectingHexagon)(job.Hex.Child);
-        collectingHex.AssignWorker(worker);
-        job.Return = () =>
+
+        job.StorageHexagon = SurfaceOperations.NearestBaseHexagon();
+        job.CollectingHexagon = (CollectingHexagon)(job.Hex.Child);
+        job.CollectingHexagon.AssignWorker(worker);
+
+        job.Cancel = () =>
         {
-            job.Direction = job.Direction == Direction.STORAGE ? Direction.COLLECTING : Direction.STORAGE;
-            job.Destination = job.Direction == Direction.STORAGE ? job.StoragePosition : job.CollectingPointPosition;
-            worker.SetPath(Pathfinder.FindPath(worker.Position, job.Destination, true));
-            worker.SetState(new GoToState(worker));
-        };
-        job.CancelJob = () =>
-        {
-            if (worker.CarryingWeight == 0 || job.Direction == Direction.COLLECTING)
-            {
-                job.Direction = Direction.CANCELED;
-                CancelJob(job);
-            }
+            CancelJob(job);
         };
 
-        job.Execute = () =>
-        {
-            SurfaceOperations.StartJobExecution(job.Hex, worker);
-        };
-
-        job.CancelNotCompleteJob = () =>
-        {
-            CancelNotCompleteJob(job);
-        };
-        worker.SetState(new GoToState(worker));
         worker.SetPath(path);
+        worker.SetState(new GoToState(worker));
     }
     private void SetWorkerJob(WorkerJob job)
     {
@@ -151,7 +134,7 @@ public class JobScheduler : MonoBehaviour
         var path = job.Path;
 
         {
-            job.CancelJob = () =>
+            job.Cancel = () =>
             {
                 CancelJob(job);
             };
@@ -161,10 +144,7 @@ public class JobScheduler : MonoBehaviour
                 SurfaceOperations.StartJobExecution(job.Hex, mob);
             };
 
-            job.CancelNotCompleteJob = () =>
-            {
-                CancelNotCompleteJob(job);
-            };
+
             mob.SetState(new GoToState((Worker)mob));
             mob.SetPath(path);
         }
@@ -217,11 +197,6 @@ public class JobScheduler : MonoBehaviour
             job.Worker.SetState(new IdleState((Worker)job.Worker));
             job.Worker.Path = null;
         }
-
-    }
-    public void CancelNotCompleteJob(Job job)
-    {
-        MoveAssignedJobToUnssignedJobs(job);
     }
 
     public void Remove(Job job)
