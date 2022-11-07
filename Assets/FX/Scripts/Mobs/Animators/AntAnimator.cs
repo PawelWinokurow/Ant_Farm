@@ -44,7 +44,6 @@ public class AntAnimator : MonoBehaviour
     }
     void Update()
     {
-        Debug.Log(Time.time);
         //t += Time.deltaTime / (1f / 30f) * current.speed;
         f = (int)(Time.time * 30f * 1.5f) % current.sequence.Length;
         mf.mesh = current.sequence[f];
