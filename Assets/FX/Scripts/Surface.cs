@@ -310,7 +310,7 @@ public class Surface : MonoBehaviour
         hex.RemoveChildren();
         var collectingHex = CollectingHexagon.CreateHexagon(hex, foodPrefab);
         collectingHex.Type = HEX_TYPE.FOOD;
-        collectingHex.transform.Rotate(0f, angle, 0f, Space.Self);
+       // collectingHex.transform.Rotate(0f, angle, 0f, Space.Self);
     }
 
     public bool IsInOldHexagons(FloorHexagon hex)
