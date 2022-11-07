@@ -31,7 +31,7 @@ public class Food : MonoBehaviour
             }
             antCountOld = antCount;
         }
-        angl.localPosition = Vector3.up * ExtensionMethods.RemapClamp(1f - (float)cost / (float)costMax, 0f, 1f, 0f, -1.29f);
+        angl.localPosition = new Vector3(angl.localPosition.x, ExtensionMethods.RemapClamp(1f - (float)cost / (float)costMax, 0f, 1f, 0f, -1.6f), angl.localPosition.z);
 
         foodBody.gameObject.SetActive(cost > 0);
 
