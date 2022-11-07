@@ -133,22 +133,15 @@ public class JobScheduler : MonoBehaviour
         var mob = job.Worker;
         var path = job.Path;
 
+        job.Cancel = () =>
         {
-            job.Cancel = () =>
-            {
-                CancelJob(job);
-            };
+            CancelJob(job);
+        };
 
-            job.Execute = () =>
-            {
-                SurfaceOperations.StartJobExecution(job.Hex, mob);
-            };
-
-
-            mob.SetState(new GoToState((Worker)mob));
-            mob.SetPath(path);
-        }
+        mob.SetState(new GoToState((Worker)mob));
+        mob.SetPath(path);
     }
+
     public bool IsJobAlreadyCreated(Job job)
     {
         return IsJobAlreadyCreated(job.Id);

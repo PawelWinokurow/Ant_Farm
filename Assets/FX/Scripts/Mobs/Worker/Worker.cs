@@ -45,7 +45,7 @@ public class Worker : MonoBehaviour, Mob
         if (Path != null)
         {
             if (Path.HasWaypoints) SetCurrentPathEdge();
-            else Job.Execute();
+            else CurrentState.OnStateEnter();
         }
         else
         {

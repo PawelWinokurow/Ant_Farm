@@ -8,7 +8,8 @@ public class Surface : MonoBehaviour
 {
     public FloorHexagon HexPrefab;
     public WorkHexagon WallPrefab;
-    public WorkHexagon WallPrefabScaled;
+    public WorkHexagon WallDigScaled;
+    public WorkHexagon WallFillScaled;
     public WorkHexagon DigPrefab;
     public WorkHexagon FillPrefab;
     public BaseHexagon BasePrefab;
@@ -158,9 +159,16 @@ public class Surface : MonoBehaviour
         block.Work = WorkHexagon.MaxWork;
         return block;
     }
-    public WorkHexagon AddScaledBlock(FloorHexagon hex)
+    public WorkHexagon AddDigScaledBlock(FloorHexagon hex)
     {
-        var scaledBlock = WorkHexagon.CreateHexagon(hex, WallPrefabScaled);
+        var scaledBlock = WorkHexagon.CreateHexagon(hex, WallDigScaled);
+        scaledBlock.Type = HEX_TYPE.SOIL;
+        scaledBlock.Work = WorkHexagon.MaxWork;
+        return scaledBlock;
+    }
+    public WorkHexagon AddFillScaledBlock(FloorHexagon hex)
+    {
+        var scaledBlock = WorkHexagon.CreateHexagon(hex, WallFillScaled);
         scaledBlock.Type = HEX_TYPE.SOIL;
         scaledBlock.Work = WorkHexagon.MaxWork;
         return scaledBlock;
@@ -173,12 +181,11 @@ public class Surface : MonoBehaviour
         hex.Work = WorkHexagon.MaxWork;
     }
 
-    public void AddFood(FloorHexagon hex, float angle)
+    public void AddFood(FloorHexagon hex)
     {
         hex.RemoveChildren();
         var collectingHex = CollectingHexagon.CreateHexagon(hex, FoodPrefab);
         collectingHex.Type = HEX_TYPE.FOOD;
-        collectingHex.transform.Rotate(0f, angle, 0f, Space.Self);
     }
 
     public void AddBase()
