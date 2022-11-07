@@ -16,9 +16,9 @@ public class FloorHexagon : MonoBehaviour, Hexagon
     public Hexagon Child { get; set; }
     public Vertex Vertex { get; set; }
 
-    public static FloorHexagon CreateHexagon(string id, FloorHexagon hexPrefab, Vector3 hexPosition, Transform parent, HEX_TYPE hexType, float work)
+    public static FloorHexagon CreateHexagon(string id, FloorHexagon HexPrefab, Vector3 hexPosition, Transform parent, HEX_TYPE hexType, float work)
     {
-        FloorHexagon hex = Instantiate(hexPrefab, hexPosition, Quaternion.identity, parent);
+        FloorHexagon hex = Instantiate(HexPrefab, hexPosition, Quaternion.identity, parent);
         hex.Id = id;
         hex.Type = hexType;
         hex.Position = hexPosition;

@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public Surface Surface;
+    public SurfaceOperations SurfaceOperations;
     public BuildTestMap BuildWallsTest;
     public JobScheduler JobScheduler;
     public Graph PathGraph;
@@ -29,7 +30,7 @@ public class GameManager : MonoBehaviour
         Surface.Init(PathGraph, hexagons);
         pathfinder = new Pathfinder(PathGraph);
         JobScheduler.Pathfinder = pathfinder;
-        JobScheduler.SetSurface(Surface);
+        JobScheduler.SetSurfaceOperations(SurfaceOperations);
         JobScheduler.StartJobScheuler();
     }
 
@@ -40,7 +41,7 @@ public class GameManager : MonoBehaviour
         BuildWallsTest.Init(Surface);
         pathfinder = new Pathfinder(PathGraph);
         JobScheduler.Pathfinder = pathfinder;
-        JobScheduler.SetSurface(Surface);
+        JobScheduler.SetSurfaceOperations(SurfaceOperations);
         JobScheduler.StartJobScheuler();
         // StoreService.SaveGraph(PathGraph);
         // StoreService.SaveHexagons(Surface.Hexagons);
@@ -63,7 +64,7 @@ public class GameManager : MonoBehaviour
         {
             if (AreNoMobsInHex(hex))
             {
-                if (Surface.IsInOldHexagons(hex))
+                if (SurfaceOperations.IsInOldHexagons(hex))
                 {
                     Surface.RemoveIcon(hex);
                     JobScheduler.CancelJob(hex.Id);

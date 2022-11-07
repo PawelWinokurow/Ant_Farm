@@ -19,10 +19,11 @@ class JobMob
 
 public class JobScheduler : MonoBehaviour
 {
+    private Dictionary<string, Job> jobMap = new Dictionary<string, Job>();
     private List<Job> unassignedJobsQueue = new List<Job>();
     private List<Job> assignedJobsQueue = new List<Job>();
     private Graph pathGraph;
-    private Surface surface;
+    private SurfaceOperations SurfaceOperations;
     public Pathfinder Pathfinder { get; set; }
     private List<Worker> busyMobs = new List<Worker>();
     private List<Worker> freeMobs = new List<Worker>();
@@ -55,9 +56,9 @@ public class JobScheduler : MonoBehaviour
         }
     }
 
-    public void SetSurface(Surface surface)
+    public void SetSurfaceOperations(SurfaceOperations setSurfaceOperations)
     {
-        this.surface = surface;
+        this.SurfaceOperations = setSurfaceOperations;
     }
     public void AddMob(Worker worker)
     {
@@ -134,7 +135,7 @@ public class JobScheduler : MonoBehaviour
 
         job.Execute = () =>
         {
-            surface.StartJobExecution(job.Hex, worker);
+            SurfaceOperations.StartJobExecution(job.Hex, worker);
         };
 
         job.CancelNotCompleteJob = () =>
@@ -157,7 +158,7 @@ public class JobScheduler : MonoBehaviour
 
             job.Execute = () =>
             {
-                surface.StartJobExecution(job.Hex, mob);
+                SurfaceOperations.StartJobExecution(job.Hex, mob);
             };
 
             job.CancelNotCompleteJob = () =>
@@ -174,7 +175,7 @@ public class JobScheduler : MonoBehaviour
     }
     public bool IsJobAlreadyCreated(string jobId)
     {
-        return assignedJobsQueue.Concat(unassignedJobsQueue).Any(job => job.Id == jobId);
+        return jobMap.ContainsKey(jobId);
     }
     public bool IsJobUnassigned(Job job)
     {
@@ -197,14 +198,14 @@ public class JobScheduler : MonoBehaviour
     {
         if (!IsJobAlreadyCreated(job) && !IsJobUnassigned(job))
         {
+            jobMap.Add(job.Id, job);
             unassignedJobsQueue.Add(job);
         }
     }
 
     public void CancelJob(string jobId)
     {
-        var jobs = assignedJobsQueue.Concat(unassignedJobsQueue).Where(job => job.Id == jobId).ToList();
-        if (jobs.Count != 0) CancelJob(jobs[0]);
+        CancelJob(jobMap[jobId]);
     }
 
     public void CancelJob(Job job)
@@ -227,6 +228,7 @@ public class JobScheduler : MonoBehaviour
     {
         assignedJobsQueue.Remove(job);
         unassignedJobsQueue.Remove(job);
+        jobMap.Remove(job.Id);
     }
 
     private void MoveFreeMobToBusyMobs(Worker freeWorker)

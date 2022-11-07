@@ -1,6 +1,6 @@
 public enum STATE
 {
-    IDLE, GOTO, DIG, CARRYING
+    IDLE, GOTO, DIG, CARRYING, LOADING, UNLOADING
 }
 
 public abstract class State
