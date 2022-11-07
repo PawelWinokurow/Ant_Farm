@@ -57,7 +57,7 @@ public class AntAnimator : MonoBehaviour
             {
                 forward = worker.CurrentPathEdge.To.Position - transform.position;
             }
-            else
+            else if (worker.Job?.Destination != null)
             {
                 forward = worker.Job.Destination - transform.position;
             }

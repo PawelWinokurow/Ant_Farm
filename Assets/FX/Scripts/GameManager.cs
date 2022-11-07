@@ -54,10 +54,17 @@ public class GameManager : MonoBehaviour
 
         if (hex.Type == HEX_TYPE.FOOD)
         {
-            var asssignedCarriersNum = ((CollectingHexagon)(hex.Child)).Carriers.Count;
-            if (asssignedCarriersNum <= 5)
+            var foodHex = (CollectingHexagon)(hex.Child);
+            var asssignedCarriersNum = foodHex.Carriers.Count;
+            if (asssignedCarriersNum < 5)
             {
-                JobScheduler.AssignJob(new CarrierJob($"{hex.Id}_{asssignedCarriersNum + 1}", hex, (BaseHexagon)Surface.BaseHex.Child, (CollectingHexagon)(hex.Child)));
+                JobScheduler.AssignJob(new CarrierJob($"{hex.Id}_{asssignedCarriersNum + 1}", hex, (BaseHexagon)Surface.BaseHex.Child, foodHex));
+                foodHex.Food.antCount++;
+            }
+            else
+            {
+                foodHex.ResetWorkers();
+                foodHex.Food.antCount = 0;
             }
         }
         else if (hex.Type == HEX_TYPE.EMPTY || hex.Type == HEX_TYPE.SOIL)

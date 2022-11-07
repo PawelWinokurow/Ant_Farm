@@ -8,10 +8,17 @@ public class CollectingHexagon : MonoBehaviour, Hexagon
     public string Id { get => FloorHexagon.Id; set => FloorHexagon.Id = value; }
     public Vector3 Position { get => FloorHexagon.Position; set => FloorHexagon.Position = value; }
     public HEX_TYPE Type { get => FloorHexagon.Type; set => FloorHexagon.Type = value; }
-    public float Quantity { get; set; }
+    private float quantity;
+    public float Quantity { get => quantity; set { quantity = value; Food.cost = value; } }
     public static float MaxQuantity = 1000;
     public FloorHexagon FloorHexagon { get; set; }
     public List<Worker> Carriers { get; set; }
+    public Food Food { get; set; }
+
+    public void Awake()
+    {
+        Food = GetComponent<Food>();
+    }
 
     public static CollectingHexagon CreateHexagon(FloorHexagon parent, CollectingHexagon workHexPrefab)
     {
@@ -32,6 +39,12 @@ public class CollectingHexagon : MonoBehaviour, Hexagon
     public void AssignWorker(Worker worker)
     {
         Carriers.Add(worker);
+    }
+
+    public void ResetWorkers()
+    {
+        Carriers.ForEach(worker => worker.CancelJob());
+        Carriers.Clear();
     }
 
 }
