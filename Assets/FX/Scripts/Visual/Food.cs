@@ -12,8 +12,8 @@ public class Food : MonoBehaviour
     public int antCount;
     private int antCountOld = -1;
 
-    public int costMax = 100;
-    public int cost;
+    public float costMax = 1000;
+    public float cost;
     void Start()
     {
         foodBody.localEulerAngles = Vector3.up * Random.Range(0, 6) * 60f;
@@ -31,7 +31,7 @@ public class Food : MonoBehaviour
             }
             antCountOld = antCount;
         }
-        angl.localPosition = new Vector3(angl.localPosition.x, ExtensionMethods.RemapClamp(1f - (float)cost / (float)costMax, 0f, 1f, 0f, -1.6f), angl.localPosition.z);
+        angl.localPosition = new Vector3(angl.localPosition.x, ExtensionMethods.RemapClamp(1f - cost / costMax, 0f, 1f, 0f, -1.6f), angl.localPosition.z);
 
         foodBody.gameObject.SetActive(cost > 0);
 

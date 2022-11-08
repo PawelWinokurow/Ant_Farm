@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public Surface Surface;
+    public SurfaceOperations SurfaceOperations;
     public BuildTestMap BuildWallsTest;
     public JobScheduler JobScheduler;
     public Graph PathGraph;
@@ -29,7 +30,7 @@ public class GameManager : MonoBehaviour
         Surface.Init(PathGraph, hexagons);
         pathfinder = new Pathfinder(PathGraph);
         JobScheduler.Pathfinder = pathfinder;
-        JobScheduler.SetSurface(Surface);
+        JobScheduler.SetSurfaceOperations(SurfaceOperations);
         JobScheduler.StartJobScheuler();
     }
 
@@ -40,7 +41,7 @@ public class GameManager : MonoBehaviour
         BuildWallsTest.Init(Surface);
         pathfinder = new Pathfinder(PathGraph);
         JobScheduler.Pathfinder = pathfinder;
-        JobScheduler.SetSurface(Surface);
+        JobScheduler.SetSurfaceOperations(SurfaceOperations);
         JobScheduler.StartJobScheuler();
         // StoreService.SaveGraph(PathGraph);
         // StoreService.SaveHexagons(Surface.Hexagons);
@@ -53,17 +54,24 @@ public class GameManager : MonoBehaviour
 
         if (hex.Type == HEX_TYPE.FOOD)
         {
-            var asssignedCarriersNum = ((CollectingHexagon)(hex.Child)).Carriers.Count;
-            if (asssignedCarriersNum <= 3)
+            var foodHex = (CollectingHexagon)(hex.Child);
+            var asssignedCarriersNum = foodHex.Carriers.Count;
+            if (asssignedCarriersNum < 5)
             {
-                JobScheduler.AssignJob(new CarrierJob($"{hex.Id}_{asssignedCarriersNum + 1}", hex, Surface.BaseHex.Position, hex.Position));
+                JobScheduler.AssignJob(new CarrierJob($"{hex.Id}_{asssignedCarriersNum + 1}", hex, (BaseHexagon)Surface.BaseHex.Child, foodHex));
+                foodHex.Food.antCount++;
+            }
+            else
+            {
+                foodHex.ResetWorkers();
+                foodHex.Food.antCount = 0;
             }
         }
         else if (hex.Type == HEX_TYPE.EMPTY || hex.Type == HEX_TYPE.SOIL)
         {
             if (AreNoMobsInHex(hex))
             {
-                if (Surface.IsInOldHexagons(hex))
+                if (SurfaceOperations.IsInOldHexagons(hex) && !JobScheduler.IsJobAssigned(hex.Id))
                 {
                     Surface.RemoveIcon(hex);
                     JobScheduler.CancelJob(hex.Id);

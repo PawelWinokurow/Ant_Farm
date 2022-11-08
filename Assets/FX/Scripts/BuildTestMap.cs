@@ -6,7 +6,7 @@ public class BuildTestMap : MonoBehaviour
 {
 
     private Surface Surface;
-    public int wallProbability = 70;
+    public int wallProbability = 50;
     public int foodProbability = 1;
 
     public void Init(Surface Surface)
@@ -21,7 +21,6 @@ public class BuildTestMap : MonoBehaviour
         Surface.PathGraph.ResetAllEdgesToWalkable();
         for (int i = 1; i < Surface.Hexagons.Length - 1; i++)
         {
-            var angle = UnityEngine.Random.Range(0, 360f);
             var probability = UnityEngine.Random.Range(0, 100f);
             if (probability <= wallProbability)
             {
@@ -30,7 +29,7 @@ public class BuildTestMap : MonoBehaviour
             }
             else if (probability <= wallProbability + foodProbability)
             {
-                Surface.AddFood(Surface.Hexagons[i], angle);
+                Surface.AddFood(Surface.Hexagons[i]);
             }
             else
             {

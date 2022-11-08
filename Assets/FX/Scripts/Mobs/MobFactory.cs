@@ -8,6 +8,7 @@ public class MobFactory : MonoBehaviour
     private int id = 0;
     public JobScheduler JobScheduler;
     public Surface Surface;
+    public SurfaceOperations SurfaceOperations;
     public Worker WorkerPrefab;
     public void AddMob()
     {

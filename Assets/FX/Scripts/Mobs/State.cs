@@ -1,6 +1,6 @@
 public enum STATE
 {
-    IDLE, GOTO, DIG, CARRYING
+    IDLE, GOTO, BUILD, CARRYING, LOADING, UNLOADING
 }
 
 public abstract class State
@@ -10,6 +10,7 @@ public abstract class State
     public STATE Type { get; set; }
     public abstract void Tick();
 
+    public abstract void CancelJob();
     public virtual void OnStateEnter() { }
     public virtual void OnStateExit() { }
 

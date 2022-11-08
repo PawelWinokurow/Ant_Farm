@@ -13,8 +13,7 @@ public interface Job
     public FloorHexagon Hex { get; set; }
     public Worker Worker { get; set; }
     public JobType Type { get; set; }
-    public Action CancelJob { get; set; }
-    public Action CancelNotCompleteJob { get; set; }
+    public Action Cancel { get; set; }
     public Action Execute { get; set; }
     public Path Path { get; set; }
 }

@@ -6,14 +6,15 @@ using System.Linq;
 
 public class Surface : MonoBehaviour
 {
-    public FloorHexagon hexPrefab;
-    public WorkHexagon wallPrefab;
-    public WorkHexagon wallPrefabScaled;
-    public WorkHexagon digPrefab;
-    public WorkHexagon fillPrefab;
-    public BaseHexagon basePrefab;
-    public CollectingHexagon foodPrefab;
-    public CollectingHexagon carryingPrefab;
+    public FloorHexagon HexPrefab;
+    public WorkHexagon WallPrefab;
+    public WorkHexagon WallDigScaled;
+    public WorkHexagon WallFillScaled;
+    public WorkHexagon DigPrefab;
+    public WorkHexagon FillPrefab;
+    public BaseHexagon BasePrefab;
+    public CollectingHexagon FoodPrefab;
+    public CollectingHexagon CarryingPrefab;
     private Camera cam;
     private int height;
     private int width;
@@ -80,7 +81,7 @@ public class Surface : MonoBehaviour
             for (int x = 0; x < width; x++)
             {
                 Vector3 hexPosition = new Vector3(w * (x + (z % 2f) / 2f), 0f, z * h);
-                FloorHexagon hex = FloorHexagon.CreateHexagon($"{x}_{z}", hexPrefab, hexPosition, transform, HEX_TYPE.EMPTY, 50f);
+                FloorHexagon hex = FloorHexagon.CreateHexagon($"{x}_{z}", HexPrefab, hexPosition, transform, HEX_TYPE.EMPTY, 50f);
                 PathGraph.AddHexagonSubGraph(hex, Hexagon.Radius, $"x{x}z{z}");
                 Hexagons[z * width + x] = hex;
             }
@@ -102,7 +103,7 @@ public class Surface : MonoBehaviour
     // {
     //     for (var i = 0; i < hexagons.Length; i++)
     //     {
-    //         var hex = FloorHexagon.CreateHexagon(hexagons[i].Id, hexPrefab, VectorTransform.FromSerializable(hexagons[i].Position), transform, HEX_TYPE.EMPTY, 50f);
+    //         var hex = FloorHexagon.CreateHexagon(hexagons[i].Id, HexPrefab, VectorTransform.FromSerializable(hexagons[i].Position), transform, HEX_TYPE.EMPTY, 50f);
     //         Hexagons[i] = hex;
     //         if (hexagons[i].Type == HEX_TYPE.EMPTY)
     //         {
@@ -142,121 +143,6 @@ public class Surface : MonoBehaviour
         );
     }
 
-
-    public void StartJobExecution(FloorHexagon hex, Worker worker)
-    {
-        switch (worker.Job.Type)
-        {
-            case JobType.DIG:
-                StartCoroutine(Dig(hex, worker));
-                break;
-            case JobType.FILL:
-                StartCoroutine(Fill(hex, worker));
-                break;
-            case JobType.CARRYING:
-                Carrying(hex, worker);
-                break;
-        }
-    }
-
-
-    public void Carrying(FloorHexagon hex, Worker worker)
-    {
-        var job = (CarrierJob)worker.Job;
-        if (job.Direction == Direction.COLLECTING)
-        {
-            StartCoroutine(Loading((CollectingHexagon)(hex.Child), (BaseHexagon)(BaseHex.Child), worker, job));
-        }
-        else if (job.Direction == Direction.STORAGE)
-        {
-            StartCoroutine(Unloading((CollectingHexagon)(hex.Child), (BaseHexagon)(BaseHex.Child), worker, job));
-        }
-    }
-
-    private IEnumerator Loading(CollectingHexagon collectingHexagon, BaseHexagon baseHexagon, Worker worker, CarrierJob job)
-    {
-        var workerCanCarry = worker.MaxCarryingWeight - worker.CarryingWeight;
-        if (workerCanCarry >= collectingHexagon.Quantity)
-        {
-            worker.CarryingWeight = collectingHexagon.Quantity;
-            collectingHexagon.Quantity = 0;
-            collectingHexagon.Carriers.Where(w => w.Id != worker.Id && w.CurrentState.Type == STATE.GOTO).ToList().ForEach(w => w.Job.CancelJob());
-            collectingHexagon.Type = HEX_TYPE.EMPTY;
-            yield return new WaitForSeconds(2f);
-            collectingHexagon.FloorHexagon.RemoveChildren();
-        }
-        else
-        {
-            worker.CarryingWeight = workerCanCarry;
-            collectingHexagon.Quantity -= workerCanCarry;
-            yield return new WaitForSeconds(2f);
-            collectingHexagon.transform.localScale = Vector3.one * collectingHexagon.Quantity / CollectingHexagon.MaxQuantity;
-            collectingHexagon.transform.Rotate(0f, 30f, 0f, Space.Self);
-        }
-        job.Return();
-    }
-    private IEnumerator Unloading(CollectingHexagon collectingHexagon, BaseHexagon baseHexagon, Worker worker, CarrierJob job)
-    {
-        baseHexagon.Storage += worker.CarryingWeight;
-        worker.CarryingWeight = 0;
-        yield return new WaitForSeconds(2f);
-        if (collectingHexagon.Type == HEX_TYPE.FOOD)
-        {
-            job.Return();
-        }
-        else
-        {
-            job.CancelJob();
-        }
-    }
-
-    public IEnumerator Dig(FloorHexagon hex, Worker worker)
-    {
-        hex.RemoveChildren();
-        var oldIcon = OldHexagons[hex.Id];
-        var wallHex = AddBlock(hex).AssignProperties((WorkHexagon)oldIcon);
-        while (wallHex != null)
-        {
-            wallHex.Work -= worker.ConstructionSpeed;
-            wallHex.transform.localScale = Vector3.one * wallHex.Work / WorkHexagon.MaxWork;
-            if (wallHex.Work <= 0)
-            {
-                AddGround(hex);
-                PathGraph.AllowHexagon(wallHex.FloorHexagon);
-                OldHexagons.Remove(hex.Id);
-                worker.Job.CancelJob();
-                yield break;
-            }
-            yield return new WaitForSeconds(0.1f);
-        }
-        wallHex = AddBlock(hex).AssignProperties((WorkHexagon)oldIcon);
-        OldHexagons.Remove(hex.Id);
-        worker.Job.CancelJob();
-    }
-
-    public IEnumerator Fill(FloorHexagon hex, Worker worker)
-    {
-        hex.RemoveChildren();
-        // OldHexagons.Remove(hex.Id);
-        var scaledBlock = AddScaledBlock(hex);
-        while (scaledBlock != null)
-        {
-            scaledBlock.Work -= worker.ConstructionSpeed;
-            scaledBlock.transform.localScale = Vector3.one * (1 - scaledBlock.Work / WorkHexagon.MaxWork);
-            if (scaledBlock.Work <= 0)
-            {
-                hex.RemoveChildren();
-                AddBlock(hex);
-                worker.Job.CancelJob();
-                yield break;
-            }
-            yield return new WaitForSeconds(0.1f);
-        }
-        // AddGround(hex);
-        PathGraph.AllowHexagon(hex);
-        worker.Job.CancelJob();
-    }
-
     public FloorHexagon PositionToHex(Vector3 pos)
     {
         int z = (int)Mathf.Round(pos.z / h);
@@ -268,14 +154,21 @@ public class Surface : MonoBehaviour
 
     public WorkHexagon AddBlock(FloorHexagon hex)
     {
-        var block = WorkHexagon.CreateHexagon(hex, wallPrefab);
+        var block = WorkHexagon.CreateHexagon(hex, WallPrefab);
         block.Type = HEX_TYPE.SOIL;
         block.Work = WorkHexagon.MaxWork;
         return block;
     }
-    public WorkHexagon AddScaledBlock(FloorHexagon hex)
+    public WorkHexagon AddDigScaledBlock(FloorHexagon hex)
     {
-        var scaledBlock = WorkHexagon.CreateHexagon(hex, wallPrefabScaled);
+        var scaledBlock = WorkHexagon.CreateHexagon(hex, WallDigScaled);
+        scaledBlock.Type = HEX_TYPE.SOIL;
+        scaledBlock.Work = WorkHexagon.MaxWork;
+        return scaledBlock;
+    }
+    public WorkHexagon AddFillScaledBlock(FloorHexagon hex)
+    {
+        var scaledBlock = WorkHexagon.CreateHexagon(hex, WallFillScaled);
         scaledBlock.Type = HEX_TYPE.SOIL;
         scaledBlock.Work = WorkHexagon.MaxWork;
         return scaledBlock;
@@ -286,6 +179,13 @@ public class Surface : MonoBehaviour
         hex.RemoveChildren();
         hex.Type = HEX_TYPE.EMPTY;
         hex.Work = WorkHexagon.MaxWork;
+    }
+
+    public void AddFood(FloorHexagon hex)
+    {
+        hex.RemoveChildren();
+        var collectingHex = CollectingHexagon.CreateHexagon(hex, FoodPrefab);
+        collectingHex.Type = HEX_TYPE.FOOD;
     }
 
     public void AddBase()
@@ -301,22 +201,10 @@ public class Surface : MonoBehaviour
             });
         });
         BaseHex.RemoveChildren();
-        BaseHexagon.CreateHexagon(BaseHex, basePrefab).Type = HEX_TYPE.BASE;
+        BaseHexagon.CreateHexagon(BaseHex, BasePrefab).Type = HEX_TYPE.BASE;
         PathGraph.ProhibitHexagon(BaseHex);
-
-    }
-    public void AddFood(FloorHexagon hex, float angle)
-    {
-        hex.RemoveChildren();
-        var collectingHex = CollectingHexagon.CreateHexagon(hex, foodPrefab);
-        collectingHex.Type = HEX_TYPE.FOOD;
-       // collectingHex.transform.Rotate(0f, angle, 0f, Space.Self);
     }
 
-    public bool IsInOldHexagons(FloorHexagon hex)
-    {
-        return OldHexagons.ContainsKey(hex.Id);
-    }
 
     public void AddIcon(FloorHexagon hex)
     {
@@ -326,23 +214,23 @@ public class Surface : MonoBehaviour
             OldHexagons.Add(clonedHex.Id, clonedHex);
             hex.RemoveChildren();
             PathGraph.ProhibitHexagon(hex);
-            WorkHexagon.CreateHexagon(hex, fillPrefab);
+            WorkHexagon.CreateHexagon(hex, FillPrefab);
         }
         else if (hex.Type == HEX_TYPE.SOIL)
         {
-            WorkHexagon clonedHex = WorkHexagon.CreateHexagon(hex, wallPrefab);
+            WorkHexagon clonedHex = WorkHexagon.CreateHexagon(hex, WallPrefab);
             clonedHex.AssignProperties((WorkHexagon)hex.Child);
             OldHexagons.Add(clonedHex.Id, clonedHex);
             hex.RemoveChildren();
-            WorkHexagon.CreateHexagon(hex, digPrefab);
+            WorkHexagon.CreateHexagon(hex, DigPrefab);
         }
         else if (hex.Type == HEX_TYPE.FOOD)
         {
-            CollectingHexagon clonedHex = CollectingHexagon.CreateHexagon(hex, foodPrefab);
+            CollectingHexagon clonedHex = CollectingHexagon.CreateHexagon(hex, FoodPrefab);
             clonedHex.AssignProperties((CollectingHexagon)hex.Child);
             OldHexagons.Add(clonedHex.Id, clonedHex);
             hex.RemoveChildren();
-            CollectingHexagon.CreateHexagon(hex, carryingPrefab);
+            CollectingHexagon.CreateHexagon(hex, CarryingPrefab);
         };
     }
     public void RemoveIcon(FloorHexagon hex)
@@ -357,13 +245,15 @@ public class Surface : MonoBehaviour
         else if (oldIcon.Type == HEX_TYPE.SOIL)
         {
             PathGraph.ProhibitHexagon(hex);
-            WorkHexagon.CreateHexagon(hex, wallPrefab).AssignProperties((WorkHexagon)oldIcon);
+            WorkHexagon.CreateHexagon(hex, WallPrefab).AssignProperties((WorkHexagon)oldIcon);
         }
         else if (oldIcon.Type == HEX_TYPE.FOOD)
         {
-            CollectingHexagon.CreateHexagon(hex, foodPrefab);
+            CollectingHexagon.CreateHexagon(hex, FoodPrefab);
         };
         OldHexagons.Remove(hex.Id);
     }
+
+
 
 }
