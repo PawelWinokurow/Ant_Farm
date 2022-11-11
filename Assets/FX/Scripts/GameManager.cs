@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     public SurfaceOperations SurfaceOperations;
     public BuildTestMap BuildWallsTest;
     public WorkerJobScheduler WorkerJobScheduler;
+    public EnemyJobScheduler EnemyJobScheduler;
     public Graph PathGraph;
     private Pathfinder pathfinder;
 
@@ -30,6 +31,7 @@ public class GameManager : MonoBehaviour
         Surface.Init(PathGraph, hexagons);
         pathfinder = new Pathfinder(PathGraph);
         WorkerJobScheduler.Pathfinder = pathfinder;
+        WorkerJobScheduler.Pathfinder = pathfinder;
         WorkerJobScheduler.SetSurfaceOperations(SurfaceOperations);
         WorkerJobScheduler.StartJobScheuler();
     }
@@ -40,6 +42,7 @@ public class GameManager : MonoBehaviour
         Surface.Init(PathGraph);
         BuildWallsTest.Init(Surface);
         pathfinder = new Pathfinder(PathGraph);
+        EnemyJobScheduler.Pathfinder = pathfinder;
         WorkerJobScheduler.Pathfinder = pathfinder;
         WorkerJobScheduler.SetSurfaceOperations(SurfaceOperations);
         WorkerJobScheduler.StartJobScheuler();

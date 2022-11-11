@@ -60,7 +60,7 @@ public class WorkerJobScheduler : MonoBehaviour
     {
         this.SurfaceOperations = setSurfaceOperations;
     }
-    public void AddMob(Worker worker)
+    public void AddWorker(Worker worker)
     {
         worker.SurfaceOperations = SurfaceOperations;
         worker.Pathfinder = Pathfinder;

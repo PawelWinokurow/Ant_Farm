@@ -23,10 +23,12 @@ public class Worker : MonoBehaviour, Mob
     private float lerpDuration;
     private float t = 0f;
     public Edge CurrentPathEdge;
+    public float Hp { get; set; }
     void Awake()
     {
         AntAnimator = GetComponent<AntAnimator>();
         AntAnimator.worker = this;
+        Hp = 50f;
         SetState(new IdleState(this));
     }
 

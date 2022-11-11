@@ -126,6 +126,7 @@ GameObject:
   - component: {fileID: 7321344284963672305}
   - component: {fileID: 7321344284963672304}
   - component: {fileID: 7321344284963672307}
+  - component: {fileID: 376137783415288789}
   m_Layer: 0
   m_Name: Scorpion
   m_TagString: Mob
@@ -161,13 +162,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d8a29f74ceb6f846aea911af424d530, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemy: {fileID: 376137783415288789}
   idle: {fileID: 11400000, guid: 9c39d57b4db095c4785a4f291446b9f6, type: 2}
   idleFight: {fileID: 11400000, guid: 8e4ae8eea964213468c0742caf297070, type: 2}
   run: {fileID: 11400000, guid: 7cf34025e5e32684ea6ab463e13a605b, type: 2}
   runFight: {fileID: 11400000, guid: 7198fc0f3aa53d44c8f8b95b4d90efda, type: 2}
   mf: {fileID: 876968272109895197}
   mr: {fileID: 4524242656641080326}
+  angl: {fileID: 7321344284963672305}
 --- !u!114 &7321344284963672307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7321344284963672301}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b3c4d3a03e785d45b51be66042b295a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &376137783415288789
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -176,6 +191,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7321344284963672301}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b3c4d3a03e785d45b51be66042b295a, type: 3}
+  m_Script: {fileID: 11500000, guid: c29461a2da24b66458f3217c2c319cb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Attack: 2

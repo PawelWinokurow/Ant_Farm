@@ -28,6 +28,7 @@ public class EnemyJobScheduler : MonoBehaviour
     private List<Enemy> busyMobs = new List<Enemy>();
     private List<Enemy> freeMobs = new List<Enemy>();
     public List<Enemy> AllMobs = new List<Enemy>();
+    public List<Mob> Mobs = new List<Mob>();
 
     void Update()
     {
@@ -60,12 +61,17 @@ public class EnemyJobScheduler : MonoBehaviour
     {
         this.SurfaceOperations = setSurfaceOperations;
     }
-    public void AddMob(Enemy enemy)
+    public void AddEnemy(Enemy enemy)
     {
         enemy.SurfaceOperations = SurfaceOperations;
         enemy.Pathfinder = Pathfinder;
         freeMobs.Add(enemy);
         AllMobs.Add(enemy);
+    }
+
+    public void AddWorker(Mob mob)
+    {
+        Mobs.Add(mob);
     }
 
     private bool SomeJobLeft()

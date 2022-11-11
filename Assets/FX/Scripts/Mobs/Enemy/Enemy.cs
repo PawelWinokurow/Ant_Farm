@@ -6,11 +6,8 @@ using UnityEngine;
 public class Enemy : MonoBehaviour, Mob
 {
     public string Id { get; set; }
-    public float ConstructionSpeed = 2f;
-    public int LoadingSpeed = 50;
-    public int MaxCarryingWeight = 100;
-    public float CarryingWeight = 0;
-    public AntAnimator AntAnimator { get; set; }
+    public float Attack = 2f;
+    public EnemyAnimator EnemyAnimator { get; set; }
     public Action Animation { get; set; }
     public Vector3 Position { get => transform.position; }
     public Job Job { get; set; }
@@ -23,10 +20,13 @@ public class Enemy : MonoBehaviour, Mob
     private float lerpDuration;
     private float t = 0f;
     public Edge CurrentPathEdge;
+    public float Hp { get; set; }
+
     void Awake()
     {
-        // AntAnimator = GetComponent<AntAnimator>();
-        // AntAnimator.worker = this;
+        EnemyAnimator = GetComponent<EnemyAnimator>();
+        EnemyAnimator.enemy = this;
+        Hp = 250f;
         SetState(new PatrolState(this));
     }
 
@@ -131,15 +131,19 @@ public class Enemy : MonoBehaviour, Mob
 
     public void SetRunAnimation()
     {
-        Animation = AntAnimator.Run;
+        Animation = EnemyAnimator.Run;
     }
-    public void SetRunFoodAnimation()
+    public void SetRunAtackAnimation()
     {
-        Animation = AntAnimator.RunFood;
+        Animation = EnemyAnimator.RunFight;
     }
     public void SetIdleAnimation()
     {
-        Animation = AntAnimator.Idle;
+        Animation = EnemyAnimator.Idle;
+    }
+    public void SetIdleFightAnimation()
+    {
+        Animation = EnemyAnimator.IdleFight;
     }
 
     void DrawDebugPath()
