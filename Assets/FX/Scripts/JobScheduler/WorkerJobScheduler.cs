@@ -5,19 +5,19 @@ using UnityEngine;
 using Unity.Jobs;
 using PriorityQueue;
 
-class JobMob
+class JobWorker
 {
     public Job Job;
     public Worker Worker;
 
-    public JobMob(Job job, Worker worker)
+    public JobWorker(Job job, Worker worker)
     {
         Job = job;
         Worker = worker;
     }
 }
 
-public class JobScheduler : MonoBehaviour
+public class WorkerJobScheduler : MonoBehaviour
 {
     private Dictionary<string, Job> jobMap = new Dictionary<string, Job>();
     private List<Job> unassignedJobsQueue = new List<Job>();
@@ -35,7 +35,7 @@ public class JobScheduler : MonoBehaviour
         {
             var job = assignedJobsQueue[0];
             assignedJobsQueue.Remove(job);
-            MoveFreeMobToBusyMobs(job.Worker);
+            MoveFreeMobToBusyMobs((Worker)job.Mob);
             SetJobToWorker(job);
         }
     }
@@ -81,11 +81,11 @@ public class JobScheduler : MonoBehaviour
         JobHandle handle = parallelJob.Schedule(freeMobsClone.Count, 4);
         handle.Complete();
 
-        PriorityQueue<JobMob, float> minDistances = new PriorityQueue<JobMob, float>(0);
+        PriorityQueue<JobWorker, float> minDistances = new PriorityQueue<JobWorker, float>(0);
 
         for (var i = 0; i < parallelJob.Result.Length; i++)
         {
-            minDistances.Enqueue(new JobMob(job, freeMobsClone[i]), parallelJob.Result[i]);
+            minDistances.Enqueue(new JobWorker(job, freeMobsClone[i]), parallelJob.Result[i]);
         }
         ParallelComputations.FreeDistancesJobMemory(parallelJob);
         while (minDistances.Count != 0)
@@ -94,8 +94,8 @@ public class JobScheduler : MonoBehaviour
             var path = Pathfinder.FindPath(minDistance.Worker.Position, minDistance.Job.Destination, true);
             if (path != null)
             {
-                job.Worker = minDistance.Worker;
-                job.Worker.Job = job;
+                job.Mob = minDistance.Worker;
+                job.Mob.Job = job;
                 job.Path = path; ;
                 MoveUnassignedJobToAssignedJobs(job);
                 return;
@@ -113,7 +113,7 @@ public class JobScheduler : MonoBehaviour
 
     private void SetCarryingJob(CarrierJob job)
     {
-        var worker = job.Worker;
+        var worker = (Worker)job.Mob;
         var path = job.Path;
 
         job.StorageHexagon = SurfaceOperations.NearestBaseHexagon();
@@ -131,7 +131,7 @@ public class JobScheduler : MonoBehaviour
     }
     private void SetWorkerJob(WorkerJob job)
     {
-        var worker = job.Worker;
+        var worker = (Worker)job.Mob;
         var path = job.Path;
 
         job.Cancel = () =>
@@ -186,11 +186,11 @@ public class JobScheduler : MonoBehaviour
     public void CancelJob(Job job)
     {
         Remove(job);
-        if (job.Worker != null)
+        if (job.Mob != null)
         {
-            MoveBusyMobToFreeMobs(job.Worker);
-            job.Worker.SetState(new IdleState((Worker)job.Worker));
-            job.Worker.Path = null;
+            MoveBusyMobToFreeMobs((Worker)job.Mob);
+            job.Mob.SetState(new IdleState((Worker)job.Mob));
+            job.Mob.Path = null;
         }
     }
 

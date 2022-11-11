@@ -19,7 +19,7 @@ public class CarrierJob : Job
     public Action Execute { get; set; }
     public Action CancelNotCompleteJob { get; set; }
     public Action Return { get; set; }
-    public Worker Worker { get; set; }
+    public Mob Mob { get; set; }
     public JobType Type { get; set; }
     public Path Path { get; set; }
 

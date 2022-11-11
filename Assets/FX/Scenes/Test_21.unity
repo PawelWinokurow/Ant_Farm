@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: 67208668}
   - component: {fileID: 348439228}
   m_Layer: 0
-  m_Name: JobScheduler
+  m_Name: WorkerJobScheduler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -164,7 +164,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 348439227}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f5e9ca48c925554ba990a49d3e1ead6, type: 3}
+  m_Script: {fileID: 11500000, guid: c04765491c643ae48a7160fff497de10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   AllMobs: []
@@ -307,7 +307,7 @@ MonoBehaviour:
   Surface: {fileID: 685065891}
   SurfaceOperations: {fileID: 1531417191}
   BuildWallsTest: {fileID: 1176967603}
-  JobScheduler: {fileID: 348439228}
+  WorkerJobScheduler: {fileID: 348439228}
 --- !u!1 &1085499973
 GameObject:
   m_ObjectHideFlags: 0
@@ -629,7 +629,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc03c824e5a35f544922982aef4915dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  JobScheduler: {fileID: 348439228}
+  WorkerJobScheduler: {fileID: 348439228}
   Surface: {fileID: 685065891}
   SurfaceOperations: {fileID: 1531417191}
   WorkerPrefab: {fileID: -7619036694779697723, guid: d76627fe718a559439689ca54c475515, type: 3}

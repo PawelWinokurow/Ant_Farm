@@ -31,7 +31,6 @@ public class Pathfinder
         for (int i = 0; i < numberOfSteps; i++)
         {
             var path = PathToSomeNeighbour(from);
-            from.Neighbours.ForEach(n => Debug.Log(n.Id));
             if (path != null)
             {
                 overallPath.WayPoints.AddRange(path.WayPoints);
