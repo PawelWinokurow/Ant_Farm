@@ -79,7 +79,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 200}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
-  controlID: 57
+  controlID: 140
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -254,7 +254,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 1
-  controlID: 58
+  controlID: 73
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -280,7 +280,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 8096}
   vertical: 0
-  controlID: 59
+  controlID: 74
 --- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -376,7 +376,7 @@ MonoBehaviour:
   m_minNodePos: {x: -2317.49, y: -1046.127}
   m_maxNodePos: {x: 0, y: 0}
   m_isDirty: 0
-  m_saveIsDirty: 0
+  m_saveIsDirty: 1
   m_repaintIsDirty: 0
   m_liveShaderEditing: 0
   m_shaderIsModified: 0
@@ -470,7 +470,7 @@ MonoBehaviour:
   m_maxNodePos: {x: 506.7751, y: 0}
   m_isDirty: 0
   m_saveIsDirty: 1
-  m_repaintIsDirty: 0
+  m_repaintIsDirty: 1
   m_liveShaderEditing: 0
   m_shaderIsModified: 0
   m_lastOpenedLocation: Assets/FX/Shaders/Hils.shader
@@ -562,8 +562,8 @@ MonoBehaviour:
   m_minNodePos: {x: -2650.863, y: -1015.762}
   m_maxNodePos: {x: 506.7751, y: 0}
   m_isDirty: 0
-  m_saveIsDirty: 0
-  m_repaintIsDirty: 0
+  m_saveIsDirty: 1
+  m_repaintIsDirty: 1
   m_liveShaderEditing: 0
   m_shaderIsModified: 0
   m_lastOpenedLocation: Assets/FX/Shaders/Eggs.shader
@@ -656,7 +656,7 @@ MonoBehaviour:
   m_maxNodePos: {x: -1403.982, y: -391.9449}
   m_isDirty: 0
   m_saveIsDirty: 1
-  m_repaintIsDirty: 0
+  m_repaintIsDirty: 1
   m_liveShaderEditing: 0
   m_shaderIsModified: 0
   m_lastOpenedLocation: Assets/FX/Shaders/Food.shader
@@ -748,8 +748,8 @@ MonoBehaviour:
   m_minNodePos: {x: -2650.863, y: -1015.762}
   m_maxNodePos: {x: 506.7751, y: 0}
   m_isDirty: 0
-  m_saveIsDirty: 0
-  m_repaintIsDirty: 0
+  m_saveIsDirty: 1
+  m_repaintIsDirty: 1
   m_liveShaderEditing: 0
   m_shaderIsModified: 0
   m_lastOpenedLocation: Assets/FX/Shaders/Ant.shader
@@ -813,22 +813,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/FX/Scripts/JobScheduler/Jobs
+    - Assets/FX/Scripts/Mobs/Animators
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/FX/Scripts/JobScheduler/Jobs/Assignments
+  - Assets/FX/Scripts/Mobs/Animators
   m_LastFoldersGridSize: 16
-  m_LastProjectPath: C:\Unity\Ant_Farm
+  m_LastProjectPath: C:\UnityProjects\Ant_Farm
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 156.33331}
-    m_SelectedIDs: 569a0000
-    m_LastClickedID: 39510
-    m_ExpandedIDs: 00000000c6530000c8530000ca530000cc530000ce530000d05300006478000000ca9a3b
+    scrollPos: {x: 0, y: 120}
+    m_SelectedIDs: 566c0000
+    m_LastClickedID: 27734
+    m_ExpandedIDs: 000000006e58000070580000725800007458000076580000785800007a5800007c5800008a580000945800003e6c000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -856,7 +856,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000c6530000c8530000ca530000cc530000ce530000d0530000d2530000d4530000
+    m_ExpandedIDs: 000000006e58000070580000725800007458000076580000785800007a5800007c580000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -881,24 +881,24 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 
-    m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 0
-    m_ExpandedInstanceIDs: c623000006810000fe5100008a530000905300009e530000185500009055000000000000925600008e5600008c560000e6550000
+    m_SelectedInstanceIDs: 8811ffff
+    m_LastClickedInstanceID: -61048
+    m_HadKeyboardFocusLastEvent: 1
+    m_ExpandedInstanceIDs: c623000006810000fe5100008a530000905300009e530000185500009055000000000000925600008e5600008c560000e6550000325d0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: 
-      m_OriginalName: 
+      m_Name: EnemyAnimator
+      m_OriginalName: EnemyAnimator
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 0
+      m_UserData: 27724
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 11
+      m_OriginalEventType: 0
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 6}
     m_CreateAssetUtility:
@@ -984,9 +984,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
-      m_LastClickedID: 0
-      m_ExpandedIDs: 8a05c9ff9605c9ffb45fc9ffba0bd9ffc60bd9ffde58d9ff60bedbff72cfe7ff7ccfe7ff7823e8ffa865f0ffb265f0fff2d0f0ff024cf1ff0c4cf1ff6cbaf1ffc2eef3ffcceef3ff925ff4ff1afbffff02520000b2840000b8840000
+      m_SelectedIDs: 8811ffff
+      m_LastClickedID: -61048
+      m_ExpandedIDs: 7e11ffff8811ffff4cf9ffff0054000036540000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -1087,7 +1087,7 @@ MonoBehaviour:
       floating: 0
       collapsed: 0
       displayed: 1
-      snapOffset: {x: 0, y: 25.333334}
+      snapOffset: {x: 0, y: 0}
       snapOffsetDelta: {x: 0, y: 0}
       snapCorner: 0
       id: unity-transform-toolbar
@@ -1235,9 +1235,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 83.08755, y: -15.96305, z: 91.91146}
+    m_Target: {x: 53.5945, y: -3.2386315, z: 73.20135}
     speed: 2
-    m_Value: {x: 83.08755, y: -15.96305, z: 91.91146}
+    m_Value: {x: 53.5945, y: -3.2386315, z: 73.20135}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -1284,13 +1284,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+    m_Target: {x: 0.004281989, y: 0.9777283, z: -0.21188866, w: -0.0048320913}
     speed: 2
-    m_Value: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+    m_Value: {x: 0.004280082, y: 0.97729295, z: -0.2117943, w: -0.0048299395}
   m_Size:
-    m_Target: 19.490963
+    m_Target: 15.674968
     speed: 2
-    m_Value: 19.490963
+    m_Value: 15.674968
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -1349,7 +1349,7 @@ MonoBehaviour:
   m_ShowGizmos: 0
   m_TargetDisplay: 0
   m_ClearColor: {r: 0, g: 0, b: 0, a: 0}
-  m_TargetSize: {x: 1195, y: 1273}
+  m_TargetSize: {x: 720, y: 1280}
   m_TextureFilterMode: 0
   m_TextureHideFlags: 61
   m_RenderIMGUI: 1
@@ -1357,17 +1357,17 @@ MonoBehaviour:
   m_UseMipMap: 0
   m_VSyncEnabled: 0
   m_Gizmos: 0
-  m_Stats: 0
-  m_SelectedSizes: 00000000000000000000000000000000000000000000000000000000000000000000000000000000
+  m_Stats: 1
+  m_SelectedSizes: 00000000000000000000000003000000000000000000000000000000000000000000000000000000
   m_ZoomArea:
     m_HRangeLocked: 0
     m_VRangeLocked: 0
     hZoomLockedByDefault: 0
     vZoomLockedByDefault: 0
-    m_HBaseRangeMin: -398.33334
-    m_HBaseRangeMax: 398.33334
-    m_VBaseRangeMin: -424.33334
-    m_VBaseRangeMax: 424.33334
+    m_HBaseRangeMin: -240
+    m_HBaseRangeMax: 240
+    m_VBaseRangeMin: -426.6667
+    m_VBaseRangeMax: 426.6667
     m_HAllowExceedBaseRangeMin: 1
     m_HAllowExceedBaseRangeMax: 1
     m_VAllowExceedBaseRangeMin: 1
@@ -1376,7 +1376,7 @@ MonoBehaviour:
     m_HSlider: 0
     m_VSlider: 0
     m_IgnoreScrollWheelUntilClicked: 0
-    m_EnableMouseInput: 0
+    m_EnableMouseInput: 1
     m_EnableSliderZoomHorizontal: 0
     m_EnableSliderZoomVertical: 0
     m_UniformScale: 1
@@ -1387,7 +1387,7 @@ MonoBehaviour:
       y: 21
       width: 796.6666
       height: 848.6667
-    m_Scale: {x: 0.99999994, y: 0.99999994}
+    m_Scale: {x: 0.9945312, y: 0.9945312}
     m_Translation: {x: 398.3333, y: 424.33334}
     m_MarginLeft: 0
     m_MarginRight: 0
@@ -1395,12 +1395,12 @@ MonoBehaviour:
     m_MarginBottom: 0
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
-      x: -398.33334
-      y: -424.33337
-      width: 796.6667
-      height: 848.66675
+      x: -400.52368
+      y: -426.6667
+      width: 801.04736
+      height: 853.3334
     m_MinimalGUI: 1
-  m_defaultScale: 0.99999994
+  m_defaultScale: 0.9945312
   m_LastWindowPixelSize: {x: 1195, y: 1304.5}
   m_ClearInEditMode: 1
   m_NoCameraWarning: 1
