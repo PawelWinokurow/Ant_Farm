@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
         WorkerJobScheduler.Pathfinder = pathfinder;
         WorkerJobScheduler.SetSurfaceOperations(SurfaceOperations);
         WorkerJobScheduler.StartJobScheuler();
+        EnemyJobScheduler.StartJobScheuler();
     }
 
     private void GenerateData()
@@ -46,6 +47,7 @@ public class GameManager : MonoBehaviour
         WorkerJobScheduler.Pathfinder = pathfinder;
         WorkerJobScheduler.SetSurfaceOperations(SurfaceOperations);
         WorkerJobScheduler.StartJobScheuler();
+        EnemyJobScheduler.StartJobScheuler();
         // StoreService.SaveGraph(PathGraph);
         // StoreService.SaveHexagons(Surface.Hexagons);
     }

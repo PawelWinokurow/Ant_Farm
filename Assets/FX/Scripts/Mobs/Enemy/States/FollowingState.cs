@@ -16,6 +16,7 @@ public class FollowingState : State
 
     override public void OnStateEnter()
     {
+        enemy.SetRunAnimation();
         job = enemy.Job;
     }
     override public void OnStateExit()
@@ -25,7 +26,6 @@ public class FollowingState : State
 
     override public void CancelJob()
     {
-        job.Cancel();
     }
 
     public override void Tick()
@@ -34,6 +34,10 @@ public class FollowingState : State
         {
             enemy.Animation();
             enemy.Move(MOVEMENT_SPEED);
+        }
+        else
+        {
+            enemy.SetState(new AttackState(enemy));
         }
     }
 

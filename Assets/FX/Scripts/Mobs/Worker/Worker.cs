@@ -23,6 +23,8 @@ public class Worker : MonoBehaviour, Mob
     private float lerpDuration;
     private float t = 0f;
     public Edge CurrentPathEdge;
+    public Action DestroyMob { get; set; }
+
     public float Hp { get; set; }
     void Awake()
     {
@@ -108,10 +110,9 @@ public class Worker : MonoBehaviour, Mob
 
     private void SetCurrentPathEdge()
     {
-
         CurrentPathEdge = Path.WayPoints[0];
         Path.WayPoints.RemoveAt(0);
-        lerpDuration = Distance.Manhattan(CurrentPathEdge.From.Position, CurrentPathEdge.To.Position);
+        lerpDuration = Vector3.Distance(CurrentPathEdge.From.Position, CurrentPathEdge.To.Position);
     }
 
     public void CancelJob()
@@ -119,7 +120,7 @@ public class Worker : MonoBehaviour, Mob
         CurrentState.CancelJob();
     }
 
-    void Rerouting()
+    public void Rerouting()
     {
         var to = Path.HasWaypoints ? Path.WayPoints[Path.WayPoints.Count - 1].To.Position : CurrentPathEdge.To.Position;
         var path = Pathfinder.FindPath(transform.position, to, HasJob ? true : false);

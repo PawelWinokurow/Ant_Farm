@@ -3,7 +3,7 @@ using UnityEngine;
 
 public enum JobType
 {
-    DIG, FILL, CARRYING
+    DIG, FILL, CARRYING, ATTACK
 }
 
 public interface Job
@@ -14,6 +14,5 @@ public interface Job
     public Mob Mob { get; set; }
     public JobType Type { get; set; }
     public Action Cancel { get; set; }
-    public Action Execute { get; set; }
     public Path Path { get; set; }
 }

@@ -6,15 +6,17 @@ using UnityEngine;
 public class Enemy : MonoBehaviour, Mob
 {
     public string Id { get; set; }
-    public float Attack = 2f;
+    public float AttackStrength = 10f;
     public EnemyAnimator EnemyAnimator { get; set; }
     public Action Animation { get; set; }
     public Vector3 Position { get => transform.position; }
-    public Job Job { get; set; }
     public Path Path { get; set; }
     public State CurrentState { get; set; }
     public Pathfinder Pathfinder { get; set; }
     public SurfaceOperations SurfaceOperations { get; set; }
+    public Job Job { get; set; }
+    public Action DestroyMob { get; set; }
+
     public bool HasPath { get => Path != null && CurrentPathEdge != null; }
     public bool HasJob { get => Job != null; }
     private float lerpDuration;
@@ -48,18 +50,30 @@ public class Enemy : MonoBehaviour, Mob
         if (Path != null)
         {
             if (Path.HasWaypoints) SetCurrentPathEdge();
-            else CurrentState.OnStateEnter();
         }
         else
         {
-            if (HasJob)
+            var pathNew = Pathfinder.FindPath(Position, ((EnemyJob)Job).Target.Position, false);
+            if (pathNew != null)
             {
-                Job.Cancel();
+                SetState(new AttackState(this));
             }
-            else
-            {
-                SetState(new PatrolState(this));
-            }
+            // else
+            // {
+            //     SetState(new PatrolState(this));
+            // }
+        }
+    }
+
+    public void Hit()
+    {
+        var target = ((EnemyJob)Job).Target;
+        target.Hp -= AttackStrength * Time.deltaTime;
+        Debug.Log(target.Hp);
+        if (target.Hp <= 0)
+        {
+            target.DestroyMob();
+            SetState(new PatrolState(this));
         }
     }
 
@@ -83,11 +97,29 @@ public class Enemy : MonoBehaviour, Mob
     public void Move(int speed)
     {
         DrawDebugPath();
-        if (!CurrentPathEdge.IsWalkable)
+        if (t < lerpDuration)
         {
-            Rerouting();
+            var a = (float)Mathf.Min(t / lerpDuration, 1f);
+            transform.position = Vector3.Lerp(CurrentPathEdge.From.Position, CurrentPathEdge.To.Position, a);
+            t += Time.deltaTime * speed;
         }
-        else if (t < lerpDuration)
+        else if (Path.HasWaypoints)
+        {
+            t -= lerpDuration;
+            SetCurrentPathEdge();
+        }
+        else
+        {
+            CurrentPathEdge = null;
+        }
+    }
+    public void Attack(int speed)
+    {
+        ((EnemyJob)Job).Target.Hp -= Time.deltaTime * AttackStrength;
+        Debug.Log(((EnemyJob)Job).Target.Hp);
+
+        DrawDebugPath();
+        if (t < lerpDuration)
         {
             var a = (float)Mathf.Min(t / lerpDuration, 1f);
             transform.position = Vector3.Lerp(CurrentPathEdge.From.Position, CurrentPathEdge.To.Position, a);
@@ -106,10 +138,9 @@ public class Enemy : MonoBehaviour, Mob
 
     private void SetCurrentPathEdge()
     {
-
         CurrentPathEdge = Path.WayPoints[0];
         Path.WayPoints.RemoveAt(0);
-        lerpDuration = Distance.Manhattan(CurrentPathEdge.From.Position, CurrentPathEdge.To.Position);
+        lerpDuration = Vector3.Distance(CurrentPathEdge.From.Position, CurrentPathEdge.To.Position);
     }
 
     public void CancelJob()
@@ -117,11 +148,9 @@ public class Enemy : MonoBehaviour, Mob
         CurrentState.CancelJob();
     }
 
-    void Rerouting()
+    public void Rerouting()
     {
-        var to = Path.HasWaypoints ? Path.WayPoints[Path.WayPoints.Count - 1].To.Position : CurrentPathEdge.To.Position;
-        var path = Pathfinder.FindPath(transform.position, to, HasJob ? true : false);
-        SetPath(path);
+        SetPath(Pathfinder.FindPath(transform.position, ((EnemyJob)Job).Target.Position, true));
     }
 
     void Update()

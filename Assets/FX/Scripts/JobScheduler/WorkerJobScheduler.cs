@@ -64,8 +64,19 @@ public class WorkerJobScheduler : MonoBehaviour
     {
         worker.SurfaceOperations = SurfaceOperations;
         worker.Pathfinder = Pathfinder;
+        worker.DestroyMob = () => DestroyWorker(worker);
         freeMobs.Add(worker);
         AllMobs.Add(worker);
+
+    }
+
+    private void DestroyWorker(Worker worker)
+    {
+        busyMobs.Remove(worker);
+        freeMobs.Remove(worker);
+        AllMobs.Remove(worker);
+        worker.Job?.Cancel();
+        Destroy(worker);
     }
 
     private bool SomeJobLeft()

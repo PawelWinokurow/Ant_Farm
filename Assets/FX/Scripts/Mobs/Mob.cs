@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public interface Mob
 {
@@ -11,6 +12,7 @@ public interface Mob
     public bool HasPath { get; }
     public Pathfinder Pathfinder { get; set; }
     public float Hp { get; set; }
+    public Action DestroyMob { get; set; }
     public void SetState(State state);
     public void SetPath(Path path);
     public void Move(int speed);
