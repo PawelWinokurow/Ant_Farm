@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using Unity.Jobs;
 using PriorityQueue;
+using DataStructures.ViliWonka.KDTree;
 
 class JobWorker
 {
@@ -25,9 +26,9 @@ public class WorkerJobScheduler : MonoBehaviour
     private Graph pathGraph;
     private SurfaceOperations SurfaceOperations;
     public Pathfinder Pathfinder { get; set; }
-    private List<Worker> busyMobs = new List<Worker>();
-    private List<Worker> freeMobs = new List<Worker>();
-    public List<Worker> AllMobs = new List<Worker>();
+    private List<Worker> busyWorkers = new List<Worker>();
+    private List<Worker> freeWorkers = new List<Worker>();
+    public List<Worker> AllWorkers = new List<Worker>();
 
     void Update()
     {
@@ -64,48 +65,41 @@ public class WorkerJobScheduler : MonoBehaviour
     {
         worker.SurfaceOperations = SurfaceOperations;
         worker.Pathfinder = Pathfinder;
-        worker.DestroyMob = () => DestroyWorker(worker);
-        freeMobs.Add(worker);
-        AllMobs.Add(worker);
+        worker.KillMob = () => DestroyWorker(worker);
+        freeWorkers.Add(worker);
+        AllWorkers.Add(worker);
 
     }
 
     private void DestroyWorker(Worker worker)
     {
-        busyMobs.Remove(worker);
-        freeMobs.Remove(worker);
-        AllMobs.Remove(worker);
+        busyWorkers.Remove(worker);
+        freeWorkers.Remove(worker);
         worker.Job?.Cancel();
-        Destroy(worker);
+        worker.SetState(new DeadState(worker));
     }
 
     private bool SomeJobLeft()
     {
-        return unassignedJobsQueue.Count != 0 && freeMobs.Count != 0;
+        return unassignedJobsQueue.Count != 0 && freeWorkers.Count != 0;
     }
 
     private void AssignWork()
     {
-        var freeMobsClone = new List<Worker>(freeMobs);
+
+        var freeWorkersClone = new List<Worker>(freeWorkers);
         var job = unassignedJobsQueue[0];
-        var parallelJob = ParallelComputations.CreateParallelDistancesJob(freeMobsClone.Select(mod => mod.Position).ToList(), job.Destination);
-        JobHandle handle = parallelJob.Schedule(freeMobsClone.Count, 4);
-        handle.Complete();
 
-        PriorityQueue<JobWorker, float> minDistances = new PriorityQueue<JobWorker, float>(0);
-
-        for (var i = 0; i < parallelJob.Result.Length; i++)
+        KDTree workerPositionsTree = new KDTree(freeWorkersClone.Select(worker => worker.Position).ToArray());
+        KDQuery query = new KDQuery();
+        List<int> queryResults = new List<int>();
+        query.KNearest(workerPositionsTree, job.Destination, freeWorkersClone.Count, queryResults);
+        foreach (int i in queryResults)
         {
-            minDistances.Enqueue(new JobWorker(job, freeMobsClone[i]), parallelJob.Result[i]);
-        }
-        ParallelComputations.FreeDistancesJobMemory(parallelJob);
-        while (minDistances.Count != 0)
-        {
-            var minDistance = minDistances.Dequeue();
-            var path = Pathfinder.FindPath(minDistance.Worker.Position, minDistance.Job.Destination, true);
+            var path = Pathfinder.FindPath(freeWorkersClone[i].Position, job.Destination, true);
             if (path != null)
             {
-                job.Mob = minDistance.Worker;
+                job.Mob = freeWorkersClone[i];
                 job.Mob.Job = job;
                 job.Path = path; ;
                 MoveUnassignedJobToAssignedJobs(job);
@@ -214,13 +208,13 @@ public class WorkerJobScheduler : MonoBehaviour
 
     private void MoveFreeMobToBusyMobs(Worker freeWorker)
     {
-        freeMobs.Remove(freeWorker);
-        busyMobs.Add(freeWorker);
+        freeWorkers.Remove(freeWorker);
+        busyWorkers.Add(freeWorker);
     }
     private void MoveBusyMobToFreeMobs(Worker busyWorker)
     {
-        busyMobs.Remove(busyWorker);
-        freeMobs.Add(busyWorker);
+        busyWorkers.Remove(busyWorker);
+        freeWorkers.Add(busyWorker);
     }
 
     private void MoveUnassignedJobToAssignedJobs(Job unassignedJob)

@@ -15,7 +15,7 @@ public class Enemy : MonoBehaviour, Mob
     public Pathfinder Pathfinder { get; set; }
     public SurfaceOperations SurfaceOperations { get; set; }
     public Job Job { get; set; }
-    public Action DestroyMob { get; set; }
+    public Action KillMob { get; set; }
 
     public bool HasPath { get => Path != null && CurrentPathEdge != null; }
     public bool HasJob { get => Job != null; }
@@ -72,7 +72,7 @@ public class Enemy : MonoBehaviour, Mob
         if (target.Hp <= 0)
         {
             CancelJob();
-            target.DestroyMob();
+            target.KillMob();
             SetState(new PatrolState(this));
         }
     }

@@ -23,7 +23,7 @@ public class EnemyJobScheduler : MonoBehaviour
     public Pathfinder Pathfinder { get; set; }
     private List<Enemy> busyEnemies = new List<Enemy>();
     private List<Enemy> freeEnemies = new List<Enemy>();
-    public List<Enemy> AllMobs = new List<Enemy>();
+    public List<Enemy> AllWorkers = new List<Enemy>();
     public List<Mob> Mobs = new List<Mob>();
 
     public void StartJobScheuler()
@@ -51,7 +51,7 @@ public class EnemyJobScheduler : MonoBehaviour
         enemy.SurfaceOperations = SurfaceOperations;
         enemy.Pathfinder = Pathfinder;
         freeEnemies.Add(enemy);
-        AllMobs.Add(enemy);
+        AllWorkers.Add(enemy);
     }
 
     public void AddWorker(Mob mob)

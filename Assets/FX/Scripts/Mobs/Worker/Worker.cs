@@ -23,7 +23,7 @@ public class Worker : MonoBehaviour, Mob
     private float lerpDuration;
     private float t = 0f;
     public Edge CurrentPathEdge;
-    public Action DestroyMob { get; set; }
+    public Action KillMob { get; set; }
 
     public float Hp { get; set; }
     void Awake()
