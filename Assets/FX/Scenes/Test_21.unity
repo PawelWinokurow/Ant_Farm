@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c04765491c643ae48a7160fff497de10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AllMobs: []
+  allWorkers: []
 --- !u!1 &685065889
 GameObject:
   m_ObjectHideFlags: 0
@@ -212,22 +212,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa893fd2fce5d974caf96cef5ff6f39d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HexPrefab: {fileID: 8408876141986682503, guid: 83042c4f51c064a6fb1d205437579b2e, type: 3}
-  WallPrefab: {fileID: 8455358244910370071, guid: 3e68a11dd730d1446b99d95886a65495, type: 3}
-  WallDigScaled: {fileID: -6018517503506590580, guid: 28fcba2b277d3b042a48d605a51422e9, type: 3}
-  WallFillScaled: {fileID: 8455358244910370071, guid: 221ba3dacf67ca943b4d652b552a0c0f, type: 3}
-  DigPrefab: {fileID: -6018517503506590580, guid: c7632245c71964a679408febbbf35e0c, type: 3}
-  FillPrefab: {fileID: -4772042401286267067, guid: 99821c0ed144a4324828715eca72ccaf, type: 3}
-  BasePrefab: {fileID: -6449949279687771907, guid: 3035fa6f7888cc444891347ded3c5bf6, type: 3}
-  FoodPrefab: {fileID: 885855770167225291, guid: b6796502f5525184d99c83ee5ae6b91d, type: 3}
-  CarryingPrefab: {fileID: 885855770167225291, guid: b6796502f5525184d99c83ee5ae6b91d, type: 3}
+  hexPrefab: {fileID: 8408876141986682503, guid: 83042c4f51c064a6fb1d205437579b2e, type: 3}
+  wallPrefab: {fileID: 8455358244910370071, guid: 3e68a11dd730d1446b99d95886a65495, type: 3}
+  wallDigScaled: {fileID: -6018517503506590580, guid: 28fcba2b277d3b042a48d605a51422e9, type: 3}
+  wallFillScaled: {fileID: 8455358244910370071, guid: 221ba3dacf67ca943b4d652b552a0c0f, type: 3}
+  digPrefab: {fileID: -6018517503506590580, guid: c7632245c71964a679408febbbf35e0c, type: 3}
+  fillPrefab: {fileID: -4772042401286267067, guid: 99821c0ed144a4324828715eca72ccaf, type: 3}
+  basePrefab: {fileID: -6449949279687771907, guid: 3035fa6f7888cc444891347ded3c5bf6, type: 3}
+  foodPrefab: {fileID: 885855770167225291, guid: b6796502f5525184d99c83ee5ae6b91d, type: 3}
+  carryingPrefab: {fileID: 0}
   ld: {x: 0, y: 0, z: 0}
   rd: {x: 0, y: 0, z: 0}
   lu: {x: 0, y: 0, z: 0}
   ru: {x: 0, y: 0, z: 0}
   w: 0
   h: 0
-  Hexagons: []
+  hexagons: []
 --- !u!1 &699954847
 GameObject:
   m_ObjectHideFlags: 0
@@ -309,37 +309,6 @@ MonoBehaviour:
   BuildWallsTest: {fileID: 1176967603}
   WorkerJobScheduler: {fileID: 348439228}
   EnemyJobScheduler: {fileID: 1358919020}
---- !u!1 &1085499973
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1085499974}
-  m_Layer: 0
-  m_Name: AntAnimator
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1085499974
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1085499973}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 87.46423, y: -10.420676, z: 81.93249}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 11
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1124990943
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -476,7 +445,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a1f66fa91759b84cb21b42c146fc6ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AllMobs: []
+  allWorkers: []
 --- !u!4 &1358919021
 Transform:
   m_ObjectHideFlags: 0
@@ -521,7 +490,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd155a3e73f150c42add204d6902febc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Surface: {fileID: 685065891}
+  surface: {fileID: 685065891}
 --- !u!4 &1531417192
 Transform:
   m_ObjectHideFlags: 0
@@ -675,12 +644,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc03c824e5a35f544922982aef4915dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WorkerJobScheduler: {fileID: 348439228}
-  EnemyJobScheduler: {fileID: 1358919020}
-  Surface: {fileID: 685065891}
-  SurfaceOperations: {fileID: 1531417191}
-  WorkerPrefab: {fileID: -7619036694779697723, guid: d76627fe718a559439689ca54c475515, type: 3}
-  EnemyPrefab: {fileID: 376137783415288789, guid: 6ea998787382aa64db8b8af70a6fb869, type: 3}
+  workerJobScheduler: {fileID: 348439228}
+  enemyJobScheduler: {fileID: 1358919020}
+  surface: {fileID: 685065891}
+  surfaceOperations: {fileID: 1531417191}
+  workerPrefab: {fileID: -7619036694779697723, guid: d76627fe718a559439689ca54c475515, type: 3}
+  enemyPrefab: {fileID: 376137783415288789, guid: 6ea998787382aa64db8b8af70a6fb869, type: 3}
 --- !u!1001 &1248071470075308892
 PrefabInstance:
   m_ObjectHideFlags: 0

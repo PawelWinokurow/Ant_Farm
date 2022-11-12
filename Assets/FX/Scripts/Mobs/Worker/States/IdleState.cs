@@ -8,9 +8,9 @@ public class IdleState : State
 
     public IdleState(Worker worker) : base(worker)
     {
-        this.Type = STATE.IDLE;
+        this.type = STATE.IDLE;
         this.worker = worker;
-        worker.Path = null;
+        worker.path = null;
     }
     public override void Tick()
     {
@@ -18,7 +18,7 @@ public class IdleState : State
         if (worker.HasPath)
         {
             worker.Move(MOVEMENT_SPEED);
-            if (worker.Path.WayPoints.Count == 1)
+            if (worker.path.wayPoints.Count == 1)
             {
                 worker.ExpandRandomWalk();
             }

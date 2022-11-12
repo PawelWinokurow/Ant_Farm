@@ -50,17 +50,17 @@ public class EnemyAnimator : MonoBehaviour
     {
         if (enemy != null)
         {
-            EnemyJob job = (EnemyJob)enemy?.Job;
+            EnemyJob job = (EnemyJob)enemy?.job;
             f = (int)(Time.time * 30f * 1.5f) % current.sequence.Length;
             mf.mesh = current.sequence[f];
 
-            if (enemy.CurrentPathEdge != null)
+            if (enemy.currentPathEdge != null)
             {
-                forward = enemy.CurrentPathEdge.To.Position - transform.position;
+                forward = enemy.currentPathEdge.to.position - transform.position;
             }
-            else if (job?.Target?.Position != null)
+            else if (job?.target?.position != null)
             {
-                forward = job.Target.Position - transform.position;
+                forward = job.target.position - transform.position;
             }
 
             Quaternion rot = Quaternion.LookRotation(angl.up, forward);

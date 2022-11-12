@@ -10,7 +10,7 @@ public class Test_Ant : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.W))
         {
-            transform.position += Vector3.forward*Time.deltaTime * speed;
+            transform.position += Vector3.forward * Time.deltaTime * speed;
         }
         if (Input.GetKey(KeyCode.S))
         {

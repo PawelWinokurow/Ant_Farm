@@ -5,38 +5,38 @@ using UnityEngine;
 public class BuildTestMap : MonoBehaviour
 {
 
-    private Surface Surface;
+    private Surface surface;
     public int wallProbability = 50;
     public int foodProbability = 1;
 
-    public void Init(Surface Surface)
+    public void Init(Surface surface)
     {
-        this.Surface = Surface;
+        this.surface = surface;
         CreateWalls();
     }
 
     public void CreateWalls()
     {
         UnityEngine.Random.InitState(Guid.NewGuid().GetHashCode());
-        Surface.PathGraph.ResetAllEdgesToWalkable();
-        for (int i = 1; i < Surface.Hexagons.Length - 1; i++)
+        surface.pathGraph.ResetAllEdgesToWalkable();
+        for (int i = 1; i < surface.hexagons.Length - 1; i++)
         {
             var probability = UnityEngine.Random.Range(0, 100f);
             if (probability <= wallProbability)
             {
-                Surface.AddBlock(Surface.Hexagons[i]);
-                Surface.PathGraph.ProhibitHexagon(Surface.Hexagons[i]);
+                surface.AddBlock(surface.hexagons[i]);
+                surface.pathGraph.ProhibitHexagon(surface.hexagons[i]);
             }
             else if (probability <= wallProbability + foodProbability)
             {
-                Surface.AddFood(Surface.Hexagons[i]);
+                surface.AddFood(surface.hexagons[i]);
             }
             else
             {
-                Surface.AddGround(Surface.Hexagons[i]);
+                surface.AddGround(surface.hexagons[i]);
             }
         }
-        Surface.AddBase();
+        surface.AddBase();
     }
 
 }

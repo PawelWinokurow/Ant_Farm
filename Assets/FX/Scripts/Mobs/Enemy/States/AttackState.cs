@@ -10,14 +10,14 @@ public class AttackState : State
 
     public AttackState(Enemy enemy) : base(enemy)
     {
-        this.Type = STATE.ATTACK;
+        this.type = STATE.ATTACK;
         this.enemy = enemy;
     }
 
     override public void OnStateEnter()
     {
         enemy.SetRunAtackAnimation();
-        job = enemy.Job;
+        job = enemy.job;
     }
     override public void OnStateExit()
     {
@@ -26,8 +26,8 @@ public class AttackState : State
 
     override public void CancelJob()
     {
-        enemy.Job.Cancel();
-        enemy.Job = null;
+        enemy.job.Cancel();
+        enemy.job = null;
     }
 
 

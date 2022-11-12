@@ -25,7 +25,7 @@ namespace AntFarm
                 GetComponent<EnemyAnimator>().RunFight();
             }
         }
- 
+
     }
 }
 

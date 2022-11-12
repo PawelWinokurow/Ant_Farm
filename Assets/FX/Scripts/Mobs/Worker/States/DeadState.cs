@@ -5,7 +5,7 @@ public class DeadState : State
     private Mob mob;
     public DeadState(Mob mob) : base(mob)
     {
-        this.Type = STATE.DEAD;
+        this.type = STATE.DEAD;
         this.mob = mob;
     }
 

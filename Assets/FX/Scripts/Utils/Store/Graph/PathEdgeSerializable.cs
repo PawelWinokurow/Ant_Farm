@@ -3,16 +3,16 @@ using System;
 [Serializable]
 public class EdgeSerializable
 {
-    public Vector3Serializable FromPosition;
-    public Vector3Serializable ToPosition;
-    public float EdgeWeight;
-    public bool IsWalkable;
+    public Vector3Serializable fromPosition;
+    public Vector3Serializable toPosition;
+    public float edgeWeight;
+    public bool isWalkable;
 
-    public EdgeSerializable(VertexSerializable From, VertexSerializable To, float EdgeWeight)
+    public EdgeSerializable(VertexSerializable from, VertexSerializable to, float edgeWeight)
     {
-        this.FromPosition = From.Position;
-        this.ToPosition = To.Position;
-        this.EdgeWeight = EdgeWeight;
-        this.IsWalkable = true;
+        this.fromPosition = from.position;
+        this.toPosition = to.position;
+        this.edgeWeight = edgeWeight;
+        this.isWalkable = true;
     }
 }

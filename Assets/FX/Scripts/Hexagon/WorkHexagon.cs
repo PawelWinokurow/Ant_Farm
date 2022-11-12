@@ -3,26 +3,26 @@ using UnityEngine;
 
 public class WorkHexagon : MonoBehaviour, Hexagon
 {
-    public string Id { get => FloorHexagon.Id; set => FloorHexagon.Id = value; }
-    public Vector3 Position { get => FloorHexagon.Position; set => FloorHexagon.Position = value; }
-    public HEX_TYPE Type { get => FloorHexagon.Type; set => FloorHexagon.Type = value; }
-    public FloorHexagon FloorHexagon { get; set; }
-    public float Work { get; set; }
-    public static float MaxWork = 100f;
+    public string id { get => floorHexagon.id; set => floorHexagon.id = value; }
+    public Vector3 position { get => floorHexagon.position; set => floorHexagon.position = value; }
+    public HEX_TYPE type { get => floorHexagon.type; set => floorHexagon.type = value; }
+    public FloorHexagon floorHexagon { get; set; }
+    public float work { get; set; }
+    public static float MAX_WORK = 100f;
 
 
     public static WorkHexagon CreateHexagon(FloorHexagon parent, WorkHexagon workHexPrefab)
     {
-        WorkHexagon hex = Instantiate(workHexPrefab, parent.Position, Quaternion.identity, parent.transform);
-        hex.FloorHexagon = parent;
-        hex.FloorHexagon.Child = hex;
-        hex.Work = MaxWork;
+        WorkHexagon hex = Instantiate(workHexPrefab, parent.position, Quaternion.identity, parent.transform);
+        hex.floorHexagon = parent;
+        hex.floorHexagon.child = hex;
+        hex.work = MAX_WORK;
         return hex;
     }
 
     public WorkHexagon AssignProperties(WorkHexagon hex)
     {
-        Work = hex.Work;
+        work = hex.work;
         return this;
     }
 

@@ -30,8 +30,8 @@ public class GameManager : MonoBehaviour
         HexagonSerializable[] hexagons = StoreService.LoadHexagons();
         Surface.Init(PathGraph, hexagons);
         pathfinder = new Pathfinder(PathGraph);
-        WorkerJobScheduler.Pathfinder = pathfinder;
-        WorkerJobScheduler.Pathfinder = pathfinder;
+        WorkerJobScheduler.pathfinder = pathfinder;
+        WorkerJobScheduler.pathfinder = pathfinder;
         WorkerJobScheduler.SetSurfaceOperations(SurfaceOperations);
         WorkerJobScheduler.StartJobScheuler();
         EnemyJobScheduler.StartJobScheuler();
@@ -43,8 +43,8 @@ public class GameManager : MonoBehaviour
         Surface.Init(PathGraph);
         BuildWallsTest.Init(Surface);
         pathfinder = new Pathfinder(PathGraph);
-        EnemyJobScheduler.Pathfinder = pathfinder;
-        WorkerJobScheduler.Pathfinder = pathfinder;
+        EnemyJobScheduler.pathfinder = pathfinder;
+        WorkerJobScheduler.pathfinder = pathfinder;
         WorkerJobScheduler.SetSurfaceOperations(SurfaceOperations);
         WorkerJobScheduler.StartJobScheuler();
         EnemyJobScheduler.StartJobScheuler();
@@ -57,38 +57,38 @@ public class GameManager : MonoBehaviour
     {
         FloorHexagon hex = Surface.PositionToHex(pos);
 
-        if (hex.Type == HEX_TYPE.FOOD)
+        if (hex.type == HEX_TYPE.FOOD)
         {
-            var foodHex = (CollectingHexagon)(hex.Child);
-            var asssignedCarriersNum = foodHex.Carriers.Count;
-            if (asssignedCarriersNum < 5)
+            var foodHex = (CollectingHexagon)(hex.child);
+            var asssignedcarriersNum = foodHex.carriers.Count;
+            if (asssignedcarriersNum < 5)
             {
-                WorkerJobScheduler.AssignJob(new CarrierJob($"{hex.Id}_{asssignedCarriersNum + 1}", hex, (BaseHexagon)Surface.BaseHex.Child, foodHex));
-                foodHex.Food.antCount++;
+                WorkerJobScheduler.AssignJob(new CarrierJob($"{hex.id}_{asssignedcarriersNum + 1}", hex, (BaseHexagon)Surface.baseHex.child, foodHex));
+                foodHex.food.antCount++;
             }
             else
             {
                 foodHex.ResetWorkers();
-                foodHex.Food.antCount = 0;
+                foodHex.food.antCount = 0;
             }
         }
-        else if (hex.Type == HEX_TYPE.EMPTY || hex.Type == HEX_TYPE.SOIL)
+        else if (hex.type == HEX_TYPE.EMPTY || hex.type == HEX_TYPE.SOIL)
         {
             if (AreNoMobsInHex(hex))
             {
-                if (SurfaceOperations.IsInOldHexagons(hex) && !WorkerJobScheduler.IsJobAssigned(hex.Id))
+                if (SurfaceOperations.IsInoldHexagons(hex) && !WorkerJobScheduler.IsJobAssigned(hex.id))
                 {
                     Surface.RemoveIcon(hex);
-                    WorkerJobScheduler.CancelJob(hex.Id);
+                    WorkerJobScheduler.CancelJob(hex.id);
                 }
                 else
                 {
                     Surface.AddIcon(hex);
-                    if (hex.Type == HEX_TYPE.EMPTY)
+                    if (hex.type == HEX_TYPE.EMPTY)
                     {
                         WorkerJobScheduler.AssignJob(new WorkerJob(hex, hex.transform.position, JobType.FILL));
                     }
-                    else if (hex.Type == HEX_TYPE.SOIL)
+                    else if (hex.type == HEX_TYPE.SOIL)
                     {
                         WorkerJobScheduler.AssignJob(new WorkerJob(hex, hex.transform.position, JobType.DIG));
                     }
@@ -100,7 +100,7 @@ public class GameManager : MonoBehaviour
 
     private bool AreNoMobsInHex(Hexagon hex)
     {
-        return WorkerJobScheduler.AllWorkers.All(mob => Surface.PositionToHex(mob.Position).Id != hex.Id);
+        return WorkerJobScheduler.allWorkers.All(mob => Surface.PositionToHex(mob.position).id != hex.id);
     }
 }
 

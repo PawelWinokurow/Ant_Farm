@@ -7,9 +7,9 @@ using PriorityQueue;
 
 public class Path
 {
-    public List<Edge> WayPoints = new List<Edge>();
-    public float Length = 0;
-    public bool HasWaypoints { get => WayPoints.Count != 0; }
+    public List<Edge> wayPoints = new List<Edge>();
+    public float length = 0;
+    public bool HasWaypoints { get => wayPoints.Count != 0; }
 
 }
 
@@ -32,26 +32,26 @@ public class Pathfinder
             var path = PathToSomeNeighbour(from);
             if (path != null)
             {
-                overallPath.WayPoints.AddRange(path.WayPoints);
-                overallPath.Length += path.Length;
+                overallPath.wayPoints.AddRange(path.wayPoints);
+                overallPath.length += path.length;
             }
             else
             {
                 //TODO teleport
             }
-            from = path.WayPoints[path.WayPoints.Count - 1].To;
+            from = path.wayPoints[path.wayPoints.Count - 1].to;
         }
         return overallPath;
     }
 
     private Path PathToSomeNeighbour(Vertex from)
     {
-        var neighbours = from.Neighbours.OrderBy(a => Guid.NewGuid()).ToList();
+        var neighbours = from.neighbours.OrderBy(a => Guid.NewGuid()).ToList();
         foreach (var to in neighbours)
         {
-            if (to.Edges[0].IsWalkable)
+            if (to.edges[0].isWalkable)
             {
-                return FindPath(from.Position, to.Position);
+                return FindPath(from.position, to.position);
             }
         }
         return null;
@@ -62,7 +62,7 @@ public class Pathfinder
         Vertex from = pathGraph.NearestVertex(fromVec);
         Vertex to = pathGraph.NearestVertex(toVec);
         Path path = null;
-        if (from.Id == to.Id) return path;
+        if (from.id == to.id) return path;
         if (!findNearest)
         {
             path = Astar(from, to);
@@ -87,8 +87,8 @@ public class Pathfinder
         var cameThrough = new Dictionary<string, Edge>();
         var costSoFar = new Dictionary<string, float>();
 
-        cameFrom[start.Id] = null;
-        costSoFar[start.Id] = 0;
+        cameFrom[start.id] = null;
+        costSoFar[start.id] = 0;
         var isGoalFound = false;
         while (frontier.Count != 0)
         {
@@ -99,18 +99,18 @@ public class Pathfinder
                 break;
             }
 
-            foreach (var nextEdge in current.Edges)
+            foreach (var nextEdge in current.edges)
             {
-                if (!nextEdge.IsWalkable) continue;
-                var next = nextEdge.To;
-                var newCost = costSoFar[current.Id] + nextEdge.EdgeWeight;
-                if (!costSoFar.ContainsKey(next.Id) || newCost < costSoFar[next.Id])
+                if (!nextEdge.isWalkable) continue;
+                var next = nextEdge.to;
+                var newCost = costSoFar[current.id] + nextEdge.edgeWeight;
+                if (!costSoFar.ContainsKey(next.id) || newCost < costSoFar[next.id])
                 {
-                    costSoFar[next.Id] = newCost;
+                    costSoFar[next.id] = newCost;
                     var priority = newCost + GetDistance(next, goal);
                     frontier.Enqueue(next, priority);
-                    cameFrom[next.Id] = current;
-                    cameThrough[nextEdge.Id] = nextEdge;
+                    cameFrom[next.id] = current;
+                    cameThrough[nextEdge.id] = nextEdge;
                 }
             }
         }
@@ -118,17 +118,17 @@ public class Pathfinder
         {
             var path = new Path()
             {
-                Length = costSoFar[goal.Id]
+                length = costSoFar[goal.id]
             };
             var to = goal;
-            var from = cameFrom[to.Id];
+            var from = cameFrom[to.id];
             while (from != null)
             {
-                path.WayPoints.Insert(0, (cameThrough[$"{from.Id}{to.Id}"]));
+                path.wayPoints.Insert(0, (cameThrough[$"{from.id}{to.id}"]));
                 to = from;
-                from = cameFrom[from.Id];
+                from = cameFrom[from.id];
             }
-            path.Length = costSoFar[goal.Id];
+            path.length = costSoFar[goal.id];
             return path;
         }
         else
@@ -139,7 +139,7 @@ public class Pathfinder
 
     private static float GetDistance(Vertex from, Vertex to)
     {
-        return Distance.Manhattan(from.Position, to.Position);
+        return Distance.Manhattan(from.position, to.position);
     }
 
 }

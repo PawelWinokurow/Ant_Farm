@@ -7,7 +7,7 @@ public abstract class State
 {
     protected Mob mob;
 
-    public STATE Type { get; set; }
+    public STATE type { get; set; }
     public abstract void Tick();
 
     public abstract void CancelJob();

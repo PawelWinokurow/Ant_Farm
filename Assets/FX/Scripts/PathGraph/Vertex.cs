@@ -3,25 +3,25 @@ using System.Collections.Generic;
 
 public class Vertex
 {
-    public string Id;
-    public Vector3 Position;
-    public float PathWeight;
-    public List<Edge> Edges { get; set; }
-    public List<Vertex> Neighbours = new List<Vertex>();
-    public bool IsCentralVertex { get; set; }
-    public FloorHexagon FloorHexagon { get; set; }
+    public string id;
+    public Vector3 position;
+    public float pathWeight;
+    public List<Edge> edges { get; set; }
+    public List<Vertex> neighbours = new List<Vertex>();
+    public bool isCentralVertex { get; set; }
+    public FloorHexagon floorHexagon { get; set; }
     public Vertex(string id, Vector3 position, bool isCentralVertex)
     {
-        Id = id;
-        Position = position;
-        PathWeight = float.MaxValue;
-        Edges = new List<Edge>();
-        IsCentralVertex = isCentralVertex;
+        this.id = id;
+        this.position = position;
+        this.pathWeight = float.MaxValue;
+        this.edges = new List<Edge>();
+        this.isCentralVertex = isCentralVertex;
     }
 
     public void ResetPathWeight()
     {
-        PathWeight = float.MaxValue;
+        pathWeight = float.MaxValue;
     }
 
 }

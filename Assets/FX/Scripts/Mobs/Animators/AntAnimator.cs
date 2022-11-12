@@ -53,13 +53,13 @@ public class AntAnimator : MonoBehaviour
             f = (int)(Time.time * 30f * 1.5f) % current.sequence.Length;
             mf.mesh = current.sequence[f];
 
-            if (worker.CurrentPathEdge != null)
+            if (worker.currentPathEdge != null)
             {
-                forward = worker.CurrentPathEdge.To.Position - transform.position;
+                forward = worker.currentPathEdge.to.position - transform.position;
             }
-            else if (worker.Job?.Destination != null)
+            else if (worker.job?.destination != null)
             {
-                forward = worker.Job.Destination - transform.position;
+                forward = worker.job.destination - transform.position;
             }
 
             Quaternion rot = Quaternion.LookRotation(angl.up, forward);

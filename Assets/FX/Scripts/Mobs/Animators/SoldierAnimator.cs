@@ -24,19 +24,19 @@ namespace AntFarm
             current = run;
             mr.materials = current.materials;
         }
-   
+
         public void Idle()
         {
             current = idle;
             mr.materials = current.materials;
         }
-    
+
 
         void Update()
         {
             f = (int)(Time.time * 30f * 1.5f) % current.sequence.Length;
             mf.mesh = current.sequence[f];
         }
-       
+
     }
 }

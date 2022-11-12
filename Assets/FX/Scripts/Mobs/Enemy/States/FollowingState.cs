@@ -10,14 +10,14 @@ public class FollowingState : State
 
     public FollowingState(Enemy enemy) : base(enemy)
     {
-        this.Type = STATE.GOTO;
+        this.type = STATE.GOTO;
         this.enemy = enemy;
     }
 
     override public void OnStateEnter()
     {
         enemy.SetRunAnimation();
-        job = enemy.Job;
+        job = enemy.job;
     }
     override public void OnStateExit()
     {

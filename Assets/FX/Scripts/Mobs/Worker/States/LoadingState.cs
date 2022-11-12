@@ -7,7 +7,7 @@ public class LoadingState : State
 
     public LoadingState(Worker worker) : base(worker)
     {
-        Type = STATE.LOADING;
+        type = STATE.LOADING;
         this.worker = worker;
     }
 
@@ -17,13 +17,13 @@ public class LoadingState : State
         if (IsDone)
         {
             job.SwapDestination();
-            worker.SetPath(worker.Pathfinder.FindPath(worker.Position, job.Destination, true));
+            worker.SetPath(worker.pathfinder.FindPath(worker.position, job.destination, true));
             worker.SetRunFoodAnimation();
             worker.SetState(new GoToState(worker));
         }
         else if (!IsDone)
         {
-            worker.SurfaceOperations.Loading(job.CollectingHexagon, this, job);
+            worker.surfaceOperations.Loading(job.collectingHexagon, this, job);
         }
     }
 
@@ -35,9 +35,9 @@ public class LoadingState : State
     override public void CancelJob()
 
     {
-        if (worker.CarryingWeight != 0)
+        if (worker.CARRYING_WEIGHT != 0)
         {
-            worker.SetPath(worker.Pathfinder.FindPath(worker.Position, job.StorageHexagon.Position, true));
+            worker.SetPath(worker.pathfinder.FindPath(worker.position, job.storageHexagon.position, true));
             worker.SetRunAnimation();
             worker.SetState(new GoToState(worker));
         }
@@ -50,7 +50,7 @@ public class LoadingState : State
     override public void OnStateEnter()
     {
         IsDone = false;
-        job = (CarrierJob)worker.Job;
+        job = (CarrierJob)worker.job;
         worker.SetIdleAnimation();
     }
 
