@@ -55,8 +55,10 @@ public class Graph
         PathVertices.Where(vertex => vertex.IsCentralVertex).ToList().ForEach(center =>
         {
             var visited = new Dictionary<string, bool>();
+            visited[center.Id] = true;
             foreach (var edge1 in center.Edges)
             {
+
                 foreach (var edge2 in edge1.To.Edges)
                 {
                     if (edge2.To.IsCentralVertex && !visited.ContainsKey(edge2.To.Id))

@@ -10,8 +10,8 @@ public class SurfaceOperations : MonoBehaviour
 
     public void Loading(CollectingHexagon collectingHex, LoadingState state, CarrierJob job)
     {
-        var worker = state.Worker;
-        var workerMaxCanTake = state.Worker.MaxCarryingWeight - worker.CarryingWeight;
+        var worker = state.worker;
+        var workerMaxCanTake = state.worker.MaxCarryingWeight - worker.CarryingWeight;
         var canTake = Mathf.Min((worker.LoadingSpeed * Time.deltaTime), workerMaxCanTake);
         if (canTake >= collectingHex.Quantity)
         {
@@ -27,7 +27,7 @@ public class SurfaceOperations : MonoBehaviour
             var toTake = Mathf.Min(canTake, workerMaxCanTake);
             worker.CarryingWeight += toTake;
             collectingHex.Quantity -= toTake;
-            if (worker.CarryingWeight >= state.Worker.MaxCarryingWeight)
+            if (worker.CarryingWeight >= state.worker.MaxCarryingWeight)
             {
                 state.Done();
             }
@@ -35,7 +35,7 @@ public class SurfaceOperations : MonoBehaviour
     }
     public void Unloading(BaseHexagon storageHex, UnloadingState state, CarrierJob job)
     {
-        var worker = state.Worker;
+        var worker = state.worker;
         var toStore = Mathf.Min((worker.LoadingSpeed * Time.deltaTime), worker.CarryingWeight);
         storageHex.Storage += toStore;
         worker.CarryingWeight -= toStore;

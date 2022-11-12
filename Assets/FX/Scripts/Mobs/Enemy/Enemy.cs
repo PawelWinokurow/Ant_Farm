@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Worker : MonoBehaviour, Mob
+public class Enemy : MonoBehaviour, Mob
 {
     public string Id { get; set; }
     public float ConstructionSpeed = 2f;
@@ -25,9 +25,9 @@ public class Worker : MonoBehaviour, Mob
     public Edge CurrentPathEdge;
     void Awake()
     {
-        AntAnimator = GetComponent<AntAnimator>();
-        AntAnimator.worker = this;
-        SetState(new IdleState(this));
+        // AntAnimator = GetComponent<AntAnimator>();
+        // AntAnimator.worker = this;
+        SetState(new PatrolState(this));
     }
 
     public void SetState(State state)
@@ -36,7 +36,7 @@ public class Worker : MonoBehaviour, Mob
             CurrentState.OnStateExit();
 
         CurrentState = state;
-        gameObject.name = "Worker - " + state.GetType().Name;
+        gameObject.name = "Enemy - " + state.GetType().Name;
 
         if (CurrentState != null)
             CurrentState.OnStateEnter();
@@ -58,7 +58,7 @@ public class Worker : MonoBehaviour, Mob
             }
             else
             {
-                SetState(new IdleState(this));
+                SetState(new PatrolState(this));
             }
         }
     }

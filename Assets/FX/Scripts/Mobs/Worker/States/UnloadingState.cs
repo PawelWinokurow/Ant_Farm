@@ -1,28 +1,28 @@
 using UnityEngine;
 public class UnloadingState : State
 {
-    public Worker Worker;
+    public Worker worker;
     public bool IsDone;
     private CarrierJob job;
 
     public UnloadingState(Worker worker) : base(worker)
     {
         Type = STATE.UNLOADING;
-        Worker = worker;
+        this.worker = worker;
     }
 
     public override void Tick()
     {
-        Worker.AntAnimator.Idle();
+        worker.AntAnimator.Idle();
         if (IsDone)
         {
-            Worker.SetPath(Worker.Pathfinder.FindPath(Worker.Position, job.Destination, true));
-            Worker.SetRunAnimation();
-            Worker.SetState(new GoToState(Worker));
+            worker.SetPath(worker.Pathfinder.FindPath(worker.Position, job.Destination, true));
+            worker.SetRunAnimation();
+            worker.SetState(new GoToState(worker));
         }
         else if (!IsDone)
         {
-            Worker.SurfaceOperations.Unloading(job.StorageHexagon, this, job);
+            worker.SurfaceOperations.Unloading(job.StorageHexagon, this, job);
         }
     }
 
@@ -41,7 +41,7 @@ public class UnloadingState : State
     }
     override public void CancelJob()
     {
-        if (Worker.CarryingWeight == 0)
+        if (worker.CarryingWeight == 0)
         {
             job.Cancel();
         }
@@ -49,8 +49,8 @@ public class UnloadingState : State
     override public void OnStateEnter()
     {
         IsDone = false;
-        job = (CarrierJob)Worker.Job;
-        Worker.SetIdleAnimation();
+        job = (CarrierJob)worker.Job;
+        worker.SetIdleAnimation();
     }
 
     override public void OnStateExit()

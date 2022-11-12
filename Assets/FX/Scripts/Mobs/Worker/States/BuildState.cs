@@ -2,18 +2,18 @@ using UnityEngine;
 
 public class BuildState : State
 {
-    private Worker Worker;
+    private Worker worker;
     public bool IsDone;
     private WorkerJob job;
     public BuildState(Worker worker) : base(worker)
     {
         this.Type = STATE.BUILD;
-        this.Worker = worker;
+        this.worker = worker;
     }
 
     public override void Tick()
     {
-        Worker.Animation();
+        worker.Animation();
     }
 
     public void Done()
@@ -29,9 +29,9 @@ public class BuildState : State
     override public void OnStateEnter()
     {
         IsDone = false;
-        job = (WorkerJob)Worker.Job;
-        Worker.SurfaceOperations.Build(job);
-        Worker.SetIdleAnimation();
+        job = (WorkerJob)worker.Job;
+        worker.SurfaceOperations.Build(job);
+        worker.SetIdleAnimation();
     }
 
     override public void OnStateExit()
