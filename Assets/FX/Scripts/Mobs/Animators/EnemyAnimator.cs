@@ -58,7 +58,7 @@ public class EnemyAnimator : MonoBehaviour
             {
                 forward = enemy.CurrentPathEdge.To.Position - transform.position;
             }
-            else if (job?.Target.Position != null)
+            else if (job?.Target?.Position != null)
             {
                 forward = job.Target.Position - transform.position;
             }

@@ -25,7 +25,10 @@ public class AttackState : State
     }
 
     override public void CancelJob()
-    { }
+    {
+        enemy.Job.Cancel();
+        enemy.Job = null;
+    }
 
 
     public override void Tick()

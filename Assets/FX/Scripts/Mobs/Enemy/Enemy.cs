@@ -69,9 +69,9 @@ public class Enemy : MonoBehaviour, Mob
     {
         var target = ((EnemyJob)Job).Target;
         target.Hp -= AttackStrength * Time.deltaTime;
-        Debug.Log(target.Hp);
         if (target.Hp <= 0)
         {
+            CancelJob();
             target.DestroyMob();
             SetState(new PatrolState(this));
         }
@@ -96,28 +96,6 @@ public class Enemy : MonoBehaviour, Mob
 
     public void Move(int speed)
     {
-        DrawDebugPath();
-        if (t < lerpDuration)
-        {
-            var a = (float)Mathf.Min(t / lerpDuration, 1f);
-            transform.position = Vector3.Lerp(CurrentPathEdge.From.Position, CurrentPathEdge.To.Position, a);
-            t += Time.deltaTime * speed;
-        }
-        else if (Path.HasWaypoints)
-        {
-            t -= lerpDuration;
-            SetCurrentPathEdge();
-        }
-        else
-        {
-            CurrentPathEdge = null;
-        }
-    }
-    public void Attack(int speed)
-    {
-        ((EnemyJob)Job).Target.Hp -= Time.deltaTime * AttackStrength;
-        Debug.Log(((EnemyJob)Job).Target.Hp);
-
         DrawDebugPath();
         if (t < lerpDuration)
         {
