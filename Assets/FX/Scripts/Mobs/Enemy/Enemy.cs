@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DataStructures.ViliWonka.KDTree;
@@ -24,14 +25,23 @@ public class Enemy : MonoBehaviour, Mob
     private float t = 0f;
     public Edge currentPathEdge;
     public float hp { get; set; }
-
+    public Store store;
     public List<Mob> allMobs = new List<Mob>();
-    void Awake()
+    void Start()
     {
         animator = GetComponent<EnemyAnimator>();
         animator.enemy = this;
         hp = 250f;
         SetState(new PatrolState(this));
+    }
+
+    IEnumerator DistributeJobsCoroutine()
+    {
+        while (true)
+        {
+            SearchTarget();
+            yield return new WaitForSeconds(0.3f);
+        }
     }
 
     public void SetState(State state)
@@ -53,10 +63,6 @@ public class Enemy : MonoBehaviour, Mob
         {
             if (path.HasWaypoints) SetcurrentPathEdge();
         }
-        else
-        {
-            SetState(new PatrolState(this));
-        }
     }
 
     public void Hit()
@@ -64,8 +70,8 @@ public class Enemy : MonoBehaviour, Mob
         target.mob.hp -= ATTACK_STRENGTH * Time.deltaTime;
         if (target.mob.hp <= 0)
         {
-            CancelJob();
             target.mob.Kill();
+            CancelJob();
             SetState(new PatrolState(this));
         }
     }
@@ -123,7 +129,7 @@ public class Enemy : MonoBehaviour, Mob
     public void Rerouting()
     {
         target.hexId = target.mob.currentHex.id;
-        SetPath(pathfinder.FindPath(transform.position, target.mob.position, true));
+        SetPath(pathfinder.FindPath(position, target.mob.currentHex.position, true));
     }
 
     void Update()
@@ -148,28 +154,41 @@ public class Enemy : MonoBehaviour, Mob
         Animation = animator.IdleFight;
     }
 
-    public void SearchTarget()
+    public EnemyTarget SearchTarget()
     {
-        var allMobsClone = new List<Mob>(allMobs);
-        KDTree mobPositionsTree = new KDTree(allMobsClone.Select(mob => mob.position).ToArray());
+        var notDeadMobs = new List<Mob>(store.allMobs.Where(mob => mob.currentState.type != STATE.DEAD));
+        KDTree mobPositionsTree = new KDTree(notDeadMobs.Select(mob => mob.position).ToArray());
         KDQuery query = new KDQuery();
-
         List<int> queryResults = new List<int>();
-        query.Radius(mobPositionsTree, position, 20f, queryResults);
-        if (queryResults.Count == 0) { return; }
+        query.Radius(mobPositionsTree, position, 200f, queryResults);
+        if (queryResults.Count == 0) { return null; }
         for (int i = 0; i < queryResults.Count; i++)
         {
-            var targetMob = allMobsClone[queryResults[i]];
+            var targetMob = notDeadMobs[queryResults[i]];
             var path = pathfinder.FindPath(position, targetMob.position, true);
             if (path != null)
             {
-                target = new EnemyTarget($"{id}_{targetMob.id}", this, targetMob);
+                var target = new EnemyTarget($"{id}_{targetMob.id}", this, targetMob);
                 target.path = path;
-                SetState(new FollowingState(this));
-                SetPath(path);
-                return;
+                target.mob = targetMob;
+                return target;
             }
         }
+        return null;
+    }
+
+    public void SetTarget(EnemyTarget target)
+    {
+        this.target = target;
+        if (target != null)
+        {
+            SetPath(target.path);
+        }
+    }
+
+    public bool IsTargetInNeighbourhood()
+    {
+        return currentHex.vertex.neighbours.Select(vertex => vertex.id).Contains(target.mob.currentHex.id);
     }
 
     void DrawDebugPath()

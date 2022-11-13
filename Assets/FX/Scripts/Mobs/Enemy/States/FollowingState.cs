@@ -4,7 +4,6 @@ public class FollowingState : State
 {
 
     private Enemy enemy;
-    private EnemyTarget enemyTarget;
     private int MOVEMENT_SPEED = 10;
 
 
@@ -17,7 +16,6 @@ public class FollowingState : State
     override public void OnStateEnter()
     {
         enemy.SetRunAnimation();
-        enemyTarget = enemy.target;
     }
     override public void OnStateExit()
     {
@@ -30,18 +28,18 @@ public class FollowingState : State
 
     public override void Tick()
     {
-        if (enemy.target.hexId != enemy.target.mob.currentHex.id)
+        if (enemy.IsTargetInNeighbourhood())
+        {
+            enemy.SetState(new AttackState(enemy));
+        }
+        else if (enemy.target.hexId != enemy.target.mob.currentHex.id && !enemy.IsTargetInNeighbourhood())
         {
             enemy.Rerouting();
         }
-        if (enemy.HasPath)
+        else if (enemy.HasPath)
         {
             enemy.Animation();
             enemy.Move(MOVEMENT_SPEED);
-        }
-        else
-        {
-            enemy.SetState(new AttackState(enemy));
         }
     }
 

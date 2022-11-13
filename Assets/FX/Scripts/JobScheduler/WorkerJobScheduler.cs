@@ -51,17 +51,16 @@ public class WorkerJobScheduler : MonoBehaviour
     {
         worker.surfaceOperations = surfaceOperations;
         worker.pathfinder = pathfinder;
-        worker.Kill = () => DestroyWorker(worker);
+        worker.Kill = () => Kill(worker);
         freeWorkers.Add(worker);
         allWorkers.Add(worker);
-
     }
 
-    private void DestroyWorker(Worker worker)
+    private void Kill(Worker worker)
     {
         busyWorkers.Remove(worker);
         freeWorkers.Remove(worker);
-        worker.job?.Cancel();
+        worker.CancelJob();
         worker.SetState(new DeadState(worker));
     }
 

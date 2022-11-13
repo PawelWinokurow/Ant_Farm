@@ -46,12 +46,27 @@ public class Pathfinder
 
     private Path PathToSomeNeighbour(Vertex from)
     {
-        var neighbours = from.neighbours.OrderBy(a => Guid.NewGuid()).ToList();
-        foreach (var to in neighbours)
+        if (from.neighbours.Count != 0)
         {
-            if (to.edges[0].isWalkable)
+
+            var neighbours = from.neighbours.OrderBy(a => Guid.NewGuid()).ToList();
+            foreach (var to in neighbours)
             {
-                return FindPath(from.position, to.position);
+                if (to.edges[0].isWalkable)
+                {
+                    return FindPath(from.position, to.position);
+                }
+            }
+        }
+        else
+        {
+            var edges = from.edges.OrderBy(a => Guid.NewGuid()).ToList();
+            foreach (var edge in edges)
+            {
+                if (edge.to.isCentralVertex)
+                {
+                    return FindPath(from.position, edge.to.position);
+                }
             }
         }
         return null;

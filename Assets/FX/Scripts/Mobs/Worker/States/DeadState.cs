@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class DeadState : State
 {
-    private Mob mob;
+    // private Mob mob;
     public DeadState(Mob mob) : base(mob)
     {
         this.type = STATE.DEAD;
-        this.mob = mob;
+        // this.mob = mob;
     }
 
     public override void Tick()

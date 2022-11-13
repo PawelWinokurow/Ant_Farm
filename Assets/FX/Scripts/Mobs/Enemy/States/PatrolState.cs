@@ -8,14 +8,20 @@ public class PatrolState : State
 
     public PatrolState(Enemy enemy) : base(enemy)
     {
-        this.type = STATE.IDLE;
+        this.type = STATE.PATROL;
         this.enemy = enemy;
         enemy.path = null;
     }
     public override void Tick()
     {
         enemy.Animation();
-        if (enemy.HasPath)
+        var target = enemy.SearchTarget();
+        if (target != null)
+        {
+            enemy.SetTarget(target);
+            enemy.SetState(new FollowingState(enemy));
+        }
+        else if (enemy.HasPath)
         {
             enemy.Move(MOVEMENT_SPEED);
             if (enemy.path.wayPoints.Count == 1)
@@ -23,17 +29,13 @@ public class PatrolState : State
                 enemy.ExpandRandomWalk();
             }
         }
-        else
-        {
-            enemy.SetRandomWalk();
-        }
-        enemy.SearchTarget();
     }
 
     override public void OnStateEnter()
     {
         enemy.RemovePath();
         enemy.SetRunAnimation();
+        enemy.SetRandomWalk();
     }
     override public void OnStateExit()
     {

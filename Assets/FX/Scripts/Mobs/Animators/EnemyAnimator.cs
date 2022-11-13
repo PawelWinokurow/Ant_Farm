@@ -52,16 +52,14 @@ public class EnemyAnimator : MonoBehaviour
         {
             f = (int)(Time.time * 30f * 1.5f) % current.sequence.Length;
             mf.mesh = current.sequence[f];
-
-            if (enemy.currentPathEdge != null)
-            {
-                forward = enemy.currentPathEdge.to.position - transform.position;
-            }
-            else if (enemy.target?.mob?.position != null)
+            if (enemy.currentState.type == STATE.ATTACK && enemy.target?.mob != null)
             {
                 forward = enemy.target.mob.position - transform.position;
             }
-
+            else if (enemy.currentPathEdge != null)
+            {
+                forward = enemy.currentPathEdge.to.position - transform.position;
+            }
             Quaternion rot = Quaternion.LookRotation(angl.up, forward);
             smoothRot = Quaternion.Slerp(smoothRot, rot, Time.deltaTime * 10f);
             mf.transform.rotation = smoothRot;

@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -12,7 +10,7 @@ public class MobFactory : MonoBehaviour
     public SurfaceOperations surfaceOperations;
     public Worker workerPrefab;
     public Enemy enemyPrefab;
-    public List<Mob> allMobs = new List<Mob>();
+    public Store store;
     public void AddWorker()
     {
         for (int i = 0; i < 1; i++)
@@ -38,18 +36,17 @@ public class MobFactory : MonoBehaviour
         worker.id = id;
         worker.currentHex = surface.PositionToHex(spawnPosition);
         workerJobScheduler.AddWorker(worker);
-        allMobs.Add(worker);
+        store.AddMob(worker);
         yield break;
     }
     IEnumerator SpawnEnemy(string id)
     {
         var spawnPosition = surface.PositionToHex(surface.baseHex.position + new Vector3(10, 0, 20)).position;
-
         Enemy enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
         enemy.id = id;
         enemy.currentHex = surface.PositionToHex(spawnPosition);
         enemy.pathfinder = workerJobScheduler.pathfinder;
-        enemy.allMobs = allMobs;
+        enemy.store = store;
         yield break;
     }
 }
