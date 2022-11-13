@@ -65,16 +65,22 @@ public class Enemy : MonoBehaviour, Mob
         }
     }
 
-    public void Hit()
+    public void Hit(float damage)
     {
-        target.mob.hp -= ATTACK_STRENGTH * Time.deltaTime;
+
+    }
+
+    public void Attack()
+    {
+        target.mob.Hit(ATTACK_STRENGTH * Time.deltaTime);
         if (target.mob.hp <= 0)
         {
-            target.mob.Kill();
             CancelJob();
             SetState(new PatrolState(this));
         }
     }
+
+
 
     public void RemovePath()
     {

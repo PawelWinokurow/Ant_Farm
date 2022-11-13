@@ -31,7 +31,7 @@ public class AttackState : State
         if (enemy.IsTargetInNeighbourhood())
         {
             enemy.Animation();
-            enemy.Hit();
+            enemy.Attack();
         }
         else
         {

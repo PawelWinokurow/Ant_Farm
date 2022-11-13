@@ -11,6 +11,7 @@ public class Worker : MonoBehaviour, Mob
     public int MAX_CARRYING_WEIGHT = 100;
     public float CARRYING_WEIGHT = 0;
     public AntAnimator animator { get; set; }
+    public Health healthAnimator { get; set; }
     public Action Animation { get; set; }
     public Vector3 position { get => transform.position; }
     public WorkerJob job { get; set; }
@@ -28,9 +29,11 @@ public class Worker : MonoBehaviour, Mob
     public float hp { get; set; }
     void Awake()
     {
+        hp = 100f;
         animator = GetComponent<AntAnimator>();
         animator.worker = this;
-        hp = 50f;
+        healthAnimator = GetComponent<Health>();
+        healthAnimator.MAX_HEALTH = hp;
         SetState(new IdleState(this));
     }
 
@@ -146,6 +149,15 @@ public class Worker : MonoBehaviour, Mob
         Animation = animator.Idle;
     }
 
+    public void Hit(float damage)
+    {
+        hp -= damage;
+        healthAnimator.Hit(damage);
+        if (hp <= 0)
+        {
+            Kill();
+        }
+    }
     void DrawDebugPath()
     {
         if (path != null && path.HasWaypoints)
