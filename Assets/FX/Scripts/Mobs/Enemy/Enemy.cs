@@ -137,7 +137,18 @@ public class Enemy : MonoBehaviour, Mob
     public void Rerouting()
     {
         target.hexId = target.mob.currentHex.id;
-        SetPath(pathfinder.FindPath(position, target.mob.currentHex.position, true));
+        if (currentPathEdge != null)
+        {
+            var pathNew = pathfinder.FindPath(currentPathEdge.to.position, target.mob.currentHex.position, true);
+            if (pathNew != null)
+            {
+                path = pathNew;
+            }
+        }
+        else
+        {
+            SetPath(pathfinder.FindPath(position, target.mob.currentHex.position, true));
+        }
     }
 
     void Update()
