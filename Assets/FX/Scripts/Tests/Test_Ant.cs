@@ -51,7 +51,7 @@ namespace AntFarm
 
             if (Input.GetKeyDown(KeyCode.S))
             {
-                gameObject.GetComponent<Health>().Hit(5);
+                gameObject.GetComponent<Health>().Hit(10);
             }
 
         }

@@ -127,7 +127,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4135837485797866603}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dff0636e8387d774189a91e4269404f1, type: 3}
   m_Name: 
@@ -139,7 +139,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4135837485797866603}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e938e625ca87f641bec5d2636f6d38f, type: 3}
   m_Name: 
@@ -167,12 +167,6 @@ MonoBehaviour:
   mf: {fileID: 2383876763917858186}
   mr: {fileID: 2360862903416325171}
   angl: {fileID: 5335103204996291558}
-  deadFX_prefab: {fileID: 3272130487407376759, guid: 39c28e67acc0741eda505500a9133922, type: 3}
-  popUp_prefad: {fileID: 668541531679047375, guid: 8868b609e6e2e446ebda1e61c70b03b8, type: 3}
-  progressbar: {fileID: 1711813855352781168}
-  healthMax: 100
-  health: 100
-  healTime: 10
 --- !u!114 &1285057584965964699
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,7 +179,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad566de7ab78790458dc979655823c2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mf: {fileID: 2383876763917858186}
   mr: {fileID: 2360862903416325171}
   deadFX_prefab: {fileID: 3272130487407376759, guid: 39c28e67acc0741eda505500a9133922, type: 3}
   popUp_prefad: {fileID: 668541531679047375, guid: 8868b609e6e2e446ebda1e61c70b03b8, type: 3}

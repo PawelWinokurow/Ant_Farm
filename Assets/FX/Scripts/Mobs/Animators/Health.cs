@@ -6,7 +6,6 @@ namespace AntFarm
 {
     public class Health : MonoBehaviour
     {
-        public MeshFilter mf;
         public MeshRenderer mr;
 
         public GameObject deadFX_prefab;
@@ -38,9 +37,13 @@ namespace AntFarm
 
             if (hitTime <= 0.2f)//мигание при ударе
             {
-
-                bodyProps.SetFloat("_Blink_FX", 1f - Mathf.Clamp(hitTime / 0.1f * 100f / healthMax, 0f, 1f));
-                mr.SetPropertyBlock(bodyProps);
+                if (!isDead)
+                {
+                    mr.transform.localScale = Vector3.one * ExtensionMethods.RemapClamp(hitTime / 0.1f, 0f, 1f, 1.2f, 1f);//пульсация
+                }
+                    bodyProps.SetFloat("_Blink_FX", ExtensionMethods.RemapClamp(hitTime, 0f, 0.1f, 1f, 0f));//мигание
+                    mr.SetPropertyBlock(bodyProps);
+              
             }
 
             if (health < healthMax)
@@ -65,11 +68,10 @@ namespace AntFarm
             mr.enabled = true;
             isDead = false;
             health = healthMax;
-
+            mr.transform.localScale = Vector3.one;
         }
         public void Hit(int damage)
         {
-            hitTime = 0f;
             health -= damage;
             if (health > 0)//пока живы
             {
@@ -85,11 +87,13 @@ namespace AntFarm
                     StartCoroutine(Dead_Cor());
                 }
             }
+            hitTime = 0f;
         }
         private IEnumerator Dead_Cor()
         {
 
             GameObject fx = Instantiate(deadFX_prefab, transform.position, transform.rotation);
+            mr.transform.localScale = Vector3.one * 1.3f;
             yield return new WaitForSeconds(0.15f);
             mr.enabled = false;
         }

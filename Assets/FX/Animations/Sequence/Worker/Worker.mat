@@ -89,7 +89,7 @@ Material:
     - _ZWrite: 1
     - __dirty: 0
     m_Colors:
-    - _BlinkFX_Color: {r: 1, g: 0.86875033, b: 0, a: 1}
+    - _BlinkFX_Color: {r: 0.13056087, g: 1, b: 0, a: 1}
     - _Color: {r: 0.5647059, g: 0.23137255, b: 0, a: 1}
     - _Color1: {r: 0.2169811, g: 0.08383361, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
