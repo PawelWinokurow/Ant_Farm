@@ -1,9 +1,10 @@
+using UnityEngine;
+
 public class AttackState : State
 {
 
     private Enemy enemy;
     private EnemyTarget enemyTarget;
-
     public AttackState(Enemy enemy) : base(enemy)
     {
         this.type = STATE.ATTACK;
@@ -31,12 +32,18 @@ public class AttackState : State
         if (enemy.IsTargetInNeighbourhood())
         {
             enemy.Animation();
-            enemy.Attack();
+            enemy.accumulatedDamage += enemy.ATTACK_STRENGTH * Time.deltaTime;
+            if (enemy.animator.fOld < 14 && enemy.animator.f >= 14)
+            {
+                enemy.Attack();
+                enemy.accumulatedDamage = 0f;
+            }
         }
         else
         {
             enemy.SetState(new FollowingState(enemy));
         }
+        enemy.animator.fOld = enemy.animator.f;
     }
 
 }

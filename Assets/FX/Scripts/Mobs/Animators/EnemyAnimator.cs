@@ -12,7 +12,8 @@ public class EnemyAnimator : MonoBehaviour
     public AnimationsScriptableObject run;
     public AnimationsScriptableObject runFight;
 
-    private int f;
+    public int f = 0;
+    public int fOld;
     public MeshFilter mf;
     public MeshRenderer mr;
     private Vector3 forward;

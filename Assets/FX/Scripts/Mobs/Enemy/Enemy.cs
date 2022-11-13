@@ -27,6 +27,8 @@ public class Enemy : MonoBehaviour, Mob
     public float hp { get; set; }
     public Store store;
     public List<Mob> allMobs = new List<Mob>();
+    public float accumulatedDamage = 0f;
+
     void Start()
     {
         animator = GetComponent<EnemyAnimator>();
@@ -72,7 +74,7 @@ public class Enemy : MonoBehaviour, Mob
 
     public void Attack()
     {
-        target.mob.Hit(ATTACK_STRENGTH * Time.deltaTime);
+        target.mob.Hit(accumulatedDamage);
         if (target.mob.hp <= 0)
         {
             CancelJob();
