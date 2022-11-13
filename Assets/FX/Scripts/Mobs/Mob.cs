@@ -16,7 +16,7 @@ public interface Mob
     public void SetPath(Path path);
     public void Move(int speed);
     public void RemovePath();
-    public void Hit(float damage);
+    public void Hit(int damage);
 
 
 }

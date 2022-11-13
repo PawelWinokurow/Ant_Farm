@@ -167,9 +167,11 @@ MonoBehaviour:
   idleFight: {fileID: 11400000, guid: 8e4ae8eea964213468c0742caf297070, type: 2}
   run: {fileID: 11400000, guid: 7cf34025e5e32684ea6ab463e13a605b, type: 2}
   runFight: {fileID: 11400000, guid: 7198fc0f3aa53d44c8f8b95b4d90efda, type: 2}
+  f: 0
+  fOld: 0
   mf: {fileID: 876968272109895197}
   mr: {fileID: 4524242656641080326}
-  angl: {fileID: 7321344284963672305}
+  angl: {fileID: 1654450027167971168}
 --- !u!114 &7321344284963672307
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,4 +196,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c29461a2da24b66458f3217c2c319cb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Attack: 2
+  ATTACK_STRENGTH: 10
+  store: {fileID: 0}
+  accumulatedDamage: 0

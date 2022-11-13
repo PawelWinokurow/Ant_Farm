@@ -68,13 +68,13 @@ public class Health : MonoBehaviour
         health = MAX_HEALTH;
         mr.transform.localScale = Vector3.one;
     }
-    public void Hit(float damage)
+    public void Hit(int damage)
     {
         health -= damage;
         if (health > 0)//���� ����
         {
 
-            HealthPopUp healthPopUp = Instantiate(popUp_prefad, transform.position, transform.rotation);//��������� ����� � ��������
+            HealthPopUp healthPopUp = Instantiate(popUp_prefad, transform.position, transform.rotation, transform);//��������� ����� � ��������
             healthPopUp.Hit(damage);
         }
         else

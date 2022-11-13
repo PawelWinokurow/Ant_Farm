@@ -149,7 +149,7 @@ public class Worker : MonoBehaviour, Mob
         Animation = animator.Idle;
     }
 
-    public void Hit(float damage)
+    public void Hit(int damage)
     {
         hp -= damage;
         healthAnimator.Hit(damage);

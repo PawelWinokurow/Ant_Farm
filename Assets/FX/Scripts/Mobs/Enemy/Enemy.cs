@@ -67,14 +67,14 @@ public class Enemy : MonoBehaviour, Mob
         }
     }
 
-    public void Hit(float damage)
+    public void Hit(int damage)
     {
 
     }
 
     public void Attack()
     {
-        target.mob.Hit(accumulatedDamage);
+        target.mob.Hit((int)Mathf.Round(accumulatedDamage));
         if (target.mob.hp <= 0)
         {
             CancelJob();
