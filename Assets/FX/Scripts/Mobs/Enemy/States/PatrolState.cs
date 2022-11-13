@@ -8,9 +8,9 @@ public class PatrolState : State
 
     public PatrolState(Enemy enemy) : base(enemy)
     {
-        this.Type = STATE.IDLE;
+        this.type = STATE.IDLE;
         this.enemy = enemy;
-        enemy.Path = null;
+        enemy.path = null;
     }
     public override void Tick()
     {
@@ -18,7 +18,7 @@ public class PatrolState : State
         if (enemy.HasPath)
         {
             enemy.Move(MOVEMENT_SPEED);
-            if (enemy.Path.WayPoints.Count == 1)
+            if (enemy.path.wayPoints.Count == 1)
             {
                 enemy.ExpandRandomWalk();
             }

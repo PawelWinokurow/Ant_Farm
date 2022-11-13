@@ -7,29 +7,29 @@ public class UnloadingState : State
 
     public UnloadingState(Worker worker) : base(worker)
     {
-        Type = STATE.UNLOADING;
+        type = STATE.UNLOADING;
         this.worker = worker;
     }
 
     public override void Tick()
     {
-        worker.AntAnimator.Idle();
+        worker.animator.Idle();
         if (IsDone)
         {
-            worker.SetPath(worker.Pathfinder.FindPath(worker.Position, job.Destination, true));
+            worker.SetPath(worker.pathfinder.FindPath(worker.position, job.destination, true));
             worker.SetRunAnimation();
             worker.SetState(new GoToState(worker));
         }
         else if (!IsDone)
         {
-            worker.SurfaceOperations.Unloading(job.StorageHexagon, this, job);
+            worker.surfaceOperations.Unloading(job.storageHexagon, this, job);
         }
     }
 
     public void Done()
     {
 
-        if (job.CollectingHexagon.FloorHexagon.Type == HEX_TYPE.FOOD)
+        if (job.collectingHexagon.floorHexagon.type == HEX_TYPE.FOOD)
         {
             job.SwapDestination();
         }
@@ -41,7 +41,7 @@ public class UnloadingState : State
     }
     override public void CancelJob()
     {
-        if (worker.CarryingWeight == 0)
+        if (worker.CARRYING_WEIGHT == 0)
         {
             job.Cancel();
         }
@@ -49,7 +49,7 @@ public class UnloadingState : State
     override public void OnStateEnter()
     {
         IsDone = false;
-        job = (CarrierJob)worker.Job;
+        job = (CarrierJob)worker.job;
         worker.SetIdleAnimation();
     }
 

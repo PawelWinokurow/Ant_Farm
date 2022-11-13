@@ -5,17 +5,17 @@ using UnityEngine;
 
 public class BaseHexagon : MonoBehaviour, Hexagon
 {
-    public string Id { get => FloorHexagon.Id; set => FloorHexagon.Id = value; }
-    public Vector3 Position { get => FloorHexagon.Position; set => FloorHexagon.Position = value; }
-    public HEX_TYPE Type { get => FloorHexagon.Type; set => FloorHexagon.Type = value; }
-    public FloorHexagon FloorHexagon { get; set; }
-    public float Storage { get; set; }
+    public string id { get => floorHexagon.id; set => floorHexagon.id = value; }
+    public Vector3 position { get => floorHexagon.position; set => floorHexagon.position = value; }
+    public HEX_TYPE type { get => floorHexagon.type; set => floorHexagon.type = value; }
+    public FloorHexagon floorHexagon { get; set; }
+    public float storage { get; set; }
 
     public static BaseHexagon CreateHexagon(FloorHexagon parent, BaseHexagon baseHexPrefab)
     {
-        BaseHexagon hex = Instantiate(baseHexPrefab, parent.Position, Quaternion.identity, parent.transform);
-        hex.FloorHexagon = parent;
-        hex.FloorHexagon.Child = hex;
+        BaseHexagon hex = Instantiate(baseHexPrefab, parent.position, Quaternion.identity, parent.transform);
+        hex.floorHexagon = parent;
+        hex.floorHexagon.child = hex;
         return hex;
     }
 

@@ -1,22 +1,23 @@
 using UnityEngine;
 
-public class FollowState : State
+public class FollowingState : State
 {
 
     private Enemy enemy;
     private Job job;
-    private int MOVEMENT_SPEED = 7;
+    private int MOVEMENT_SPEED = 10;
 
 
-    public FollowState(Enemy enemy) : base(enemy)
+    public FollowingState(Enemy enemy) : base(enemy)
     {
-        this.Type = STATE.GOTO;
+        this.type = STATE.GOTO;
         this.enemy = enemy;
     }
 
     override public void OnStateEnter()
     {
-        job = enemy.Job;
+        enemy.SetRunAnimation();
+        job = enemy.job;
     }
     override public void OnStateExit()
     {
@@ -25,10 +26,6 @@ public class FollowState : State
 
     override public void CancelJob()
     {
-        if (enemy.CarryingWeight == 0)
-        {
-            job.Cancel();
-        }
     }
 
     public override void Tick()
@@ -37,6 +34,10 @@ public class FollowState : State
         {
             enemy.Animation();
             enemy.Move(MOVEMENT_SPEED);
+        }
+        else
+        {
+            enemy.SetState(new AttackState(enemy));
         }
     }
 

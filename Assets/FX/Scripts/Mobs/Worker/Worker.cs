@@ -5,56 +5,60 @@ using UnityEngine;
 
 public class Worker : MonoBehaviour, Mob
 {
-    public string Id { get; set; }
-    public float ConstructionSpeed = 2f;
-    public int LoadingSpeed = 50;
-    public int MaxCarryingWeight = 100;
-    public float CarryingWeight = 0;
-    public AntAnimator AntAnimator { get; set; }
+    public string id { get; set; }
+    public float CONSTRUCTION_SPEED = 2f;
+    public int LOADING_SPEED = 50;
+    public int MAX_CARRYING_WEIGHT = 100;
+    public float CARRYING_WEIGHT = 0;
+    public AntAnimator animator { get; set; }
     public Action Animation { get; set; }
-    public Vector3 Position { get => transform.position; }
-    public Job Job { get; set; }
-    public Path Path { get; set; }
-    public State CurrentState { get; set; }
-    public Pathfinder Pathfinder { get; set; }
-    public SurfaceOperations SurfaceOperations { get; set; }
-    public bool HasPath { get => Path != null && CurrentPathEdge != null; }
-    public bool HasJob { get => Job != null; }
+    public Vector3 position { get => transform.position; }
+    public Job job { get; set; }
+    public Path path { get; set; }
+    public State currentState { get; set; }
+    public Pathfinder pathfinder { get; set; }
+    public SurfaceOperations surfaceOperations { get; set; }
+    public bool HasPath { get => path != null && currentPathEdge != null; }
+    public bool HasJob { get => job != null; }
     private float lerpDuration;
     private float t = 0f;
-    public Edge CurrentPathEdge;
+    public Edge currentPathEdge;
+    public Action Kill { get; set; }
+    public FloorHexagon currentHex { get; set; }
+    public float hp { get; set; }
     void Awake()
     {
-        AntAnimator = GetComponent<AntAnimator>();
-        AntAnimator.worker = this;
+        animator = GetComponent<AntAnimator>();
+        animator.worker = this;
+        hp = 50f;
         SetState(new IdleState(this));
     }
 
     public void SetState(State state)
     {
-        if (CurrentState != null)
-            CurrentState.OnStateExit();
+        if (currentState != null)
+            currentState.OnStateExit();
 
-        CurrentState = state;
+        currentState = state;
         gameObject.name = "Worker - " + state.GetType().Name;
 
-        if (CurrentState != null)
-            CurrentState.OnStateEnter();
+        if (currentState != null)
+            currentState.OnStateEnter();
     }
 
     public void SetPath(Path path)
     {
-        Path = path;
-        if (Path != null)
+        this.path = path;
+        if (path != null)
         {
-            if (Path.HasWaypoints) SetCurrentPathEdge();
-            else CurrentState.OnStateEnter();
+            if (path.HasWaypoints) SetcurrentPathEdge();
+            else currentState.OnStateEnter();
         }
         else
         {
             if (HasJob)
             {
-                Job.Cancel();
+                job.Cancel();
             }
             else
             {
@@ -65,96 +69,96 @@ public class Worker : MonoBehaviour, Mob
 
     public void RemovePath()
     {
-        Path = null;
+        path = null;
     }
 
     public void SetRandomWalk()
     {
-        SetPath(Pathfinder.RandomWalk(Position, 5));
+        SetPath(pathfinder.RandomWalk(position, 5));
     }
 
     public void ExpandRandomWalk()
     {
-        var newRandomWalk = Pathfinder.RandomWalk(Path.WayPoints[Path.WayPoints.Count - 1].To.Position, 5);
-        Path.Length += newRandomWalk.Length;
-        Path.WayPoints.AddRange(newRandomWalk.WayPoints);
+        var newRandomWalk = pathfinder.RandomWalk(path.wayPoints[path.wayPoints.Count - 1].to.position, 5);
+        path.length += newRandomWalk.length;
+        path.wayPoints.AddRange(newRandomWalk.wayPoints);
     }
 
     public void Move(int speed)
     {
         DrawDebugPath();
-        if (!CurrentPathEdge.IsWalkable)
+        if (!currentPathEdge.isWalkable)
         {
             Rerouting();
         }
         else if (t < lerpDuration)
         {
             var a = (float)Mathf.Min(t / lerpDuration, 1f);
-            transform.position = Vector3.Lerp(CurrentPathEdge.From.Position, CurrentPathEdge.To.Position, a);
+            transform.position = Vector3.Lerp(currentPathEdge.from.position, currentPathEdge.to.position, a);
             t += Time.deltaTime * speed;
         }
-        else if (Path.HasWaypoints)
+        else if (path.HasWaypoints)
         {
             t -= lerpDuration;
-            SetCurrentPathEdge();
+            SetcurrentPathEdge();
         }
         else
         {
-            CurrentPathEdge = null;
+            currentPathEdge = null;
         }
     }
 
-    private void SetCurrentPathEdge()
+    private void SetcurrentPathEdge()
     {
-
-        CurrentPathEdge = Path.WayPoints[0];
-        Path.WayPoints.RemoveAt(0);
-        lerpDuration = Distance.Manhattan(CurrentPathEdge.From.Position, CurrentPathEdge.To.Position);
+        currentPathEdge = path.wayPoints[0];
+        currentHex = currentPathEdge.floorHexagon;
+        path.wayPoints.RemoveAt(0);
+        lerpDuration = Vector3.Distance(currentPathEdge.from.position, currentPathEdge.to.position);
     }
 
     public void CancelJob()
     {
-        CurrentState.CancelJob();
+        currentState.CancelJob();
     }
 
-    void Rerouting()
+    public void Rerouting()
     {
-        var to = Path.HasWaypoints ? Path.WayPoints[Path.WayPoints.Count - 1].To.Position : CurrentPathEdge.To.Position;
-        var path = Pathfinder.FindPath(transform.position, to, HasJob ? true : false);
-        SetPath(path);
+        var to = path.HasWaypoints ? path.wayPoints[path.wayPoints.Count - 1].to.position : currentPathEdge.to.position;
+        var pathNew = pathfinder.FindPath(position, to, HasJob ? true : false);
+        SetPath(pathNew);
     }
 
     void Update()
     {
-        CurrentState.Tick();
+        currentState.Tick();
     }
 
     public void SetRunAnimation()
     {
-        Animation = AntAnimator.Run;
+        Animation = animator.Run;
     }
     public void SetRunFoodAnimation()
     {
-        Animation = AntAnimator.RunFood;
+        Animation = animator.RunFood;
     }
     public void SetIdleAnimation()
     {
-        Animation = AntAnimator.Idle;
+        Animation = animator.Idle;
     }
 
     void DrawDebugPath()
     {
-        if (Path != null && Path.HasWaypoints)
+        if (path != null && path.HasWaypoints)
         {
-            var path = new List<Edge>() { new Edge() { From = new Vertex("", transform.position, false), To = CurrentPathEdge.To } };
+            var pathDebug = new List<Edge>() { new Edge() { from = new Vertex("", transform.position, false), to = currentPathEdge.to } };
 
-            for (int j = 1; j < Path.WayPoints.Count; j++)
+            for (int j = 1; j < path.wayPoints.Count; j++)
             {
-                path.Add(Path.WayPoints[j]);
+                pathDebug.Add(path.wayPoints[j]);
             }
-            for (int i = 0; i < path.Count; i++)
+            for (int i = 0; i < pathDebug.Count; i++)
             {
-                Debug.DrawLine(path[i].From.Position, path[i].To.Position, Color.blue);
+                Debug.DrawLine(pathDebug[i].from.position, pathDebug[i].to.position, Color.blue);
             }
         }
     }

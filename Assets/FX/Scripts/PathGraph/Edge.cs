@@ -1,19 +1,20 @@
 public class Edge
 {
-    public string Id;
-    public Vertex From;
-    public Vertex To;
-    public float EdgeWeight;
-    public bool IsWalkable;
+    public string id;
+    public Vertex from;
+    public Vertex to;
+    public float edgeWeight;
+    public bool isWalkable;
+    public FloorHexagon floorHexagon;
 
-    public Edge(string id, Vertex from, Vertex to, float edgeWeight, bool isWalkable = true)
+    public Edge(string id, Vertex from, Vertex to, float edgeWeight, FloorHexagon hex, bool isWalkable = true)
     {
-        Id = id;
-        From = from;
-        To = to;
-        EdgeWeight = edgeWeight;
-        IsWalkable = isWalkable;
-        IsWalkable = isWalkable;
+        this.id = id;
+        this.from = from;
+        this.to = to;
+        this.edgeWeight = edgeWeight;
+        this.isWalkable = isWalkable;
+        this.floorHexagon = hex;
     }
     public Edge() { }
 }

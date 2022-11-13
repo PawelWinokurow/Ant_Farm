@@ -5,29 +5,29 @@ using System.Linq;
 
 public class SurfaceOperations : MonoBehaviour
 {
-    public Surface Surface;
-    public Dictionary<string, Hexagon> OldHexagons { get => Surface.OldHexagons; set => Surface.OldHexagons = value; }
+    public Surface surface;
+    public Dictionary<string, Hexagon> oldHexagons { get => surface.oldhexagons; set => surface.oldhexagons = value; }
 
     public void Loading(CollectingHexagon collectingHex, LoadingState state, CarrierJob job)
     {
         var worker = state.worker;
-        var workerMaxCanTake = state.worker.MaxCarryingWeight - worker.CarryingWeight;
-        var canTake = Mathf.Min((worker.LoadingSpeed * Time.deltaTime), workerMaxCanTake);
+        var workerMaxCanTake = state.worker.MAX_CARRYING_WEIGHT - worker.CARRYING_WEIGHT;
+        var canTake = Mathf.Min((worker.LOADING_SPEED * Time.deltaTime), workerMaxCanTake);
         if (canTake >= collectingHex.Quantity)
         {
-            worker.CarryingWeight += collectingHex.Quantity;
+            worker.CARRYING_WEIGHT += collectingHex.Quantity;
             collectingHex.Quantity = 0;
-            collectingHex.Carriers.Where(w => w.Id != worker.Id).ToList().ForEach(w => w.CancelJob());
-            collectingHex.Type = HEX_TYPE.EMPTY;
-            collectingHex.FloorHexagon.RemoveChildren();
+            collectingHex.carriers.Where(w => w.id != worker.id).ToList().ForEach(w => w.CancelJob());
+            collectingHex.type = HEX_TYPE.EMPTY;
+            collectingHex.floorHexagon.RemoveChildren();
             state.Done();
         }
         else
         {
             var toTake = Mathf.Min(canTake, workerMaxCanTake);
-            worker.CarryingWeight += toTake;
+            worker.CARRYING_WEIGHT += toTake;
             collectingHex.Quantity -= toTake;
-            if (worker.CarryingWeight >= state.worker.MaxCarryingWeight)
+            if (worker.CARRYING_WEIGHT >= state.worker.MAX_CARRYING_WEIGHT)
             {
                 state.Done();
             }
@@ -36,23 +36,23 @@ public class SurfaceOperations : MonoBehaviour
     public void Unloading(BaseHexagon storageHex, UnloadingState state, CarrierJob job)
     {
         var worker = state.worker;
-        var toStore = Mathf.Min((worker.LoadingSpeed * Time.deltaTime), worker.CarryingWeight);
-        storageHex.Storage += toStore;
-        worker.CarryingWeight -= toStore;
-        if (worker.CarryingWeight <= 0)
+        var toStore = Mathf.Min((worker.LOADING_SPEED * Time.deltaTime), worker.CARRYING_WEIGHT);
+        storageHex.storage += toStore;
+        worker.CARRYING_WEIGHT -= toStore;
+        if (worker.CARRYING_WEIGHT <= 0)
         {
-            worker.CarryingWeight = 0;
+            worker.CARRYING_WEIGHT = 0;
             state.Done();
         }
     }
 
     public void Build(WorkerJob job)
     {
-        if (job.Type == JobType.DIG)
+        if (job.type == JobType.DIG)
         {
             StartCoroutine(Dig(job));
         }
-        else if (job.Type == JobType.FILL)
+        else if (job.type == JobType.FILL)
         {
             StartCoroutine(Fill(job));
         }
@@ -60,21 +60,21 @@ public class SurfaceOperations : MonoBehaviour
 
     public IEnumerator Dig(WorkerJob workerJob)
     {
-        var worker = workerJob.Worker;
-        var floorHex = workerJob.Hex;
-        var wallHex = (WorkHexagon)(workerJob.Hex.Child);
+        var worker = (Worker)workerJob.mob;
+        var floorHex = workerJob.hex;
+        var wallHex = (WorkHexagon)(workerJob.hex.child);
         floorHex.RemoveChildren();
-        var scaledBlock = Surface.AddDigScaledBlock(floorHex);
+        var scaledBlock = surface.AddDigScaledBlock(floorHex);
         while (scaledBlock != null)
         {
-            scaledBlock.Work -= worker.ConstructionSpeed;
-            scaledBlock.transform.localScale = Vector3.one * scaledBlock.Work / WorkHexagon.MaxWork;
-            if (scaledBlock.Work <= 0)
+            scaledBlock.work -= worker.CONSTRUCTION_SPEED;
+            scaledBlock.transform.localScale = Vector3.one * scaledBlock.work / WorkHexagon.MAX_WORK;
+            if (scaledBlock.work <= 0)
             {
-                Surface.AddGround(floorHex);
-                Surface.PathGraph.AllowHexagon(wallHex.FloorHexagon);
-                worker.Job.Cancel();
-                OldHexagons.Remove(floorHex.Id);
+                surface.AddGround(floorHex);
+                surface.pathGraph.AllowHexagon(wallHex.floorHexagon);
+                worker.job.Cancel();
+                oldHexagons.Remove(floorHex.id);
                 yield break;
             }
             yield return new WaitForSeconds(0.1f);
@@ -83,39 +83,39 @@ public class SurfaceOperations : MonoBehaviour
 
     public IEnumerator Fill(WorkerJob workerJob)
     {
-        var worker = workerJob.Worker;
-        var floorHex = workerJob.Hex;
-        var wallHex = (WorkHexagon)(workerJob.Hex.Child);
+        var worker = (Worker)workerJob.mob;
+        var floorHex = workerJob.hex;
+        var wallHex = (WorkHexagon)(workerJob.hex.child);
 
         floorHex.RemoveChildren();
-        var scaledBlock = Surface.AddFillScaledBlock(floorHex);
+        var scaledBlock = surface.AddFillScaledBlock(floorHex);
         while (scaledBlock != null)
         {
-            scaledBlock.Work -= worker.ConstructionSpeed;
-            scaledBlock.transform.localScale = Vector3.one * (1 - scaledBlock.Work / WorkHexagon.MaxWork);
-            if (scaledBlock.Work <= 0)
+            scaledBlock.work -= worker.CONSTRUCTION_SPEED;
+            scaledBlock.transform.localScale = Vector3.one * (1 - scaledBlock.work / WorkHexagon.MAX_WORK);
+            if (scaledBlock.work <= 0)
             {
                 floorHex.RemoveChildren();
-                Surface.AddBlock(floorHex);
-                worker.Job.Cancel();
-                OldHexagons.Remove(floorHex.Id);
+                surface.AddBlock(floorHex);
+                worker.job.Cancel();
+                oldHexagons.Remove(floorHex.id);
                 yield break;
             }
             yield return new WaitForSeconds(0.1f);
         }
-        Surface.PathGraph.AllowHexagon(floorHex);
-        worker.Job.Cancel();
+        surface.pathGraph.AllowHexagon(floorHex);
+        worker.job.Cancel();
     }
 
-    public bool IsInOldHexagons(FloorHexagon hex)
+    public bool IsInoldHexagons(FloorHexagon hex)
     {
-        return OldHexagons.ContainsKey(hex.Id);
+        return oldHexagons.ContainsKey(hex.id);
     }
 
     public BaseHexagon NearestBaseHexagon()
     {
         //TODO implement
-        return (BaseHexagon)Surface.BaseHex.Child;
+        return (BaseHexagon)surface.baseHex.child;
     }
 
 }

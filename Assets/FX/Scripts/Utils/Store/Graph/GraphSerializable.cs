@@ -5,6 +5,6 @@ using System.Collections.Generic;
 [Serializable]
 public class GraphSerializable
 {
-    public List<VertexSerializable> PathVertices { get; set; }
-    public List<EdgeSerializable> AdjacencyList { get; set; }
+    public List<VertexSerializable> pathVertices { get; set; }
+    public List<EdgeSerializable> adjacencyList { get; set; }
 }

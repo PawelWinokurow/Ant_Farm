@@ -10,13 +10,13 @@ public class GoToState : State
 
     public GoToState(Worker worker) : base(worker)
     {
-        this.Type = STATE.GOTO;
+        this.type = STATE.GOTO;
         this.worker = worker;
     }
 
     override public void OnStateEnter()
     {
-        job = worker.Job;
+        job = worker.job;
     }
     override public void OnStateExit()
     {
@@ -25,7 +25,7 @@ public class GoToState : State
 
     override public void CancelJob()
     {
-        if (worker.CarryingWeight == 0)
+        if (worker.CARRYING_WEIGHT == 0)
         {
             job.Cancel();
         }
@@ -40,18 +40,18 @@ public class GoToState : State
         }
         else
         {
-            if (worker.Job.Type == JobType.DIG || worker.Job.Type == JobType.FILL)
+            if (worker.job.type == JobType.DIG || worker.job.type == JobType.FILL)
             {
                 worker.SetState(new BuildState(worker));
             }
-            else if (worker.Job.Type == JobType.CARRYING)
+            else if (worker.job.type == JobType.CARRYING)
             {
-                var job = (CarrierJob)(worker.Job);
-                if (job.Direction == Direction.COLLECTING)
+                var job = (CarrierJob)(worker.job);
+                if (job.direction == Direction.COLLECTING)
                 {
                     worker.SetState(new LoadingState(worker));
                 }
-                else if (job.Direction == Direction.STORAGE)
+                else if (job.direction == Direction.STORAGE)
                 {
                     worker.SetState(new UnloadingState(worker));
 

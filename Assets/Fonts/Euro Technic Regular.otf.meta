@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: df47d5eeca3b2624d952155d8171b9d7
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Euro Technic
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: c3369645095a55746b22d4cc727ae6a8, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -6,65 +6,65 @@ using UnityEngine;
 
 public class Graph
 {
-    public Dictionary<Vector3, Vertex> PathVerticesMap;
-    public List<Edge> AdjacencyList { get; set; }
-    public List<Vertex> PathVertices { get; set; }
+    public Dictionary<Vector3, Vertex> pathVerticesMap;
+    public List<Edge> adjacencyList { get; set; }
+    public List<Vertex> pathVertices { get; set; }
     public Graph()
     {
-        AdjacencyList = new List<Edge>();
-        PathVertices = new List<Vertex>();
-        PathVerticesMap = new Dictionary<Vector3, Vertex>();
+        adjacencyList = new List<Edge>();
+        pathVertices = new List<Vertex>();
+        pathVerticesMap = new Dictionary<Vector3, Vertex>();
     }
 
     public void ResetPathWeights()
     {
-        PathVertices.ForEach(pathVerex => pathVerex.ResetPathWeight());
+        pathVertices.ForEach(pathVerex => pathVerex.ResetPathWeight());
     }
 
     public void ResetAllEdgesToWalkable()
     {
-        AdjacencyList.ForEach(edge => edge.IsWalkable = true);
+        adjacencyList.ForEach(edge => edge.isWalkable = true);
     }
 
     public Vertex GetVertexByPoistion(Vector3 position)
     {
-        return PathVerticesMap.GetValueOrDefault(position);
+        return pathVerticesMap.GetValueOrDefault(position);
     }
 
     public Vertex AddVertex(Vertex newVertex)
     {
-        int index = PathVertices.FindIndex(vertex => Distance.Manhattan(vertex.Position, newVertex.Position) < 0.1f ? true : false);
-        if (index >= 0) return PathVertices[index];
-        PathVertices.Add(newVertex);
-        PathVerticesMap.Add(newVertex.Position, newVertex);
+        int index = pathVertices.FindIndex(vertex => Distance.Manhattan(vertex.position, newVertex.position) < 0.1f ? true : false);
+        if (index >= 0) return pathVertices[index];
+        pathVertices.Add(newVertex);
+        pathVerticesMap.Add(newVertex.position, newVertex);
         return newVertex;
     }
 
-    public void AddEdge(Vertex v1, Vertex v2, float edgeWeight)
+    public void AddEdge(Vertex v1, Vertex v2, float edgeWeight, FloorHexagon hex)
     {
-        Edge v1Edge = new Edge($"{v1.Id}{v2.Id}", v1, v2, edgeWeight);
-        Edge v2Edge = new Edge($"{v2.Id}{v1.Id}", v2, v1, edgeWeight);
-        v1.Edges.Add(v1Edge);
-        v2.Edges.Add(v2Edge);
-        AdjacencyList.Add(v1Edge);
-        AdjacencyList.Add(v2Edge);
+        Edge v1Edge = new Edge($"{v1.id}{v2.id}", v1, v2, edgeWeight, hex);
+        Edge v2Edge = new Edge($"{v2.id}{v1.id}", v2, v1, edgeWeight, hex);
+        v1.edges.Add(v1Edge);
+        v2.edges.Add(v2Edge);
+        adjacencyList.Add(v1Edge);
+        adjacencyList.Add(v2Edge);
     }
 
     public void SetNeighbours()
     {
-        PathVertices.Where(vertex => vertex.IsCentralVertex).ToList().ForEach(center =>
+        pathVertices.Where(vertex => vertex.isCentralVertex).ToList().ForEach(center =>
         {
             var visited = new Dictionary<string, bool>();
-            visited[center.Id] = true;
-            foreach (var edge1 in center.Edges)
+            visited[center.id] = true;
+            foreach (var edge1 in center.edges)
             {
 
-                foreach (var edge2 in edge1.To.Edges)
+                foreach (var edge2 in edge1.to.edges)
                 {
-                    if (edge2.To.IsCentralVertex && !visited.ContainsKey(edge2.To.Id))
+                    if (edge2.to.isCentralVertex && !visited.ContainsKey(edge2.to.id))
                     {
-                        visited[edge2.To.Id] = true;
-                        center.Neighbours.Add(edge2.To);
+                        visited[edge2.to.id] = true;
+                        center.neighbours.Add(edge2.to);
                     }
                 }
             }
@@ -73,62 +73,62 @@ public class Graph
 
     public void AllowHexagon(FloorHexagon hex)
     {
-        GetHexagonEdges(hex).ForEach(edge => edge.IsWalkable = true);
+        GetHexagonEdges(hex).ForEach(edge => edge.isWalkable = true);
     }
     public void ProhibitHexagon(FloorHexagon hex)
     {
 
-        GetHexagonEdges(hex).ForEach(edge => edge.IsWalkable = false);
+        GetHexagonEdges(hex).ForEach(edge => edge.isWalkable = false);
     }
 
     private List<Edge> GetHexagonEdges(FloorHexagon hex)
     {
-        Vertex centerVertex = hex.Vertex;
-        List<Vertex> hexagonVertices = centerVertex.Edges.Select(edge => edge.To).ToList();
+        Vertex centerVertex = hex.vertex;
+        List<Vertex> hexagonVertices = centerVertex.edges.Select(edge => edge.to).ToList();
         hexagonVertices.Add(centerVertex);
-        var Ids = hexagonVertices.Select(vertex => vertex.Id);
+        var Ids = hexagonVertices.Select(vertex => vertex.id);
         return hexagonVertices
-            .Aggregate(new List<Edge>(), (acc, vertex) => acc.Concat(vertex.Edges).ToList())
-            .Where(edge => Ids.Contains(edge.From.Id) && Ids.Contains(edge.To.Id)).ToList();
+            .Aggregate(new List<Edge>(), (acc, vertex) => acc.Concat(vertex.edges).ToList())
+            .Where(edge => Ids.Contains(edge.from.id) && Ids.Contains(edge.to.id)).ToList();
     }
 
     public Vertex NearestVertex(Vector3 position)
     {
-        if (PathVerticesMap.ContainsKey(position))
+        if (pathVerticesMap.ContainsKey(position))
         {
-            return PathVerticesMap[position];
+            return pathVerticesMap[position];
         }
-        return PathVertices.Aggregate(PathVertices[0], (acc, vertex) =>
+        return pathVertices.Aggregate(pathVertices[0], (acc, vertex) =>
         {
-            if (Distance.Manhattan(vertex.Position, position) <
-            Distance.Manhattan(acc.Position, position)) return vertex;
+            if (Distance.Manhattan(vertex.position, position) <
+            Distance.Manhattan(acc.position, position)) return vertex;
             else return acc;
         });
     }
     public Vertex NearestNeighbour(Vertex from, Vertex to)
     {
-        var toNeighbours = to.Neighbours.Where(vertex => vertex.Edges.All(edge => edge.IsWalkable)).ToList();
+        var toNeighbours = to.neighbours.Where(vertex => vertex.edges.All(edge => edge.isWalkable)).ToList();
         if (toNeighbours.Count == 0) return null;
         return toNeighbours.Aggregate(toNeighbours[0], (acc, vertex) =>
         {
-            if (Distance.Manhattan(vertex.Position, from.Position) <
-            Distance.Manhattan(acc.Position, from.Position)) return vertex;
+            if (Distance.Manhattan(vertex.position, from.position) <
+            Distance.Manhattan(acc.position, from.position)) return vertex;
             else return acc;
         });
     }
 
     private static float GetDistance(Vertex from, Vertex to)
     {
-        return Distance.Manhattan(from.Position, to.Position);
+        return Distance.Manhattan(from.position, to.position);
     }
 
     public Vertex AddHexagonSubGraph(FloorHexagon hex, float R, string id)
     {
-        var center = hex.Position;
+        var center = hex.position;
         float r = (float)Math.Sqrt(3) * R / 2;
 
         var centerPathPoint = AddVertex(new Vertex($"{id}0", center, true));
-        hex.Vertex = centerPathPoint;
+        hex.vertex = centerPathPoint;
         List<Vertex> pathPoints = new List<Vertex>();
         for (int n = 0; n < 6; n++)
         {
@@ -139,8 +139,8 @@ public class Graph
         }
         for (int i = 0; i < pathPoints.Count; i++)
         {
-            AddEdge(centerPathPoint, pathPoints[i], Distance.Manhattan(centerPathPoint.Position, pathPoints[i].Position));
-            AddEdge(pathPoints[i], pathPoints[(i + 2) % pathPoints.Count], Distance.Manhattan(pathPoints[i].Position, pathPoints[(i + 2) % pathPoints.Count].Position));
+            AddEdge(centerPathPoint, pathPoints[i], Vector3.Distance(centerPathPoint.position, pathPoints[i].position), hex);
+            AddEdge(pathPoints[i], pathPoints[(i + 2) % pathPoints.Count], Vector3.Distance(pathPoints[i].position, pathPoints[(i + 2) % pathPoints.Count].position), hex);
         }
         return centerPathPoint;
     }

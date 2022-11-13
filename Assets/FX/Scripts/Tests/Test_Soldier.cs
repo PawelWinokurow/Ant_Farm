@@ -17,9 +17,9 @@ namespace AntFarm
             {
                 GetComponent<SoldierAnimator>().Run();
             }
-   
+
         }
- 
+
     }
 }
 

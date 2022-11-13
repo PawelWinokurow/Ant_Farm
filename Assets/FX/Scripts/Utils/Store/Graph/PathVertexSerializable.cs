@@ -4,24 +4,24 @@ using System.Collections.Generic;
 [Serializable]
 public class VertexSerializable
 {
-    public string Id;
-    public Vector3Serializable Position;
-    public float PathWeight;
-    public List<Vector3Serializable> Neighbours { get; set; }
-    public bool IsCentralVertex { get; set; }
+    public string id;
+    public Vector3Serializable position;
+    public float pathWeight;
+    public List<Vector3Serializable> neighbours { get; set; }
+    public bool isCentralVertex { get; set; }
 
     public VertexSerializable(string id, Vector3Serializable position, List<Vector3Serializable> neighbours, bool isCentralVertex)
     {
-        Id = id;
-        Position = position;
-        PathWeight = float.MaxValue;
-        Neighbours = neighbours;
-        IsCentralVertex = isCentralVertex;
+        this.id = id;
+        this.position = position;
+        this.pathWeight = float.MaxValue;
+        this.neighbours = neighbours;
+        this.isCentralVertex = isCentralVertex;
     }
 
     public void ResetPathWeight()
     {
-        PathWeight = float.MaxValue;
+        pathWeight = float.MaxValue;
     }
 
 }

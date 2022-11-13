@@ -22,11 +22,18 @@ public class AntAnimator : MonoBehaviour
     private Quaternion smoothRot;
     public Transform angl;
 
+    public GameObject deadFX_prefab;
+    public HealthPopUp popUp_prefad;
+
+    MaterialPropertyBlock props;
+    private float a;
+
     private void Start()
     {
         posOld = transform.position;
         antBaseForwardOld = transform.forward;
         current = run;
+        props = new MaterialPropertyBlock();
     }
 
     public void Run()
@@ -53,13 +60,13 @@ public class AntAnimator : MonoBehaviour
             f = (int)(Time.time * 30f * 1.5f) % current.sequence.Length;
             mf.mesh = current.sequence[f];
 
-            if (worker.CurrentPathEdge != null)
+            if (worker.currentPathEdge != null)
             {
-                forward = worker.CurrentPathEdge.To.Position - transform.position;
+                forward = worker.currentPathEdge.to.position - transform.position;
             }
-            else if (worker.Job?.Destination != null)
+            else if (worker.job?.destination != null)
             {
-                forward = worker.Job.Destination - transform.position;
+                forward = worker.job.destination - transform.position;
             }
 
             Quaternion rot = Quaternion.LookRotation(angl.up, forward);
@@ -67,5 +74,35 @@ public class AntAnimator : MonoBehaviour
             mf.transform.rotation = smoothRot;
             mf.transform.Rotate(new Vector3(-90f, 0f, 180f), Space.Self);
         }
+
+
+        if (a >= 0)
+        {
+            props.SetFloat("_Blink_FX", a);
+            mr.SetPropertyBlock(props);
+            a -= Time.deltaTime / 0.1f;
+        }
+    }
+
+    public void Dead()
+    {
+        StartCoroutine(Dead_Cor());
+    }
+    private IEnumerator Dead_Cor()
+    {
+        
+        GameObject fx = Instantiate(deadFX_prefab, transform.position, transform.rotation);
+        yield return new WaitForSeconds(0.15f);
+        mr.enabled = false;
+    }
+    public void MakeVisible()
+    {
+        mr.enabled = true;
+    }
+    public void Hit(int damage)
+    {
+        HealthPopUp healthPopUp = Instantiate(popUp_prefad, transform.position, transform.rotation);
+        healthPopUp.tmp.color = healthPopUp.damageColor;
+        a = 1f;
     }
 }

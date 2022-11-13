@@ -7,7 +7,7 @@ public class BuildState : State
     private WorkerJob job;
     public BuildState(Worker worker) : base(worker)
     {
-        this.Type = STATE.BUILD;
+        this.type = STATE.BUILD;
         this.worker = worker;
     }
 
@@ -29,8 +29,8 @@ public class BuildState : State
     override public void OnStateEnter()
     {
         IsDone = false;
-        job = (WorkerJob)worker.Job;
-        worker.SurfaceOperations.Build(job);
+        job = (WorkerJob)worker.job;
+        worker.surfaceOperations.Build(job);
         worker.SetIdleAnimation();
     }
 

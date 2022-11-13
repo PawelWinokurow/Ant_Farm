@@ -142,10 +142,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e938e625ca87f641bec5d2636f6d38f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ConstructionSpeed: 2
-  LoadingSpeed: 50
-  MaxCarryingWeight: 100
-  CarryingWeight: 0
+  CONSTRUCTION_SPEED: 2
+  LOADING_SPEED: 50
+  MAX_CARRYING_WEIGHT: 100
+  CARRYING_WEIGHT: 0
 --- !u!114 &-8210300535694150561
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,6 +165,7 @@ MonoBehaviour:
   mf: {fileID: 2383876763917858186}
   mr: {fileID: 2360862903416325171}
   angl: {fileID: 5335103204996291558}
+  deadFX: {fileID: 0}
 --- !u!1 &5335103204996291557
 GameObject:
   m_ObjectHideFlags: 0

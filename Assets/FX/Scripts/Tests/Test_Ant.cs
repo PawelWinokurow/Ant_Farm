@@ -8,9 +8,10 @@ public class Test_Ant : MonoBehaviour
 
     void Update()
     {
+        /*
         if (Input.GetKey(KeyCode.W))
         {
-            transform.position += Vector3.forward*Time.deltaTime * speed;
+            transform.position += Vector3.forward * Time.deltaTime * speed;
         }
         if (Input.GetKey(KeyCode.S))
         {
@@ -20,10 +21,13 @@ public class Test_Ant : MonoBehaviour
         {
             transform.position += -Vector3.right * Time.deltaTime * speed;
         }
+    
         if (Input.GetKey(KeyCode.D))
+
         {
             transform.position += Vector3.right * Time.deltaTime * speed;
         }
+        */
         if (Input.GetKeyDown(KeyCode.E))
         {
             GetComponent<AntAnimator>().Idle();
@@ -36,6 +40,21 @@ public class Test_Ant : MonoBehaviour
         {
             GetComponent<AntAnimator>().RunFood();
         }
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            gameObject.GetComponent<AntAnimator>().MakeVisible();
+        }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            gameObject.GetComponent<AntAnimator>().Dead();
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            gameObject.GetComponent<AntAnimator>().Hit(1);
+        }
+
     }
 }
 

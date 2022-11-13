@@ -8,8 +8,8 @@ public class GraphTransform
     {
         var graphSerializable = new GraphSerializable()
         {
-            PathVertices = graph.PathVertices.Select(vertex => ToSerializable(vertex)).ToList(),
-            AdjacencyList = graph.AdjacencyList.Select(edge => ToSerializable(edge)).ToList(),
+            pathVertices = graph.pathVertices.Select(vertex => ToSerializable(vertex)).ToList(),
+            adjacencyList = graph.adjacencyList.Select(edge => ToSerializable(edge)).ToList(),
         };
         return graphSerializable;
     }
@@ -17,51 +17,51 @@ public class GraphTransform
     {
         var graph = new Graph()
         {
-            PathVertices = graphSerializable.PathVertices.Select(vertex => FromSerializable(vertex)).ToList(),
-            PathVerticesMap = new Dictionary<Vector3, Vertex>()
+            pathVertices = graphSerializable.pathVertices.Select(vertex => FromSerializable(vertex)).ToList(),
+            pathVerticesMap = new Dictionary<Vector3, Vertex>()
         };
-        graph.PathVertices.ForEach(vertex =>
+        graph.pathVertices.ForEach(vertex =>
         {
-            graph.PathVerticesMap[vertex.Position] = vertex;
+            graph.pathVerticesMap[vertex.position] = vertex;
         });
-        graph.AdjacencyList = graphSerializable.AdjacencyList.Select(serializedEdge =>
+        graph.adjacencyList = graphSerializable.adjacencyList.Select(serializedEdge =>
         {
 
             var edge = new Edge()
             {
-                From = graph.PathVerticesMap[VectorTransform.FromSerializable(serializedEdge.FromPosition)],
-                To = graph.PathVerticesMap[VectorTransform.FromSerializable(serializedEdge.ToPosition)],
-                EdgeWeight = serializedEdge.EdgeWeight,
-                IsWalkable = serializedEdge.IsWalkable,
+                from = graph.pathVerticesMap[VectorTransform.FromSerializable(serializedEdge.fromPosition)],
+                to = graph.pathVerticesMap[VectorTransform.FromSerializable(serializedEdge.toPosition)],
+                edgeWeight = serializedEdge.edgeWeight,
+                isWalkable = serializedEdge.isWalkable,
             };
-            graph.PathVerticesMap[edge.From.Position].Edges.Add(edge);
+            graph.pathVerticesMap[edge.from.position].edges.Add(edge);
             return edge;
         }).ToList();
-        for (int i = 0; i < graph.PathVertices.Count; i++)
+        for (int i = 0; i < graph.pathVertices.Count; i++)
         {
-            graph.PathVertices[i].Neighbours.AddRange(graphSerializable.PathVertices[i].Neighbours.Select(vertex => graph.PathVerticesMap[VectorTransform.FromSerializable(vertex)]));
+            graph.pathVertices[i].neighbours.AddRange(graphSerializable.pathVertices[i].neighbours.Select(vertex => graph.pathVerticesMap[VectorTransform.FromSerializable(vertex)]));
         }
         return graph;
     }
     private static EdgeSerializable ToSerializable(Edge edge)
     {
-        var from = ToSerializable(edge.From);
-        var to = ToSerializable(edge.To);
-        var pathEdgeSerializable = new EdgeSerializable(from, to, edge.EdgeWeight)
+        var from = ToSerializable(edge.from);
+        var to = ToSerializable(edge.to);
+        var pathEdgeSerializable = new EdgeSerializable(from, to, edge.edgeWeight)
         {
-            IsWalkable = edge.IsWalkable
+            isWalkable = edge.isWalkable
         };
         return pathEdgeSerializable;
     }
     private static VertexSerializable ToSerializable(Vertex vertex)
     {
-        return new VertexSerializable(vertex.Id, VectorTransform.ToSerializable(vertex.Position), vertex.Neighbours.Select(v => VectorTransform.ToSerializable(v.Position)).ToList(), vertex.IsCentralVertex);
+        return new VertexSerializable(vertex.id, VectorTransform.ToSerializable(vertex.position), vertex.neighbours.Select(v => VectorTransform.ToSerializable(v.position)).ToList(), vertex.isCentralVertex);
     }
     private static Vertex FromSerializable(VertexSerializable vertexSerializable)
     {
-        return new Vertex(vertexSerializable.Id, VectorTransform.FromSerializable(vertexSerializable.Position), vertexSerializable.IsCentralVertex)
+        return new Vertex(vertexSerializable.id, VectorTransform.FromSerializable(vertexSerializable.position), vertexSerializable.isCentralVertex)
         {
-            PathWeight = vertexSerializable.PathWeight
+            pathWeight = vertexSerializable.pathWeight
         };
     }
 

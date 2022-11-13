@@ -1,13 +1,13 @@
 public enum STATE
 {
-    IDLE, GOTO, BUILD, CARRYING, LOADING, UNLOADING
+    IDLE, GOTO, BUILD, CARRYING, LOADING, UNLOADING, FOLLOWING, ATTACK, DEAD
 }
 
 public abstract class State
 {
     protected Mob mob;
 
-    public STATE Type { get; set; }
+    public STATE type { get; set; }
     public abstract void Tick();
 
     public abstract void CancelJob();

@@ -5,28 +5,28 @@ using UnityEngine;
 
 public class CollectingHexagon : MonoBehaviour, Hexagon
 {
-    public string Id { get => FloorHexagon.Id; set => FloorHexagon.Id = value; }
-    public Vector3 Position { get => FloorHexagon.Position; set => FloorHexagon.Position = value; }
-    public HEX_TYPE Type { get => FloorHexagon.Type; set => FloorHexagon.Type = value; }
+    public string id { get => floorHexagon.id; set => floorHexagon.id = value; }
+    public Vector3 position { get => floorHexagon.position; set => floorHexagon.position = value; }
+    public HEX_TYPE type { get => floorHexagon.type; set => floorHexagon.type = value; }
     private float quantity;
-    public float Quantity { get => quantity; set { quantity = value; Food.cost = value; } }
-    public static float MaxQuantity = 1000;
-    public FloorHexagon FloorHexagon { get; set; }
-    public List<Worker> Carriers { get; set; }
-    public Food Food { get; set; }
+    public float Quantity { get => quantity; set { quantity = value; food.cost = value; } }
+    public static float maxQuantity = 1000;
+    public FloorHexagon floorHexagon { get; set; }
+    public List<Worker> carriers { get; set; }
+    public Food food { get; set; }
 
     public void Awake()
     {
-        Food = GetComponent<Food>();
+        food = GetComponent<Food>();
     }
 
     public static CollectingHexagon CreateHexagon(FloorHexagon parent, CollectingHexagon workHexPrefab)
     {
-        CollectingHexagon hex = Instantiate(workHexPrefab, parent.Position, Quaternion.identity, parent.transform);
-        hex.FloorHexagon = parent;
-        hex.FloorHexagon.Child = hex;
-        hex.Quantity = MaxQuantity;
-        hex.Carriers = new List<Worker>();
+        CollectingHexagon hex = Instantiate(workHexPrefab, parent.position, Quaternion.identity, parent.transform);
+        hex.floorHexagon = parent;
+        hex.floorHexagon.child = hex;
+        hex.Quantity = maxQuantity;
+        hex.carriers = new List<Worker>();
         return hex;
     }
 
@@ -38,13 +38,13 @@ public class CollectingHexagon : MonoBehaviour, Hexagon
 
     public void AssignWorker(Worker worker)
     {
-        Carriers.Add(worker);
+        carriers.Add(worker);
     }
 
     public void ResetWorkers()
     {
-        Carriers.ForEach(worker => worker.CancelJob());
-        Carriers.Clear();
+        carriers.ForEach(worker => worker.CancelJob());
+        carriers.Clear();
     }
 
 }
