@@ -43,16 +43,13 @@ public class Test_Ant : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.A))
         {
-            gameObject.GetComponent<AntAnimator>().MakeVisible();
+            gameObject.GetComponent<AntAnimator>().Restart();
         }
 
+    
         if (Input.GetKeyDown(KeyCode.S))
         {
-            gameObject.GetComponent<AntAnimator>().Dead();
-        }
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            gameObject.GetComponent<AntAnimator>().Hit(1);
+            gameObject.GetComponent<AntAnimator>().Hit(5);
         }
 
     }
