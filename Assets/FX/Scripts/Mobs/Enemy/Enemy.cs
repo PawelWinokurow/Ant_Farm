@@ -55,15 +55,7 @@ public class Enemy : MonoBehaviour, Mob
         }
         else
         {
-            var pathNew = pathfinder.FindPath(position, target.mob.position, false);
-            if (pathNew != null)
-            {
-                SetState(new AttackState(this));
-            }
-            // else
-            // {
-            //     SetState(new PatrolState(this));
-            // }
+            SetState(new PatrolState(this));
         }
     }
 
@@ -130,6 +122,7 @@ public class Enemy : MonoBehaviour, Mob
 
     public void Rerouting()
     {
+        target.hexId = target.mob.currentHex.id;
         SetPath(pathfinder.FindPath(transform.position, target.mob.position, true));
     }
 

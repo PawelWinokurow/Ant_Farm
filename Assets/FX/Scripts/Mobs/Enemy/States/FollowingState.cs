@@ -30,6 +30,10 @@ public class FollowingState : State
 
     public override void Tick()
     {
+        if (enemy.target.hexId != enemy.target.mob.currentHex.id)
+        {
+            enemy.Rerouting();
+        }
         if (enemy.HasPath)
         {
             enemy.Animation();

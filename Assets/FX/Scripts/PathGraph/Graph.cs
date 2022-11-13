@@ -127,7 +127,7 @@ public class Graph
         var center = hex.position;
         float r = (float)Math.Sqrt(3) * R / 2;
 
-        var centerPathPoint = AddVertex(new Vertex($"{id}0", center, true));
+        var centerPathPoint = AddVertex(new Vertex($"{id}", center, true));
         hex.vertex = centerPathPoint;
         List<Vertex> pathPoints = new List<Vertex>();
         for (int n = 0; n < 6; n++)
@@ -135,7 +135,7 @@ public class Graph
             float angle = (float)(Math.PI * (n * 60) / 180.0);
             float x = r * (float)Math.Cos(angle);
             float z = r * (float)Math.Sin(angle);
-            pathPoints.Add(AddVertex(new Vertex($"{id}{n + 1}", center + new Vector3(x, 0, z), false)));
+            pathPoints.Add(AddVertex(new Vertex($"{id}{n}", center + new Vector3(x, 0, z), false)));
         }
         for (int i = 0; i < pathPoints.Count; i++)
         {

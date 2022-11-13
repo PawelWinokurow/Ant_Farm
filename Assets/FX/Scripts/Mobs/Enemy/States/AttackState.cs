@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class AttackState : State
@@ -16,7 +17,7 @@ public class AttackState : State
 
     override public void OnStateEnter()
     {
-        enemy.SetRunAtackAnimation();
+        enemy.SetIdleFightAnimation();
         enemyTarget = enemy.target;
     }
     override public void OnStateExit()
@@ -33,16 +34,15 @@ public class AttackState : State
 
     public override void Tick()
     {
-        if (enemy.HasPath)
+        if (enemy.currentHex.vertex.neighbours.Select(vertex => vertex.id).Contains(enemy.target.mob.currentHex.id))
         {
-            enemy.Animation();
-            enemy.Move(MOVEMENT_SPEED);
+            enemy.Hit();
         }
         else
         {
             enemy.Rerouting();
+            enemy.SetState(new FollowingState(enemy));
         }
-        enemy.Hit();
     }
 
 }

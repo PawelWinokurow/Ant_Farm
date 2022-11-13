@@ -82,7 +82,7 @@ public class Surface : MonoBehaviour
             {
                 Vector3 hexPosition = new Vector3(w * (x + (z % 2f) / 2f), 0f, z * h);
                 FloorHexagon hex = FloorHexagon.CreateHexagon($"{x}_{z}", hexPrefab, hexPosition, transform, HEX_TYPE.EMPTY, 50f);
-                pathGraph.AddHexagonSubGraph(hex, Hexagon.radius, $"x{x}z{z}");
+                pathGraph.AddHexagonSubGraph(hex, Hexagon.radius, $"{x}_{z}");
                 hexagons[z * width + x] = hex;
             }
         }
