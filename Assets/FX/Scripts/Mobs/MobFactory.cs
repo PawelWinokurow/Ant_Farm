@@ -8,7 +8,6 @@ public class MobFactory : MonoBehaviour
 {
     private int id = 0;
     public WorkerJobScheduler workerJobScheduler;
-    public EnemyJobScheduler enemyJobScheduler;
     public Surface surface;
     public SurfaceOperations surfaceOperations;
     public Worker workerPrefab;
@@ -36,7 +35,6 @@ public class MobFactory : MonoBehaviour
         Worker worker = Instantiate(workerPrefab, surface.PositionToHex(surface.baseHex.position + new Vector3(4, 0, 6)).position, Quaternion.identity);
         worker.id = id;
         workerJobScheduler.AddWorker(worker);
-        enemyJobScheduler.AddWorker(worker);
         allMobs.Add(worker);
         yield break;
     }
@@ -44,9 +42,8 @@ public class MobFactory : MonoBehaviour
     {
         Enemy enemy = Instantiate(enemyPrefab, surface.PositionToHex(surface.baseHex.position + new Vector3(10, 0, 20)).position, Quaternion.identity);
         enemy.id = id;
+        enemy.pathfinder = workerJobScheduler.pathfinder;
         enemy.allMobs = allMobs;
-        //TODO remove 
-        enemyJobScheduler.AddEnemy(enemy);
         yield break;
     }
 }

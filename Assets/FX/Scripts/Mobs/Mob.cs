@@ -5,9 +5,7 @@ public interface Mob
 {
     public string id { get; set; }
     public Vector3 position { get; }
-    public bool HasJob { get; }
     public State currentState { get; set; }
-    public Job job { get; set; }
     public Path path { get; set; }
     public bool HasPath { get; }
     public Pathfinder pathfinder { get; set; }

@@ -27,6 +27,7 @@ public class PatrolState : State
         {
             enemy.SetRandomWalk();
         }
+        enemy.SearchTarget();
     }
 
     override public void OnStateEnter()

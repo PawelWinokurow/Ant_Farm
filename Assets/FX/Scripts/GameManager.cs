@@ -8,7 +8,6 @@ public class GameManager : MonoBehaviour
     public SurfaceOperations SurfaceOperations;
     public BuildTestMap BuildWallsTest;
     public WorkerJobScheduler WorkerJobScheduler;
-    public EnemyJobScheduler EnemyJobScheduler;
     public Graph PathGraph;
     private Pathfinder pathfinder;
 
@@ -34,7 +33,6 @@ public class GameManager : MonoBehaviour
         WorkerJobScheduler.pathfinder = pathfinder;
         WorkerJobScheduler.SetSurfaceOperations(SurfaceOperations);
         WorkerJobScheduler.StartJobScheuler();
-        EnemyJobScheduler.StartJobScheuler();
     }
 
     private void GenerateData()
@@ -43,11 +41,9 @@ public class GameManager : MonoBehaviour
         Surface.Init(PathGraph);
         BuildWallsTest.Init(Surface);
         pathfinder = new Pathfinder(PathGraph);
-        EnemyJobScheduler.pathfinder = pathfinder;
         WorkerJobScheduler.pathfinder = pathfinder;
         WorkerJobScheduler.SetSurfaceOperations(SurfaceOperations);
         WorkerJobScheduler.StartJobScheuler();
-        EnemyJobScheduler.StartJobScheuler();
         // StoreService.SaveGraph(PathGraph);
         // StoreService.SaveHexagons(Surface.Hexagons);
     }
@@ -86,11 +82,11 @@ public class GameManager : MonoBehaviour
                     Surface.AddIcon(hex);
                     if (hex.type == HEX_TYPE.EMPTY)
                     {
-                        WorkerJobScheduler.AssignJob(new WorkerJob(hex, hex.transform.position, JobType.FILL));
+                        WorkerJobScheduler.AssignJob(new BuildJob(hex, hex.transform.position, JobType.FILL));
                     }
                     else if (hex.type == HEX_TYPE.SOIL)
                     {
-                        WorkerJobScheduler.AssignJob(new WorkerJob(hex, hex.transform.position, JobType.DIG));
+                        WorkerJobScheduler.AssignJob(new BuildJob(hex, hex.transform.position, JobType.DIG));
                     }
 
                 }

@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using DataStructures.ViliWonka.KDTree;
 using UnityEngine;
 
 
@@ -14,15 +16,15 @@ public class Enemy : MonoBehaviour, Mob
     public State currentState { get; set; }
     public Pathfinder pathfinder { get; set; }
     public SurfaceOperations surfaceOperations { get; set; }
-    public Job job { get; set; }
+    public EnemyTarget target { get; set; }
     public Action Kill { get; set; }
     public FloorHexagon currentHex { get; set; }
     public bool HasPath { get => path != null && currentPathEdge != null; }
-    public bool HasJob { get => job != null; }
     private float lerpDuration;
     private float t = 0f;
     public Edge currentPathEdge;
     public float hp { get; set; }
+
     public List<Mob> allMobs = new List<Mob>();
     void Awake()
     {
@@ -53,7 +55,7 @@ public class Enemy : MonoBehaviour, Mob
         }
         else
         {
-            var pathNew = pathfinder.FindPath(position, ((EnemyJob)job).target.position, false);
+            var pathNew = pathfinder.FindPath(position, target.mob.position, false);
             if (pathNew != null)
             {
                 SetState(new AttackState(this));
@@ -67,12 +69,11 @@ public class Enemy : MonoBehaviour, Mob
 
     public void Hit()
     {
-        var target = ((EnemyJob)job).target;
-        target.hp -= ATTACK_STRENGTH * Time.deltaTime;
-        if (target.hp <= 0)
+        target.mob.hp -= ATTACK_STRENGTH * Time.deltaTime;
+        if (target.mob.hp <= 0)
         {
             CancelJob();
-            target.Kill();
+            target.mob.Kill();
             SetState(new PatrolState(this));
         }
     }
@@ -129,7 +130,7 @@ public class Enemy : MonoBehaviour, Mob
 
     public void Rerouting()
     {
-        SetPath(pathfinder.FindPath(transform.position, ((EnemyJob)job).target.position, true));
+        SetPath(pathfinder.FindPath(transform.position, target.mob.position, true));
     }
 
     void Update()
@@ -156,7 +157,26 @@ public class Enemy : MonoBehaviour, Mob
 
     public void SearchTarget()
     {
+        var allMobsClone = new List<Mob>(allMobs);
+        KDTree mobPositionsTree = new KDTree(allMobsClone.Select(mob => mob.position).ToArray());
+        KDQuery query = new KDQuery();
 
+        List<int> queryResults = new List<int>();
+        query.Radius(mobPositionsTree, position, 20f, queryResults);
+        if (queryResults.Count == 0) { return; }
+        for (int i = 0; i < queryResults.Count; i++)
+        {
+            var targetMob = allMobsClone[queryResults[i]];
+            var path = pathfinder.FindPath(position, targetMob.position, true);
+            if (path != null)
+            {
+                target = new EnemyTarget($"{id}_{targetMob.id}", this, targetMob);
+                target.path = path;
+                SetState(new FollowingState(this));
+                SetPath(path);
+                return;
+            }
+        }
     }
 
     void DrawDebugPath()

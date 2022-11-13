@@ -60,7 +60,7 @@ public class SurfaceOperations : MonoBehaviour
 
     public IEnumerator Dig(WorkerJob workerJob)
     {
-        var worker = (Worker)workerJob.mob;
+        var worker = workerJob.worker;
         var floorHex = workerJob.hex;
         var wallHex = (WorkHexagon)(workerJob.hex.child);
         floorHex.RemoveChildren();
@@ -83,7 +83,7 @@ public class SurfaceOperations : MonoBehaviour
 
     public IEnumerator Fill(WorkerJob workerJob)
     {
-        var worker = (Worker)workerJob.mob;
+        var worker = workerJob.worker;
         var floorHex = workerJob.hex;
         var wallHex = (WorkHexagon)(workerJob.hex.child);
 

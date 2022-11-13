@@ -4,7 +4,7 @@ public class GoToState : State
 {
 
     private Worker worker;
-    private Job job;
+    private WorkerJob job;
     private int MOVEMENT_SPEED = 5;
 
 

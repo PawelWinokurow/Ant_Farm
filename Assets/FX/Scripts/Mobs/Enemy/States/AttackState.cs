@@ -4,7 +4,7 @@ public class AttackState : State
 {
 
     private Enemy enemy;
-    private Job job;
+    private EnemyTarget enemyTarget;
     private int MOVEMENT_SPEED = 10;
 
 
@@ -17,7 +17,7 @@ public class AttackState : State
     override public void OnStateEnter()
     {
         enemy.SetRunAtackAnimation();
-        job = enemy.job;
+        enemyTarget = enemy.target;
     }
     override public void OnStateExit()
     {
@@ -26,8 +26,8 @@ public class AttackState : State
 
     override public void CancelJob()
     {
-        enemy.job.Cancel();
-        enemy.job = null;
+        enemyTarget.Cancel();
+        enemy.target = null;
     }
 
 

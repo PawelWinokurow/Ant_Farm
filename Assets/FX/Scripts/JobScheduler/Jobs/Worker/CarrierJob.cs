@@ -6,7 +6,7 @@ public enum Direction
     STORAGE, COLLECTING, CANCELED
 }
 
-public class CarrierJob : Job
+public class CarrierJob : WorkerJob
 {
     public string id { get; set; }
     public Vector3 destination { get; set; }
@@ -15,7 +15,7 @@ public class CarrierJob : Job
     public BaseHexagon storageHexagon { get; set; }
     public FloorHexagon hex { get; set; }
     public Action Cancel { get; set; }
-    public Mob mob { get; set; }
+    public Worker worker { get; set; }
     public JobType type { get; set; }
     public Path path { get; set; }
 

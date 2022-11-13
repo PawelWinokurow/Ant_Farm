@@ -13,7 +13,7 @@ public class Worker : MonoBehaviour, Mob
     public AntAnimator animator { get; set; }
     public Action Animation { get; set; }
     public Vector3 position { get => transform.position; }
-    public Job job { get; set; }
+    public WorkerJob job { get; set; }
     public Path path { get; set; }
     public State currentState { get; set; }
     public Pathfinder pathfinder { get; set; }

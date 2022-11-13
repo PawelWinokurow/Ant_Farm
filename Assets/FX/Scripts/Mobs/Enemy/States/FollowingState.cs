@@ -4,7 +4,7 @@ public class FollowingState : State
 {
 
     private Enemy enemy;
-    private Job job;
+    private EnemyTarget enemyTarget;
     private int MOVEMENT_SPEED = 10;
 
 
@@ -17,7 +17,7 @@ public class FollowingState : State
     override public void OnStateEnter()
     {
         enemy.SetRunAnimation();
-        job = enemy.job;
+        enemyTarget = enemy.target;
     }
     override public void OnStateExit()
     {
