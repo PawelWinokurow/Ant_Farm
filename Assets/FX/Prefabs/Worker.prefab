@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 239454578239907001}
   - component: {fileID: -7619036694779697723}
   - component: {fileID: -8210300535694150561}
+  - component: {fileID: 1285057584965964699}
   m_Layer: 0
   m_Name: Worker
   m_TagString: Mob
@@ -166,6 +167,26 @@ MonoBehaviour:
   mf: {fileID: 2383876763917858186}
   mr: {fileID: 2360862903416325171}
   angl: {fileID: 5335103204996291558}
+  deadFX_prefab: {fileID: 3272130487407376759, guid: 39c28e67acc0741eda505500a9133922, type: 3}
+  popUp_prefad: {fileID: 668541531679047375, guid: 8868b609e6e2e446ebda1e61c70b03b8, type: 3}
+  progressbar: {fileID: 1711813855352781168}
+  healthMax: 100
+  health: 100
+  healTime: 10
+--- !u!114 &1285057584965964699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4135837485797866603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad566de7ab78790458dc979655823c2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mf: {fileID: 2383876763917858186}
+  mr: {fileID: 2360862903416325171}
   deadFX_prefab: {fileID: 3272130487407376759, guid: 39c28e67acc0741eda505500a9133922, type: 3}
   popUp_prefad: {fileID: 668541531679047375, guid: 8868b609e6e2e446ebda1e61c70b03b8, type: 3}
   progressbar: {fileID: 1711813855352781168}
