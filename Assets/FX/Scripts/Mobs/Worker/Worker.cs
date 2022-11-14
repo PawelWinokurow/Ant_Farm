@@ -6,10 +6,11 @@ using UnityEngine;
 public class Worker : MonoBehaviour, Mob
 {
     public string id { get; set; }
-    public float CONSTRUCTION_SPEED = 2f;
-    public int LOADING_SPEED = 50;
-    public int MAX_CARRYING_WEIGHT = 100;
-    public float CARRYING_WEIGHT = 0;
+    public static float CONSTRUCTION_SPEED = 2f;
+    public static int LOADING_SPEED = 50;
+    public static int MAX_CARRYING_WEIGHT = 100;
+    public float carryingWeight = 0;
+    public static int ACCESS_MASK = 1;
     public AntAnimator animator { get; set; }
     public Health healthAnimator { get; set; }
     public Action Animation { get; set; }
@@ -77,12 +78,12 @@ public class Worker : MonoBehaviour, Mob
 
     public void SetRandomWalk()
     {
-        SetPath(pathfinder.RandomWalk(position, 5));
+        SetPath(pathfinder.RandomWalk(position, 5, Worker.ACCESS_MASK));
     }
 
     public void ExpandRandomWalk()
     {
-        var newRandomWalk = pathfinder.RandomWalk(path.wayPoints[path.wayPoints.Count - 1].to.position, 5);
+        var newRandomWalk = pathfinder.RandomWalk(path.wayPoints[path.wayPoints.Count - 1].to.position, 5, Worker.ACCESS_MASK);
         path.length += newRandomWalk.length;
         path.wayPoints.AddRange(newRandomWalk.wayPoints);
     }
@@ -127,7 +128,7 @@ public class Worker : MonoBehaviour, Mob
     public void Rerouting()
     {
         var to = path.HasWaypoints ? path.wayPoints[path.wayPoints.Count - 1].to.position : currentPathEdge.to.position;
-        var pathNew = pathfinder.FindPath(position, to, HasJob ? true : false);
+        var pathNew = pathfinder.FindPath(position, to, Worker.ACCESS_MASK, HasJob ? true : false);
         SetPath(pathNew);
     }
 

@@ -25,7 +25,7 @@ public class GoToState : State
 
     override public void CancelJob()
     {
-        if (worker.CARRYING_WEIGHT == 0)
+        if (worker.carryingWeight == 0)
         {
             job.Cancel();
         }

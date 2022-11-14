@@ -40,10 +40,10 @@ public class Graph
         return newVertex;
     }
 
-    public void AddEdge(Vertex v1, Vertex v2, float edgeWeight, FloorHexagon hex)
+    public void AddEdge(Vertex v1, Vertex v2, float edgeWeight, FloorHexagon hex, int accessMask)
     {
-        Edge v1Edge = new Edge($"{v1.id}{v2.id}", v1, v2, edgeWeight, hex);
-        Edge v2Edge = new Edge($"{v2.id}{v1.id}", v2, v1, edgeWeight, hex);
+        Edge v1Edge = new Edge($"{v1.id}{v2.id}", v1, v2, edgeWeight, hex, accessMask);
+        Edge v2Edge = new Edge($"{v2.id}{v1.id}", v2, v1, edgeWeight, hex, accessMask);
         v1.edges.Add(v1Edge);
         v2.edges.Add(v2Edge);
         adjacencyList.Add(v1Edge);
@@ -139,8 +139,8 @@ public class Graph
         }
         for (int i = 0; i < pathPoints.Count; i++)
         {
-            AddEdge(centerPathPoint, pathPoints[i], Vector3.Distance(centerPathPoint.position, pathPoints[i].position), hex);
-            AddEdge(pathPoints[i], pathPoints[(i + 2) % pathPoints.Count], Vector3.Distance(pathPoints[i].position, pathPoints[(i + 2) % pathPoints.Count].position), hex);
+            AddEdge(centerPathPoint, pathPoints[i], Vector3.Distance(centerPathPoint.position, pathPoints[i].position), hex, 3);
+            AddEdge(pathPoints[i], pathPoints[(i + 2) % pathPoints.Count], Vector3.Distance(pathPoints[i].position, pathPoints[(i + 2) % pathPoints.Count].position), hex, 1);
         }
         return centerPathPoint;
     }

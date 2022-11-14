@@ -23,13 +23,13 @@ public class Pathfinder
         this.pathGraph = pathGraph;
     }
 
-    public Path RandomWalk(Vector3 fromVec, int numberOfSteps)
+    public Path RandomWalk(Vector3 fromVec, int numberOfSteps, int accessMask)
     {
         Path overallPath = new Path();
         Vertex from = pathGraph.NearestVertex(fromVec);
         for (int i = 0; i < numberOfSteps; i++)
         {
-            var path = PathToSomeNeighbour(from);
+            var path = PathToSomeNeighbour(from, accessMask);
             if (path != null)
             {
                 overallPath.wayPoints.AddRange(path.wayPoints);
@@ -44,7 +44,7 @@ public class Pathfinder
         return overallPath;
     }
 
-    private Path PathToSomeNeighbour(Vertex from)
+    private Path PathToSomeNeighbour(Vertex from, int accessMask)
     {
         if (from.neighbours.Count != 0)
         {
@@ -54,7 +54,7 @@ public class Pathfinder
             {
                 if (to.edges[0].isWalkable)
                 {
-                    return FindPath(from.position, to.position);
+                    return FindPath(from.position, to.position, accessMask);
                 }
             }
         }
@@ -65,14 +65,14 @@ public class Pathfinder
             {
                 if (edge.to.isCentralVertex)
                 {
-                    return FindPath(from.position, edge.to.position);
+                    return FindPath(from.position, edge.to.position, accessMask);
                 }
             }
         }
         return null;
     }
 
-    public Path FindPath(Vector3 fromVec, Vector3 toVec, bool findNearest = false)
+    public Path FindPath(Vector3 fromVec, Vector3 toVec, int accessMask, bool findNearest = false)
     {
         Vertex from = pathGraph.NearestVertex(fromVec);
         Vertex to = pathGraph.NearestVertex(toVec);
@@ -80,20 +80,20 @@ public class Pathfinder
         if (from.id == to.id) return path;
         if (!findNearest)
         {
-            path = Astar(from, to);
+            path = Astar(from, to, accessMask);
         }
         else
         {
             var nearestNeighbour = pathGraph.NearestNeighbour(from, to);
             if (nearestNeighbour != null)
             {
-                path = Astar(from, nearestNeighbour);
+                path = Astar(from, nearestNeighbour, accessMask);
             }
         }
         return path;
     }
 
-    private Path Astar(Vertex start, Vertex goal)
+    private Path Astar(Vertex start, Vertex goal, int accessMask)
     {
         PriorityQueue<Vertex, float> frontier = new PriorityQueue<Vertex, float>(0);
         frontier.Enqueue(start, 0);
@@ -116,7 +116,7 @@ public class Pathfinder
 
             foreach (var nextEdge in current.edges)
             {
-                if (!nextEdge.isWalkable) continue;
+                if (!nextEdge.isWalkable || (nextEdge.accessMask & accessMask) != accessMask) continue;
                 var next = nextEdge.to;
                 var newCost = costSoFar[current.id] + nextEdge.edgeWeight;
                 if (!costSoFar.ContainsKey(next.id) || newCost < costSoFar[next.id])

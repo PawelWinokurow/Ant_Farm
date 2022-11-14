@@ -16,7 +16,7 @@ public class UnloadingState : State
         worker.animator.Idle();
         if (IsDone)
         {
-            worker.SetPath(worker.pathfinder.FindPath(worker.position, job.destination, true));
+            worker.SetPath(worker.pathfinder.FindPath(worker.position, job.destination, Worker.ACCESS_MASK, true));
             worker.SetRunAnimation();
             worker.SetState(new GoToState(worker));
         }
@@ -41,7 +41,7 @@ public class UnloadingState : State
     }
     override public void CancelJob()
     {
-        if (worker.CARRYING_WEIGHT == 0)
+        if (worker.carryingWeight == 0)
         {
             job.Cancel();
         }

@@ -9,7 +9,8 @@ using UnityEngine;
 public class Enemy : MonoBehaviour, Mob
 {
     public string id { get; set; }
-    public float ATTACK_STRENGTH = 10f;
+    public static float ATTACK_STRENGTH = 10f;
+    public static int ACCESS_MASK = 2;
     public EnemyAnimator animator { get; set; }
     public Action Animation { get; set; }
     public Vector3 position { get => transform.position; }
@@ -91,12 +92,12 @@ public class Enemy : MonoBehaviour, Mob
 
     public void SetRandomWalk()
     {
-        SetPath(pathfinder.RandomWalk(position, 5));
+        SetPath(pathfinder.RandomWalk(position, 5, Enemy.ACCESS_MASK));
     }
 
     public void ExpandRandomWalk()
     {
-        var newRandomWalk = pathfinder.RandomWalk(path.wayPoints[path.wayPoints.Count - 1].to.position, 5);
+        var newRandomWalk = pathfinder.RandomWalk(path.wayPoints[path.wayPoints.Count - 1].to.position, 5, Enemy.ACCESS_MASK);
         path.length += newRandomWalk.length;
         path.wayPoints.AddRange(newRandomWalk.wayPoints);
     }
@@ -139,7 +140,7 @@ public class Enemy : MonoBehaviour, Mob
         target.hexId = target.mob.currentHex.id;
         if (currentPathEdge != null)
         {
-            var pathNew = pathfinder.FindPath(currentPathEdge.to.position, target.mob.currentHex.position, true);
+            var pathNew = pathfinder.FindPath(currentPathEdge.to.position, target.mob.currentHex.position, Enemy.ACCESS_MASK, true);
             if (pathNew != null)
             {
                 path = pathNew;
@@ -147,7 +148,7 @@ public class Enemy : MonoBehaviour, Mob
         }
         else
         {
-            SetPath(pathfinder.FindPath(position, target.mob.currentHex.position, true));
+            SetPath(pathfinder.FindPath(position, target.mob.currentHex.position, Enemy.ACCESS_MASK, true));
         }
     }
 
@@ -184,7 +185,7 @@ public class Enemy : MonoBehaviour, Mob
         for (int i = 0; i < queryResults.Count; i++)
         {
             var targetMob = notDeadMobs[queryResults[i]];
-            var path = pathfinder.FindPath(position, targetMob.position, true);
+            var path = pathfinder.FindPath(position, targetMob.position, Enemy.ACCESS_MASK, true);
             if (path != null)
             {
                 var target = new EnemyTarget($"{id}_{targetMob.id}", this, targetMob);

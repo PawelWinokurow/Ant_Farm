@@ -81,7 +81,7 @@ public class WorkerJobScheduler : MonoBehaviour
         query.KNearest(workerPositionsTree, job.destination, freeWorkersClone.Count, queryResults);
         foreach (int i in queryResults)
         {
-            var path = pathfinder.FindPath(freeWorkersClone[i].position, job.destination, true);
+            var path = pathfinder.FindPath(freeWorkersClone[i].position, job.destination, Worker.ACCESS_MASK, true);
             if (path != null)
             {
                 job.worker = freeWorkersClone[i];

@@ -17,7 +17,7 @@ public class LoadingState : State
         if (IsDone)
         {
             job.SwapDestination();
-            worker.SetPath(worker.pathfinder.FindPath(worker.position, job.destination, true));
+            worker.SetPath(worker.pathfinder.FindPath(worker.position, job.destination, Worker.ACCESS_MASK, true));
             worker.SetRunFoodAnimation();
             worker.SetState(new GoToState(worker));
         }
@@ -35,9 +35,9 @@ public class LoadingState : State
     override public void CancelJob()
 
     {
-        if (worker.CARRYING_WEIGHT != 0)
+        if (worker.carryingWeight != 0)
         {
-            worker.SetPath(worker.pathfinder.FindPath(worker.position, job.storageHexagon.position, true));
+            worker.SetPath(worker.pathfinder.FindPath(worker.position, job.storageHexagon.position, Worker.ACCESS_MASK, true));
             worker.SetRunAnimation();
             worker.SetState(new GoToState(worker));
         }

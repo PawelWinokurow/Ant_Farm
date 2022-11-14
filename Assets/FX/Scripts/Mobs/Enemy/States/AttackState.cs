@@ -32,7 +32,7 @@ public class AttackState : State
         if (enemy.IsTargetInNeighbourhood())
         {
             enemy.Animation();
-            enemy.accumulatedDamage += enemy.ATTACK_STRENGTH * Time.deltaTime;
+            enemy.accumulatedDamage += Enemy.ATTACK_STRENGTH * Time.deltaTime;
             if (enemy.animator.fOld < 14 && enemy.animator.f >= 14)
             {
                 enemy.Attack();

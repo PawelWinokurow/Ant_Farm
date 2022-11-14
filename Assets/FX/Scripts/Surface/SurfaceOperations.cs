@@ -11,11 +11,11 @@ public class SurfaceOperations : MonoBehaviour
     public void Loading(CollectingHexagon collectingHex, LoadingState state, CarrierJob job)
     {
         var worker = state.worker;
-        var workerMaxCanTake = state.worker.MAX_CARRYING_WEIGHT - worker.CARRYING_WEIGHT;
-        var canTake = Mathf.Min((worker.LOADING_SPEED * Time.deltaTime), workerMaxCanTake);
+        var workerMaxCanTake = Worker.MAX_CARRYING_WEIGHT - worker.carryingWeight;
+        var canTake = Mathf.Min((Worker.LOADING_SPEED * Time.deltaTime), workerMaxCanTake);
         if (canTake >= collectingHex.Quantity)
         {
-            worker.CARRYING_WEIGHT += collectingHex.Quantity;
+            worker.carryingWeight += collectingHex.Quantity;
             collectingHex.Quantity = 0;
             collectingHex.carriers.Where(w => w.id != worker.id).ToList().ForEach(w => w.CancelJob());
             collectingHex.type = HEX_TYPE.EMPTY;
@@ -25,9 +25,9 @@ public class SurfaceOperations : MonoBehaviour
         else
         {
             var toTake = Mathf.Min(canTake, workerMaxCanTake);
-            worker.CARRYING_WEIGHT += toTake;
+            worker.carryingWeight += toTake;
             collectingHex.Quantity -= toTake;
-            if (worker.CARRYING_WEIGHT >= state.worker.MAX_CARRYING_WEIGHT)
+            if (worker.carryingWeight >= Worker.MAX_CARRYING_WEIGHT)
             {
                 state.Done();
             }
@@ -36,12 +36,12 @@ public class SurfaceOperations : MonoBehaviour
     public void Unloading(BaseHexagon storageHex, UnloadingState state, CarrierJob job)
     {
         var worker = state.worker;
-        var toStore = Mathf.Min((worker.LOADING_SPEED * Time.deltaTime), worker.CARRYING_WEIGHT);
+        var toStore = Mathf.Min((Worker.LOADING_SPEED * Time.deltaTime), worker.carryingWeight);
         storageHex.storage += toStore;
-        worker.CARRYING_WEIGHT -= toStore;
-        if (worker.CARRYING_WEIGHT <= 0)
+        worker.carryingWeight -= toStore;
+        if (worker.carryingWeight <= 0)
         {
-            worker.CARRYING_WEIGHT = 0;
+            worker.carryingWeight = 0;
             state.Done();
         }
     }
@@ -67,7 +67,7 @@ public class SurfaceOperations : MonoBehaviour
         var scaledBlock = surface.AddDigScaledBlock(floorHex);
         while (scaledBlock != null)
         {
-            scaledBlock.work -= worker.CONSTRUCTION_SPEED;
+            scaledBlock.work -= Worker.CONSTRUCTION_SPEED;
             scaledBlock.transform.localScale = Vector3.one * scaledBlock.work / WorkHexagon.MAX_WORK;
             if (scaledBlock.work <= 0)
             {
@@ -91,7 +91,7 @@ public class SurfaceOperations : MonoBehaviour
         var scaledBlock = surface.AddFillScaledBlock(floorHex);
         while (scaledBlock != null)
         {
-            scaledBlock.work -= worker.CONSTRUCTION_SPEED;
+            scaledBlock.work -= Worker.CONSTRUCTION_SPEED;
             scaledBlock.transform.localScale = Vector3.one * (1 - scaledBlock.work / WorkHexagon.MAX_WORK);
             if (scaledBlock.work <= 0)
             {
