@@ -6,7 +6,7 @@ public class Health : MonoBehaviour
 {
     public MeshRenderer mr;
 
-    public GameObject deadFX_prefab;
+    public ParticleSystemRenderer deadFX_prefab;
     public HealthPopUp popUp_prefad;
 
     MaterialPropertyBlock bodyProps;
@@ -89,9 +89,11 @@ public class Health : MonoBehaviour
     }
     private IEnumerator Dead_Cor()
     {
-        GameObject fx = Instantiate(deadFX_prefab, transform.position, transform.rotation);
+        ParticleSystemRenderer rend = Instantiate(deadFX_prefab, transform.position, transform.rotation);
+        rend.material.SetColor("_Color", mr.material.GetColor("_Color"));
+        rend.material.SetColor("_Color1", mr.material.GetColor("_Color1"));
         mr.transform.localScale = Vector3.one * 1.3f;
-        yield return new WaitForSeconds(0.15f);
+        yield return new WaitForSeconds(0.1f);
         mr.enabled = false;
     }
 }
