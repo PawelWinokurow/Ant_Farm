@@ -16,8 +16,8 @@ public class Surface : MonoBehaviour
     public CollectingHexagon foodPrefab;
     public CollectingHexagon carryingPrefab;
     private Camera cam;
-    private int height;
-    private int width;
+    public int height;
+    public int width;
     public Vector3 ld;
     public Vector3 rd;
     public Vector3 lu;
@@ -31,7 +31,7 @@ public class Surface : MonoBehaviour
     public Graph pathGraph;
 
     public Dictionary<string, Hexagon> oldhexagons = new Dictionary<string, Hexagon>();
-
+    public Vector3 center;
     public void Init(Graph pathGraph)
     {
         this.pathGraph = pathGraph;
@@ -40,6 +40,7 @@ public class Surface : MonoBehaviour
         Generatehexagons();
         SetCameraPositionToCenter();
         SetbaseHex();
+        GetComponent<AddTextureToHex>().Init();
     }
 
     public void Init(Graph pathGraph, HexagonSerializable[] hexagons)
@@ -91,12 +92,13 @@ public class Surface : MonoBehaviour
 
     private void SetCameraPositionToCenter()
     {
-        Camera.main.transform.parent.position = new Vector3((width - 0.5f) * w / 2f, 0, (height - 1) * h / 2f * (1f - 0.09f));
+        center= new Vector3((width - 0.5f) * w / 2f, 0, (height - 1) * h / 2f * (1f - 0.09f));
+        Camera.main.transform.parent.position = center;
     }
 
     public void SetbaseHex()
     {
-        baseHex = PositionToHex(Camera.main.transform.parent.position);
+        baseHex = PositionToHex(center);
     }
 
     // void Loadhexagons(HexagonSerializable[] hexagons)
