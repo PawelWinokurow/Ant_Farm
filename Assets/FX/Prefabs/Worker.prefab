@@ -181,6 +181,7 @@ MonoBehaviour:
   deadFX_prefab: {fileID: 3272130487407376758, guid: 39c28e67acc0741eda505500a9133922, type: 3}
   popUp_prefad: {fileID: 668541531679047375, guid: 8868b609e6e2e446ebda1e61c70b03b8, type: 3}
   progressbar: {fileID: 1711813855352781168}
+  shadow: {fileID: 7677299087498399184}
   MAX_HEALTH: 100
   health: 100
   healTime: 10
