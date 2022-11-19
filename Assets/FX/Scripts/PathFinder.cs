@@ -97,7 +97,7 @@ public class Pathfinder
     {
         PriorityQueue<Vertex, float> frontier = new PriorityQueue<Vertex, float>(0);
         frontier.Enqueue(start, 0);
-
+        int i = 0;
         var cameFrom = new Dictionary<string, Vertex>();
         var cameThrough = new Dictionary<string, Edge>();
         var costSoFar = new Dictionary<string, float>();
@@ -108,6 +108,11 @@ public class Pathfinder
         while (frontier.Count != 0)
         {
             var current = frontier.Dequeue();
+            i++;
+            if (i == 100)
+            {
+                return null;
+            }
             if (current == goal)
             {
                 isGoalFound = true;
@@ -116,7 +121,7 @@ public class Pathfinder
 
             foreach (var nextEdge in current.edges)
             {
-                if (!nextEdge.isWalkable || (nextEdge.accessMask & accessMask) != accessMask) continue;
+                if (!nextEdge.HasAccess(accessMask)) continue;
                 var next = nextEdge.to;
                 var newCost = costSoFar[current.id] + nextEdge.edgeWeight;
                 if (!costSoFar.ContainsKey(next.id) || newCost < costSoFar[next.id])

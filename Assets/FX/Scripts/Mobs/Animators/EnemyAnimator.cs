@@ -13,7 +13,7 @@ public class EnemyAnimator : MonoBehaviour
     public AnimationsScriptableObject runFight;
 
     public int f = 0;
-    public int fOld;
+    public int fOld = 0;
     public MeshFilter mf;
     public MeshRenderer mr;
     private Vector3 forward;

@@ -32,7 +32,7 @@ public class GraphTransform
                 from = graph.pathVerticesMap[VectorTransform.FromSerializable(serializedEdge.fromPosition)],
                 to = graph.pathVerticesMap[VectorTransform.FromSerializable(serializedEdge.toPosition)],
                 edgeWeight = serializedEdge.edgeWeight,
-                isWalkable = serializedEdge.isWalkable,
+                // isWalkable = serializedEdge.isWalkable,
             };
             graph.pathVerticesMap[edge.from.position].edges.Add(edge);
             return edge;

@@ -23,7 +23,7 @@ public class Graph
 
     public void ResetAllEdgesToWalkable()
     {
-        adjacencyList.ForEach(edge => edge.isWalkable = true);
+        adjacencyList.ForEach(edge => edge.edgeWeight = edge.edgeWeightBase);
     }
 
     public Vertex GetVertexByPoistion(Vector3 position)
@@ -73,12 +73,11 @@ public class Graph
 
     public void AllowHexagon(FloorHexagon hex)
     {
-        GetHexagonEdges(hex).ForEach(edge => edge.isWalkable = true);
+        GetHexagonEdges(hex).ForEach(edge => edge.edgeWeight = edge.edgeWeightBase);
     }
     public void ProhibitHexagon(FloorHexagon hex)
     {
-
-        GetHexagonEdges(hex).ForEach(edge => edge.isWalkable = false);
+        GetHexagonEdges(hex).ForEach(edge => edge.edgeWeight = edge.edgeWeightMod);
     }
 
     private List<Edge> GetHexagonEdges(FloorHexagon hex)

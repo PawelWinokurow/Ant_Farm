@@ -127,7 +127,7 @@ public class Enemy : MonoBehaviour, Mob
         currentPathEdge = path.wayPoints[0];
         currentHex = currentPathEdge.floorHexagon;
         path.wayPoints.RemoveAt(0);
-        lerpDuration = Vector3.Distance(currentPathEdge.from.position, currentPathEdge.to.position);
+        lerpDuration = Vector3.Distance(currentPathEdge.from.position, currentPathEdge.to.position) * currentPathEdge.edgeWeight / currentPathEdge.edgeWeightBase;
     }
 
     public void CancelJob()

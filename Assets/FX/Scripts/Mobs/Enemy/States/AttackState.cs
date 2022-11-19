@@ -5,10 +5,12 @@ public class AttackState : State
 
     private Enemy enemy;
     private EnemyTarget enemyTarget;
+    private bool isHitMade = false;
     public AttackState(Enemy enemy) : base(enemy)
     {
         this.type = STATE.ATTACK;
         this.enemy = enemy;
+
     }
 
     override public void OnStateEnter()
@@ -33,10 +35,16 @@ public class AttackState : State
         {
             enemy.Animation();
             enemy.accumulatedDamage += Enemy.ATTACK_STRENGTH * Time.deltaTime;
-            if (enemy.animator.fOld < 14 && enemy.animator.f >= 14)
+            if (enemy.animator.fOld > enemy.animator.f)
             {
+                isHitMade = false;
+            }
+            if (!isHitMade && enemy.animator.f >= 14)
+            {
+                Debug.Log(enemy.animator.f);
                 enemy.Attack();
                 enemy.accumulatedDamage = 0f;
+                isHitMade = true;
             }
         }
         else
