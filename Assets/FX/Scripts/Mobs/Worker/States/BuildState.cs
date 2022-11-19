@@ -13,7 +13,6 @@ public class BuildState : State
 
     public override void Tick()
     {
-        worker.Animation();
     }
 
     public void Done()
@@ -32,6 +31,8 @@ public class BuildState : State
         job = (WorkerJob)worker.job;
         worker.surfaceOperations.Build(job);
         worker.SetIdleAnimation();
+        worker.Animation();
+
     }
 
     override public void OnStateExit()

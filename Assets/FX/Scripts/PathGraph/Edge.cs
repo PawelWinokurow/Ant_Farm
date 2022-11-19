@@ -9,7 +9,6 @@ public class Edge
     public float edgeWeightMod;
     public int accessMask;
     public FloorHexagon floorHexagon;
-    public bool isWalkable { get => edgeWeight == edgeWeightBase; }
 
     public Edge(string id, Vertex from, Vertex to, float edgeWeight, FloorHexagon floorHexagon, int accessMask)
     {

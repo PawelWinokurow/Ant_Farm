@@ -16,6 +16,7 @@ public class FollowingState : State
     override public void OnStateEnter()
     {
         enemy.SetRunAnimation();
+        enemy.Animation();
     }
     override public void OnStateExit()
     {
@@ -42,7 +43,6 @@ public class FollowingState : State
         }
         else if (enemy.HasPath)
         {
-            enemy.Animation();
             enemy.Move(MOVEMENT_SPEED);
         }
     }

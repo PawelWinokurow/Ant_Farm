@@ -13,13 +13,14 @@ public class EnemyAnimator : MonoBehaviour
     public AnimationsScriptableObject runFight;
 
     public int f = 0;
-    public int fOld = 0;
     public MeshFilter mf;
     public MeshRenderer mr;
     private Vector3 forward;
     private Quaternion smoothRot;
     public Transform angl;
 
+    public bool isHitMade = true;
+    private float fOld = 0f;
 
     private void Start()
     {
@@ -51,7 +52,8 @@ public class EnemyAnimator : MonoBehaviour
     {
         if (enemy != null)
         {
-            f = (int)(Time.time * 30f * 1.5f) % current.sequence.Length;
+            var fFLoat = Time.time * 30f * 1.5f;
+            f = (int)(fFLoat) % current.sequence.Length;
             mf.mesh = current.sequence[f];
             if (enemy.currentState.type == STATE.ATTACK && enemy.target?.mob != null)
             {
@@ -65,8 +67,25 @@ public class EnemyAnimator : MonoBehaviour
             smoothRot = Quaternion.Slerp(smoothRot, rot, Time.deltaTime * 10f);
             mf.transform.rotation = smoothRot;
             mf.transform.Rotate(new Vector3(-90f, 0f, 180f), Space.Self);
+            if (enemy.currentState.type == STATE.ATTACK)
+            {
+                var rest = fFLoat - (int)fFLoat;
+
+                if (fOld > (f + rest))
+                {
+                    Debug.Log(f + rest);
+                    Debug.Log(fOld);
+                    isHitMade = false;
+                }
+
+                if (!isHitMade && f >= 14)
+                {
+                    enemy.Attack();
+                    isHitMade = true;
+                }
+                fOld = f + rest;
+            }
         }
     }
-
 }
 

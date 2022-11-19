@@ -17,6 +17,8 @@ public class GoToState : State
     override public void OnStateEnter()
     {
         job = worker.job;
+        worker.Animation();
+
     }
     override public void OnStateExit()
     {
@@ -35,8 +37,14 @@ public class GoToState : State
     {
         if (worker.HasPath)
         {
-            worker.Animation();
-            worker.Move(MOVEMENT_SPEED);
+            if (!worker.currentPathEdge.HasAccess(Worker.ACCESS_MASK))
+            {
+                worker.Rerouting();
+            }
+            else
+            {
+                worker.Move(MOVEMENT_SPEED);
+            }
         }
         else
         {

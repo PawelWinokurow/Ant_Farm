@@ -28,7 +28,6 @@ public class Enemy : MonoBehaviour, Mob
     public float hp { get; set; }
     public Store store;
     public List<Mob> allMobs = new List<Mob>();
-    public float accumulatedDamage = 0f;
 
     void Start()
     {
@@ -75,7 +74,7 @@ public class Enemy : MonoBehaviour, Mob
 
     public void Attack()
     {
-        target.mob.Hit((int)Mathf.Round(accumulatedDamage));
+        target.mob.Hit((int)Mathf.Round(Enemy.ATTACK_STRENGTH));
         if (target.mob.hp <= 0)
         {
             CancelJob();
@@ -180,6 +179,7 @@ public class Enemy : MonoBehaviour, Mob
         KDTree mobPositionsTree = new KDTree(notDeadMobs.Select(mob => mob.position).ToArray());
         KDQuery query = new KDQuery();
         List<int> queryResults = new List<int>();
+        queryResults.Reverse();
         query.Radius(mobPositionsTree, position, 200f, queryResults);
         if (queryResults.Count == 0) { return null; }
         for (int i = 0; i < queryResults.Count; i++)

@@ -14,7 +14,6 @@ public class PatrolState : State
     }
     public override void Tick()
     {
-        enemy.Animation();
         var target = enemy.SearchTarget();
         if (target != null)
         {
@@ -35,6 +34,7 @@ public class PatrolState : State
     {
         enemy.RemovePath();
         enemy.SetRunAnimation();
+        enemy.Animation();
         enemy.SetRandomWalk();
     }
     override public void OnStateExit()

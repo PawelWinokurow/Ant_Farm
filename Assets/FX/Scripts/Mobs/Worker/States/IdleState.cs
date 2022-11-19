@@ -14,7 +14,6 @@ public class IdleState : State
     }
     public override void Tick()
     {
-        worker.Animation();
         if (worker.HasPath)
         {
             worker.Move(MOVEMENT_SPEED);
@@ -33,6 +32,7 @@ public class IdleState : State
     {
         worker.RemovePath();
         worker.SetRunAnimation();
+        worker.Animation();
     }
     override public void OnStateExit()
     {

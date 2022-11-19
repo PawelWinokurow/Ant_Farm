@@ -13,7 +13,6 @@ public class LoadingState : State
 
     public override void Tick()
     {
-        worker.Animation();
         if (IsDone)
         {
             job.SwapDestination();
@@ -52,6 +51,7 @@ public class LoadingState : State
         IsDone = false;
         job = (CarrierJob)worker.job;
         worker.SetIdleAnimation();
+        worker.Animation();
     }
 
     override public void OnStateExit()

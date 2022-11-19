@@ -15,6 +15,7 @@ public class WorkerJobScheduler : MonoBehaviour
     private List<Worker> busyWorkers = new List<Worker>();
     private List<Worker> freeWorkers = new List<Worker>();
     public List<Worker> allWorkers = new List<Worker>();
+    private static object monitorLock = new object();
 
     void Update()
     {
@@ -39,7 +40,7 @@ public class WorkerJobScheduler : MonoBehaviour
             {
                 AssignWork();
             }
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.2f);
         }
     }
 
@@ -49,18 +50,25 @@ public class WorkerJobScheduler : MonoBehaviour
     }
     public void AddWorker(Worker worker)
     {
+
         worker.surfaceOperations = surfaceOperations;
         worker.pathfinder = pathfinder;
         worker.Kill = () => Kill(worker);
-        freeWorkers.Add(worker);
-        allWorkers.Add(worker);
+        lock (monitorLock)
+        {
+            freeWorkers.Add(worker);
+            allWorkers.Add(worker);
+        }
     }
 
     private void Kill(Worker worker)
     {
-        busyWorkers.Remove(worker);
-        freeWorkers.Remove(worker);
-        worker.CancelJob();
+        lock (monitorLock)
+        {
+            busyWorkers.Remove(worker);
+            freeWorkers.Remove(worker);
+            worker.CancelJob();
+        }
         worker.SetState(new DeadState(worker));
     }
 
@@ -78,7 +86,9 @@ public class WorkerJobScheduler : MonoBehaviour
         KDTree workerPositionsTree = new KDTree(freeWorkersClone.Select(worker => worker.position).ToArray());
         KDQuery query = new KDQuery();
         List<int> queryResults = new List<int>();
-        query.KNearest(workerPositionsTree, job.destination, freeWorkersClone.Count, queryResults);
+        List<float> queryDistances = new List<float>();
+        query.KNearest(workerPositionsTree, job.destination, freeWorkersClone.Count, queryResults, queryDistances);
+        queryResults.Reverse();
         foreach (int i in queryResults)
         {
             var path = pathfinder.FindPath(freeWorkersClone[i].position, job.destination, Worker.ACCESS_MASK, true);
@@ -136,7 +146,10 @@ public class WorkerJobScheduler : MonoBehaviour
 
     public bool IsJobAlreadyCreated(WorkerJob job)
     {
-        return IsJobAlreadyCreated(job.id);
+        lock (monitorLock)
+        {
+            return IsJobAlreadyCreated(job.id);
+        }
     }
     public bool IsJobAlreadyCreated(string jobId)
     {
@@ -148,7 +161,10 @@ public class WorkerJobScheduler : MonoBehaviour
     }
     public bool IsJobUnassigned(string jobId)
     {
-        return unassignedJobsQueue.Any(item => item.id == jobId);
+        lock (monitorLock)
+        {
+            return unassignedJobsQueue.Any(item => item.id == jobId);
+        }
     }
     public bool IsJobAssigned(WorkerJob job)
     {
@@ -156,7 +172,10 @@ public class WorkerJobScheduler : MonoBehaviour
     }
     public bool IsJobAssigned(string jobId)
     {
-        return assignedJobsQueue.Any(item => item.id == jobId);
+        lock (monitorLock)
+        {
+            return assignedJobsQueue.Any(item => item.id == jobId);
+        }
     }
 
     public void AssignJob(WorkerJob job)
@@ -170,47 +189,69 @@ public class WorkerJobScheduler : MonoBehaviour
 
     public void CancelJob(string jobId)
     {
-        CancelJob(jobMap[jobId]);
+        if (jobMap.ContainsKey(jobId))
+        {
+            CancelJob(jobMap[jobId]);
+        }
     }
 
     public void CancelJob(WorkerJob job)
     {
-        Remove(job);
-        if (job.worker != null)
+        lock (monitorLock)
         {
-            MoveBusyMobToFreeMobs(job.worker);
-            job.worker.SetState(new IdleState(job.worker));
-            job.worker.path = null;
+            Remove(job);
+            if (job.worker != null)
+            {
+                MoveBusyMobToFreeMobs(job.worker);
+                job.worker.SetState(new IdleState(job.worker));
+                job.worker.path = null;
+            }
         }
     }
 
-    public void Remove(WorkerJob job)
+
+    private void Remove(WorkerJob job)
     {
-        assignedJobsQueue.Remove(job);
-        unassignedJobsQueue.Remove(job);
-        jobMap.Remove(job.id);
+        lock (monitorLock)
+        {
+            assignedJobsQueue.Remove(job);
+            unassignedJobsQueue.Remove(job);
+            jobMap.Remove(job.id);
+        }
     }
 
     private void MoveFreeMobToBusyMobs(Worker freeWorker)
     {
-        freeWorkers.Remove(freeWorker);
-        busyWorkers.Add(freeWorker);
+        lock (monitorLock)
+        {
+            freeWorkers.Remove(freeWorker);
+            busyWorkers.Add(freeWorker);
+        }
     }
     private void MoveBusyMobToFreeMobs(Worker busyWorker)
     {
-        busyWorkers.Remove(busyWorker);
-        freeWorkers.Add(busyWorker);
+        lock (monitorLock)
+        {
+            busyWorkers.Remove(busyWorker);
+            freeWorkers.Add(busyWorker);
+        }
     }
 
     private void MoveUnassignedJobToAssignedJobs(WorkerJob unassignedJob)
     {
-        unassignedJobsQueue.Remove(unassignedJob);
-        assignedJobsQueue.Add(unassignedJob);
+        lock (monitorLock)
+        {
+            unassignedJobsQueue.Remove(unassignedJob);
+            assignedJobsQueue.Add(unassignedJob);
+        }
     }
     private void MoveAssignedJobToUnssignedJobs(WorkerJob assignedJob)
     {
-        assignedJobsQueue.Remove(assignedJob);
-        unassignedJobsQueue.Add(assignedJob);
+        lock (monitorLock)
+        {
+            assignedJobsQueue.Remove(assignedJob);
+            unassignedJobsQueue.Add(assignedJob);
+        }
     }
 
 }

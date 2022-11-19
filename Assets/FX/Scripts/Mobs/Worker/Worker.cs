@@ -91,11 +91,8 @@ public class Worker : MonoBehaviour, Mob
     public void Move(int speed)
     {
         DrawDebugPath();
-        if (!currentPathEdge.isWalkable)
-        {
-            Rerouting();
-        }
-        else if (t < lerpDuration)
+
+        if (t < lerpDuration)
         {
             var a = (float)Mathf.Min(t / lerpDuration, 1f);
             transform.position = Vector3.Lerp(currentPathEdge.from.position, currentPathEdge.to.position, a);
@@ -127,9 +124,11 @@ public class Worker : MonoBehaviour, Mob
 
     public void Rerouting()
     {
-        var to = path.HasWaypoints ? path.wayPoints[path.wayPoints.Count - 1].to.position : currentPathEdge.to.position;
-        var pathNew = pathfinder.FindPath(position, to, Worker.ACCESS_MASK, HasJob ? true : false);
-        SetPath(pathNew);
+        if (HasJob)
+        {
+            var pathNew = pathfinder.FindPath(position, job.destination, Worker.ACCESS_MASK, true);
+            SetPath(pathNew);
+        }
     }
 
     void Update()

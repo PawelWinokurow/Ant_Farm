@@ -46,24 +46,27 @@ public class Pathfinder
 
     private Path PathToSomeNeighbour(Vertex from, int accessMask)
     {
-        if (from.neighbours.Count != 0)
+        if (from.isCentralVertex)
         {
-
-            var neighbours = from.neighbours.OrderBy(a => Guid.NewGuid()).ToList();
-            foreach (var to in neighbours)
+            var edges = from.edges.OrderBy(e => Guid.NewGuid()).ToList();
+            foreach (var edge in edges)
             {
-                if (to.edges[0].isWalkable)
+                var edges2 = edge.to.edges.OrderBy(e => Guid.NewGuid()).ToList();
+                foreach (var edge2 in edges2)
                 {
-                    return FindPath(from.position, to.position, accessMask);
+                    if (edge2.HasAccess(accessMask) && edge2.to.isCentralVertex && from != edge2.to)
+                    {
+                        return FindPath(from.position, edge2.to.position, accessMask);
+                    }
                 }
             }
         }
         else
         {
-            var edges = from.edges.OrderBy(a => Guid.NewGuid()).ToList();
+            var edges = from.edges.OrderBy(e => Guid.NewGuid()).ToList();
             foreach (var edge in edges)
             {
-                if (edge.to.isCentralVertex)
+                if (edge.HasAccess(accessMask) && edge.to.isCentralVertex)
                 {
                     return FindPath(from.position, edge.to.position, accessMask);
                 }
@@ -84,7 +87,7 @@ public class Pathfinder
         }
         else
         {
-            var nearestNeighbour = pathGraph.NearestNeighbour(from, to);
+            var nearestNeighbour = pathGraph.NearestNeighbour(from, to, accessMask);
             if (nearestNeighbour != null)
             {
                 path = Astar(from, nearestNeighbour, accessMask);

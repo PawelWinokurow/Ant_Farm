@@ -49,7 +49,7 @@ public class GraphTransform
         var to = ToSerializable(edge.to);
         var pathEdgeSerializable = new EdgeSerializable(from, to, edge.edgeWeight)
         {
-            isWalkable = edge.isWalkable
+            // isWalkable = edge.isWalkable
         };
         return pathEdgeSerializable;
     }

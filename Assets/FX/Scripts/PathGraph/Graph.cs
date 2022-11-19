@@ -71,13 +71,14 @@ public class Graph
         });
     }
 
+    //TODO check masks
     public void AllowHexagon(FloorHexagon hex)
     {
-        GetHexagonEdges(hex).ForEach(edge => edge.edgeWeight = edge.edgeWeightBase);
+        GetHexagonEdges(hex).ForEach(edge => { edge.accessMask = 3; edge.edgeWeight = edge.edgeWeightBase; });
     }
     public void ProhibitHexagon(FloorHexagon hex)
     {
-        GetHexagonEdges(hex).ForEach(edge => edge.edgeWeight = edge.edgeWeightMod);
+        GetHexagonEdges(hex).ForEach(edge => { edge.accessMask = 2; edge.edgeWeight = edge.edgeWeightMod; });
     }
 
     private List<Edge> GetHexagonEdges(FloorHexagon hex)
@@ -104,9 +105,9 @@ public class Graph
             else return acc;
         });
     }
-    public Vertex NearestNeighbour(Vertex from, Vertex to)
+    public Vertex NearestNeighbour(Vertex from, Vertex to, int accessMask)
     {
-        var toNeighbours = to.neighbours.Where(vertex => vertex.edges.All(edge => edge.isWalkable)).ToList();
+        var toNeighbours = to.neighbours.Where(vertex => vertex.edges.Any(edge => edge.HasAccess(accessMask))).ToList();
         if (toNeighbours.Count == 0) return null;
         return toNeighbours.Aggregate(toNeighbours[0], (acc, vertex) =>
         {
