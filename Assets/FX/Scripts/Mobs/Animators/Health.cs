@@ -12,7 +12,7 @@ public class Health : MonoBehaviour
     MaterialPropertyBlock bodyProps;
     MaterialPropertyBlock progressbarProps;
     public MeshRenderer progressbar;
-
+    public GameObject shadow;
 
     public float MAX_HEALTH;
     public float health;
@@ -95,6 +95,7 @@ public class Health : MonoBehaviour
         mr.transform.localScale = Vector3.one * 1.3f;
         yield return new WaitForSeconds(0.1f);
         mr.enabled = false;
+        shadow.SetActive(false);
     }
 }
 

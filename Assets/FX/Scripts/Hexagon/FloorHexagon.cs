@@ -16,6 +16,8 @@ public class FloorHexagon : MonoBehaviour, Hexagon
     public Hexagon child { get; set; }
     public Vertex vertex { get; set; }
 
+    public MeshRenderer mr;
+
     public static FloorHexagon CreateHexagon(string id, FloorHexagon HexPrefab, Vector3 hexPosition, Transform parent, HEX_TYPE hexType, float work)
     {
         FloorHexagon hex = Instantiate(HexPrefab, hexPosition, Quaternion.identity, parent);

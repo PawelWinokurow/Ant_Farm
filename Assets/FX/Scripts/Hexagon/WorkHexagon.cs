@@ -17,6 +17,7 @@ public class WorkHexagon : MonoBehaviour, Hexagon
         hex.floorHexagon = parent;
         hex.floorHexagon.child = hex;
         hex.work = MAX_WORK;
+        hex.GetComponent<MeshRenderer>().sharedMaterial = parent.mr.sharedMaterial;
         return hex;
     }
 
