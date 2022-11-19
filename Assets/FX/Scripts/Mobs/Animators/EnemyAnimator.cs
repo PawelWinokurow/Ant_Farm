@@ -73,8 +73,6 @@ public class EnemyAnimator : MonoBehaviour
 
                 if (fOld > (f + rest))
                 {
-                    Debug.Log(f + rest);
-                    Debug.Log(fOld);
                     isHitMade = false;
                 }
 
