@@ -28,7 +28,11 @@ public class FollowingState : State
 
     public override void Tick()
     {
-        if (enemy.IsTargetInNeighbourhood())
+        if (enemy.target.mob.currentState.type == STATE.DEAD)
+        {
+            enemy.SetState(new PatrolState(enemy));
+        }
+        else if (enemy.IsTargetInNeighbourhood())
         {
             enemy.SetState(new AttackState(enemy));
         }

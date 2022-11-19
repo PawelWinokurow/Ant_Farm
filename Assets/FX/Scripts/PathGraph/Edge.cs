@@ -23,9 +23,10 @@ public class Edge
         this.accessMask = accessMask;
     }
 
+    public Edge() { }
+
     public bool HasAccess(int accessMask)
     {
         return (this.accessMask & accessMask) == accessMask;
     }
-    public Edge() { }
 }

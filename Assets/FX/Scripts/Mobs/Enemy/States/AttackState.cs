@@ -5,12 +5,13 @@ public class AttackState : State
 
     private Enemy enemy;
     private EnemyTarget enemyTarget;
-    private bool isHitMade = false;
+    private bool isHitMade;
     public AttackState(Enemy enemy) : base(enemy)
     {
         this.type = STATE.ATTACK;
         this.enemy = enemy;
-
+        this.isHitMade = false;
+        enemy.accumulatedDamage = 0f;
     }
 
     override public void OnStateEnter()
@@ -31,7 +32,7 @@ public class AttackState : State
 
     public override void Tick()
     {
-        if (enemy.IsTargetInNeighbourhood())
+        if (enemy.IsTargetInNeighbourhood() && enemy.target.mob.currentState.type != STATE.DEAD)
         {
             enemy.Animation();
             enemy.accumulatedDamage += Enemy.ATTACK_STRENGTH * Time.deltaTime;
@@ -41,7 +42,6 @@ public class AttackState : State
             }
             if (!isHitMade && enemy.animator.f >= 14)
             {
-                Debug.Log(enemy.animator.f);
                 enemy.Attack();
                 enemy.accumulatedDamage = 0f;
                 isHitMade = true;
