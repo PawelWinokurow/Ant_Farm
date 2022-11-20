@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using EnemyNamespace;
 
 
 public class EnemyAnimator : MonoBehaviour

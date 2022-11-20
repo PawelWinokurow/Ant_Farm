@@ -246,7 +246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d8a29f74ceb6f846aea911af424d530, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 376137783415288789}
+  enemy: {fileID: 0}
   idle: {fileID: 11400000, guid: 9c39d57b4db095c4785a4f291446b9f6, type: 2}
   idleFight: {fileID: 11400000, guid: 8e4ae8eea964213468c0742caf297070, type: 2}
   run: {fileID: 11400000, guid: 7cf34025e5e32684ea6ab463e13a605b, type: 2}

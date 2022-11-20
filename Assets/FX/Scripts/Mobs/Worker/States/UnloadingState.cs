@@ -1,61 +1,64 @@
 using UnityEngine;
-public class UnloadingState : State
+namespace WorkerNamespace
 {
-    public Worker worker;
-    public bool IsDone;
-    private CarrierJob job;
 
-    public UnloadingState(Worker worker) : base(worker)
+    public class UnloadingState : State
     {
-        type = STATE.UNLOADING;
-        this.worker = worker;
-    }
+        public Worker worker;
+        public bool IsDone;
+        private CarrierJob job;
 
-    public override void Tick()
-    {
-        worker.animator.Idle();
-        if (IsDone)
+        public UnloadingState(Worker worker) : base(worker)
         {
-            worker.SetPath(worker.pathfinder.FindPath(worker.position, job.destination, Worker.ACCESS_MASK, true));
-            worker.SetRunAnimation();
-            worker.SetState(new GoToState(worker));
+            type = STATE.UNLOADING;
+            this.worker = worker;
         }
-        else if (!IsDone)
+
+        public override void Tick()
         {
-            worker.surfaceOperations.Unloading(job.storageHexagon, this, job);
+            worker.animator.Idle();
+            if (IsDone)
+            {
+                worker.SetPath(worker.pathfinder.FindPath(worker.position, job.destination, Worker.ACCESS_MASK, true));
+                worker.SetRunAnimation();
+                worker.SetState(new GoToState(worker));
+            }
+            else if (!IsDone)
+            {
+                worker.surfaceOperations.Unloading(job.storageHexagon, this, job);
+            }
         }
-    }
 
-    public void Done()
-    {
-
-        if (job.collectingHexagon.floorHexagon.type == HEX_TYPE.FOOD)
+        public void Done()
         {
-            job.SwapDestination();
+
+            if (job.collectingHexagon.floorHexagon.type == HEX_TYPE.FOOD)
+            {
+                job.SwapDestination();
+            }
+            else
+            {
+                CancelJob();
+            }
+            IsDone = true;
         }
-        else
+        override public void CancelJob()
         {
-            CancelJob();
+            if (worker.carryingWeight == 0)
+            {
+                job.Cancel();
+            }
         }
-        IsDone = true;
-    }
-    override public void CancelJob()
-    {
-        if (worker.carryingWeight == 0)
+        override public void OnStateEnter()
         {
-            job.Cancel();
+            IsDone = false;
+            job = (CarrierJob)worker.job;
+            worker.SetIdleAnimation();
+        }
+
+        override public void OnStateExit()
+        {
+
         }
     }
-    override public void OnStateEnter()
-    {
-        IsDone = false;
-        job = (CarrierJob)worker.job;
-        worker.SetIdleAnimation();
-    }
-
-    override public void OnStateExit()
-    {
-
-    }
-
 }

@@ -1,29 +1,32 @@
 using UnityEngine;
-
-public class DeadState : State
+namespace WorkerNamespace
 {
-    // private Mob mob;
-    public DeadState(Mob mob) : base(mob)
+
+    public class DeadState : State
     {
-        this.type = STATE.DEAD;
-        // this.mob = mob;
+        // private Mob mob;
+        public DeadState(Mob mob) : base(mob)
+        {
+            this.type = STATE.DEAD;
+            // this.mob = mob;
+        }
+
+        public override void Tick()
+        {
+        }
+
+        override public void CancelJob()
+        {
+        }
+
+        override public void OnStateEnter()
+        {
+        }
+
+        override public void OnStateExit()
+        {
+
+        }
+
     }
-
-    public override void Tick()
-    {
-    }
-
-    override public void CancelJob()
-    {
-    }
-
-    override public void OnStateEnter()
-    {
-    }
-
-    override public void OnStateExit()
-    {
-
-    }
-
 }

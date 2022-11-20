@@ -1,62 +1,66 @@
 using UnityEngine;
-public class LoadingState : State
+namespace WorkerNamespace
 {
-    public Worker worker;
-    public bool IsDone;
-    private CarrierJob job;
 
-    public LoadingState(Worker worker) : base(worker)
+    public class LoadingState : State
     {
-        type = STATE.LOADING;
-        this.worker = worker;
-    }
+        public Worker worker;
+        public bool IsDone;
+        private CarrierJob job;
 
-    public override void Tick()
-    {
-        if (IsDone)
+        public LoadingState(Worker worker) : base(worker)
         {
-            job.SwapDestination();
-            worker.SetPath(worker.pathfinder.FindPath(worker.position, job.destination, Worker.ACCESS_MASK, true));
-            worker.SetRunFoodAnimation();
-            worker.SetState(new GoToState(worker));
+            type = STATE.LOADING;
+            this.worker = worker;
         }
-        else if (!IsDone)
+
+        public override void Tick()
         {
-            worker.surfaceOperations.Loading(job.collectingHexagon, this, job);
+            if (IsDone)
+            {
+                job.SwapDestination();
+                worker.SetPath(worker.pathfinder.FindPath(worker.position, job.destination, Worker.ACCESS_MASK, true));
+                worker.SetRunFoodAnimation();
+                worker.SetState(new GoToState(worker));
+            }
+            else if (!IsDone)
+            {
+                worker.surfaceOperations.Loading(job.collectingHexagon, this, job);
+            }
         }
-    }
 
-    public void Done()
-    {
-        IsDone = true;
-    }
-
-    override public void CancelJob()
-
-    {
-        if (worker.carryingWeight != 0)
+        public void Done()
         {
-            worker.SetPath(worker.pathfinder.FindPath(worker.position, job.storageHexagon.position, Worker.ACCESS_MASK, true));
-            worker.SetRunAnimation();
-            worker.SetState(new GoToState(worker));
+            IsDone = true;
         }
-        else
+
+        override public void CancelJob()
+
         {
-            job.Cancel();
+            if (worker.carryingWeight != 0)
+            {
+                worker.SetPath(worker.pathfinder.FindPath(worker.position, job.storageHexagon.position, Worker.ACCESS_MASK, true));
+                worker.SetRunAnimation();
+                worker.SetState(new GoToState(worker));
+            }
+            else
+            {
+                job.Cancel();
+            }
         }
+
+        override public void OnStateEnter()
+        {
+            IsDone = false;
+            job = (CarrierJob)worker.job;
+            worker.SetIdleAnimation();
+            worker.Animation();
+        }
+
+        override public void OnStateExit()
+        {
+
+        }
+
     }
-
-    override public void OnStateEnter()
-    {
-        IsDone = false;
-        job = (CarrierJob)worker.job;
-        worker.SetIdleAnimation();
-        worker.Animation();
-    }
-
-    override public void OnStateExit()
-    {
-
-    }
-
 }

@@ -1,43 +1,45 @@
 using UnityEngine;
 
-public class BuildState : State
+namespace WorkerNamespace
 {
-    private Worker worker;
-    public bool IsDone;
-    private WorkerJob job;
-    public BuildState(Worker worker) : base(worker)
+    public class BuildState : State
     {
-        this.type = STATE.BUILD;
-        this.worker = worker;
+        private Worker worker;
+        public bool IsDone;
+        private WorkerJob job;
+        public BuildState(Worker worker) : base(worker)
+        {
+            this.type = STATE.BUILD;
+            this.worker = worker;
+        }
+
+        public override void Tick()
+        {
+        }
+
+        public void Done()
+        {
+            IsDone = true;
+        }
+
+        override public void CancelJob()
+        {
+            job.Cancel();
+        }
+
+        override public void OnStateEnter()
+        {
+            IsDone = false;
+            job = (WorkerJob)worker.job;
+            worker.surfaceOperations.Build(job);
+            worker.SetIdleAnimation();
+            worker.Animation();
+
+        }
+
+        override public void OnStateExit()
+        {
+
+        }
     }
-
-    public override void Tick()
-    {
-    }
-
-    public void Done()
-    {
-        IsDone = true;
-    }
-
-    override public void CancelJob()
-    {
-        job.Cancel();
-    }
-
-    override public void OnStateEnter()
-    {
-        IsDone = false;
-        job = (WorkerJob)worker.job;
-        worker.surfaceOperations.Build(job);
-        worker.SetIdleAnimation();
-        worker.Animation();
-
-    }
-
-    override public void OnStateExit()
-    {
-
-    }
-
 }

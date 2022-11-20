@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using WorkerNamespace;
 
 public enum Direction
 {

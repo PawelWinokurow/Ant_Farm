@@ -1,27 +1,25 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DataStructures.ViliWonka.KDTree;
 using UnityEngine;
 
-namespace EnemyNamespace
+namespace SoldierNamespace
 {
-
-    public class Enemy : MonoBehaviour, Mob
+    public class Soldier : MonoBehaviour, Mob
     {
         public string id { get; set; }
         public MobType type { get; set; }
-        public static int ATTACK_STRENGTH = 10;
-        public static int ACCESS_MASK = 2;
-        public EnemyAnimator animator { get; set; }
+        public static int ATTACK_STRENGTH = 5;
+        public static int ACCESS_MASK = 1;
+        public SoldierAnimator animator { get; set; }
         public Action Animation { get; set; }
         public Vector3 position { get => transform.position; }
         public Path path { get; set; }
         public State currentState { get; set; }
         public Pathfinder pathfinder { get; set; }
         public SurfaceOperations surfaceOperations { get; set; }
-        public EnemyTarget target { get; set; }
+        public SoldierTarget target { get; set; }
         public Action Kill { get; set; }
         public FloorHexagon currentHex { get; set; }
         public bool HasPath { get => path != null && currentPathEdge != null; }
@@ -30,14 +28,13 @@ namespace EnemyNamespace
         public Edge currentPathEdge;
         public float hp { get; set; }
         public Store store;
-        public Dig_FX DigFX;
 
         void Start()
         {
-            animator = GetComponent<EnemyAnimator>();
-            animator.enemy = this;
-            type = MobType.ENEMY;
-            hp = 250f;
+            animator = GetComponent<SoldierAnimator>();
+            animator.soldier = this;
+            type = MobType.SOLDIER;
+            hp = 150f;
             SetState(new PatrolState(this));
         }
 
@@ -47,7 +44,7 @@ namespace EnemyNamespace
                 currentState.OnStateExit();
 
             currentState = state;
-            gameObject.name = "Enemy - " + state.GetType().Name;
+            gameObject.name = "Soldier - " + state.GetType().Name;
 
             if (currentState != null)
                 currentState.OnStateEnter();
@@ -69,7 +66,7 @@ namespace EnemyNamespace
 
         public void Attack()
         {
-            target.mob.Hit(Enemy.ATTACK_STRENGTH);
+            target.mob.Hit(Soldier.ATTACK_STRENGTH);
             if (target.mob.hp <= 0)
             {
                 target.mob.Kill();
@@ -87,12 +84,12 @@ namespace EnemyNamespace
 
         public void SetRandomWalk()
         {
-            SetPath(pathfinder.RandomWalk(position, 5, Enemy.ACCESS_MASK));
+            SetPath(pathfinder.RandomWalk(position, 5, Soldier.ACCESS_MASK));
         }
 
         public void ExpandRandomWalk()
         {
-            var newRandomWalk = pathfinder.RandomWalk(path.wayPoints[path.wayPoints.Count - 1].to.position, 5, Enemy.ACCESS_MASK);
+            var newRandomWalk = pathfinder.RandomWalk(path.wayPoints[path.wayPoints.Count - 1].to.position, 5, Soldier.ACCESS_MASK);
             path.length += newRandomWalk.length;
             path.wayPoints.AddRange(newRandomWalk.wayPoints);
         }
@@ -122,23 +119,8 @@ namespace EnemyNamespace
             currentPathEdge = path.wayPoints[0];
             path.wayPoints.RemoveAt(0);
             var currentHexNew = currentPathEdge.floorHexagon;
-            if ((currentHex == null || currentHexNew.id != currentHex.id))
-            {
-                if (currentHexNew.type == HEX_TYPE.SOIL)
-                {
-                    var digFX = Instantiate(DigFX, position, Quaternion.identity, currentHexNew.transform);
-                    digFX.StartFx(currentHexNew);
-                }
-                if (currentHex != null && currentHex.GetComponentInChildren<Dig_FX>())
-                {
-                    var digFxOld = currentHex.GetComponentInChildren<Dig_FX>();
-                    digFxOld.StopFx();
-                    Destroy(digFxOld);
-                }
-            }
             currentHex = currentHexNew;
             lerpDuration = Vector3.Distance(currentPathEdge.from.position, currentPathEdge.to.position) * currentPathEdge.edgeWeight / currentPathEdge.edgeWeightBase;
-
         }
 
         public void CancelJob()
@@ -151,7 +133,7 @@ namespace EnemyNamespace
             target.hexId = target.mob.currentHex.id;
             if (currentPathEdge != null)
             {
-                var pathNew = pathfinder.FindPath(currentPathEdge.to.position, target.mob.currentHex.position, Enemy.ACCESS_MASK, true);
+                var pathNew = pathfinder.FindPath(currentPathEdge.to.position, target.mob.currentHex.position, Soldier.ACCESS_MASK, true);
                 if (pathNew != null)
                 {
                     path = pathNew;
@@ -159,7 +141,7 @@ namespace EnemyNamespace
             }
             else
             {
-                SetPath(pathfinder.FindPath(position, target.mob.currentHex.position, Enemy.ACCESS_MASK, true));
+                SetPath(pathfinder.FindPath(position, target.mob.currentHex.position, Soldier.ACCESS_MASK, true));
             }
         }
 
@@ -172,22 +154,14 @@ namespace EnemyNamespace
         {
             Animation = animator.Run;
         }
-        public void SetRunAtackAnimation()
-        {
-            Animation = animator.RunFight;
-        }
         public void SetIdleAnimation()
         {
             Animation = animator.Idle;
         }
-        public void SetIdleFightAnimation()
-        {
-            Animation = animator.IdleFight;
-        }
 
-        public EnemyTarget SearchTarget()
+        public SoldierTarget SearchTarget()
         {
-            var notDeadMobs = new List<Mob>(store.allMobs.Where(mob => mob.currentState?.type != STATE.DEAD));
+            var notDeadMobs = new List<Mob>(store.allEnemies.Where(mob => mob.currentState?.type != STATE.DEAD));
             KDTree mobPositionsTree = new KDTree(notDeadMobs.Select(mob => mob.position).ToArray());
             KDQuery query = new KDQuery();
             List<int> queryResults = new List<int>();
@@ -197,10 +171,10 @@ namespace EnemyNamespace
             for (int i = 0; i < queryResults.Count; i++)
             {
                 var targetMob = notDeadMobs[queryResults[i]];
-                var path = pathfinder.FindPath(position, targetMob.position, Enemy.ACCESS_MASK, true);
+                var path = pathfinder.FindPath(position, targetMob.position, Soldier.ACCESS_MASK, true);
                 if (path != null)
                 {
-                    var target = new EnemyTarget($"{id}_{targetMob.id}", this, targetMob);
+                    var target = new SoldierTarget($"{id}_{targetMob.id}", this, targetMob);
                     target.path = path;
                     target.mob = targetMob;
                     return target;
@@ -209,7 +183,7 @@ namespace EnemyNamespace
             return null;
         }
 
-        public void SetTarget(EnemyTarget target)
+        public void SetTarget(SoldierTarget target)
         {
             this.target = target;
             if (target != null)
@@ -239,7 +213,6 @@ namespace EnemyNamespace
                 }
             }
         }
-
     }
 }
 

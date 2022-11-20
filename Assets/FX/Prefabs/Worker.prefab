@@ -158,7 +158,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48012dff1dab0764d8082920cf4c5e10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worker: {fileID: -7619036694779697723}
+  worker: {fileID: 0}
   run: {fileID: 11400000, guid: bdc6aceed5d541a459ffd6cb15c59064, type: 2}
   idle: {fileID: 11400000, guid: a02a82089797691498dc1b5d0bde4e94, type: 2}
   runFood: {fileID: 11400000, guid: 50db63c6c3fb22843b79e91ad0c96a88, type: 2}

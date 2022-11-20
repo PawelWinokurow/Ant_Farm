@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using WorkerNamespace;
 public class BuildJob : WorkerJob
 {
     public string id { get; set; }

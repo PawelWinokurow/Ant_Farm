@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using WorkerNamespace;
 
 public class CollectingHexagon : MonoBehaviour, Hexagon
 {

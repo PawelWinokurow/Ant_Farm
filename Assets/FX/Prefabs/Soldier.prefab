@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4095038265270613791}
   - component: {fileID: 4095038265270613789}
   - component: {fileID: 4095038265270613788}
+  - component: {fileID: 6674348483651007441}
   m_Layer: 0
   m_Name: Soldier
   m_TagString: Mob
@@ -46,10 +47,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4c0621f5516bad47b5e6f40b550522b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soldier: {fileID: 0}
   idle: {fileID: 11400000, guid: 9c83920a985a5f64d9fb4df3b380c3d1, type: 2}
   run: {fileID: 11400000, guid: be00dad06daf7b8419e6f2565ba01199, type: 2}
   mf: {fileID: 5865166322797337075}
   mr: {fileID: 7171853714776161256}
+  angl: {fileID: 5456979313225486478}
+  startTime: 0
+  isHitMade: 0
 --- !u!114 &4095038265270613788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,6 +67,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 667edc4b203116842a9788a810af9204, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6674348483651007441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4095038265270613763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c27b3cc0d064fb54bb25e3e956a8c586, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  store: {fileID: 0}
 --- !u!1 &5456979313225486477
 GameObject:
   m_ObjectHideFlags: 0

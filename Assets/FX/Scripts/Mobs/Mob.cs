@@ -1,9 +1,15 @@
 using UnityEngine;
 using System;
 
+public enum MobType
+{
+    WORKER, SOLDIER, ENEMY
+}
+
 public interface Mob
 {
     public string id { get; set; }
+    public MobType type { get; set; }
     public Vector3 position { get; }
     public State currentState { get; set; }
     public Path path { get; set; }

@@ -680,6 +680,7 @@ MonoBehaviour:
   surfaceOperations: {fileID: 1531417191}
   workerPrefab: {fileID: -7619036694779697723, guid: d76627fe718a559439689ca54c475515, type: 3}
   enemyPrefab: {fileID: 376137783415288789, guid: 6ea998787382aa64db8b8af70a6fb869, type: 3}
+  soldierPrefab: {fileID: 6674348483651007441, guid: 3a0f38204bd838b42a8cdc55556aa0c3, type: 3}
   store: {fileID: 1633955861}
 --- !u!1001 &1248071470075308892
 PrefabInstance:
@@ -696,6 +697,42 @@ PrefabInstance:
       propertyPath: GameManager
       value: 
       objectReference: {fileID: 1041044677}
+    - target: {fileID: 5377088315962834771, guid: 465f21d7f82950741b51465480634072, type: 3}
+      propertyPath: m_text
+      value: Worker
+      objectReference: {fileID: 0}
+    - target: {fileID: 6615026123136144298, guid: 465f21d7f82950741b51465480634072, type: 3}
+      propertyPath: m_Name
+      value: Button (Soldier)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6615026123136144300, guid: 465f21d7f82950741b51465480634072, type: 3}
+      propertyPath: Click.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6615026123136144300, guid: 465f21d7f82950741b51465480634072, type: 3}
+      propertyPath: Click.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6615026123136144300, guid: 465f21d7f82950741b51465480634072, type: 3}
+      propertyPath: Click.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2071582712}
+    - target: {fileID: 6615026123136144300, guid: 465f21d7f82950741b51465480634072, type: 3}
+      propertyPath: Click.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6615026123136144300, guid: 465f21d7f82950741b51465480634072, type: 3}
+      propertyPath: Click.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: AddSoldier
+      objectReference: {fileID: 0}
+    - target: {fileID: 6615026123136144300, guid: 465f21d7f82950741b51465480634072, type: 3}
+      propertyPath: Click.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MobFactory, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6615026123136144300, guid: 465f21d7f82950741b51465480634072, type: 3}
+      propertyPath: Click.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 6615026123136144301, guid: 465f21d7f82950741b51465480634072, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -719,6 +756,10 @@ PrefabInstance:
     - target: {fileID: 6615026123136144301, guid: 465f21d7f82950741b51465480634072, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6615026124615880070, guid: 465f21d7f82950741b51465480634072, type: 3}
+      propertyPath: m_Name
+      value: Button (Worker)
       objectReference: {fileID: 0}
     - target: {fileID: 6615026124615880072, guid: 465f21d7f82950741b51465480634072, type: 3}
       propertyPath: m_Enabled
@@ -891,6 +932,12 @@ PrefabInstance:
     - target: {fileID: 7101241707985254856, guid: 465f21d7f82950741b51465480634072, type: 3}
       propertyPath: m_Name
       value: UI
+      objectReference: {fileID: 0}
+    - target: {fileID: 8349295297682485853, guid: 465f21d7f82950741b51465480634072, type: 3}
+      propertyPath: m_text
+      value: 'Soldier
+
+'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 465f21d7f82950741b51465480634072, type: 3}
