@@ -16,7 +16,7 @@ public class AttackState : State
         enemy.SetIdleFightAnimation();
         enemyTarget = enemy.target;
         enemy.Animation();
-        enemy.animator.isHitMade = true;
+        enemy.animator.ResetAttack();
     }
     override public void OnStateExit()
     {

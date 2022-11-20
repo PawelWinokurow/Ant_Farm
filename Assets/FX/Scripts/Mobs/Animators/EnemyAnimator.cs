@@ -19,7 +19,8 @@ public class EnemyAnimator : MonoBehaviour
     private Quaternion smoothRot;
     public Transform angl;
 
-    public bool isHitMade = true;
+    public float startTime;
+    public bool isHitMade = false;
     private float fOld = 0f;
 
     private void Start()
@@ -52,8 +53,7 @@ public class EnemyAnimator : MonoBehaviour
     {
         if (enemy != null)
         {
-            var fFLoat = Time.time * 30f * 1.5f;
-            f = (int)(fFLoat) % current.sequence.Length;
+            f = (int)(Time.time * 30f * 1.5f) % current.sequence.Length;
             mf.mesh = current.sequence[f];
             if (enemy.currentState.type == STATE.ATTACK && enemy.target?.mob != null)
             {
@@ -69,14 +69,16 @@ public class EnemyAnimator : MonoBehaviour
             mf.transform.Rotate(new Vector3(-90f, 0f, 180f), Space.Self);
             if (enemy.currentState.type == STATE.ATTACK)
             {
-                var rest = fFLoat - (int)fFLoat;
+                var fFloat = (Time.time - startTime) * 30f * 1.5f;
+                f = (int)(fFloat) % current.sequence.Length;
+                var rest = fFloat - (int)fFloat;
 
                 if (fOld > (f + rest))
                 {
                     isHitMade = false;
                 }
 
-                if (!isHitMade && f >= 14)
+                if (!isHitMade && (f + rest) >= 14)
                 {
                     enemy.Attack();
                     isHitMade = true;
@@ -84,6 +86,13 @@ public class EnemyAnimator : MonoBehaviour
                 fOld = f + rest;
             }
         }
+    }
+
+    public void ResetAttack()
+    {
+        startTime = Time.time;
+        isHitMade = false;
+        fOld = 0f;
     }
 }
 

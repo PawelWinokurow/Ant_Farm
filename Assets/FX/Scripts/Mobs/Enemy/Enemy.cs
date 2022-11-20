@@ -9,7 +9,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour, Mob
 {
     public string id { get; set; }
-    public static float ATTACK_STRENGTH = 10f;
+    public static int ATTACK_STRENGTH = 10;
     public static int ACCESS_MASK = 2;
     public EnemyAnimator animator { get; set; }
     public Action Animation { get; set; }
@@ -74,9 +74,10 @@ public class Enemy : MonoBehaviour, Mob
 
     public void Attack()
     {
-        target.mob.Hit((int)Mathf.Round(Enemy.ATTACK_STRENGTH));
+        target.mob.Hit(Enemy.ATTACK_STRENGTH);
         if (target.mob.hp <= 0)
         {
+            target.mob.Kill();
             CancelJob();
             SetState(new PatrolState(this));
         }
@@ -208,7 +209,7 @@ public class Enemy : MonoBehaviour, Mob
 
     public bool IsTargetInNeighbourhood()
     {
-        return currentHex.vertex.neighbours.Select(vertex => vertex.id).Contains(target.mob.currentHex.id);
+        return currentHex.vertex.neighbours.Select(vertex => vertex.id).Append(currentHex.id).Contains(target.mob.currentHex.id);
     }
 
     void DrawDebugPath()

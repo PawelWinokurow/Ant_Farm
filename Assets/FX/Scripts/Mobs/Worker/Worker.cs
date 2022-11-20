@@ -153,10 +153,6 @@ public class Worker : MonoBehaviour, Mob
     {
         hp -= damage;
         healthAnimator.Hit(damage);
-        if (hp <= 0)
-        {
-            Kill();
-        }
     }
     void DrawDebugPath()
     {
