@@ -34,7 +34,7 @@ public class MobFactory : MonoBehaviour
         var spawnPosition = baseNeighbours[UnityEngine.Random.Range(0, baseNeighbours.Count)].position;
         Worker worker = Instantiate(workerPrefab, spawnPosition, Quaternion.identity);
         worker.id = id;
-        worker.currentHex = surface.PositionToHex(spawnPosition);
+        // worker.currentHex = surface.PositionToHex(spawnPosition);
         workerJobScheduler.AddWorker(worker);
         store.AddMob(worker);
         yield break;
@@ -44,7 +44,7 @@ public class MobFactory : MonoBehaviour
         var spawnPosition = surface.PositionToHex(surface.baseHex.position + new Vector3(10, 0, 20)).position;
         Enemy enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
         enemy.id = id;
-        enemy.currentHex = surface.PositionToHex(spawnPosition);
+        // enemy.currentHex = surface.PositionToHex(spawnPosition);
         enemy.pathfinder = workerJobScheduler.pathfinder;
         enemy.store = store;
         yield break;

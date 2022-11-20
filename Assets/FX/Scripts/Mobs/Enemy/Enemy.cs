@@ -28,6 +28,7 @@ public class Enemy : MonoBehaviour, Mob
     public float hp { get; set; }
     public Store store;
     public List<Mob> allMobs = new List<Mob>();
+    public Dig_FX DigFX;
 
     void Start()
     {
@@ -125,9 +126,25 @@ public class Enemy : MonoBehaviour, Mob
     private void SetcurrentPathEdge()
     {
         currentPathEdge = path.wayPoints[0];
-        currentHex = currentPathEdge.floorHexagon;
         path.wayPoints.RemoveAt(0);
+        var currentHexNew = currentPathEdge.floorHexagon;
+        if ((currentHex == null || currentHexNew.id != currentHex.id))
+        {
+            if (currentHexNew.type == HEX_TYPE.SOIL)
+            {
+                var digFX = Instantiate(DigFX, position, Quaternion.identity, currentHexNew.transform);
+                digFX.StartFx(currentHexNew);
+            }
+            if (currentHex != null && currentHex.GetComponentInChildren<Dig_FX>())
+            {
+                var digFxOld = currentHex.GetComponentInChildren<Dig_FX>();
+                digFxOld.StopFx();
+                Destroy(digFxOld);
+            }
+        }
+        currentHex = currentHexNew;
         lerpDuration = Vector3.Distance(currentPathEdge.from.position, currentPathEdge.to.position) * currentPathEdge.edgeWeight / currentPathEdge.edgeWeightBase;
+
     }
 
     public void CancelJob()
