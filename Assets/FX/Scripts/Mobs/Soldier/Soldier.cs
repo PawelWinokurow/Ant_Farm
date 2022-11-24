@@ -29,6 +29,7 @@ namespace SoldierNamespace
         public Edge currentPathEdge;
         public float hp { get; set; }
         public Store store;
+        public int accessMask { get; set; }
 
         void Start()
         {
@@ -37,6 +38,7 @@ namespace SoldierNamespace
             animator.soldier = this;
             type = MobType.SOLDIER;
             hp = 150f;
+            accessMask = Settings.Instance.gameSettings.ACCESS_MASK_FLOOR;
             healthAnimator = GetComponent<Health>();
             healthAnimator.MAX_HEALTH = hp;
             SetState(new PatrolState(this));
@@ -168,7 +170,9 @@ namespace SoldierNamespace
             for (int i = 0; i < queryResults.Count; i++)
             {
                 var targetMob = notDeadMobs[queryResults[i]];
+
                 var path = pathfinder.FindPath(position, targetMob.position, Soldier.ACCESS_MASK, true);
+                Debug.Log(path);
                 if (path != null)
                 {
                     var target = new SoldierTarget($"{id}_{targetMob.id}", this, targetMob);

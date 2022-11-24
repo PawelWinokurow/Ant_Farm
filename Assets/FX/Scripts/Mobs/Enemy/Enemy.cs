@@ -33,6 +33,7 @@ namespace EnemyNamespace
         public Store store;
         public Dig_FX DigFX;
         public Dig_FX digFX;
+        public int accessMask { get; set; }
 
         void Start()
         {
@@ -40,7 +41,7 @@ namespace EnemyNamespace
             {
                 SetState(new DeadState(this));
                 digFX.StopFx();
-                Destroy(digFX);
+                Destroy(digFX, 5f);
             };
             animator = GetComponent<EnemyAnimator>();
             animator.enemy = this;
@@ -48,6 +49,7 @@ namespace EnemyNamespace
             hp = 250f;
             healthAnimator = GetComponent<Health>();
             healthAnimator.MAX_HEALTH = hp;
+            accessMask = Settings.Instance.gameSettings.ACCESS_MASK_FLOOR;
             SetState(new PatrolState(this));
         }
 
@@ -192,6 +194,7 @@ namespace EnemyNamespace
         public EnemyTarget SearchTarget()
         {
             var notDeadMobs = new List<Mob>(store.allMobs.Where(mob => mob.currentState?.type != STATE.DEAD));
+            Debug.Log("in");
             KDTree mobPositionsTree = new KDTree(notDeadMobs.Select(mob => mob.position).ToArray());
             KDQuery query = new KDQuery();
             List<int> queryResults = new List<int>();
@@ -224,7 +227,11 @@ namespace EnemyNamespace
 
         public bool IsTargetInNeighbourhood()
         {
-            return currentHex.vertex.neighbours.Select(vertex => vertex.id).Append(currentHex.id).Contains(target.mob.currentHex.id);
+            if (currentHex != null)
+            {
+                return currentHex.vertex.neighbours.Select(vertex => vertex.id).Append(currentHex.id).Contains(target.mob.currentHex.id);
+            }
+            return false;
         }
 
         public void Hit(int damage)

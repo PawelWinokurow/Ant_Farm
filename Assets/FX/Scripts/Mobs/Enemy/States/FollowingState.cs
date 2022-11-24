@@ -20,10 +20,13 @@ namespace EnemyNamespace
         {
             enemy.SetRunAnimation();
             enemy.Animation();
+            enemy.accessMask = Settings.Instance.gameSettings.ACCESS_MASK_ALL;
+
         }
         override public void OnStateExit()
         {
             enemy.RemovePath();
+            enemy.accessMask = Settings.Instance.gameSettings.ACCESS_MASK_FLOOR;
         }
 
         override public void CancelJob()

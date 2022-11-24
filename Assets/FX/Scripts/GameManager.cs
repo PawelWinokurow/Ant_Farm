@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public WorkerJobScheduler WorkerJobScheduler;
     public Graph PathGraph;
     private Pathfinder pathfinder;
+    public GameSettings settings;
 
     void Awake()
     {

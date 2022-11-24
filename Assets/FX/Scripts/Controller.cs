@@ -8,7 +8,6 @@ public class Controller : MonoBehaviour
 
     private FloorHexagon hex;
     public GameManager GameManager;
-    public Surface Surface;
     private void Start()
     {
         Screen.orientation = ScreenOrientation.Portrait;

@@ -31,6 +31,8 @@ namespace WorkerNamespace
         public Action Kill { get; set; }
         public FloorHexagon currentHex { get; set; }
         public float hp { get; set; }
+        public int accessMask { get; set; }
+
         void Start()
         {
             hp = 100f;
@@ -39,6 +41,7 @@ namespace WorkerNamespace
             healthAnimator = GetComponent<Health>();
             healthAnimator.MAX_HEALTH = hp;
             type = MobType.WORKER;
+            accessMask = Settings.Instance.gameSettings.ACCESS_MASK_FLOOR;
             SetState(new IdleState(this));
         }
 

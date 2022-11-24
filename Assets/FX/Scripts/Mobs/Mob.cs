@@ -18,6 +18,7 @@ public interface Mob
     public FloorHexagon currentHex { get; set; }
     public float hp { get; set; }
     public Action Kill { get; set; }
+    public int accessMask { get; set; }
     public void SetState(State state);
     public void SetPath(Path path);
     public void Move(int speed);
