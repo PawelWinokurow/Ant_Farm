@@ -15,7 +15,6 @@ public class FloorHexagon : MonoBehaviour, Hexagon
     public float work { get; set; }
     public Hexagon child { get; set; }
     public Vertex vertex { get; set; }
-
     public MeshRenderer mr;
 
     public static FloorHexagon CreateHexagon(string id, FloorHexagon HexPrefab, Vector3 hexPosition, Transform parent, HEX_TYPE hexType, float work)
@@ -44,6 +43,8 @@ public class FloorHexagon : MonoBehaviour, Hexagon
         {
             GameObject.Destroy(this.transform.GetChild(i).gameObject);
         }
+        type = HEX_TYPE.EMPTY;
+        vertex.pathGraph.AllowHexagon(this);
     }
 
 }

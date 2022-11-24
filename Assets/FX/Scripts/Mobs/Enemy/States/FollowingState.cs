@@ -40,7 +40,7 @@ namespace EnemyNamespace
             {
                 enemy.SetState(new AttackState(enemy));
             }
-            else if (enemy.target.hexId != enemy.target.mob.currentHex.id && !enemy.IsTargetInNeighbourhood())
+            else if (enemy.target.hex != enemy.target.mob.currentHex && !enemy.IsTargetInNeighbourhood())
             {
                 enemy.Rerouting();
             }

@@ -13,6 +13,7 @@ namespace SoldierNamespace
         public static int ATTACK_STRENGTH = 5;
         public static int ACCESS_MASK = 1;
         public SoldierAnimator animator { get; set; }
+        public Health healthAnimator { get; set; }
         public Action Animation { get; set; }
         public Vector3 position { get => transform.position; }
         public Path path { get; set; }
@@ -31,10 +32,13 @@ namespace SoldierNamespace
 
         void Start()
         {
+            Kill = () => SetState(new DeadState(this));
             animator = GetComponent<SoldierAnimator>();
             animator.soldier = this;
             type = MobType.SOLDIER;
             hp = 150f;
+            healthAnimator = GetComponent<Health>();
+            healthAnimator.MAX_HEALTH = hp;
             SetState(new PatrolState(this));
         }
 
@@ -59,11 +63,6 @@ namespace SoldierNamespace
             }
         }
 
-        public void Hit(int damage)
-        {
-
-        }
-
         public void Attack()
         {
             target.mob.Hit(Soldier.ATTACK_STRENGTH);
@@ -74,8 +73,6 @@ namespace SoldierNamespace
                 SetState(new PatrolState(this));
             }
         }
-
-
 
         public void RemovePath()
         {
@@ -89,7 +86,7 @@ namespace SoldierNamespace
 
         public void ExpandRandomWalk()
         {
-            var newRandomWalk = pathfinder.RandomWalk(path.wayPoints[path.wayPoints.Count - 1].to.position, 5, Soldier.ACCESS_MASK);
+            var newRandomWalk = pathfinder.RandomWalk(path.wayPoints[path.wayPoints.Count - 1].to.position, 100, Soldier.ACCESS_MASK);
             path.length += newRandomWalk.length;
             path.wayPoints.AddRange(newRandomWalk.wayPoints);
         }
@@ -130,7 +127,7 @@ namespace SoldierNamespace
 
         public void Rerouting()
         {
-            target.hexId = target.mob.currentHex.id;
+            target.hex = target.mob.currentHex;
             if (currentPathEdge != null)
             {
                 var pathNew = pathfinder.FindPath(currentPathEdge.to.position, target.mob.currentHex.position, Soldier.ACCESS_MASK, true);
@@ -195,6 +192,12 @@ namespace SoldierNamespace
         public bool IsTargetInNeighbourhood()
         {
             return currentHex.vertex.neighbours.Select(vertex => vertex.id).Append(currentHex.id).Contains(target.mob.currentHex.id);
+        }
+
+        public void Hit(int damage)
+        {
+            hp -= damage;
+            healthAnimator.Hit(damage);
         }
 
         void DrawDebugPath()

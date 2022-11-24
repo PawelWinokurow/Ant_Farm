@@ -39,7 +39,7 @@ namespace SoldierNamespace
             {
                 soldier.SetState(new AttackState(soldier));
             }
-            else if (soldier.target.hexId != soldier.target.mob.currentHex.id && !soldier.IsTargetInNeighbourhood())
+            else if (soldier.target.hex != soldier.target.mob.currentHex && !soldier.IsTargetInNeighbourhood())
             {
                 soldier.Rerouting();
             }

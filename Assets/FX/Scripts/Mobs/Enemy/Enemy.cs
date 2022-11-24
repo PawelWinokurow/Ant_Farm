@@ -15,6 +15,7 @@ namespace EnemyNamespace
         public static int ATTACK_STRENGTH = 10;
         public static int ACCESS_MASK = 2;
         public EnemyAnimator animator { get; set; }
+        public Health healthAnimator { get; set; }
         public Action Animation { get; set; }
         public Vector3 position { get => transform.position; }
         public Path path { get; set; }
@@ -31,13 +32,22 @@ namespace EnemyNamespace
         public float hp { get; set; }
         public Store store;
         public Dig_FX DigFX;
+        public Dig_FX digFX;
 
         void Start()
         {
+            Kill = () =>
+            {
+                SetState(new DeadState(this));
+                digFX.StopFx();
+                Destroy(digFX);
+            };
             animator = GetComponent<EnemyAnimator>();
             animator.enemy = this;
             type = MobType.ENEMY;
             hp = 250f;
+            healthAnimator = GetComponent<Health>();
+            healthAnimator.MAX_HEALTH = hp;
             SetState(new PatrolState(this));
         }
 
@@ -62,11 +72,6 @@ namespace EnemyNamespace
             }
         }
 
-        public void Hit(int damage)
-        {
-
-        }
-
         public void Attack()
         {
             target.mob.Hit(Enemy.ATTACK_STRENGTH);
@@ -77,8 +82,6 @@ namespace EnemyNamespace
                 SetState(new PatrolState(this));
             }
         }
-
-
 
         public void RemovePath()
         {
@@ -126,14 +129,15 @@ namespace EnemyNamespace
             {
                 if (currentHexNew.type == HEX_TYPE.SOIL)
                 {
-                    var digFX = Instantiate(DigFX, position, Quaternion.identity, currentHexNew.transform);
+                    digFX = Instantiate(DigFX, position, Quaternion.identity, currentHexNew.transform);
                     digFX.StartFx(currentHexNew);
                 }
-                if (currentHex != null && currentHex.GetComponentInChildren<Dig_FX>())
+                if (currentHex != null && currentHex.GetComponentInChildren<Dig_FX>() != null)
                 {
                     var digFxOld = currentHex.GetComponentInChildren<Dig_FX>();
                     digFxOld.StopFx();
                     Destroy(digFxOld);
+                    currentHex.RemoveChildren();
                 }
             }
             currentHex = currentHexNew;
@@ -148,7 +152,7 @@ namespace EnemyNamespace
 
         public void Rerouting()
         {
-            target.hexId = target.mob.currentHex.id;
+            target.hex = target.mob.currentHex;
             if (currentPathEdge != null)
             {
                 var pathNew = pathfinder.FindPath(currentPathEdge.to.position, target.mob.currentHex.position, Enemy.ACCESS_MASK, true);
@@ -223,6 +227,11 @@ namespace EnemyNamespace
             return currentHex.vertex.neighbours.Select(vertex => vertex.id).Append(currentHex.id).Contains(target.mob.currentHex.id);
         }
 
+        public void Hit(int damage)
+        {
+            hp -= damage;
+            healthAnimator.Hit(damage);
+        }
         void DrawDebugPath()
         {
             if (path != null && path.HasWaypoints)

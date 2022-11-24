@@ -48,10 +48,10 @@ public class Pathfinder
     {
         if (from.isCentralVertex)
         {
-            var edges = from.edges.OrderBy(e => Guid.NewGuid()).OrderBy(e => e.edgeWeight).ToList();
+            var edges = from.edges.OrderBy(e => Guid.NewGuid()).ToList();
             foreach (var edge in edges)
             {
-                var edges2 = edge.to.edges.OrderBy(e => Guid.NewGuid()).OrderBy(e => e.edgeWeight).ToList();
+                var edges2 = edge.to.edges.OrderBy(e => Guid.NewGuid()).ToList();
                 foreach (var edge2 in edges2)
                 {
                     if (edge2.HasAccess(accessMask) && edge2.to.isCentralVertex && from != edge2.to)

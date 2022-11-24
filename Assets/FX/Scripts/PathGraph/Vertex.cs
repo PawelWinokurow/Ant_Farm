@@ -10,13 +10,15 @@ public class Vertex
     public List<Vertex> neighbours = new List<Vertex>();
     public bool isCentralVertex { get; set; }
     public FloorHexagon floorHexagon { get; set; }
-    public Vertex(string id, Vector3 position, bool isCentralVertex)
+    public Graph pathGraph { get; set; }
+    public Vertex(string id, Vector3 position, bool isCentralVertex, Graph pathGraph = null)
     {
         this.id = id;
         this.position = position;
         this.pathWeight = float.MaxValue;
         this.edges = new List<Edge>();
         this.isCentralVertex = isCentralVertex;
+        this.pathGraph = pathGraph;
     }
 
     public void ResetPathWeight()
