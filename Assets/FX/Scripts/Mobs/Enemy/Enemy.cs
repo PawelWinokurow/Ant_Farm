@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DataStructures.ViliWonka.KDTree;
@@ -12,7 +11,6 @@ namespace EnemyNamespace
     {
         public string id { get; set; }
         public MobType type { get; set; }
-        public static int ATTACK_STRENGTH = 10;
         public EnemyAnimator animator { get; set; }
         public Health health { get; set; }
         public Action Animation { get; set; }
@@ -32,9 +30,13 @@ namespace EnemyNamespace
         public Dig_FX DigFX;
         public Dig_FX digFX;
         public int accessMask { get; set; }
+        private GameSettings gameSettings;
+        private ScorpionSettings scorpionSettings;
 
         void Start()
         {
+            gameSettings = Settings.Instance.gameSettings;
+            scorpionSettings = Settings.Instance.scorpionSettings;
             Kill = () =>
             {
                 if (digFX != null)
@@ -48,8 +50,8 @@ namespace EnemyNamespace
             animator.enemy = this;
             type = MobType.ENEMY;
             health = GetComponent<Health>();
-            health.MAX_HP = Settings.Instance.gameSettings.SCORPION_HP;
-            accessMask = Settings.Instance.gameSettings.ACCESS_MASK_FLOOR;
+            health.MAX_HP = scorpionSettings.HP;
+            accessMask = gameSettings.ACCESS_MASK_FLOOR;
             SetState(new PatrolState(this));
         }
 
@@ -76,7 +78,7 @@ namespace EnemyNamespace
 
         public void Attack()
         {
-            target.mob.Hit(Enemy.ATTACK_STRENGTH);
+            target.mob.Hit(scorpionSettings.ATTACK_STRENGTH);
             if (target.mob.health.hp <= 0)
             {
                 target.mob.Kill();
@@ -157,7 +159,7 @@ namespace EnemyNamespace
             target.hex = target.mob.currentHex;
             if (currentPathEdge != null)
             {
-                var pathNew = pathfinder.FindPath(currentPathEdge.to.position, target.mob.position, accessMask, SearchType.NEAREST_VERTEX);
+                var pathNew = pathfinder.FindPath(currentPathEdge.to.position, target.mob.position, accessMask, SearchType.NEAREST_CENTRAL_VERTEX);
                 if (pathNew != null)
                 {
                     path = pathNew;
@@ -165,7 +167,7 @@ namespace EnemyNamespace
             }
             else
             {
-                SetPath(pathfinder.FindPath(position, target.mob.position, accessMask, SearchType.NEAREST_VERTEX));
+                SetPath(pathfinder.FindPath(position, target.mob.position, accessMask, SearchType.NEAREST_CENTRAL_VERTEX));
             }
         }
 
@@ -203,7 +205,7 @@ namespace EnemyNamespace
             for (int i = 0; i < queryResults.Count; i++)
             {
                 var targetMob = notDeadMobs[queryResults[i]];
-                var path = pathfinder.FindPath(position, targetMob.position, Settings.Instance.gameSettings.ACCESS_MASK_FLOOR_SOIL, SearchType.NEAREST_VERTEX);
+                var path = pathfinder.FindPath(position, targetMob.position, Settings.Instance.gameSettings.ACCESS_MASK_FLOOR_SOIL, SearchType.NEAREST_CENTRAL_VERTEX);
                 if (path != null)
                 {
                     var target = new EnemyTarget($"{id}_{targetMob.id}", this, targetMob);

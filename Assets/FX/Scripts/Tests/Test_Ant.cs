@@ -6,7 +6,7 @@ namespace AntFarm
 {
     public class Test_Ant : MonoBehaviour
     {
-        private float speed = 5f;
+        // private float speed = 5f;
 
         void Update()
         {

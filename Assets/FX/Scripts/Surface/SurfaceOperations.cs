@@ -8,12 +8,17 @@ public class SurfaceOperations : MonoBehaviour
 {
     public Surface surface;
     public Dictionary<string, Hexagon> oldHexagons { get => surface.oldhexagons; set => surface.oldhexagons = value; }
+    private WorkerSettings workerSettings;
 
+    void Start()
+    {
+        workerSettings = Settings.Instance.workerSettings;
+    }
     public void Loading(CollectingHexagon collectingHex, LoadingState state, CarrierJob job)
     {
         var worker = state.worker;
-        var workerMaxCanTake = Worker.MAX_CARRYING_WEIGHT - worker.carryingWeight;
-        var canTake = Mathf.Min((Worker.LOADING_SPEED * Time.deltaTime), workerMaxCanTake);
+        var workerMaxCanTake = workerSettings.MAX_CARRYING_WEIGHT - worker.carryingWeight;
+        var canTake = Mathf.Min((workerSettings.LOADING_SPEED * Time.deltaTime), workerMaxCanTake);
         if (canTake >= collectingHex.Quantity)
         {
             worker.carryingWeight += collectingHex.Quantity;
@@ -28,7 +33,7 @@ public class SurfaceOperations : MonoBehaviour
             var toTake = Mathf.Min(canTake, workerMaxCanTake);
             worker.carryingWeight += toTake;
             collectingHex.Quantity -= toTake;
-            if (worker.carryingWeight >= Worker.MAX_CARRYING_WEIGHT)
+            if (worker.carryingWeight >= workerSettings.MAX_CARRYING_WEIGHT)
             {
                 state.Done();
             }
@@ -37,7 +42,7 @@ public class SurfaceOperations : MonoBehaviour
     public void Unloading(BaseHexagon storageHex, UnloadingState state, CarrierJob job)
     {
         var worker = state.worker;
-        var toStore = Mathf.Min((Worker.LOADING_SPEED * Time.deltaTime), worker.carryingWeight);
+        var toStore = Mathf.Min((workerSettings.LOADING_SPEED * Time.deltaTime), worker.carryingWeight);
         storageHex.storage += toStore;
         worker.carryingWeight -= toStore;
         if (worker.carryingWeight <= 0)
@@ -68,7 +73,7 @@ public class SurfaceOperations : MonoBehaviour
         var scaledBlock = surface.AddDigScaledBlock(floorHex);
         while (scaledBlock != null)
         {
-            scaledBlock.work -= Worker.CONSTRUCTION_SPEED;
+            scaledBlock.work -= workerSettings.CONSTRUCTION_SPEED;
             scaledBlock.transform.localScale = Vector3.one * scaledBlock.work / WorkHexagon.MAX_WORK;
             if (scaledBlock.work <= 0)
             {
@@ -92,7 +97,7 @@ public class SurfaceOperations : MonoBehaviour
         var scaledBlock = surface.AddFillScaledBlock(floorHex);
         while (scaledBlock != null)
         {
-            scaledBlock.work -= Worker.CONSTRUCTION_SPEED;
+            scaledBlock.work -= workerSettings.CONSTRUCTION_SPEED;
             scaledBlock.transform.localScale = Vector3.one * (1 - scaledBlock.work / WorkHexagon.MAX_WORK);
             if (scaledBlock.work <= 0)
             {
@@ -108,14 +113,13 @@ public class SurfaceOperations : MonoBehaviour
         worker.job.Cancel();
     }
 
-    public bool IsInoldHexagons(FloorHexagon hex)
+    public bool IsInOldHexagons(FloorHexagon hex)
     {
         return oldHexagons.ContainsKey(hex.id);
     }
 
     public BaseHexagon NearestBaseHexagon()
     {
-        //TODO implement
         return (BaseHexagon)surface.baseHex.child;
     }
 

@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
         {
             if (AreNoMobsInHex(hex))
             {
-                if (SurfaceOperations.IsInoldHexagons(hex) && !WorkerJobScheduler.IsJobAssigned(hex.id))
+                if (SurfaceOperations.IsInOldHexagons(hex) && !WorkerJobScheduler.IsJobAssigned(hex.id))
                 {
                     Surface.RemoveIcon(hex);
                     WorkerJobScheduler.CancelJob(hex.id);

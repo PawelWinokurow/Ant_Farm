@@ -9,9 +9,6 @@ namespace WorkerNamespace
     {
         public string id { get; set; }
         public MobType type { get; set; }
-        public static float CONSTRUCTION_SPEED = 2f;
-        public static int LOADING_SPEED = 50;
-        public static int MAX_CARRYING_WEIGHT = 100;
         public float carryingWeight = 0;
         public AntAnimator animator { get; set; }
         public Health health { get; set; }
@@ -29,18 +26,19 @@ namespace WorkerNamespace
         public Edge currentPathEdge;
         public Action Kill { get; set; }
         public FloorHexagon currentHex { get; set; }
-        public float hp { get; set; }
         public int accessMask { get; set; }
-
+        private GameSettings gameSettings;
+        private WorkerSettings workerSettings;
         void Start()
         {
-            hp = 100f;
+            gameSettings = Settings.Instance.gameSettings;
+            workerSettings = Settings.Instance.workerSettings;
             animator = GetComponent<AntAnimator>();
             animator.worker = this;
             health = GetComponent<Health>();
-            health.MAX_HP = Settings.Instance.gameSettings.WORKER_HP;
+            health.MAX_HP = workerSettings.HP;
             type = MobType.WORKER;
-            accessMask = Settings.Instance.gameSettings.ACCESS_MASK_FLOOR;
+            accessMask = gameSettings.ACCESS_MASK_FLOOR;
             SetState(new IdleState(this));
         }
 
@@ -157,7 +155,6 @@ namespace WorkerNamespace
 
         public void Hit(int damage)
         {
-            hp -= damage;
             health.Hit(damage);
         }
         void DrawDebugPath()

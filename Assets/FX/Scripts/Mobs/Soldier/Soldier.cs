@@ -10,7 +10,6 @@ namespace SoldierNamespace
     {
         public string id { get; set; }
         public MobType type { get; set; }
-        public static int ATTACK_STRENGTH = 5;
         public SoldierAnimator animator { get; set; }
         public Health health { get; set; }
         public Action Animation { get; set; }
@@ -28,16 +27,20 @@ namespace SoldierNamespace
         public Edge currentPathEdge;
         public Store store;
         public int accessMask { get; set; }
+        private GameSettings gameSettings;
+        private SoldierSettings soldierSettings;
 
         void Start()
         {
+            gameSettings = Settings.Instance.gameSettings;
+            soldierSettings = Settings.Instance.soldierSettings;
             Kill = () => SetState(new DeadState(this));
             animator = GetComponent<SoldierAnimator>();
             animator.soldier = this;
             type = MobType.SOLDIER;
-            accessMask = Settings.Instance.gameSettings.ACCESS_MASK_FLOOR;
+            accessMask = gameSettings.ACCESS_MASK_FLOOR;
             health = GetComponent<Health>();
-            health.MAX_HP = Settings.Instance.gameSettings.SOLDIER_HP;
+            health.MAX_HP = soldierSettings.HP;
             SetState(new PatrolState(this));
         }
 
@@ -64,7 +67,7 @@ namespace SoldierNamespace
 
         public void Attack()
         {
-            target.mob.Hit(Soldier.ATTACK_STRENGTH);
+            target.mob.Hit(soldierSettings.ATTACK_STRENGTH);
             if (target.mob.health.hp <= 0)
             {
                 target.mob.Kill();
