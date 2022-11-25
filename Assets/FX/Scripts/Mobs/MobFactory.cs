@@ -53,8 +53,8 @@ public class MobFactory : MonoBehaviour
     {
         var spawnHex = surface.PositionToHex(surface.baseHex.position + new Vector3(10, 0, 20));
         var spawnPosition = surface.PositionToHex(surface.baseHex.position + new Vector3(10, 0, 20)).position;
-        spawnHex.vertex.neighbours.ForEach(n => n.floorHexagon.RemoveChildren());
-        spawnHex.RemoveChildren();
+        spawnHex.vertex.neighbours.ForEach(n => surface.AddGround(n.floorHexagon));
+        surface.AddGround(spawnHex);
         Enemy enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
         enemy.id = id;
         enemy.pathfinder = workerJobScheduler.pathfinder;

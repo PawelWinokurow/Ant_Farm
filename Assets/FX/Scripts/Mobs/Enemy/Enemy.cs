@@ -138,15 +138,22 @@ namespace EnemyNamespace
                 }
                 if (currentHex != null && currentHex.GetComponentInChildren<Dig_FX>() != null)
                 {
-                    var digFxOld = currentHex.GetComponentInChildren<Dig_FX>();
-                    digFxOld.StopFx();
-                    Destroy(digFxOld);
-                    currentHex.RemoveChildren();
+                    RemoveDigFX();
                 }
             }
             currentHex = currentHexNew;
             lerpDuration = Vector3.Distance(currentPathEdge.from.position, currentPathEdge.to.position) * currentPathEdge.edgeWeight / currentPathEdge.edgeWeightBase;
+        }
 
+        public void RemoveDigFX()
+        {
+            var digFxOld = currentHex.GetComponentInChildren<Dig_FX>();
+            if (digFxOld != null)
+            {
+                digFxOld.StopFx();
+                Destroy(digFxOld);
+                currentHex.RemoveChildren();
+            }
         }
 
         public void CancelJob()
@@ -159,7 +166,7 @@ namespace EnemyNamespace
             target.hex = target.mob.currentHex;
             if (currentPathEdge != null)
             {
-                var pathNew = pathfinder.FindPath(currentPathEdge.to.position, target.mob.position, accessMask, SearchType.NEAREST_CENTRAL_VERTEX);
+                var pathNew = pathfinder.FindPath(currentPathEdge.to.position, target.mob.position, accessMask, SearchType.NEAREST_VERTEX);
                 if (pathNew != null)
                 {
                     path = pathNew;
@@ -167,7 +174,7 @@ namespace EnemyNamespace
             }
             else
             {
-                SetPath(pathfinder.FindPath(position, target.mob.position, accessMask, SearchType.NEAREST_CENTRAL_VERTEX));
+                SetPath(pathfinder.FindPath(position, target.mob.position, accessMask, SearchType.NEAREST_VERTEX));
             }
         }
 
@@ -205,7 +212,7 @@ namespace EnemyNamespace
             for (int i = 0; i < queryResults.Count; i++)
             {
                 var targetMob = notDeadMobs[queryResults[i]];
-                var path = pathfinder.FindPath(position, targetMob.position, Settings.Instance.gameSettings.ACCESS_MASK_FLOOR_SOIL, SearchType.NEAREST_CENTRAL_VERTEX);
+                var path = pathfinder.FindPath(position, targetMob.position, Settings.Instance.gameSettings.ACCESS_MASK_FLOOR_SOIL, SearchType.NEAREST_VERTEX);
                 if (path != null)
                 {
                     var target = new EnemyTarget($"{id}_{targetMob.id}", this, targetMob);

@@ -78,7 +78,7 @@ public class SurfaceOperations : MonoBehaviour
             if (scaledBlock.work <= 0)
             {
                 surface.AddGround(floorHex);
-                surface.pathGraph.AllowHexagon(wallHex.floorHexagon);
+                surface.pathGraph.AllowHexagon(floorHex);
                 worker.job.Cancel();
                 oldHexagons.Remove(floorHex.id);
                 yield break;
@@ -91,8 +91,6 @@ public class SurfaceOperations : MonoBehaviour
     {
         var worker = workerJob.worker;
         var floorHex = workerJob.hex;
-        var wallHex = (WorkHexagon)(workerJob.hex.child);
-
         floorHex.RemoveChildren();
         var scaledBlock = surface.AddFillScaledBlock(floorHex);
         while (scaledBlock != null)

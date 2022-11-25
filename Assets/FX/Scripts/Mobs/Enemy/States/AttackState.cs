@@ -15,6 +15,7 @@ namespace EnemyNamespace
 
         override public void OnStateEnter()
         {
+            enemy.RemoveDigFX();
             enemy.SetIdleFightAnimation();
             enemyTarget = enemy.target;
             enemy.Animation();
@@ -32,9 +33,13 @@ namespace EnemyNamespace
 
         public override void Tick()
         {
-            if (!enemy.IsTargetInNeighbourhood() || enemy.target.mob.currentState.type == STATE.DEAD)
+            if (!enemy.IsTargetInNeighbourhood())
             {
                 enemy.SetState(new FollowingState(enemy));
+            }
+            if (enemy.target.mob.currentState.type == STATE.DEAD)
+            {
+                enemy.SetState(new PatrolState(enemy));
             }
         }
 
