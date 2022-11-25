@@ -133,7 +133,7 @@ public class Surface : MonoBehaviour
     {
         pathGraph.adjacencyList.ForEach(edge =>
         {
-            if (!edge.HasAccess(1))
+            if (!edge.HasAccess(2))
             {
                 Debug.DrawLine(edge.from.position, edge.to.position, Color.red);
             }

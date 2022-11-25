@@ -14,7 +14,7 @@ namespace EnemyNamespace
         public MobType type { get; set; }
         public static int ATTACK_STRENGTH = 10;
         public EnemyAnimator animator { get; set; }
-        public Health healthAnimator { get; set; }
+        public Health health { get; set; }
         public Action Animation { get; set; }
         public Vector3 position { get => transform.position; }
         public Path path { get; set; }
@@ -28,7 +28,6 @@ namespace EnemyNamespace
         private float lerpDuration;
         private float t = 0f;
         public Edge currentPathEdge;
-        public float hp { get; set; }
         public Store store;
         public Dig_FX DigFX;
         public Dig_FX digFX;
@@ -48,9 +47,8 @@ namespace EnemyNamespace
             animator = GetComponent<EnemyAnimator>();
             animator.enemy = this;
             type = MobType.ENEMY;
-            hp = 250f;
-            healthAnimator = GetComponent<Health>();
-            healthAnimator.MAX_HEALTH = hp;
+            health = GetComponent<Health>();
+            health.MAX_HP = Settings.Instance.gameSettings.SCORPION_HP;
             accessMask = Settings.Instance.gameSettings.ACCESS_MASK_FLOOR;
             SetState(new PatrolState(this));
         }
@@ -79,7 +77,7 @@ namespace EnemyNamespace
         public void Attack()
         {
             target.mob.Hit(Enemy.ATTACK_STRENGTH);
-            if (target.mob.hp <= 0)
+            if (target.mob.health.hp <= 0)
             {
                 target.mob.Kill();
                 CancelJob();
@@ -159,7 +157,7 @@ namespace EnemyNamespace
             target.hex = target.mob.currentHex;
             if (currentPathEdge != null)
             {
-                var pathNew = pathfinder.FindPath(currentPathEdge.to.position, target.mob.currentHex.position, accessMask, SearchType.NEAREST_VERTEX);
+                var pathNew = pathfinder.FindPath(currentPathEdge.to.position, target.mob.position, accessMask, SearchType.NEAREST_VERTEX);
                 if (pathNew != null)
                 {
                     path = pathNew;
@@ -167,7 +165,7 @@ namespace EnemyNamespace
             }
             else
             {
-                SetPath(pathfinder.FindPath(position, target.mob.currentHex.position, accessMask, SearchType.NEAREST_VERTEX));
+                SetPath(pathfinder.FindPath(position, target.mob.position, accessMask, SearchType.NEAREST_VERTEX));
             }
         }
 
@@ -237,8 +235,7 @@ namespace EnemyNamespace
 
         public void Hit(int damage)
         {
-            hp -= damage;
-            healthAnimator.Hit(damage);
+            health.Hit(damage);
         }
         void DrawDebugPath()
         {

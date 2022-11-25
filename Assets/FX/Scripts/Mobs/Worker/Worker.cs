@@ -14,7 +14,7 @@ namespace WorkerNamespace
         public static int MAX_CARRYING_WEIGHT = 100;
         public float carryingWeight = 0;
         public AntAnimator animator { get; set; }
-        public Health healthAnimator { get; set; }
+        public Health health { get; set; }
         public Action Animation { get; set; }
         public Vector3 position { get => transform.position; }
         public WorkerJob job { get; set; }
@@ -37,8 +37,8 @@ namespace WorkerNamespace
             hp = 100f;
             animator = GetComponent<AntAnimator>();
             animator.worker = this;
-            healthAnimator = GetComponent<Health>();
-            healthAnimator.MAX_HEALTH = hp;
+            health = GetComponent<Health>();
+            health.MAX_HP = Settings.Instance.gameSettings.WORKER_HP;
             type = MobType.WORKER;
             accessMask = Settings.Instance.gameSettings.ACCESS_MASK_FLOOR;
             SetState(new IdleState(this));
@@ -158,7 +158,7 @@ namespace WorkerNamespace
         public void Hit(int damage)
         {
             hp -= damage;
-            healthAnimator.Hit(damage);
+            health.Hit(damage);
         }
         void DrawDebugPath()
         {
