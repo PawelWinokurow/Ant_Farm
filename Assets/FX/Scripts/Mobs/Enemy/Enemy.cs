@@ -38,8 +38,11 @@ namespace EnemyNamespace
         {
             Kill = () =>
             {
-                digFX.StopFx();
-                Destroy(digFX, 5f);
+                if (digFX != null)
+                {
+                    digFX.StopFx();
+                    Destroy(digFX, 5f);
+                }
                 SetState(new DeadState(this));
             };
             animator = GetComponent<EnemyAnimator>();
