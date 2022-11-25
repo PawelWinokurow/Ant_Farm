@@ -38,9 +38,9 @@ namespace EnemyNamespace
         {
             Kill = () =>
             {
-                SetState(new DeadState(this));
                 digFX.StopFx();
                 Destroy(digFX, 5f);
+                SetState(new DeadState(this));
             };
             animator = GetComponent<EnemyAnimator>();
             animator.enemy = this;
@@ -225,7 +225,7 @@ namespace EnemyNamespace
 
         public bool IsTargetInNeighbourhood()
         {
-            if (currentHex != null)
+            if (currentHex != null && target.mob.currentHex != null)
             {
                 return currentHex.vertex.neighbours.Select(vertex => vertex.id).Append(currentHex.id).Contains(target.mob.currentHex.id);
             }
