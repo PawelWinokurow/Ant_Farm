@@ -11,7 +11,6 @@ namespace SoldierNamespace
         public string id { get; set; }
         public MobType type { get; set; }
         public static int ATTACK_STRENGTH = 5;
-        public static int ACCESS_MASK = 1;
         public SoldierAnimator animator { get; set; }
         public Health healthAnimator { get; set; }
         public Action Animation { get; set; }
@@ -83,12 +82,12 @@ namespace SoldierNamespace
 
         public void SetRandomWalk()
         {
-            SetPath(pathfinder.RandomWalk(position, 5, Soldier.ACCESS_MASK));
+            SetPath(pathfinder.RandomWalk(position, 5, accessMask));
         }
 
         public void ExpandRandomWalk()
         {
-            var newRandomWalk = pathfinder.RandomWalk(path.wayPoints[path.wayPoints.Count - 1].to.position, 100, Soldier.ACCESS_MASK);
+            var newRandomWalk = pathfinder.RandomWalk(path.wayPoints[path.wayPoints.Count - 1].to.position, 100, accessMask);
             path.length += newRandomWalk.length;
             path.wayPoints.AddRange(newRandomWalk.wayPoints);
         }
@@ -132,7 +131,7 @@ namespace SoldierNamespace
             target.hex = target.mob.currentHex;
             if (currentPathEdge != null)
             {
-                var pathNew = pathfinder.FindPath(currentPathEdge.to.position, target.mob.currentHex.position, Soldier.ACCESS_MASK, true);
+                var pathNew = pathfinder.FindPath(currentPathEdge.to.position, target.mob.currentHex.position, accessMask, SearchType.NEAREST_VERTEX);
                 if (pathNew != null)
                 {
                     path = pathNew;
@@ -140,7 +139,7 @@ namespace SoldierNamespace
             }
             else
             {
-                SetPath(pathfinder.FindPath(position, target.mob.currentHex.position, Soldier.ACCESS_MASK, true));
+                SetPath(pathfinder.FindPath(position, target.mob.currentHex.position, accessMask, SearchType.NEAREST_VERTEX));
             }
         }
 
@@ -171,8 +170,7 @@ namespace SoldierNamespace
             {
                 var targetMob = notDeadMobs[queryResults[i]];
 
-                var path = pathfinder.FindPath(position, targetMob.position, Soldier.ACCESS_MASK, true);
-                Debug.Log(path);
+                var path = pathfinder.FindPath(position, targetMob.position, accessMask, SearchType.NEAREST_VERTEX);
                 if (path != null)
                 {
                     var target = new SoldierTarget($"{id}_{targetMob.id}", this, targetMob);

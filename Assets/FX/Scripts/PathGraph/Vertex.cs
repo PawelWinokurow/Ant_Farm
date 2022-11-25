@@ -11,7 +11,7 @@ public class Vertex
     public bool isCentralVertex { get; set; }
     public FloorHexagon floorHexagon { get; set; }
     public Graph pathGraph { get; set; }
-    public Vertex(string id, Vector3 position, bool isCentralVertex, Graph pathGraph = null)
+    public Vertex(string id, Vector3 position, bool isCentralVertex, Graph pathGraph = null, FloorHexagon floorHexagon = null)
     {
         this.id = id;
         this.position = position;
@@ -19,6 +19,11 @@ public class Vertex
         this.edges = new List<Edge>();
         this.isCentralVertex = isCentralVertex;
         this.pathGraph = pathGraph;
+        if (floorHexagon != null)
+        {
+            this.floorHexagon = floorHexagon;
+            floorHexagon.vertex = this;
+        }
     }
 
     public void ResetPathWeight()

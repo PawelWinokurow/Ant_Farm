@@ -10,7 +10,11 @@ public class Path
     public List<Edge> wayPoints = new List<Edge>();
     public float length = 0;
     public bool HasWaypoints { get => wayPoints.Count != 0; }
+}
 
+public enum SearchType
+{
+    NEAREST_CENTRAL_VERTEX, VERTEX, NEAREST_VERTEX
 }
 
 public class Pathfinder
@@ -26,7 +30,7 @@ public class Pathfinder
     public Path RandomWalk(Vector3 fromVec, int numberOfSteps, int accessMask)
     {
         Path overallPath = new Path();
-        Vertex from = pathGraph.NearestVertex(fromVec);
+        Vertex from = pathGraph.GetVertex(fromVec);
         for (int i = 0; i < numberOfSteps; i++)
         {
             var path = PathToSomeNeighbour(from, accessMask);
@@ -63,7 +67,7 @@ public class Pathfinder
         }
         else
         {
-            var edges = from.edges.OrderBy(e => Guid.NewGuid()).OrderBy(e => e.edgeWeight).ToList();
+            var edges = from.edges.OrderBy(e => Guid.NewGuid()).ToList();
             foreach (var edge in edges)
             {
                 if (edge.HasAccess(accessMask) && edge.to.isCentralVertex)
@@ -75,22 +79,30 @@ public class Pathfinder
         return null;
     }
 
-    public Path FindPath(Vector3 fromVec, Vector3 toVec, int accessMask, bool findNearest = false)
+    public Path FindPath(Vector3 fromVec, Vector3 toVec, int accessMask, SearchType searchType = SearchType.VERTEX)
     {
-        Vertex from = pathGraph.NearestVertex(fromVec);
-        Vertex to = pathGraph.NearestVertex(toVec);
+        Vertex from = pathGraph.GetVertex(fromVec);
+        Vertex to = pathGraph.GetVertex(toVec);
         Path path = null;
         if (from.id == to.id) return path;
-        if (!findNearest)
+        if (searchType == SearchType.VERTEX)
         {
             path = Astar(from, to, accessMask);
         }
-        else
+        else if (searchType == SearchType.NEAREST_CENTRAL_VERTEX)
         {
-            var nearestNeighbour = pathGraph.NearestNeighbour(from, to, accessMask);
-            if (nearestNeighbour != null)
+            var nearestCentralVertex = pathGraph.NearestCentralVertex(from, to, accessMask);
+            if (nearestCentralVertex != null)
             {
-                path = Astar(from, nearestNeighbour, accessMask);
+                path = Astar(from, nearestCentralVertex, accessMask);
+            }
+        }
+        else if (searchType == SearchType.NEAREST_VERTEX)
+        {
+            var nearestVertex = pathGraph.NearestVertex(from, to, accessMask);
+            if (nearestVertex != null)
+            {
+                path = Astar(from, nearestVertex, accessMask);
             }
         }
         return path;

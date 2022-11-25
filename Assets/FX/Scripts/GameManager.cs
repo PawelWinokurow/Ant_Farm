@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour
     {
         FloorHexagon hex = Surface.PositionToHex(pos);
 
-        if (hex.type == HEX_TYPE.FOOD)
+        if (hex.type == HexType.FOOD)
         {
             var foodHex = (CollectingHexagon)(hex.child);
             var asssignedcarriersNum = foodHex.carriers.Count;
@@ -69,7 +69,7 @@ public class GameManager : MonoBehaviour
                 foodHex.food.antCount = 0;
             }
         }
-        else if (hex.type == HEX_TYPE.EMPTY || hex.type == HEX_TYPE.SOIL)
+        else if (hex.type == HexType.EMPTY || hex.type == HexType.SOIL)
         {
             if (AreNoMobsInHex(hex))
             {
@@ -81,11 +81,11 @@ public class GameManager : MonoBehaviour
                 else
                 {
                     Surface.AddIcon(hex);
-                    if (hex.type == HEX_TYPE.EMPTY)
+                    if (hex.type == HexType.EMPTY)
                     {
                         WorkerJobScheduler.AssignJob(new BuildJob(hex, hex.transform.position, JobType.FILL));
                     }
-                    else if (hex.type == HEX_TYPE.SOIL)
+                    else if (hex.type == HexType.SOIL)
                     {
                         WorkerJobScheduler.AssignJob(new BuildJob(hex, hex.transform.position, JobType.DIG));
                     }

@@ -13,7 +13,6 @@ namespace WorkerNamespace
         public static int LOADING_SPEED = 50;
         public static int MAX_CARRYING_WEIGHT = 100;
         public float carryingWeight = 0;
-        public static int ACCESS_MASK = 1;
         public AntAnimator animator { get; set; }
         public Health healthAnimator { get; set; }
         public Action Animation { get; set; }
@@ -85,12 +84,12 @@ namespace WorkerNamespace
 
         public void SetRandomWalk()
         {
-            SetPath(pathfinder.RandomWalk(position, 5, Worker.ACCESS_MASK));
+            SetPath(pathfinder.RandomWalk(position, 5, accessMask));
         }
 
         public void ExpandRandomWalk()
         {
-            var newRandomWalk = pathfinder.RandomWalk(path.wayPoints[path.wayPoints.Count - 1].to.position, 5, Worker.ACCESS_MASK);
+            var newRandomWalk = pathfinder.RandomWalk(path.wayPoints[path.wayPoints.Count - 1].to.position, 5, accessMask);
             path.length += newRandomWalk.length;
             path.wayPoints.AddRange(newRandomWalk.wayPoints);
         }
@@ -133,7 +132,7 @@ namespace WorkerNamespace
         {
             if (HasJob)
             {
-                var pathNew = pathfinder.FindPath(position, job.destination, Worker.ACCESS_MASK, true);
+                var pathNew = pathfinder.FindPath(position, job.destination, accessMask, SearchType.NEAREST_CENTRAL_VERTEX);
                 SetPath(pathNew);
             }
         }

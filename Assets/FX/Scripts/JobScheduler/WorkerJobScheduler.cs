@@ -92,7 +92,7 @@ public class WorkerJobScheduler : MonoBehaviour
         queryResults.Reverse();
         foreach (int i in queryResults)
         {
-            var path = pathfinder.FindPath(freeWorkersClone[i].position, job.destination, Worker.ACCESS_MASK, true);
+            var path = pathfinder.FindPath(freeWorkersClone[i].position, job.destination, freeWorkersClone[i].accessMask, SearchType.NEAREST_CENTRAL_VERTEX);
             if (path != null)
             {
                 job.worker = freeWorkersClone[i];

@@ -13,7 +13,6 @@ namespace EnemyNamespace
         public string id { get; set; }
         public MobType type { get; set; }
         public static int ATTACK_STRENGTH = 10;
-        public static int ACCESS_MASK = 2;
         public EnemyAnimator animator { get; set; }
         public Health healthAnimator { get; set; }
         public Action Animation { get; set; }
@@ -92,12 +91,12 @@ namespace EnemyNamespace
 
         public void SetRandomWalk()
         {
-            SetPath(pathfinder.RandomWalk(position, 5, Enemy.ACCESS_MASK));
+            SetPath(pathfinder.RandomWalk(position, 5, accessMask));
         }
 
         public void ExpandRandomWalk()
         {
-            var newRandomWalk = pathfinder.RandomWalk(path.wayPoints[path.wayPoints.Count - 1].to.position, 5, Enemy.ACCESS_MASK);
+            var newRandomWalk = pathfinder.RandomWalk(path.wayPoints[path.wayPoints.Count - 1].to.position, 5, accessMask);
             path.length += newRandomWalk.length;
             path.wayPoints.AddRange(newRandomWalk.wayPoints);
         }
@@ -129,7 +128,7 @@ namespace EnemyNamespace
             var currentHexNew = currentPathEdge.floorHexagon;
             if ((currentHex == null || currentHexNew.id != currentHex.id))
             {
-                if (currentHexNew.type == HEX_TYPE.SOIL)
+                if (currentHexNew.type == HexType.SOIL)
                 {
                     digFX = Instantiate(DigFX, position, Quaternion.identity, currentHexNew.transform);
                     digFX.StartFx(currentHexNew);
@@ -157,7 +156,7 @@ namespace EnemyNamespace
             target.hex = target.mob.currentHex;
             if (currentPathEdge != null)
             {
-                var pathNew = pathfinder.FindPath(currentPathEdge.to.position, target.mob.currentHex.position, Enemy.ACCESS_MASK, true);
+                var pathNew = pathfinder.FindPath(currentPathEdge.to.position, target.mob.currentHex.position, accessMask, SearchType.NEAREST_VERTEX);
                 if (pathNew != null)
                 {
                     path = pathNew;
@@ -165,7 +164,7 @@ namespace EnemyNamespace
             }
             else
             {
-                SetPath(pathfinder.FindPath(position, target.mob.currentHex.position, Enemy.ACCESS_MASK, true));
+                SetPath(pathfinder.FindPath(position, target.mob.currentHex.position, accessMask, SearchType.NEAREST_VERTEX));
             }
         }
 
@@ -194,7 +193,6 @@ namespace EnemyNamespace
         public EnemyTarget SearchTarget()
         {
             var notDeadMobs = new List<Mob>(store.allMobs.Where(mob => mob.currentState?.type != STATE.DEAD));
-            Debug.Log("in");
             KDTree mobPositionsTree = new KDTree(notDeadMobs.Select(mob => mob.position).ToArray());
             KDQuery query = new KDQuery();
             List<int> queryResults = new List<int>();
@@ -204,7 +202,7 @@ namespace EnemyNamespace
             for (int i = 0; i < queryResults.Count; i++)
             {
                 var targetMob = notDeadMobs[queryResults[i]];
-                var path = pathfinder.FindPath(position, targetMob.position, Enemy.ACCESS_MASK, true);
+                var path = pathfinder.FindPath(position, targetMob.position, Settings.Instance.gameSettings.ACCESS_MASK_FLOOR_SOIL, SearchType.NEAREST_VERTEX);
                 if (path != null)
                 {
                     var target = new EnemyTarget($"{id}_{targetMob.id}", this, targetMob);

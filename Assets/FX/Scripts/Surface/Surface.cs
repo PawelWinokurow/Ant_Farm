@@ -82,7 +82,7 @@ public class Surface : MonoBehaviour
             for (int x = 0; x < width; x++)
             {
                 Vector3 hexPosition = new Vector3(w * (x + (z % 2f) / 2f), 0f, z * h);
-                FloorHexagon hex = FloorHexagon.CreateHexagon($"{x}_{z}", hexPrefab, hexPosition, transform, HEX_TYPE.EMPTY, 50f);
+                FloorHexagon hex = FloorHexagon.CreateHexagon($"{x}_{z}", hexPrefab, hexPosition, transform, HexType.EMPTY, 50f);
                 pathGraph.AddHexagonSubGraph(hex, Hexagon.radius, $"{x}_{z}");
                 hexagons[z * width + x] = hex;
             }
@@ -105,15 +105,15 @@ public class Surface : MonoBehaviour
     // {
     //     for (var i = 0; i < hexagons.Length; i++)
     //     {
-    //         var hex = FloorHexagon.CreateHexagon(hexagons[i].id, hexPrefab, VectorTransform.FromSerializable(hexagons[i].position), transform, HEX_TYPE.EMPTY, 50f);
+    //         var hex = FloorHexagon.CreateHexagon(hexagons[i].id, hexPrefab, VectorTransform.FromSerializable(hexagons[i].position), transform, HexType.EMPTY, 50f);
     //         hexagons[i] = hex;
-    //         if (hexagons[i].type == HEX_TYPE.EMPTY)
+    //         if (hexagons[i].type == HexType.EMPTY)
     //         {
     //             AddGround(hex);
     //             pathGraph.AllowHexagon(hex.transform.position);
 
     //         }
-    //         else if (hexagons[i].type == HEX_TYPE.SOIL)
+    //         else if (hexagons[i].type == HexType.SOIL)
     //         {
     //             AddBlock(hex);
     //             pathGraph.ProhibitHexagon(hex.transform.position);
@@ -157,21 +157,21 @@ public class Surface : MonoBehaviour
     public WorkHexagon AddBlock(FloorHexagon hex)
     {
         var block = WorkHexagon.CreateHexagon(hex, wallPrefab);
-        block.type = HEX_TYPE.SOIL;
+        block.type = HexType.SOIL;
         block.work = WorkHexagon.MAX_WORK;
         return block;
     }
     public WorkHexagon AddDigScaledBlock(FloorHexagon hex)
     {
         var scaledBlock = WorkHexagon.CreateHexagon(hex, wallDigScaled);
-        scaledBlock.type = HEX_TYPE.SOIL;
+        scaledBlock.type = HexType.SOIL;
         scaledBlock.work = WorkHexagon.MAX_WORK;
         return scaledBlock;
     }
     public WorkHexagon AddFillScaledBlock(FloorHexagon hex)
     {
         var scaledBlock = WorkHexagon.CreateHexagon(hex, wallFillScaled);
-        scaledBlock.type = HEX_TYPE.SOIL;
+        scaledBlock.type = HexType.SOIL;
         scaledBlock.work = WorkHexagon.MAX_WORK;
         return scaledBlock;
     }
@@ -179,7 +179,7 @@ public class Surface : MonoBehaviour
     public void AddGround(FloorHexagon hex)
     {
         hex.RemoveChildren();
-        hex.type = HEX_TYPE.EMPTY;
+        hex.type = HexType.EMPTY;
         hex.work = WorkHexagon.MAX_WORK;
     }
 
@@ -187,7 +187,7 @@ public class Surface : MonoBehaviour
     {
         hex.RemoveChildren();
         var collectingHex = CollectingHexagon.CreateHexagon(hex, foodPrefab);
-        collectingHex.type = HEX_TYPE.FOOD;
+        collectingHex.type = HexType.FOOD;
     }
 
     public void AddBase()
@@ -203,14 +203,14 @@ public class Surface : MonoBehaviour
             });
         });
         baseHex.RemoveChildren();
-        BaseHexagon.CreateHexagon(baseHex, basePrefab).type = HEX_TYPE.BASE;
+        BaseHexagon.CreateHexagon(baseHex, basePrefab).type = HexType.BASE;
         pathGraph.ProhibitHexagon(baseHex);
     }
 
 
     public void AddIcon(FloorHexagon hex)
     {
-        if (hex.type == HEX_TYPE.EMPTY)
+        if (hex.type == HexType.EMPTY)
         {
             var clonedHex = Instantiate(hex).AssignProperties(hex);
             oldhexagons.Add(clonedHex.id, clonedHex);
@@ -218,7 +218,7 @@ public class Surface : MonoBehaviour
             pathGraph.ProhibitHexagon(hex);
             WorkHexagon.CreateHexagon(hex, fillPrefab);
         }
-        else if (hex.type == HEX_TYPE.SOIL)
+        else if (hex.type == HexType.SOIL)
         {
             WorkHexagon clonedHex = WorkHexagon.CreateHexagon(hex, wallPrefab);
             clonedHex.AssignProperties((WorkHexagon)hex.child);
@@ -226,7 +226,7 @@ public class Surface : MonoBehaviour
             hex.RemoveChildren();
             WorkHexagon.CreateHexagon(hex, digPrefab);
         }
-        else if (hex.type == HEX_TYPE.FOOD)
+        else if (hex.type == HexType.FOOD)
         {
             CollectingHexagon clonedHex = CollectingHexagon.CreateHexagon(hex, foodPrefab);
             clonedHex.AssignProperties((CollectingHexagon)hex.child);
@@ -239,17 +239,17 @@ public class Surface : MonoBehaviour
     {
         hex.RemoveChildren();
         var oldIcon = oldhexagons[hex.id];
-        if (oldIcon.type == HEX_TYPE.EMPTY)
+        if (oldIcon.type == HexType.EMPTY)
         {
             pathGraph.AllowHexagon(hex);
             hex.AssignProperties((FloorHexagon)oldIcon);
         }
-        else if (oldIcon.type == HEX_TYPE.SOIL)
+        else if (oldIcon.type == HexType.SOIL)
         {
             pathGraph.ProhibitHexagon(hex);
             WorkHexagon.CreateHexagon(hex, wallPrefab).AssignProperties((WorkHexagon)oldIcon);
         }
-        else if (oldIcon.type == HEX_TYPE.FOOD)
+        else if (oldIcon.type == HexType.FOOD)
         {
             CollectingHexagon.CreateHexagon(hex, foodPrefab);
         };

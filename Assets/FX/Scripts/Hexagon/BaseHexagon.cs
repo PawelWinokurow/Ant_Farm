@@ -7,7 +7,7 @@ public class BaseHexagon : MonoBehaviour, Hexagon
 {
     public string id { get => floorHexagon.id; set => floorHexagon.id = value; }
     public Vector3 position { get => floorHexagon.position; set => floorHexagon.position = value; }
-    public HEX_TYPE type { get => floorHexagon.type; set => floorHexagon.type = value; }
+    public HexType type { get => floorHexagon.type; set => floorHexagon.type = value; }
     public FloorHexagon floorHexagon { get; set; }
     public float storage { get; set; }
 

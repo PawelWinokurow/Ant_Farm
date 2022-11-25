@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using WorkerNamespace;
@@ -7,7 +6,7 @@ public class CollectingHexagon : MonoBehaviour, Hexagon
 {
     public string id { get => floorHexagon.id; set => floorHexagon.id = value; }
     public Vector3 position { get => floorHexagon.position; set => floorHexagon.position = value; }
-    public HEX_TYPE type { get => floorHexagon.type; set => floorHexagon.type = value; }
+    public HexType type { get => floorHexagon.type; set => floorHexagon.type = value; }
     private float quantity;
     public float Quantity { get => quantity; set { quantity = value; food.cost = value; } }
     public static float maxQuantity = 1000;
