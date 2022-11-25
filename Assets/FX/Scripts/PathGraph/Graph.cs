@@ -71,7 +71,6 @@ public class Graph
         });
     }
 
-    //TODO check masks
     public void AllowHexagon(FloorHexagon hex)
     {
         GetHexagonEdges(hex).ForEach(edge => { edge.accessMask = 3; edge.edgeWeight = edge.edgeWeightBase; });
@@ -92,7 +91,7 @@ public class Graph
             .Where(edge => Ids.Contains(edge.from.id) && Ids.Contains(edge.to.id)).ToList();
     }
 
-    public Vertex NearestVertex(Vector3 position)
+    public Vertex GetVertex(Vector3 position)
     {
         if (pathVerticesMap.ContainsKey(position))
         {
@@ -105,9 +104,20 @@ public class Graph
             else return acc;
         });
     }
-    public Vertex NearestNeighbour(Vertex from, Vertex to, int accessMask)
+    public Vertex NearestCentralVertex(Vertex from, Vertex to, int accessMask)
     {
         var toNeighbours = to.neighbours.Where(vertex => vertex.edges.Any(edge => edge.HasAccess(accessMask))).ToList();
+        if (toNeighbours.Count == 0) return null;
+        return toNeighbours.Aggregate(toNeighbours[0], (acc, vertex) =>
+        {
+            if (Distance.Manhattan(vertex.position, from.position) <
+            Distance.Manhattan(acc.position, from.position)) return vertex;
+            else return acc;
+        });
+    }
+    public Vertex NearestVertex(Vertex from, Vertex to, int accessMask)
+    {
+        var toNeighbours = to.edges.Select(e => e.to).Where(vertex => vertex.edges.Any(edge => edge.HasAccess(accessMask))).ToList();
         if (toNeighbours.Count == 0) return null;
         return toNeighbours.Aggregate(toNeighbours[0], (acc, vertex) =>
         {
@@ -127,7 +137,7 @@ public class Graph
         var center = hex.position;
         float r = (float)Math.Sqrt(3) * R / 2;
 
-        var centerPathPoint = AddVertex(new Vertex($"{id}", center, true, this));
+        var centerPathPoint = AddVertex(new Vertex($"{id}", center, true, this, hex));
         hex.vertex = centerPathPoint;
         List<Vertex> pathPoints = new List<Vertex>();
         for (int n = 0; n < 6; n++)

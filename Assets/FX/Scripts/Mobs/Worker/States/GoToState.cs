@@ -39,7 +39,7 @@ namespace WorkerNamespace
         {
             if (worker.HasPath)
             {
-                if (!worker.currentPathEdge.HasAccess(Worker.ACCESS_MASK))
+                if (!worker.currentPathEdge.HasAccess(worker.accessMask))
                 {
                     worker.Rerouting();
                 }

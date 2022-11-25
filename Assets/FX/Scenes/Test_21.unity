@@ -147,7 +147,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 123697154}
-  - component: {fileID: 123697153}
+  - component: {fileID: 123697155}
   m_Layer: 0
   m_Name: Settings
   m_TagString: Untagged
@@ -155,19 +155,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &123697153
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 123697152}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e30d3a423535814799346ef7c566741, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameSettings: {fileID: 11400000, guid: e01c0b5e440a74c43a6284f1128aac73, type: 2}
 --- !u!4 &123697154
 Transform:
   m_ObjectHideFlags: 0
@@ -183,6 +170,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &123697155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 123697152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d00c160aaa991274b9c556c17e19acaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameSettings: {fileID: 11400000, guid: e01c0b5e440a74c43a6284f1128aac73, type: 2}
+  workerSettings: {fileID: 11400000, guid: bcafd542741c60646bff1c7fb12d48fa, type: 2}
+  soldierSettings: {fileID: 11400000, guid: 80d94af6db8c7ae43a84568a16c9cfc8, type: 2}
+  scorpionSettings: {fileID: 11400000, guid: 86aa08d44249ede4b991b571cac631aa, type: 2}
 --- !u!1 &348439227
 GameObject:
   m_ObjectHideFlags: 0

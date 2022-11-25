@@ -20,7 +20,7 @@ namespace EnemyNamespace
         {
             enemy.SetRunAnimation();
             enemy.Animation();
-            enemy.accessMask = Settings.Instance.gameSettings.ACCESS_MASK_ALL;
+            enemy.accessMask = Settings.Instance.gameSettings.ACCESS_MASK_FLOOR_SOIL;
 
         }
         override public void OnStateExit()

@@ -19,7 +19,7 @@ namespace WorkerNamespace
             if (IsDone)
             {
                 job.SwapDestination();
-                worker.SetPath(worker.pathfinder.FindPath(worker.position, job.destination, Worker.ACCESS_MASK, true));
+                worker.SetPath(worker.pathfinder.FindPath(worker.position, job.destination, worker.accessMask, SearchType.NEAREST_CENTRAL_VERTEX));
                 worker.SetRunFoodAnimation();
                 worker.SetState(new GoToState(worker));
             }
@@ -39,7 +39,7 @@ namespace WorkerNamespace
         {
             if (worker.carryingWeight != 0)
             {
-                worker.SetPath(worker.pathfinder.FindPath(worker.position, job.storageHexagon.position, Worker.ACCESS_MASK, true));
+                worker.SetPath(worker.pathfinder.FindPath(worker.position, job.storageHexagon.position, worker.accessMask, SearchType.NEAREST_CENTRAL_VERTEX));
                 worker.SetRunAnimation();
                 worker.SetState(new GoToState(worker));
             }

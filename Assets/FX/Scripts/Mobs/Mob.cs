@@ -16,8 +16,8 @@ public interface Mob
     public bool HasPath { get; }
     public Pathfinder pathfinder { get; set; }
     public FloorHexagon currentHex { get; set; }
-    public float hp { get; set; }
     public Action Kill { get; set; }
+    public Health health { get; set; }
     public int accessMask { get; set; }
     public void SetState(State state);
     public void SetPath(Path path);

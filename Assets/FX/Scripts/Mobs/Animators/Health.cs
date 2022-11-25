@@ -14,8 +14,8 @@ public class Health : MonoBehaviour
     public MeshRenderer progressbar;
     public GameObject shadow;
 
-    public float MAX_HEALTH;
-    public float health;
+    public float MAX_HP;
+    public float hp;
     public float healTime;
     private float hitTime = 1000f;
     private bool isDead;
@@ -25,7 +25,7 @@ public class Health : MonoBehaviour
     {
         bodyProps = new MaterialPropertyBlock();
         progressbarProps = new MaterialPropertyBlock();
-        health = MAX_HEALTH;
+        hp = MAX_HP;
     }
 
     // Update is called once per frame
@@ -44,20 +44,20 @@ public class Health : MonoBehaviour
 
         }
 
-        if (health < MAX_HEALTH)
+        if (hp < MAX_HP)
         {
-            progressbar.transform.localScale = new Vector3(MAX_HEALTH / 100f, 1f, 1f);
+            progressbar.transform.localScale = new Vector3(MAX_HP / 100f, 1f, 1f);
 
             if (hitTime > 2f)//����������� ���� ��� ������� �� ���� �����
             {
-                health += Time.deltaTime * MAX_HEALTH / healTime;
+                hp += Time.deltaTime * MAX_HP / healTime;
             }
         }
-        progressbar.enabled = !isDead && health < MAX_HEALTH;//��� ����������� ���������� �����������
+        progressbar.enabled = !isDead && hp < MAX_HP;//��� ����������� ���������� �����������
 
 
 
-        progressbarProps.SetFloat("_Health", ExtensionMethods.RemapClamp(health / MAX_HEALTH, 0f, 1f, 0.1f, 1f));
+        progressbarProps.SetFloat("_Health", ExtensionMethods.RemapClamp(hp / MAX_HP, 0f, 1f, 0.1f, 1f));
         progressbar.SetPropertyBlock(progressbarProps);
     }
 
@@ -65,13 +65,13 @@ public class Health : MonoBehaviour
     {
         mr.enabled = true;
         isDead = false;
-        health = MAX_HEALTH;
+        hp = MAX_HP;
         mr.transform.localScale = Vector3.one;
     }
     public void Hit(int damage)
     {
-        health -= damage;
-        if (health > 0)//���� ����
+        hp -= damage;
+        if (hp > 0)//���� ����
         {
 
             HealthPopUp healthPopUp = Instantiate(popUp_prefad, transform.position, transform.rotation, transform);//��������� ����� � ��������

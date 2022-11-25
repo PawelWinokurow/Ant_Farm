@@ -10,10 +10,8 @@ namespace SoldierNamespace
     {
         public string id { get; set; }
         public MobType type { get; set; }
-        public static int ATTACK_STRENGTH = 5;
-        public static int ACCESS_MASK = 1;
         public SoldierAnimator animator { get; set; }
-        public Health healthAnimator { get; set; }
+        public Health health { get; set; }
         public Action Animation { get; set; }
         public Vector3 position { get => transform.position; }
         public Path path { get; set; }
@@ -27,20 +25,22 @@ namespace SoldierNamespace
         private float lerpDuration;
         private float t = 0f;
         public Edge currentPathEdge;
-        public float hp { get; set; }
         public Store store;
         public int accessMask { get; set; }
+        private GameSettings gameSettings;
+        private SoldierSettings soldierSettings;
 
         void Start()
         {
+            gameSettings = Settings.Instance.gameSettings;
+            soldierSettings = Settings.Instance.soldierSettings;
             Kill = () => SetState(new DeadState(this));
             animator = GetComponent<SoldierAnimator>();
             animator.soldier = this;
             type = MobType.SOLDIER;
-            hp = 150f;
-            accessMask = Settings.Instance.gameSettings.ACCESS_MASK_FLOOR;
-            healthAnimator = GetComponent<Health>();
-            healthAnimator.MAX_HEALTH = hp;
+            accessMask = gameSettings.ACCESS_MASK_FLOOR;
+            health = GetComponent<Health>();
+            health.MAX_HP = soldierSettings.HP;
             SetState(new PatrolState(this));
         }
 
@@ -67,8 +67,8 @@ namespace SoldierNamespace
 
         public void Attack()
         {
-            target.mob.Hit(Soldier.ATTACK_STRENGTH);
-            if (target.mob.hp <= 0)
+            target.mob.Hit(soldierSettings.ATTACK_STRENGTH);
+            if (target.mob.health.hp <= 0)
             {
                 target.mob.Kill();
                 CancelJob();
@@ -83,12 +83,12 @@ namespace SoldierNamespace
 
         public void SetRandomWalk()
         {
-            SetPath(pathfinder.RandomWalk(position, 5, Soldier.ACCESS_MASK));
+            SetPath(pathfinder.RandomWalk(position, 5, accessMask));
         }
 
         public void ExpandRandomWalk()
         {
-            var newRandomWalk = pathfinder.RandomWalk(path.wayPoints[path.wayPoints.Count - 1].to.position, 100, Soldier.ACCESS_MASK);
+            var newRandomWalk = pathfinder.RandomWalk(path.wayPoints[path.wayPoints.Count - 1].to.position, 100, accessMask);
             path.length += newRandomWalk.length;
             path.wayPoints.AddRange(newRandomWalk.wayPoints);
         }
@@ -132,7 +132,7 @@ namespace SoldierNamespace
             target.hex = target.mob.currentHex;
             if (currentPathEdge != null)
             {
-                var pathNew = pathfinder.FindPath(currentPathEdge.to.position, target.mob.currentHex.position, Soldier.ACCESS_MASK, true);
+                var pathNew = pathfinder.FindPath(currentPathEdge.to.position, target.mob.position, accessMask, SearchType.NEAREST_VERTEX);
                 if (pathNew != null)
                 {
                     path = pathNew;
@@ -140,7 +140,7 @@ namespace SoldierNamespace
             }
             else
             {
-                SetPath(pathfinder.FindPath(position, target.mob.currentHex.position, Soldier.ACCESS_MASK, true));
+                SetPath(pathfinder.FindPath(position, target.mob.position, accessMask, SearchType.NEAREST_VERTEX));
             }
         }
 
@@ -171,8 +171,7 @@ namespace SoldierNamespace
             {
                 var targetMob = notDeadMobs[queryResults[i]];
 
-                var path = pathfinder.FindPath(position, targetMob.position, Soldier.ACCESS_MASK, true);
-                Debug.Log(path);
+                var path = pathfinder.FindPath(position, targetMob.position, accessMask, SearchType.NEAREST_VERTEX);
                 if (path != null)
                 {
                     var target = new SoldierTarget($"{id}_{targetMob.id}", this, targetMob);
@@ -200,8 +199,7 @@ namespace SoldierNamespace
 
         public void Hit(int damage)
         {
-            hp -= damage;
-            healthAnimator.Hit(damage);
+            health.Hit(damage);
         }
 
         void DrawDebugPath()

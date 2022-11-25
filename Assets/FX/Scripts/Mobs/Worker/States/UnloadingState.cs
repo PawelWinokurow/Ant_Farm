@@ -19,7 +19,7 @@ namespace WorkerNamespace
             worker.animator.Idle();
             if (IsDone)
             {
-                worker.SetPath(worker.pathfinder.FindPath(worker.position, job.destination, Worker.ACCESS_MASK, true));
+                worker.SetPath(worker.pathfinder.FindPath(worker.position, job.destination, worker.accessMask, SearchType.NEAREST_CENTRAL_VERTEX));
                 worker.SetRunAnimation();
                 worker.SetState(new GoToState(worker));
             }
@@ -32,7 +32,7 @@ namespace WorkerNamespace
         public void Done()
         {
 
-            if (job.collectingHexagon.floorHexagon.type == HEX_TYPE.FOOD)
+            if (job.collectingHexagon.floorHexagon.type == HexType.FOOD)
             {
                 job.SwapDestination();
             }
