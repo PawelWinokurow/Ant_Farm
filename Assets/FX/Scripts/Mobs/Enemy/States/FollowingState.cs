@@ -33,6 +33,11 @@ namespace EnemyNamespace
 
         public override void Tick()
         {
+            var target = enemy.SearchTarget();
+            if (target != null && target.mob != enemy.target.mob)
+            {
+                enemy.SetTarget(target);
+            }
             if (enemy.target.mob.currentState.type == STATE.DEAD)
             {
                 enemy.SetState(new PatrolState(enemy));

@@ -194,11 +194,11 @@ public class Surface : MonoBehaviour
     {
         baseHex.vertex.neighbours.ForEach(vertex =>
         {
+            PositionToHex(vertex.position).RemoveChildren();
             vertex.neighbours.ForEach(vertex =>
             {
-                var hex = vertex.floorHexagon;
+                var hex = PositionToHex(vertex.position);
                 hex.RemoveChildren();
-                hex.type = HexType.BASE;
                 pathGraph.SetAccesabillity(hex, Settings.Instance.gameSettings.ACCESS_MASK_BASE);
             });
         });
@@ -235,6 +235,7 @@ public class Surface : MonoBehaviour
             CollectingHexagon.CreateHexagon(hex, carryingPrefab);
         };
     }
+
     public void RemoveIcon(FloorHexagon hex)
     {
         hex.RemoveChildren();
