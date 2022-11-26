@@ -153,6 +153,7 @@ namespace EnemyNamespace
                 digFxOld.StopFx();
                 Destroy(digFxOld);
                 currentHex.RemoveChildren();
+                currentHex.type = HexType.EMPTY;
             }
         }
 
@@ -220,7 +221,7 @@ namespace EnemyNamespace
                 {
                     continue;
                 }
-                var path = pathfinder.FindPath(position, targetMob.currentHex.position, Settings.Instance.gameSettings.ACCESS_MASK_FLOOR_SOIL, SearchType.NEAREST_CENTRAL_VERTEX);
+                var path = pathfinder.FindPath(position, targetMob.currentHex.position, gameSettings.ACCESS_MASK_FLOOR + gameSettings.ACCESS_MASK_SOIL, SearchType.NEAREST_CENTRAL_VERTEX);
                 if (path != null)
                 {
                     var target = new EnemyTarget($"{id}_{targetMob.id}", this, targetMob);

@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace EnemyNamespace
 {
 
@@ -20,7 +18,7 @@ namespace EnemyNamespace
         {
             enemy.SetRunAnimation();
             enemy.Animation();
-            enemy.accessMask = Settings.Instance.gameSettings.ACCESS_MASK_FLOOR_SOIL;
+            enemy.accessMask = Settings.Instance.gameSettings.ACCESS_MASK_FLOOR + Settings.Instance.gameSettings.ACCESS_MASK_FLOOR;
 
         }
         override public void OnStateExit()

@@ -78,7 +78,7 @@ public class SurfaceOperations : MonoBehaviour
             if (scaledBlock.work <= 0)
             {
                 surface.AddGround(floorHex);
-                surface.pathGraph.AllowHexagon(floorHex);
+                surface.pathGraph.SetAccesabillity(floorHex, Settings.Instance.gameSettings.ACCESS_MASK_FLOOR);
                 worker.job.Cancel();
                 oldHexagons.Remove(floorHex.id);
                 yield break;
@@ -107,7 +107,7 @@ public class SurfaceOperations : MonoBehaviour
             }
             yield return new WaitForSeconds(0.1f);
         }
-        surface.pathGraph.AllowHexagon(floorHex);
+        surface.pathGraph.SetAccesabillity(floorHex, Settings.Instance.gameSettings.ACCESS_MASK_FLOOR);
         worker.job.Cancel();
     }
 

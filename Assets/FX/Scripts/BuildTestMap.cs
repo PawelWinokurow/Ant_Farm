@@ -25,15 +25,17 @@ public class BuildTestMap : MonoBehaviour
             if (probability <= wallProbability)
             {
                 surface.AddBlock(surface.hexagons[i]);
-                surface.pathGraph.ProhibitHexagon(surface.hexagons[i]);
+                surface.pathGraph.SetAccesabillity(surface.hexagons[i], Settings.Instance.gameSettings.ACCESS_MASK_SOIL);
             }
             else if (probability <= wallProbability + foodProbability)
             {
                 surface.AddFood(surface.hexagons[i]);
+                surface.pathGraph.SetAccesabillity(surface.hexagons[i], Settings.Instance.gameSettings.ACCESS_MASK_FLOOR);
             }
             else
             {
                 surface.AddGround(surface.hexagons[i]);
+                surface.pathGraph.SetAccesabillity(surface.hexagons[i], Settings.Instance.gameSettings.ACCESS_MASK_FLOOR);
             }
         }
         surface.AddBase();

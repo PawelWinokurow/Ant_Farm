@@ -38,7 +38,7 @@ namespace WorkerNamespace
             health = GetComponent<Health>();
             health.MAX_HP = workerSettings.HP;
             type = MobType.WORKER;
-            accessMask = gameSettings.ACCESS_MASK_FLOOR;
+            accessMask = gameSettings.ACCESS_MASK_FLOOR + gameSettings.ACCESS_MASK_BASE;
             SetState(new IdleState(this));
         }
 

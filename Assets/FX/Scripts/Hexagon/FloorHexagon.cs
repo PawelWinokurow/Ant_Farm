@@ -43,7 +43,7 @@ public class FloorHexagon : MonoBehaviour, Hexagon
         {
             GameObject.Destroy(this.transform.GetChild(i).gameObject);
         }
-        vertex.pathGraph.AllowHexagon(this);
+        vertex.pathGraph.SetAccesabillity(this, Settings.Instance.gameSettings.ACCESS_MASK_FLOOR);
     }
 
 }
