@@ -78,7 +78,7 @@ public class SurfaceOperations : MonoBehaviour
             if (scaledBlock.work <= 0)
             {
                 surface.AddGround(floorHex);
-                surface.pathGraph.AllowHexagon(wallHex.floorHexagon);
+                surface.pathGraph.SetAccesabillity(floorHex, Settings.Instance.gameSettings.ACCESS_MASK_FLOOR);
                 worker.job.Cancel();
                 oldHexagons.Remove(floorHex.id);
                 yield break;
@@ -91,8 +91,6 @@ public class SurfaceOperations : MonoBehaviour
     {
         var worker = workerJob.worker;
         var floorHex = workerJob.hex;
-        var wallHex = (WorkHexagon)(workerJob.hex.child);
-
         floorHex.RemoveChildren();
         var scaledBlock = surface.AddFillScaledBlock(floorHex);
         while (scaledBlock != null)
@@ -109,7 +107,7 @@ public class SurfaceOperations : MonoBehaviour
             }
             yield return new WaitForSeconds(0.1f);
         }
-        surface.pathGraph.AllowHexagon(floorHex);
+        surface.pathGraph.SetAccesabillity(floorHex, Settings.Instance.gameSettings.ACCESS_MASK_FLOOR);
         worker.job.Cancel();
     }
 

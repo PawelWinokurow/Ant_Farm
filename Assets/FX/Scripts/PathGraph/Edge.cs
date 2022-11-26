@@ -26,6 +26,6 @@ public class Edge
 
     public bool HasAccess(int accessMask)
     {
-        return (this.accessMask & accessMask) == accessMask;
+        return (this.accessMask & accessMask) == this.accessMask;
     }
 }

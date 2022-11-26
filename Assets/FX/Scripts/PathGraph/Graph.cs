@@ -9,11 +9,13 @@ public class Graph
     public Dictionary<Vector3, Vertex> pathVerticesMap;
     public List<Edge> adjacencyList { get; set; }
     public List<Vertex> pathVertices { get; set; }
+    private GameSettings gameSettings;
     public Graph()
     {
         adjacencyList = new List<Edge>();
         pathVertices = new List<Vertex>();
         pathVerticesMap = new Dictionary<Vector3, Vertex>();
+        gameSettings = Settings.Instance.gameSettings;
     }
 
     public void ResetPathWeights()
@@ -71,13 +73,9 @@ public class Graph
         });
     }
 
-    public void AllowHexagon(FloorHexagon hex)
+    public void SetAccesabillity(FloorHexagon hex, int accessMask)
     {
-        GetHexagonEdges(hex).ForEach(edge => { edge.accessMask = 3; edge.edgeWeight = edge.edgeWeightBase; });
-    }
-    public void ProhibitHexagon(FloorHexagon hex)
-    {
-        GetHexagonEdges(hex).ForEach(edge => { edge.accessMask = 2; edge.edgeWeight = edge.edgeWeightMod; });
+        GetHexagonEdges(hex).ForEach(edge => { edge.accessMask = accessMask; edge.edgeWeight = accessMask == gameSettings.ACCESS_MASK_SOIL ? edge.edgeWeightMod : edge.edgeWeightBase; });
     }
 
     private List<Edge> GetHexagonEdges(FloorHexagon hex)

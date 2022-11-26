@@ -73,9 +73,8 @@ public class Health : MonoBehaviour
         hp -= damage;
         if (hp > 0)//���� ����
         {
-
             HealthPopUp healthPopUp = Instantiate(popUp_prefad, transform.position, transform.rotation, transform);//��������� ����� � ��������
-            healthPopUp.Hit(damage);
+            healthPopUp.Hit((int)Mathf.Round(damage * Random.Range(0.5f, 1.0f)));
         }
         else
         {

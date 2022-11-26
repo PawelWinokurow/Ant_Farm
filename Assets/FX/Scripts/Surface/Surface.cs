@@ -133,13 +133,21 @@ public class Surface : MonoBehaviour
     {
         pathGraph.adjacencyList.ForEach(edge =>
         {
-            if (!edge.HasAccess(2))
+            if (edge.HasAccess(Settings.Instance.gameSettings.ACCESS_MASK_FLOOR))
+            {
+                Debug.DrawLine(edge.from.position, edge.to.position, Color.green);
+            }
+            else if (edge.HasAccess(Settings.Instance.gameSettings.ACCESS_MASK_SOIL))
             {
                 Debug.DrawLine(edge.from.position, edge.to.position, Color.red);
             }
-            else
+            else if (edge.HasAccess(Settings.Instance.gameSettings.ACCESS_MASK_BASE))
             {
-                Debug.DrawLine(edge.from.position, edge.to.position, Color.green);
+                Debug.DrawLine(edge.from.position, edge.to.position, Color.magenta);
+            }
+            else if (edge.HasAccess(Settings.Instance.gameSettings.ACCESS_MASK_PROHIBIT))
+            {
+                Debug.DrawLine(edge.from.position, edge.to.position, Color.black);
             }
         }
         );
@@ -194,17 +202,13 @@ public class Surface : MonoBehaviour
     {
         baseHex.vertex.neighbours.ForEach(vertex =>
         {
-            PositionToHex(vertex.position).RemoveChildren();
-            vertex.neighbours.ForEach(vertex =>
-            {
-                var hex = PositionToHex(vertex.position);
-                hex.RemoveChildren();
-                pathGraph.AllowHexagon(hex);
-            });
+            vertex.floorHexagon.RemoveChildren();
+            vertex.floorHexagon.type = HexType.BASE;
+            pathGraph.SetAccesabillity(vertex.floorHexagon, Settings.Instance.gameSettings.ACCESS_MASK_BASE);
         });
         baseHex.RemoveChildren();
         BaseHexagon.CreateHexagon(baseHex, basePrefab).type = HexType.BASE;
-        pathGraph.ProhibitHexagon(baseHex);
+        pathGraph.SetAccesabillity(baseHex, Settings.Instance.gameSettings.ACCESS_MASK_PROHIBIT);
     }
 
 
@@ -215,7 +219,7 @@ public class Surface : MonoBehaviour
             var clonedHex = Instantiate(hex).AssignProperties(hex);
             oldhexagons.Add(clonedHex.id, clonedHex);
             hex.RemoveChildren();
-            pathGraph.ProhibitHexagon(hex);
+            pathGraph.SetAccesabillity(hex, Settings.Instance.gameSettings.ACCESS_MASK_SOIL);
             WorkHexagon.CreateHexagon(hex, fillPrefab);
         }
         else if (hex.type == HexType.SOIL)
@@ -235,18 +239,19 @@ public class Surface : MonoBehaviour
             CollectingHexagon.CreateHexagon(hex, carryingPrefab);
         };
     }
+
     public void RemoveIcon(FloorHexagon hex)
     {
         hex.RemoveChildren();
         var oldIcon = oldhexagons[hex.id];
         if (oldIcon.type == HexType.EMPTY)
         {
-            pathGraph.AllowHexagon(hex);
+            pathGraph.SetAccesabillity(hex, Settings.Instance.gameSettings.ACCESS_MASK_FLOOR);
             hex.AssignProperties((FloorHexagon)oldIcon);
         }
         else if (oldIcon.type == HexType.SOIL)
         {
-            pathGraph.ProhibitHexagon(hex);
+            pathGraph.SetAccesabillity(hex, Settings.Instance.gameSettings.ACCESS_MASK_SOIL);
             WorkHexagon.CreateHexagon(hex, wallPrefab).AssignProperties((WorkHexagon)oldIcon);
         }
         else if (oldIcon.type == HexType.FOOD)

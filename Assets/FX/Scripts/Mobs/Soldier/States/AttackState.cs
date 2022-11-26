@@ -32,9 +32,13 @@ namespace SoldierNamespace
 
         public override void Tick()
         {
-            if (!soldier.IsTargetInNeighbourhood() || soldier.target.mob.currentState.type == STATE.DEAD)
+            if (!soldier.IsTargetInNeighbourhood())
             {
                 soldier.SetState(new FollowingState(soldier));
+            }
+            if (soldier.target.mob.currentState.type == STATE.DEAD)
+            {
+                soldier.SetState(new PatrolState(soldier));
             }
         }
     }
