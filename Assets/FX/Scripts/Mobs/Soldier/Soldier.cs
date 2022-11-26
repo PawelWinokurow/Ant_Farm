@@ -109,8 +109,13 @@ namespace SoldierNamespace
             }
             else
             {
-                currentPathEdge = null;
+                ResetCurrentPathEdge();
             }
+        }
+
+        public void ResetCurrentPathEdge()
+        {
+            currentPathEdge = null;
         }
 
         private void SetcurrentPathEdge()
@@ -132,7 +137,7 @@ namespace SoldierNamespace
             target.hex = target.mob.currentHex;
             if (currentPathEdge != null)
             {
-                var pathNew = pathfinder.FindPath(currentPathEdge.to.position, target.mob.position, accessMask, SearchType.NEAREST_VERTEX);
+                var pathNew = pathfinder.FindPath(currentPathEdge.to.position, target.mob.currentHex.position, accessMask, SearchType.NEAREST_VERTEX);
                 if (pathNew != null)
                 {
                     path = pathNew;
@@ -140,7 +145,7 @@ namespace SoldierNamespace
             }
             else
             {
-                SetPath(pathfinder.FindPath(position, target.mob.position, accessMask, SearchType.NEAREST_VERTEX));
+                SetPath(pathfinder.FindPath(position, target.mob.currentHex.position, accessMask, SearchType.NEAREST_VERTEX));
             }
         }
 
@@ -170,8 +175,11 @@ namespace SoldierNamespace
             for (int i = 0; i < queryResults.Count; i++)
             {
                 var targetMob = notDeadMobs[queryResults[i]];
-
-                var path = pathfinder.FindPath(position, targetMob.position, accessMask, SearchType.NEAREST_VERTEX);
+                if (targetMob.currentHex == null)
+                {
+                    continue;
+                }
+                var path = pathfinder.FindPath(position, targetMob.currentHex.position, accessMask, SearchType.NEAREST_VERTEX);
                 if (path != null)
                 {
                     var target = new SoldierTarget($"{id}_{targetMob.id}", this, targetMob);

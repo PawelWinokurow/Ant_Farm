@@ -69,7 +69,7 @@ public class WorkerJobScheduler : MonoBehaviour
             busyWorkers.Remove(worker);
             freeWorkers.Remove(worker);
             worker.CancelJob();
-            Destroy(worker);
+            // Destroy(worker);
         }
         worker.SetState(new DeadState(worker));
     }

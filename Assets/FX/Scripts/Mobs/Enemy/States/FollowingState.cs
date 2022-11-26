@@ -18,6 +18,7 @@ namespace EnemyNamespace
 
         override public void OnStateEnter()
         {
+            // enemy.ResetCurrentPathEdge();
             enemy.SetRunAnimation();
             enemy.Animation();
             enemy.accessMask = Settings.Instance.gameSettings.ACCESS_MASK_FLOOR + Settings.Instance.gameSettings.ACCESS_MASK_SOIL;

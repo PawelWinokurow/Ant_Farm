@@ -15,7 +15,7 @@ namespace EnemyNamespace
 
         override public void OnStateEnter()
         {
-            enemy.RemoveDigFX();
+            // enemy.RemoveDigFX();
             enemy.SetIdleFightAnimation();
             enemyTarget = enemy.target;
             enemy.Animation();

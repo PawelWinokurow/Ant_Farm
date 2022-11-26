@@ -17,6 +17,7 @@ namespace SoldierNamespace
 
         override public void OnStateEnter()
         {
+            // soldier.ResetCurrentPathEdge();
             soldier.SetRunAnimation();
             soldier.Animation();
         }
