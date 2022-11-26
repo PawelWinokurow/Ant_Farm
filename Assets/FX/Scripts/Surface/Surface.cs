@@ -133,13 +133,13 @@ public class Surface : MonoBehaviour
     {
         pathGraph.adjacencyList.ForEach(edge =>
         {
-            if (!edge.HasAccess(2))
-            {
-                Debug.DrawLine(edge.from.position, edge.to.position, Color.red);
-            }
-            else
+            if (edge.HasAccess(Settings.Instance.gameSettings.ACCESS_MASK_FLOOR))
             {
                 Debug.DrawLine(edge.from.position, edge.to.position, Color.green);
+            }
+            else if (edge.HasAccess(Settings.Instance.gameSettings.ACCESS_MASK_SOIL))
+            {
+                Debug.DrawLine(edge.from.position, edge.to.position, Color.red);
             }
         }
         );
