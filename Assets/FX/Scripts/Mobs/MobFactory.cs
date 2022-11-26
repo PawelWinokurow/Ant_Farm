@@ -8,12 +8,18 @@ public class MobFactory : MonoBehaviour
 {
     private int id = 0;
     public WorkerJobScheduler workerJobScheduler;
+    private Pathfinder pathfinder;
     public Surface surface;
     public SurfaceOperations surfaceOperations;
     public Worker workerPrefab;
     public Enemy enemyPrefab;
     public Soldier soldierPrefab;
     public Store store;
+
+    void Start()
+    {
+        pathfinder = workerJobScheduler.pathfinder;
+    }
     public void AddWorker()
     {
         for (int i = 0; i < 1; i++)
@@ -47,7 +53,7 @@ public class MobFactory : MonoBehaviour
         worker.id = id;
         workerJobScheduler.AddWorker(worker);
         store.AddMob(worker);
-        yield break;
+        yield return null;
     }
     IEnumerator SpawnEnemy(string id)
     {
@@ -57,10 +63,10 @@ public class MobFactory : MonoBehaviour
         surface.AddGround(spawnHex);
         Enemy enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
         enemy.id = id;
-        enemy.pathfinder = workerJobScheduler.pathfinder;
+        enemy.pathfinder = pathfinder;
         enemy.store = store;
         store.AddEnemy(enemy);
-        yield break;
+        yield return null;
     }
     IEnumerator SpawnSoldier(string id)
     {
@@ -68,9 +74,9 @@ public class MobFactory : MonoBehaviour
         var spawnPosition = baseNeighbours[UnityEngine.Random.Range(0, baseNeighbours.Count)].position;
         Soldier soldier = Instantiate(soldierPrefab, spawnPosition, Quaternion.identity);
         soldier.id = id;
-        soldier.pathfinder = workerJobScheduler.pathfinder;
+        soldier.pathfinder = pathfinder;
         soldier.store = store;
         store.AddMob(soldier);
-        yield break;
+        yield return null;
     }
 }
