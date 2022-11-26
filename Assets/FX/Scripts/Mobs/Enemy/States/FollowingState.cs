@@ -20,7 +20,7 @@ namespace EnemyNamespace
         {
             enemy.SetRunAnimation();
             enemy.Animation();
-            enemy.accessMask = Settings.Instance.gameSettings.ACCESS_MASK_FLOOR + Settings.Instance.gameSettings.ACCESS_MASK_FLOOR;
+            enemy.accessMask = Settings.Instance.gameSettings.ACCESS_MASK_FLOOR + Settings.Instance.gameSettings.ACCESS_MASK_SOIL;
 
         }
         override public void OnStateExit()
@@ -35,11 +35,11 @@ namespace EnemyNamespace
 
         public override void Tick()
         {
-            // var target = enemy.SearchTarget();
-            // if (target != null && target.mob != enemy.target.mob)
-            // {
-            //     enemy.SetTarget(target);
-            // }
+            var target = enemy.SearchTarget();
+            if (target != null && target.mob != enemy.target.mob)
+            {
+                enemy.SetTarget(target);
+            }
             if (enemy.target.mob.currentState.type == STATE.DEAD)
             {
                 enemy.SetState(new PatrolState(enemy));

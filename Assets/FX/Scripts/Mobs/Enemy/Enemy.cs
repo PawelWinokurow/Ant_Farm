@@ -167,7 +167,7 @@ namespace EnemyNamespace
             target.hex = target.mob.currentHex;
             if (currentPathEdge != null)
             {
-                var pathNew = pathfinder.FindPath(currentPathEdge.to.position, target.mob.currentHex.position, accessMask, SearchType.NEAREST_CENTRAL_VERTEX);
+                var pathNew = pathfinder.FindPath(currentPathEdge.to.position, target.mob.currentHex.position, accessMask, SearchType.NEAREST_VERTEX);
                 if (pathNew != null)
                 {
                     path = pathNew;
@@ -175,7 +175,7 @@ namespace EnemyNamespace
             }
             else
             {
-                SetPath(pathfinder.FindPath(position, target.mob.currentHex.position, accessMask, SearchType.NEAREST_CENTRAL_VERTEX));
+                SetPath(pathfinder.FindPath(position, target.mob.currentHex.position, accessMask, SearchType.NEAREST_VERTEX));
             }
         }
 
@@ -221,7 +221,7 @@ namespace EnemyNamespace
                 {
                     continue;
                 }
-                var path = pathfinder.FindPath(position, targetMob.currentHex.position, gameSettings.ACCESS_MASK_FLOOR + gameSettings.ACCESS_MASK_SOIL, SearchType.NEAREST_CENTRAL_VERTEX);
+                var path = pathfinder.FindPath(position, targetMob.currentHex.position, gameSettings.ACCESS_MASK_FLOOR + gameSettings.ACCESS_MASK_SOIL, SearchType.NEAREST_VERTEX);
                 if (path != null)
                 {
                     var target = new EnemyTarget($"{id}_{targetMob.id}", this, targetMob);

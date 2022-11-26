@@ -141,6 +141,14 @@ public class Surface : MonoBehaviour
             {
                 Debug.DrawLine(edge.from.position, edge.to.position, Color.red);
             }
+            else if (edge.HasAccess(Settings.Instance.gameSettings.ACCESS_MASK_BASE))
+            {
+                Debug.DrawLine(edge.from.position, edge.to.position, Color.magenta);
+            }
+            else if (edge.HasAccess(Settings.Instance.gameSettings.ACCESS_MASK_PROHIBIT))
+            {
+                Debug.DrawLine(edge.from.position, edge.to.position, Color.black);
+            }
         }
         );
     }
@@ -194,13 +202,9 @@ public class Surface : MonoBehaviour
     {
         baseHex.vertex.neighbours.ForEach(vertex =>
         {
-            PositionToHex(vertex.position).RemoveChildren();
-            vertex.neighbours.ForEach(vertex =>
-            {
-                var hex = PositionToHex(vertex.position);
-                hex.RemoveChildren();
-                pathGraph.SetAccesabillity(hex, Settings.Instance.gameSettings.ACCESS_MASK_BASE);
-            });
+            vertex.floorHexagon.RemoveChildren();
+            vertex.floorHexagon.type = HexType.BASE;
+            pathGraph.SetAccesabillity(vertex.floorHexagon, Settings.Instance.gameSettings.ACCESS_MASK_BASE);
         });
         baseHex.RemoveChildren();
         BaseHexagon.CreateHexagon(baseHex, basePrefab).type = HexType.BASE;
