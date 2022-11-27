@@ -12,12 +12,11 @@ public class ScrollRectSnap : MonoBehaviour, IDragHandler, IBeginDragHandler, IE
     public List<RectTransform> elements = new List<RectTransform>();
     private bool onSlider;
     private bool isDrag;
-    public RectTransform content;
-    private float step = 100;
-    Vector3 pos = Vector3.zero;
-    public float a;
+    private float a;
     private float touchStartX;
     private float aR;
+    public int n;
+
     private void Start()
     {
         for (int i = 0; i < elements.Count; i++)
@@ -77,6 +76,7 @@ public class ScrollRectSnap : MonoBehaviour, IDragHandler, IBeginDragHandler, IE
                     elements[i].anchoredPosition = new Vector2(x, elements[i].anchoredPosition.y);
 
             }
+
         }
     }
 
@@ -87,9 +87,15 @@ public class ScrollRectSnap : MonoBehaviour, IDragHandler, IBeginDragHandler, IE
        
         if (!isDrag)
         {
-            content.anchoredPosition = Vector2.Lerp(content.anchoredPosition, pos, Time.deltaTime * 20f);
+          float  distMin = Mathf.Abs(elements[0].anchoredPosition.x);
+            n = 0;
             for (int i = 0; i < elements.Count; i++)
             {
+                if(Mathf.Abs(elements[i].anchoredPosition.x)< distMin)
+                {
+                    distMin = Mathf.Abs(elements[i].anchoredPosition.x);
+                    n = i;
+                }
 
                 a = Mathf.Lerp(a, aR, Time.deltaTime * 10f);
                 float x = a + i * 100f;

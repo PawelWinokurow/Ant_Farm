@@ -86,7 +86,7 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _Heigth: 2
+    - _Heigth: 0.6
     - _Lerp2: 0.42
     - _Matcap_Intensity: 0
     - _Metallic: 0
