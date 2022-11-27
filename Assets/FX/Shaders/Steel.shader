@@ -95,9 +95,8 @@ Shader "Custom/Steel"
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 				UNITY_TRANSFER_INSTANCE_ID(v, o);
 
-				float3 ase_worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
 				float _Hight_Instance = UNITY_ACCESS_INSTANCED_PROP(_Hight_arr, _Hight);
-				float temp_output_62_0 = ( ase_worldPos.y - _Hight_Instance );
+				float temp_output_62_0 = ( v.vertex.xyz.y - _Hight_Instance );
 				float _Angl_Instance = UNITY_ACCESS_INSTANCED_PROP(_Angl_arr, _Angl);
 				float3 appendResult58 = (float3(( v.vertex.xyz.x * temp_output_62_0 * _Angl_Instance ) , v.vertex.xyz.y , ( v.vertex.xyz.z * temp_output_62_0 * _Angl_Instance )));
 				
@@ -147,11 +146,10 @@ Shader "Custom/Steel"
 }
 /*ASEBEGIN
 Version=18500
-248.6667;72.66667;718;861.6667;125.9968;374.6575;1.633185;True;False
-Node;AmplifyShaderEditor.WorldPosInputsNode;57;276.7438,318.0683;Inherit;False;0;4;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3
+1210;72.66667;1014;790.3333;147.7762;350.5843;1.3;True;False
 Node;AmplifyShaderEditor.RangedFloatNode;33;366.9589,583.7474;Inherit;False;InstancedProperty;_Hight;Hight;2;0;Create;True;0;0;False;0;False;0;1;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.TextureCoordinatesNode;1;-690.966,12.13908;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.PosVertexDataNode;59;418.9899,40.59725;Inherit;False;0;0;5;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.TextureCoordinatesNode;1;-690.966,12.13908;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SimpleSubtractOpNode;62;522.9865,358.4895;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode;63;610.2351,563.8796;Inherit;False;InstancedProperty;_Angl;Angl;3;0;Create;True;0;0;False;0;False;0;1;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.ColorNode;4;-527.373,-175.0058;Inherit;False;Property;_Color2;Color2;1;0;Create;True;0;0;False;0;False;0,0,0,1;0,0,0,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
@@ -159,10 +157,11 @@ Node;AmplifyShaderEditor.SimpleMultiplyOpNode;9;-363.5388,55.11951;Inherit;False
 Node;AmplifyShaderEditor.ColorNode;3;-524.7733,-350.5059;Inherit;False;Property;_Color1;Color1;0;0;Create;True;0;0;False;0;False;1,1,1,1;0,0,0,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;60;803.8012,73.69926;Inherit;False;3;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;61;801.6599,196.9952;Inherit;False;3;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.WorldPosInputsNode;57;276.7438,318.0683;Inherit;False;0;4;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3
 Node;AmplifyShaderEditor.LerpOp;5;-246.5732,-155.5059;Inherit;False;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
-Node;AmplifyShaderEditor.DynamicAppendNode;58;980.8679,99.3409;Inherit;False;FLOAT3;4;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT3;0
+Node;AmplifyShaderEditor.DynamicAppendNode;58;1000.368,90.24088;Inherit;False;FLOAT3;4;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;56;689.7725,-141.063;Float;False;True;-1;2;ASEMaterialInspector;100;1;Custom/Steel;0770190933193b94aaa3065e307002fa;True;Unlit;0;0;Unlit;2;True;0;1;False;-1;0;False;-1;0;1;False;-1;0;False;-1;True;0;False;-1;0;False;-1;False;False;False;False;False;False;True;0;False;-1;True;0;False;-1;True;True;True;True;True;0;False;-1;False;False;False;True;True;1;False;-1;255;False;-1;255;False;-1;6;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;True;1;False;-1;True;3;False;-1;True;True;0;False;-1;0;False;-1;True;1;RenderType=Opaque=RenderType;True;2;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=ForwardBase;False;0;;0;0;Standard;1;Vertex Position,InvertActionOnDeselection;1;0;1;True;False;;False;0
-WireConnection;62;0;57;2
+WireConnection;62;0;59;2
 WireConnection;62;1;33;0
 WireConnection;9;0;1;1
 WireConnection;9;1;1;2
@@ -181,4 +180,4 @@ WireConnection;58;2;61;0
 WireConnection;56;0;5;0
 WireConnection;56;1;58;0
 ASEEND*/
-//CHKSM=EA31139034EBE80327DA013E7DD6462B9783BF18
+//CHKSM=C97BD8F1CE66260063BFC819BF1E9223ADD2E763
