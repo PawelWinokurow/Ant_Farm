@@ -16,14 +16,20 @@ public class ScrollRectSnap : MonoBehaviour, IDragHandler, IBeginDragHandler, IE
     private float touchStartX;
     private float aR;
     public int n;
-
+    private float dist;
+    public RectTransform slider;
     private void Start()
     {
+
+        Debug.Log(elements[0].rect.height);
+        dist = elements[0].rect.height;
         for (int i = 0; i < elements.Count; i++)
         {
-            float x = (Mathf.Round((a + i * 100f) / 100f)) * 100f;
-            x = x % (elements.Count * 100);
-            x -= Mathf.Round(elements.Count / 2f) * 100;
+           elements[i].sizeDelta=new Vector2(dist, 0);
+
+            float x = (Mathf.Round((a + i * dist) / dist)) * dist;
+            x = x % (elements.Count * dist);
+           // x -= Mathf.Round(elements.Count / 2f) * dist;
             elements[i].anchoredPosition = new Vector2(x, elements[i].anchoredPosition.y);
         }
     }
@@ -58,21 +64,21 @@ public class ScrollRectSnap : MonoBehaviour, IDragHandler, IBeginDragHandler, IE
 
             if (a < 0)
             {
-                a += (elements.Count * 100);
+                a += (elements.Count * dist);
             }
 
-            aR = (Mathf.Round(a / 100f)) * 100f;
+            aR = (Mathf.Round(a / dist)) * dist;
             if (aR < 0)
             {
-                aR += (elements.Count * 100);
+                aR += (elements.Count * dist);
             }
 
             for (int i = 0; i < elements.Count; i++)
             {
               
-                    float x = a + i * 100f;
-                    x = x % (elements.Count * 100);
-                    x -= Mathf.Round(elements.Count / 2f) * 100;
+                    float x = a + i * dist;
+                    x = x % (elements.Count * dist);
+                    x -= Mathf.Round(elements.Count / 2f) * dist;
                     elements[i].anchoredPosition = new Vector2(x, elements[i].anchoredPosition.y);
 
             }
@@ -98,9 +104,9 @@ public class ScrollRectSnap : MonoBehaviour, IDragHandler, IBeginDragHandler, IE
                 }
 
                 a = Mathf.Lerp(a, aR, Time.deltaTime * 10f);
-                float x = a + i * 100f;
-                x = x % (elements.Count * 100);
-                x -= Mathf.Round(elements.Count / 2f) * 100;
+                float x = a + i * dist;
+                x = x % (elements.Count * dist);
+                x -= Mathf.Round(elements.Count / 2f) * dist;
                 elements[i].anchoredPosition = new Vector2(x, elements[i].anchoredPosition.y);
             }
         }

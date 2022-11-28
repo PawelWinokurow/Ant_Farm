@@ -42,8 +42,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 717c4f7b213bfa1449d97a2a9cd3e9f5, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 1.15}
+        m_Scale: {x: 0.27, y: 0.12}
+        m_Offset: {x: 0, y: 2.05}
     - _MainTexture:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -99,7 +99,7 @@ Material:
     - _Pow: 1
     - _Pow1: 2
     - _Pow2: 0.65
-    - _Power: 2.6
+    - _Power: 1.94
     - _Power1: 0
     - _ScaleUV: -0.04
     - _ScaleUV1: 1
@@ -113,5 +113,6 @@ Material:
     m_Colors:
     - _Color: {r: 0.5, g: 0.49695063, b: 0.49371067, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _LightDir: {r: 0, g: 0.24, b: -1, a: 0}
     - _ShadowColor: {r: 0.21568628, g: 0.03295701, b: 0, a: 1}
   m_BuildTextureStacks: []
