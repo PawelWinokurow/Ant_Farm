@@ -5,8 +5,11 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 
-//namespace AntFarm
-//{
+public enum SliderValues
+{
+    None, Worker, Soldier, Soil, Stone, Spikes
+}
+
 public class ScrollRectSnap : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public List<RectTransform> elements = new List<RectTransform>();
@@ -15,7 +18,8 @@ public class ScrollRectSnap : MonoBehaviour, IDragHandler, IBeginDragHandler, IE
     private float a;
     private float touchStartX;
     private float aR;
-    public int n;
+    public int n = 0;
+    public SliderValues choosenValue { get => (SliderValues)n; }
     private float dist;
     public RectTransform slider;
     private void Start()
@@ -24,11 +28,11 @@ public class ScrollRectSnap : MonoBehaviour, IDragHandler, IBeginDragHandler, IE
         dist = elements[0].rect.height;
         for (int i = 0; i < elements.Count; i++)
         {
-           elements[i].sizeDelta=new Vector2(dist, 0);
+            elements[i].sizeDelta = new Vector2(dist, 0);
 
             float x = (Mathf.Round((a + i * dist) / dist)) * dist;
             x = x % (elements.Count * dist);
-           // x -= Mathf.Round(elements.Count / 2f) * dist;
+            // x -= Mathf.Round(elements.Count / 2f) * dist;
             elements[i].anchoredPosition = new Vector2(x, elements[i].anchoredPosition.y);
         }
     }
@@ -74,11 +78,11 @@ public class ScrollRectSnap : MonoBehaviour, IDragHandler, IBeginDragHandler, IE
 
             for (int i = 0; i < elements.Count; i++)
             {
-              
-                    float x = a + i * dist;
-                    x = x % (elements.Count * dist);
-                    x -= Mathf.Round(elements.Count / 2f) * dist;
-                    elements[i].anchoredPosition = new Vector2(x, elements[i].anchoredPosition.y);
+
+                float x = a + i * dist;
+                x = x % (elements.Count * dist);
+                x -= Mathf.Round(elements.Count / 2f) * dist;
+                elements[i].anchoredPosition = new Vector2(x, elements[i].anchoredPosition.y);
 
             }
 
@@ -89,14 +93,14 @@ public class ScrollRectSnap : MonoBehaviour, IDragHandler, IBeginDragHandler, IE
     // Update is called once per frame
     void Update()
     {
-       
+
         if (!isDrag)
         {
-          float  distMin = Mathf.Abs(elements[0].anchoredPosition.x);
+            float distMin = Mathf.Abs(elements[0].anchoredPosition.x);
             n = 0;
             for (int i = 0; i < elements.Count; i++)
             {
-                if(Mathf.Abs(elements[i].anchoredPosition.x)< distMin)
+                if (Mathf.Abs(elements[i].anchoredPosition.x) < distMin)
                 {
                     distMin = Mathf.Abs(elements[i].anchoredPosition.x);
                     n = i;
@@ -112,4 +116,4 @@ public class ScrollRectSnap : MonoBehaviour, IDragHandler, IBeginDragHandler, IE
 
     }
 }
-//}
+

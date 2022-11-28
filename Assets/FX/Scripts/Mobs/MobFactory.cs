@@ -22,27 +22,15 @@ public class MobFactory : MonoBehaviour
     }
     public void AddWorker()
     {
-        for (int i = 0; i < 1; i++)
-        {
-            id++;
-            StartCoroutine(SpawnWorker($"worker_{id}"));
-        }
+        StartCoroutine(SpawnWorker($"worker_{id}"));
     }
     public void AddEnemy()
     {
-        for (int i = 0; i < 1; i++)
-        {
-            id++;
-            StartCoroutine(SpawnEnemy($"enemy_{id}"));
-        }
+        StartCoroutine(SpawnEnemy($"enemy_{id}"));
     }
     public void AddSoldier()
     {
-        for (int i = 0; i < 1; i++)
-        {
-            id++;
-            StartCoroutine(SpawnSoldier($"soldier_{id}"));
-        }
+        StartCoroutine(SpawnSoldier($"soldier_{id}"));
     }
 
     IEnumerator SpawnWorker(string id)

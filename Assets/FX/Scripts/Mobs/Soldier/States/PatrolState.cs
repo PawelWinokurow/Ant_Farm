@@ -34,7 +34,7 @@ namespace SoldierNamespace
 
         override public void OnStateEnter()
         {
-            soldier.movementSpeed = soldierSettings.FOLLOWING_MOVEMENT_SPEED;
+            soldier.movementSpeed = soldierSettings.PATROL_MOVEMENT_SPEED;
             soldier.RemovePath();
             soldier.SetRunAnimation();
             soldier.Animation();
