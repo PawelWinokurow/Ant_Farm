@@ -21,7 +21,6 @@ public class ScrollRectSnap : MonoBehaviour, IDragHandler, IBeginDragHandler, IE
     private void Start()
     {
 
-        Debug.Log(elements[0].rect.height);
         dist = elements[0].rect.height;
         for (int i = 0; i < elements.Count; i++)
         {
