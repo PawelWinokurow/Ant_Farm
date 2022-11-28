@@ -151,16 +151,15 @@ namespace EnemyNamespace
 
         public IEnumerator Dig(FloorHexagon hex)
         {
-
             movementSpeed = scorpionSettings.DIG_MOVEMENT_SPEED;
             if (digFX == null) digFX = Instantiate(DigFX, position, Quaternion.identity);
             digFX.transform.position = hex.position;
             digFX.StartFx(hex);
             yield return new WaitForSeconds(5f);
-            movementSpeed = scorpionSettings.FOLLOWING_MOVEMENT_SPEED;
             digFX.StopFx();
             hex.RemoveChildren();
             hex.type = HexType.EMPTY;
+            movementSpeed = scorpionSettings.FOLLOWING_MOVEMENT_SPEED;
         }
 
         public void RemoveDigFX()
