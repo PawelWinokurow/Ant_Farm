@@ -847,7 +847,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   zoomOutMin: 30
   zoomOutMax: 100
---- !u!1001 &5347493876036053183
+--- !u!1001 &3628777673697454066
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -858,6 +858,18 @@ PrefabInstance:
       propertyPath: GameManager
       value: 
       objectReference: {fileID: 1041044677}
+    - target: {fileID: 2525965729122885487, guid: 465f21d7f82950741b51465480634072, type: 3}
+      propertyPath: Click.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2071582712}
+    - target: {fileID: 2525965729450910096, guid: 465f21d7f82950741b51465480634072, type: 3}
+      propertyPath: Click.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2071582712}
+    - target: {fileID: 2525965730269420781, guid: 465f21d7f82950741b51465480634072, type: 3}
+      propertyPath: Click.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2071582712}
     - target: {fileID: 3980418969298929299, guid: 465f21d7f82950741b51465480634072, type: 3}
       propertyPath: Click.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -867,18 +879,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2071582712}
     - target: {fileID: 3980418970852312337, guid: 465f21d7f82950741b51465480634072, type: 3}
-      propertyPath: Click.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2071582712}
-    - target: {fileID: 6585414096045904800, guid: 465f21d7f82950741b51465480634072, type: 3}
-      propertyPath: Click.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2071582712}
-    - target: {fileID: 6585414096296160989, guid: 465f21d7f82950741b51465480634072, type: 3}
-      propertyPath: Click.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2071582712}
-    - target: {fileID: 6585414096907161634, guid: 465f21d7f82950741b51465480634072, type: 3}
       propertyPath: Click.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 2071582712}
