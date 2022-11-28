@@ -7,7 +7,7 @@ namespace WorkerNamespace
 
         private Worker worker;
         private WorkerJob job;
-        private int MOVEMENT_SPEED = 5;
+        private WorkerSettings workerSettings = Settings.Instance.workerSettings;
 
 
         public GoToState(Worker worker) : base(worker)
@@ -18,6 +18,7 @@ namespace WorkerNamespace
 
         override public void OnStateEnter()
         {
+            worker.movementSpeed = workerSettings.MOVEMENT_SPEED;
             job = worker.job;
             worker.Animation();
 
@@ -45,7 +46,7 @@ namespace WorkerNamespace
                 }
                 else
                 {
-                    worker.Move(MOVEMENT_SPEED);
+                    worker.Move();
                 }
             }
             else

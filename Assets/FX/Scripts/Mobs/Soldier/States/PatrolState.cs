@@ -6,7 +6,7 @@ namespace SoldierNamespace
     {
 
         private Soldier soldier;
-        private int MOVEMENT_SPEED = 5;
+        private SoldierSettings soldierSettings = Settings.Instance.soldierSettings;
 
         public PatrolState(Soldier soldier) : base(soldier)
         {
@@ -24,7 +24,7 @@ namespace SoldierNamespace
             }
             else if (soldier.HasPath)
             {
-                soldier.Move(MOVEMENT_SPEED);
+                soldier.Move();
                 if (soldier.path.wayPoints.Count == 1)
                 {
                     soldier.ExpandRandomWalk();
@@ -34,6 +34,7 @@ namespace SoldierNamespace
 
         override public void OnStateEnter()
         {
+            soldier.movementSpeed = soldierSettings.FOLLOWING_MOVEMENT_SPEED;
             soldier.RemovePath();
             soldier.SetRunAnimation();
             soldier.Animation();

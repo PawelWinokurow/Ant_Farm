@@ -6,7 +6,7 @@ namespace EnemyNamespace
     {
 
         private Enemy enemy;
-        private int MOVEMENT_SPEED = 5;
+        private ScorpionSettings scorpionSettings = Settings.Instance.scorpionSettings;
 
         public PatrolState(Enemy enemy) : base(enemy)
         {
@@ -24,7 +24,7 @@ namespace EnemyNamespace
             }
             else if (enemy.HasPath)
             {
-                enemy.Move(MOVEMENT_SPEED);
+                enemy.Move();
                 if (enemy.path.wayPoints.Count == 1)
                 {
                     enemy.ExpandRandomWalk();
@@ -34,6 +34,7 @@ namespace EnemyNamespace
 
         override public void OnStateEnter()
         {
+            enemy.movementSpeed = scorpionSettings.PATROL_MOVEMENT_SPEED;
             enemy.RemovePath();
             enemy.SetRunAnimation();
             enemy.Animation();

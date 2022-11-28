@@ -7,27 +7,26 @@ namespace EnemyNamespace
     {
 
         private Enemy enemy;
-        private int MOVEMENT_SPEED = 10;
-
+        private GameSettings gameSettings = Settings.Instance.gameSettings;
+        private ScorpionSettings scorpionSettings = Settings.Instance.scorpionSettings;
 
         public FollowingState(Enemy enemy) : base(enemy)
         {
-            this.type = STATE.GOTO;
+            type = STATE.GOTO;
             this.enemy = enemy;
         }
 
         override public void OnStateEnter()
         {
-            // enemy.ResetCurrentPathEdge();
             enemy.SetRunAnimation();
             enemy.Animation();
-            enemy.accessMask = Settings.Instance.gameSettings.ACCESS_MASK_FLOOR + Settings.Instance.gameSettings.ACCESS_MASK_SOIL;
-
+            enemy.accessMask = gameSettings.ACCESS_MASK_FLOOR + gameSettings.ACCESS_MASK_SOIL;
+            enemy.movementSpeed = scorpionSettings.FOLLOWING_MOVEMENT_SPEED;
         }
         override public void OnStateExit()
         {
             enemy.RemovePath();
-            enemy.accessMask = Settings.Instance.gameSettings.ACCESS_MASK_FLOOR;
+            enemy.accessMask = gameSettings.ACCESS_MASK_FLOOR;
         }
 
         override public void CancelJob()
@@ -45,7 +44,7 @@ namespace EnemyNamespace
             {
                 enemy.SetState(new PatrolState(enemy));
             }
-            else if (enemy.IsTargetInNeighbourhood())
+            else if (enemy.IsTargetInNeighbourhood() && enemy.currentHex.type != HexType.SOIL)
             {
                 enemy.SetState(new AttackState(enemy));
             }
@@ -53,9 +52,10 @@ namespace EnemyNamespace
             {
                 enemy.Rerouting();
             }
+
             else if (enemy.HasPath)
             {
-                enemy.Move(MOVEMENT_SPEED);
+                enemy.Move();
             }
         }
 
