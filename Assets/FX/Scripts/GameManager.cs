@@ -54,6 +54,7 @@ public class GameManager : MonoBehaviour
     {
         FloorHexagon hex = Surface.PositionToHex(pos);
 
+
         if (hex.type == HexType.FOOD)
         {
             var foodHex = (CollectingHexagon)(hex.child);

@@ -14,10 +14,13 @@ public class Controller : MonoBehaviour
     }
 
 
-    public void Tap(Vector3 pos)
+    private void Update()
     {
-        pos = Camera.main.ScreenToWorldPoint(pos);
-        GameManager.ProcessTap(pos);
+       if( Input.GetMouseButtonUp(0) && Input.mousePosition.y/Screen.height>0.09f)
+        {
+           Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            GameManager.ProcessTap(pos);
+        }
     }
 
 
