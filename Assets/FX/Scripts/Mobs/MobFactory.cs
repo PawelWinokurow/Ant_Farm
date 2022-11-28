@@ -20,23 +20,23 @@ public class MobFactory : MonoBehaviour
     {
         pathfinder = workerJobScheduler.pathfinder;
     }
-    public void AddWorker()
+    public void AddWorker(FloorHexagon hex)
     {
-        StartCoroutine(SpawnWorker($"worker_{id}"));
+        StartCoroutine(SpawnWorker($"worker_{id}", hex));
     }
     public void AddEnemy()
     {
         StartCoroutine(SpawnEnemy($"enemy_{id}"));
     }
-    public void AddSoldier()
+    public void AddSoldier(FloorHexagon hex)
     {
-        StartCoroutine(SpawnSoldier($"soldier_{id}"));
+        StartCoroutine(SpawnSoldier($"soldier_{id}", hex));
     }
 
-    IEnumerator SpawnWorker(string id)
+    IEnumerator SpawnWorker(string id, FloorHexagon hex)
     {
         var baseNeighbours = surface.baseHex.vertex.neighbours;
-        var spawnPosition = baseNeighbours[UnityEngine.Random.Range(0, baseNeighbours.Count)].position;
+        var spawnPosition = hex.position;
         Worker worker = Instantiate(workerPrefab, spawnPosition, Quaternion.identity);
         worker.id = id;
         workerJobScheduler.AddWorker(worker);
@@ -56,10 +56,10 @@ public class MobFactory : MonoBehaviour
         store.AddEnemy(enemy);
         yield return null;
     }
-    IEnumerator SpawnSoldier(string id)
+    IEnumerator SpawnSoldier(string id, FloorHexagon hex)
     {
         var baseNeighbours = surface.baseHex.vertex.neighbours;
-        var spawnPosition = baseNeighbours[UnityEngine.Random.Range(0, baseNeighbours.Count)].position;
+        var spawnPosition = hex.position;
         Soldier soldier = Instantiate(soldierPrefab, spawnPosition, Quaternion.identity);
         soldier.id = id;
         soldier.pathfinder = pathfinder;

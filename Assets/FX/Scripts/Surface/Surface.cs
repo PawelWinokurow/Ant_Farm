@@ -212,32 +212,48 @@ public class Surface : MonoBehaviour
     }
 
 
-    public void AddIcon(FloorHexagon hex)
+    public void AddIcon(FloorHexagon hex, SliderValue value)
     {
+        //TODO
         if (hex.type == HexType.EMPTY)
         {
-            var clonedHex = Instantiate(hex).AssignProperties(hex);
-            oldhexagons.Add(clonedHex.id, clonedHex);
-            hex.RemoveChildren();
-            pathGraph.SetAccesabillity(hex, Settings.Instance.gameSettings.ACCESS_MASK_SOIL);
-            WorkHexagon.CreateHexagon(hex, fillPrefab);
+            if (value == SliderValue.Soil)
+            {
+                var clonedHex = Instantiate(hex).AssignProperties(hex);
+                oldhexagons.Add(clonedHex.id, clonedHex);
+                hex.RemoveChildren();
+                pathGraph.SetAccesabillity(hex, Settings.Instance.gameSettings.ACCESS_MASK_SOIL);
+                WorkHexagon.CreateHexagon(hex, fillPrefab);
+            }
+            else if (value == SliderValue.Stone)
+            {
+                //TODO
+            }
+            else if (value == SliderValue.Spikes)
+            {
+                //TODO
+            }
+
         }
         else if (hex.type == HexType.SOIL)
         {
-            WorkHexagon clonedHex = WorkHexagon.CreateHexagon(hex, wallPrefab);
-            clonedHex.AssignProperties((WorkHexagon)hex.child);
-            oldhexagons.Add(clonedHex.id, clonedHex);
-            hex.RemoveChildren();
-            WorkHexagon.CreateHexagon(hex, digPrefab);
+            if (value == SliderValue.None)
+            {
+                WorkHexagon clonedHex = WorkHexagon.CreateHexagon(hex, wallPrefab);
+                clonedHex.AssignProperties((WorkHexagon)hex.child);
+                oldhexagons.Add(clonedHex.id, clonedHex);
+                hex.RemoveChildren();
+                WorkHexagon.CreateHexagon(hex, digPrefab);
+            }
         }
-        else if (hex.type == HexType.FOOD)
-        {
-            CollectingHexagon clonedHex = CollectingHexagon.CreateHexagon(hex, foodPrefab);
-            clonedHex.AssignProperties((CollectingHexagon)hex.child);
-            oldhexagons.Add(clonedHex.id, clonedHex);
-            hex.RemoveChildren();
-            CollectingHexagon.CreateHexagon(hex, carryingPrefab);
-        };
+        // else if (hex.type == HexType.FOOD)
+        // {
+        //     CollectingHexagon clonedHex = CollectingHexagon.CreateHexagon(hex, foodPrefab);
+        //     clonedHex.AssignProperties((CollectingHexagon)hex.child);
+        //     oldhexagons.Add(clonedHex.id, clonedHex);
+        //     hex.RemoveChildren();
+        //     CollectingHexagon.CreateHexagon(hex, carryingPrefab);
+        // };
     }
 
     public void RemoveIcon(FloorHexagon hex)

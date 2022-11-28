@@ -56,72 +56,94 @@ public class GameManager : MonoBehaviour
     {
         FloorHexagon hex = surface.PositionToHex(pos);
 
-
-        if (slider.choosenValue == SliderValues.None)
+        if (surfaceOperations.IsInOldHexagons(hex) && !workerJobScheduler.IsJobAssigned(hex.id))
         {
-
+            surface.RemoveIcon(hex);
+            workerJobScheduler.CancelJob(hex.id);
         }
-        else if (slider.choosenValue == SliderValues.Soil)
+        else
         {
-        }
-        else if (slider.choosenValue == SliderValues.Stone)
-        {
+            if (hex.type == HexType.EMPTY)
+            {
+                if (slider.choosenValue == SliderValue.Worker)
+                {
+                    mobFactory.AddWorker(hex);
+                }
+                else if (slider.choosenValue == SliderValue.Soldier)
+                {
+                    mobFactory.AddSoldier(hex);
+                }
+                else if (slider.choosenValue == SliderValue.Soil
+                || slider.choosenValue == SliderValue.Stone
+                || slider.choosenValue == SliderValue.Spikes)
+                {
+                    surface.AddIcon(hex, slider.choosenValue);
+                    if (slider.choosenValue == SliderValue.Soil)
+                    {
+                        workerJobScheduler.AssignJob(new BuildJob(hex, hex.transform.position, JobType.FILL));
+                    }
+                    else if (slider.choosenValue == SliderValue.Stone)
+                    {
+                        //TODO
+                    }
+                    else if (slider.choosenValue == SliderValue.Spikes)
+                    {
+                        //TODO
+                    }
 
+                }
+            }
+            else if (hex.type == HexType.SOIL && slider.choosenValue == SliderValue.None)
+            {
+                surface.AddIcon(hex, slider.choosenValue);
+                //TODO Stone spikes
+                workerJobScheduler.AssignJob(new BuildJob(hex, hex.transform.position, JobType.DIG));
+            }
         }
-        else if (slider.choosenValue == SliderValues.Spikes)
-        {
-        }
-        else if (slider.choosenValue == SliderValues.Worker)
-        {
-            mobFactory.AddWorker();
-        }
-        else if (slider.choosenValue == SliderValues.Soldier)
-        {
-            mobFactory.AddSoldier();
-        }
-
-
-
-        // if (hex.type == HexType.FOOD)
-        // {
-        //     var foodHex = (CollectingHexagon)(hex.child);
-        //     var asssignedcarriersNum = foodHex.carriers.Count;
-        //     if (asssignedcarriersNum < 5)
-        //     {
-        //         workerJobScheduler.AssignJob(new CarrierJob($"{hex.id}_{asssignedcarriersNum + 1}", hex, (BaseHexagon)surface.baseHex.child, foodHex));
-        //         foodHex.food.antCount++;
-        //     }
-        //     else
-        //     {
-        //         foodHex.ResetWorkers();
-        //         foodHex.food.antCount = 0;
-        //     }
-        // }
-        // else if (hex.type == HexType.EMPTY || hex.type == HexType.SOIL)
-        // {
-        //     if (AreNoMobsInHex(hex))
-        //     {
-        //         if (surfaceOperations.IsInOldHexagons(hex) && !workerJobScheduler.IsJobAssigned(hex.id))
-        //         {
-        //             surface.RemoveIcon(hex);
-        //             workerJobScheduler.CancelJob(hex.id);
-        //         }
-        //         else
-        //         {
-        //             surface.AddIcon(hex);
-        //             if (hex.type == HexType.EMPTY)
-        //             {
-        //                 workerJobScheduler.AssignJob(new BuildJob(hex, hex.transform.position, JobType.FILL));
-        //             }
-        //             else if (hex.type == HexType.SOIL)
-        //             {
-        //                 workerJobScheduler.AssignJob(new BuildJob(hex, hex.transform.position, JobType.DIG));
-        //             }
-
-        //         }
-        //     }
-        // }
     }
+
+
+
+    // if (hex.type == HexType.FOOD)
+    // {
+    //     var foodHex = (CollectingHexagon)(hex.child);
+    //     var asssignedcarriersNum = foodHex.carriers.Count;
+    //     if (asssignedcarriersNum < 5)
+    //     {
+    //         workerJobScheduler.AssignJob(new CarrierJob($"{hex.id}_{asssignedcarriersNum + 1}", hex, (BaseHexagon)surface.baseHex.child, foodHex));
+    //         foodHex.food.antCount++;
+    //     }
+    //     else
+    //     {
+    //         foodHex.ResetWorkers();
+    //         foodHex.food.antCount = 0;
+    //     }
+    // }
+    // else if (hex.type == HexType.EMPTY || hex.type == HexType.SOIL)
+    // {
+    //     if (AreNoMobsInHex(hex))
+    //     {
+    //         if (surfaceOperations.IsInOldHexagons(hex) && !workerJobScheduler.IsJobAssigned(hex.id))
+    //         {
+    //             surface.RemoveIcon(hex);
+    //             workerJobScheduler.CancelJob(hex.id);
+    //         }
+    //         else
+    //         {
+    //             surface.AddIcon(hex);
+    //             if (hex.type == HexType.EMPTY)
+    //             {
+    //                 workerJobScheduler.AssignJob(new BuildJob(hex, hex.transform.position, JobType.FILL));
+    //             }
+    //             else if (hex.type == HexType.SOIL)
+    //             {
+    //                 workerJobScheduler.AssignJob(new BuildJob(hex, hex.transform.position, JobType.DIG));
+    //             }
+
+    //         }
+    //     }
+    // }
+
 
 
 

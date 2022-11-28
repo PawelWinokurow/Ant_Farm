@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 
-public enum SliderValues
+public enum SliderValue
 {
     None, Worker, Soldier, Soil, Stone, Spikes
 }
@@ -19,7 +19,7 @@ public class ScrollRectSnap : MonoBehaviour, IDragHandler, IBeginDragHandler, IE
     private float touchStartX;
     private float aR;
     public int n = 0;
-    public SliderValues choosenValue { get => (SliderValues)n; }
+    public SliderValue choosenValue { get => (SliderValue)n; }
     private float dist;
     public RectTransform slider;
     private void Start()
