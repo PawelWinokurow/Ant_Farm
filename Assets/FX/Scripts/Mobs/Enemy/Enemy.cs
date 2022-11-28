@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DataStructures.ViliWonka.KDTree;
@@ -138,16 +139,24 @@ namespace EnemyNamespace
             {
                 if (currentHexNew.type == HexType.SOIL)
                 {
-                    digFX = Instantiate(DigFX, position, Quaternion.identity, currentHexNew.transform);
-                    digFX.StartFx(currentHexNew);
-                }
-                if (currentHex != null && currentHex.GetComponentInChildren<Dig_FX>() != null)
-                {
-                    RemoveDigFX();
+                    StartCoroutine(Dig(currentHexNew));
                 }
             }
             currentHex = currentHexNew;
             lerpDuration = Vector3.Distance(currentPathEdge.from.position, currentPathEdge.to.position) * currentPathEdge.edgeWeight / currentPathEdge.edgeWeightBase;
+        }
+
+
+
+        public IEnumerator Dig(FloorHexagon hex)
+        {
+            if (digFX == null) digFX = Instantiate(DigFX, position, Quaternion.identity);
+            digFX.transform.position = hex.position;
+            digFX.StartFx(hex);
+            yield return new WaitForSeconds(3f);
+            digFX.StopFx();
+            hex.RemoveChildren();
+            hex.type = HexType.EMPTY;
         }
 
         public void RemoveDigFX()
@@ -277,6 +286,8 @@ namespace EnemyNamespace
                 }
             }
         }
+
+
 
     }
 }

@@ -3,7 +3,7 @@ public class Edge
     public string id;
     public Vertex from;
     public Vertex to;
-    public int MULTIPLIER = 5;
+    public int MULTIPLIER = 10;
     public float edgeWeight;
     public float edgeWeightBase;
     public float edgeWeightMod;

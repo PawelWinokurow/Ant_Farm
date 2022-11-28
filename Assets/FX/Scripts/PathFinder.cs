@@ -124,7 +124,7 @@ public class Pathfinder
         {
             var current = frontier.Dequeue();
             i++;
-            if (i == 100)
+            if (i == Settings.Instance.gameSettings.PATHFINDER_MAX_STEPS)
             {
                 return null;
             }
