@@ -209,8 +209,9 @@ GameObject:
   - component: {fileID: 5027982129609804310}
   - component: {fileID: 4378869554640269098}
   - component: {fileID: 1222461567735955811}
+  - component: {fileID: -4469524149322463765}
   m_Layer: 0
-  m_Name: Hex_Trap_1_Scaled
+  m_Name: Spikes_Mount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -282,6 +283,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &-4469524149322463765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4152379798447890413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a2cacea324c27a4ea7e7d19da329aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5169342397564306481
 GameObject:
   m_ObjectHideFlags: 0

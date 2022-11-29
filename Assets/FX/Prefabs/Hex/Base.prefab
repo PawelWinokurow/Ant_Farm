@@ -339,7 +339,7 @@ GameObject:
   - component: {fileID: 4122965715738466250}
   - component: {fileID: -6449949279687771907}
   m_Layer: 0
-  m_Name: Hex_Base
+  m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

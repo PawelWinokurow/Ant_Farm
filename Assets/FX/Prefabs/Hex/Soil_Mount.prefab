@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 385005781445833759}
   - component: {fileID: 9043821692902220811}
   - component: {fileID: 7097961056364739002}
+  - component: {fileID: 1977940879894948748}
   m_Layer: 0
-  m_Name: Hex_Wall_Scaled
+  m_Name: Soil_Mount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -84,6 +85,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1977940879894948748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7038958406643457708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a2cacea324c27a4ea7e7d19da329aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6959099761841796495
 PrefabInstance:
   m_ObjectHideFlags: 0

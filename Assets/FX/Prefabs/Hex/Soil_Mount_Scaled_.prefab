@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4946890135277240698}
   - component: {fileID: 8455358244910370071}
   m_Layer: 0
-  m_Name: Hex_Scaled_Filll
+  m_Name: Soil_Mount_Scaled_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -378,7 +378,7 @@ GameObject:
   - component: {fileID: 885855770167225291}
   - component: {fileID: 1832982468626146159}
   m_Layer: 0
-  m_Name: Hex_Food
+  m_Name: Food
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

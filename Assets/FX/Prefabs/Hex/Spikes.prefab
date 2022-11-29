@@ -293,8 +293,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6255956288588245754}
   - component: {fileID: 8481887738070345380}
+  - component: {fileID: -962059493816826475}
   m_Layer: 0
-  m_Name: Trap_01
+  m_Name: Spikes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -331,3 +332,15 @@ MonoBehaviour:
   spikes: {fileID: 2710414617680978376}
   body: {fileID: 2518041817031097733}
   isPlay: 0
+--- !u!114 &-962059493816826475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8708655554276476704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a2cacea324c27a4ea7e7d19da329aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
