@@ -33,6 +33,7 @@ public class WorkerJobScheduler : MonoBehaviour
     {
         StartCoroutine(DistributeJobsCoroutine());
     }
+
     IEnumerator DistributeJobsCoroutine()
     {
         while (true)
@@ -110,7 +111,7 @@ public class WorkerJobScheduler : MonoBehaviour
     private void SetJobToWorker(WorkerJob job)
     {
         if (job.type == JobType.CARRYING) SetCarryingJob((CarrierJob)job);
-        else if (job.type == JobType.SOIL || job.type == JobType.DEMOUNT) SetBuildJob((BuildJob)job);
+        else if (job.type == JobType.MOUNT || job.type == JobType.DEMOUNT) SetBuildJob((BuildJob)job);
     }
 
     private void SetCarryingJob(CarrierJob job)

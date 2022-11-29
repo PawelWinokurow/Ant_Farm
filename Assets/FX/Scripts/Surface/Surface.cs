@@ -199,36 +199,18 @@ public class Surface : MonoBehaviour
     private WorkHexagon GetScaledBlockPrefabByType(HexType type)
     {
         WorkHexagon scaledBlockPrefab = null;
-        if (type == HexType.SOIL)
-        {
-            scaledBlockPrefab = soilMountScaled;
-        }
-        else if (type == HexType.STONE)
-        {
-            scaledBlockPrefab = stoneMountScaled;
-        }
-        else if (type == HexType.SPIKES)
-        {
-            scaledBlockPrefab = spikesMountScaled;
-        }
+        if (type == HexType.SOIL) scaledBlockPrefab = soilMountScaled;
+        else if (type == HexType.STONE) scaledBlockPrefab = stoneMountScaled;
+        else if (type == HexType.SPIKES) scaledBlockPrefab = spikesMountScaled;
         return scaledBlockPrefab;
     }
 
     private WorkHexagon GetBlockPrefabByType(HexType type)
     {
         WorkHexagon blockPrefab = null;
-        if (type == HexType.SOIL)
-        {
-            blockPrefab = soilPrefab;
-        }
-        else if (type == HexType.STONE)
-        {
-            blockPrefab = stonePrefab;
-        }
-        else if (type == HexType.SPIKES)
-        {
-            blockPrefab = spikesPrefab;
-        }
+        if (type == HexType.SOIL) blockPrefab = soilPrefab;
+        else if (type == HexType.STONE) blockPrefab = stonePrefab;
+        else if (type == HexType.SPIKES) blockPrefab = spikesPrefab;
         return blockPrefab;
     }
 

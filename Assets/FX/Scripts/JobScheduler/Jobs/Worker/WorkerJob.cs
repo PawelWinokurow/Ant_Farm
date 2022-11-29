@@ -4,7 +4,7 @@ using WorkerNamespace;
 
 public enum JobType
 {
-    NONE, DEMOUNT, SOIL, STONE, SPIKES, CARRYING
+    NONE, DEMOUNT, MOUNT, CARRYING
 }
 
 public interface WorkerJob

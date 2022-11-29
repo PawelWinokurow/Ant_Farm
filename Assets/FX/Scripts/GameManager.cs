@@ -78,20 +78,7 @@ public class GameManager : MonoBehaviour
                 || slider.choosenValue == SliderValue.SPIKES)
                 {
                     surface.PlaceIcon(hex, slider.choosenValue);
-                    var jobType = JobType.NONE;
-                    if (slider.choosenValue == SliderValue.SOIL)
-                    {
-                        jobType = JobType.SOIL;
-                    }
-                    else if (slider.choosenValue == SliderValue.STONE)
-                    {
-                        jobType = JobType.STONE;
-                    }
-                    else if (slider.choosenValue == SliderValue.SPIKES)
-                    {
-                        jobType = JobType.SPIKES;
-                    }
-                    workerJobScheduler.AssignJob(new BuildJob(hex, hex.transform.position, jobType));
+                    workerJobScheduler.AssignJob(new BuildJob(hex, hex.transform.position, JobType.MOUNT));
                 }
             }
             else if ((hex.type == HexType.SOIL || hex.type == HexType.STONE || hex.type == HexType.SPIKES) && slider.choosenValue == SliderValue.DEMOUNT)
