@@ -128,7 +128,7 @@ Shader "Custom/Food(Down)"
 }
 /*ASEBEGIN
 Version=18500
-928.6667;72.66667;1154;861.6667;3162.344;1895.509;2.021602;True;False
+1177;83;1043;758;2698.349;1553.965;1.69167;True;False
 Node;AmplifyShaderEditor.TextureCoordinatesNode;190;-2403.125,-517.2972;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SimpleSubtractOpNode;220;-2000.376,-511.9448;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;0.5;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;221;-1972.411,-686.2755;Inherit;False;2;2;0;FLOAT;0.5;False;1;FLOAT;0;False;1;FLOAT;0
@@ -139,7 +139,6 @@ Node;AmplifyShaderEditor.VertexColorNode;210;-2283.763,-1171.462;Inherit;False;0
 Node;AmplifyShaderEditor.SimpleAddOpNode;215;-1654.006,-808.8679;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
 Node;AmplifyShaderEditor.OneMinusNode;219;-1563.188,-571.748;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;216;-1422.027,-717.0569;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;222;-2154.51,-391.9449;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;134;-1403.982,-1018.874;Float;False;True;-1;2;ASEMaterialInspector;100;1;Custom/Food(Down);0770190933193b94aaa3065e307002fa;True;Unlit;0;0;Unlit;2;True;0;1;False;-1;0;False;-1;0;1;False;-1;0;False;-1;True;0;False;-1;0;False;-1;False;False;False;False;False;False;True;0;False;-1;True;0;False;-1;True;True;True;True;True;0;False;-1;False;False;False;True;True;1;False;-1;255;False;-1;255;False;-1;6;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;True;1;False;-1;True;3;False;-1;True;True;0;False;-1;0;False;-1;True;1;RenderType=Opaque=RenderType;True;2;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=ForwardBase;False;0;;0;0;Standard;1;Vertex Position,InvertActionOnDeselection;1;0;1;True;False;;False;0
 WireConnection;220;0;190;2
 WireConnection;221;1;220;0
@@ -151,8 +150,6 @@ WireConnection;215;1;214;0
 WireConnection;219;0;218;0
 WireConnection;216;0;215;0
 WireConnection;216;1;219;0
-WireConnection;222;0;190;1
-WireConnection;222;1;190;2
 WireConnection;134;0;216;0
 ASEEND*/
-//CHKSM=5FA103DC6A0B60DFD8FD2271C41F573FF4721525
+//CHKSM=740FF9BA3F4326A3C82740CC5898D65C507B3068

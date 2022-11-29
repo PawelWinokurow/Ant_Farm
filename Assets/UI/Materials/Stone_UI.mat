@@ -74,6 +74,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Ambient: 0.1
     - _Blend: 0.5
     - _BlendDetails: 0.28
     - _BlendTexture: 0.234
@@ -100,7 +101,7 @@ Material:
     - _Pow: 1
     - _Pow1: 2
     - _Pow2: 0.65
-    - _Power: 3.26
+    - _Power: 3.4
     - _Power1: 1.15
     - _ScaleUV: 0.08
     - _ScaleUV1: 1
@@ -111,6 +112,7 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     - __dirty: 0
+    - _mult: 1.77
     m_Colors:
     - _BlinkFX_Color: {r: 1, g: 0, b: 0, a: 1}
     - _Color: {r: 0.1792453, g: 0.1792453, b: 0.1792453, a: 1}

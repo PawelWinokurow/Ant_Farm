@@ -4,7 +4,8 @@ Shader "Custom/Food"
 {
 	Properties
 	{
-		
+		_Mult("Mult", Float) = 1
+
 	}
 	
 	SubShader
@@ -72,7 +73,8 @@ Shader "Custom/Food"
 				UNITY_VERTEX_OUTPUT_STEREO
 			};
 
-			
+			uniform float _Mult;
+
 			
 			v2f vert ( appdata v )
 			{
@@ -116,7 +118,7 @@ Shader "Custom/Food"
 				float temp_output_220_0 = ( texCoord190.y - 0.5 );
 				
 				
-				finalColor = ( ( i.ase_color + saturate( ( 0.5 * temp_output_220_0 ) ) ) * ( 1.0 - saturate( ( -0.3 * temp_output_220_0 ) ) ) );
+				finalColor = ( ( ( i.ase_color + saturate( ( 0.5 * temp_output_220_0 ) ) ) * ( 1.0 - saturate( ( -0.3 * temp_output_220_0 ) ) ) ) * _Mult );
 				return finalColor;
 			}
 			ENDCG
@@ -128,7 +130,7 @@ Shader "Custom/Food"
 }
 /*ASEBEGIN
 Version=18500
-985.3334;80;905.3334;565.6667;2638.177;889.9449;1;True;False
+1182;72.66667;1043.333;777.6667;1861.567;1102.78;1;True;False
 Node;AmplifyShaderEditor.TextureCoordinatesNode;190;-2403.125,-517.2972;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SimpleSubtractOpNode;220;-2000.376,-511.9448;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;0.5;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;217;-1764.522,-506.492;Inherit;False;2;2;0;FLOAT;-0.3;False;1;FLOAT;0;False;1;FLOAT;0
@@ -139,8 +141,9 @@ Node;AmplifyShaderEditor.SaturateNode;214;-1854.633,-761.9332;Inherit;False;1;0;
 Node;AmplifyShaderEditor.SimpleAddOpNode;215;-1654.006,-808.8679;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
 Node;AmplifyShaderEditor.OneMinusNode;219;-1563.188,-571.748;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;216;-1422.027,-717.0569;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;222;-2154.51,-391.9449;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;134;-1403.982,-1018.874;Float;False;True;-1;2;ASEMaterialInspector;100;1;Custom/Food;0770190933193b94aaa3065e307002fa;True;Unlit;0;0;Unlit;2;True;0;1;False;-1;0;False;-1;0;1;False;-1;0;False;-1;True;0;False;-1;0;False;-1;False;False;False;False;False;False;True;0;False;-1;True;0;False;-1;True;True;True;True;True;0;False;-1;False;False;False;True;True;1;False;-1;255;False;-1;255;False;-1;7;False;-1;3;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;True;1;False;-1;True;3;False;-1;True;True;0;False;-1;0;False;-1;True;1;RenderType=Opaque=RenderType;True;2;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=ForwardBase;False;0;;0;0;Standard;1;Vertex Position,InvertActionOnDeselection;1;0;1;True;False;;False;0
+Node;AmplifyShaderEditor.RangedFloatNode;224;-1324.9,-554.1132;Inherit;False;Property;_Mult;Mult;0;0;Create;True;0;0;False;0;False;1;0;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;223;-1269.9,-747.1133;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;134;-1136.982,-838.874;Float;False;True;-1;2;ASEMaterialInspector;100;1;Custom/Food;0770190933193b94aaa3065e307002fa;True;Unlit;0;0;Unlit;2;True;0;1;False;-1;0;False;-1;0;1;False;-1;0;False;-1;True;0;False;-1;0;False;-1;False;False;False;False;False;False;True;0;False;-1;True;0;False;-1;True;True;True;True;True;0;False;-1;False;False;False;True;True;1;False;-1;255;False;-1;255;False;-1;7;False;-1;3;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;True;1;False;-1;True;3;False;-1;True;True;0;False;-1;0;False;-1;True;1;RenderType=Opaque=RenderType;True;2;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=ForwardBase;False;0;;0;0;Standard;1;Vertex Position,InvertActionOnDeselection;1;0;1;True;False;;False;0
 WireConnection;220;0;190;2
 WireConnection;217;1;220;0
 WireConnection;221;1;220;0
@@ -151,8 +154,8 @@ WireConnection;215;1;214;0
 WireConnection;219;0;218;0
 WireConnection;216;0;215;0
 WireConnection;216;1;219;0
-WireConnection;222;0;190;1
-WireConnection;222;1;190;2
-WireConnection;134;0;216;0
+WireConnection;223;0;216;0
+WireConnection;223;1;224;0
+WireConnection;134;0;223;0
 ASEEND*/
-//CHKSM=1AC40E7BF4BA273A698922D51EFC744C4F521886
+//CHKSM=000EE748A97A86E1C778520AC15DC72E23C9375A

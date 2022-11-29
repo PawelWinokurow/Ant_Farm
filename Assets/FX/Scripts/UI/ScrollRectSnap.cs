@@ -1,30 +1,28 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 
 public enum SliderValue
 {
     DEMOUNT, WORKER, SOLDIER, SOIL, STONE, SPIKES
 }
-
-public class ScrollRectSnap : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
+public class ScrollRectSnap : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     public List<RectTransform> elements = new List<RectTransform>();
     private bool onSlider;
     private bool isDrag;
     private float a;
+    private float a2;
     private float touchStartX;
     private float aR;
     public int n = 0;
     public SliderValue choosenValue { get => (SliderValue)n; }
     private float dist;
-    public RectTransform slider;
+    public RectTransform selectedField;
     private void Start()
     {
-
+        selectedField.sizeDelta = new Vector2(selectedField.rect.height, 0);
         dist = elements[0].rect.height;
         for (int i = 0; i < elements.Count; i++)
         {
@@ -32,7 +30,6 @@ public class ScrollRectSnap : MonoBehaviour, IDragHandler, IBeginDragHandler, IE
 
             float x = (Mathf.Round((a + i * dist) / dist)) * dist;
             x = x % (elements.Count * dist);
-            // x -= Mathf.Round(elements.Count / 2f) * dist;
             elements[i].anchoredPosition = new Vector2(x, elements[i].anchoredPosition.y);
         }
     }
@@ -51,7 +48,7 @@ public class ScrollRectSnap : MonoBehaviour, IDragHandler, IBeginDragHandler, IE
         isDrag = true;
         if (onSlider)
         {
-            touchStartX = Input.mousePosition.x;
+            touchStartX = eventData.pointerCurrentRaycast.screenPosition.x;
         }
     }
     public void OnEndDrag(PointerEventData eventData)
@@ -62,8 +59,9 @@ public class ScrollRectSnap : MonoBehaviour, IDragHandler, IBeginDragHandler, IE
     {
         if (onSlider && isDrag)
         {
-            a += (Input.mousePosition.x - touchStartX);
-            touchStartX = Input.mousePosition.x;
+            Debug.Log(transform.lossyScale);
+            a += (eventData.pointerCurrentRaycast.screenPosition.x - touchStartX) * 720f / Screen.width;
+            touchStartX = eventData.pointerCurrentRaycast.screenPosition.x;
 
             if (a < 0)
             {
@@ -89,6 +87,15 @@ public class ScrollRectSnap : MonoBehaviour, IDragHandler, IBeginDragHandler, IE
         }
     }
 
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (!isDrag)
+        {
+            a2 = a + (720 / 2 - (eventData.pointerCurrentRaycast.screenPosition.x) * 720f / Screen.width);
+            aR = (Mathf.Round(a2 / dist)) * dist;
+        }
+    }
+
 
     // Update is called once per frame
     void Update()
@@ -109,6 +116,10 @@ public class ScrollRectSnap : MonoBehaviour, IDragHandler, IBeginDragHandler, IE
                 a = Mathf.Lerp(a, aR, Time.deltaTime * 10f);
                 float x = a + i * dist;
                 x = x % (elements.Count * dist);
+                if (x < 0)
+                {
+                    x += elements.Count * dist;
+                }
                 x -= Mathf.Round(elements.Count / 2f) * dist;
                 elements[i].anchoredPosition = new Vector2(x, elements[i].anchoredPosition.y);
             }
@@ -116,4 +127,3 @@ public class ScrollRectSnap : MonoBehaviour, IDragHandler, IBeginDragHandler, IE
 
     }
 }
-
