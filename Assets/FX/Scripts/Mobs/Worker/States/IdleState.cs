@@ -6,7 +6,7 @@ namespace WorkerNamespace
     {
 
         private Worker worker;
-        private int MOVEMENT_SPEED = 5;
+        private WorkerSettings workerSettings = Settings.Instance.workerSettings;
 
         public IdleState(Worker worker) : base(worker)
         {
@@ -18,7 +18,7 @@ namespace WorkerNamespace
         {
             if (worker.HasPath)
             {
-                worker.Move(MOVEMENT_SPEED);
+                worker.Move();
                 if (worker.path.wayPoints.Count == 1)
                 {
                     worker.ExpandRandomWalk();
@@ -32,6 +32,7 @@ namespace WorkerNamespace
 
         override public void OnStateEnter()
         {
+            worker.movementSpeed = workerSettings.MOVEMENT_SPEED;
             worker.RemovePath();
             worker.SetRunAnimation();
             worker.Animation();

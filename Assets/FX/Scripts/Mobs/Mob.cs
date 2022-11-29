@@ -21,9 +21,7 @@ public interface Mob
     public int accessMask { get; set; }
     public void SetState(State state);
     public void SetPath(Path path);
-    public void Move(int speed);
+    public void Move();
     public void RemovePath();
     public void Hit(int damage);
-
-
 }

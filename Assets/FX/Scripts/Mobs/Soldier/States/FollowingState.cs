@@ -6,8 +6,7 @@ namespace SoldierNamespace
     {
 
         private Soldier soldier;
-        private int MOVEMENT_SPEED = 10;
-
+        private SoldierSettings soldierSettings = Settings.Instance.soldierSettings;
 
         public FollowingState(Soldier soldier) : base(soldier)
         {
@@ -17,7 +16,7 @@ namespace SoldierNamespace
 
         override public void OnStateEnter()
         {
-            // soldier.ResetCurrentPathEdge();
+            soldier.movementSpeed = soldierSettings.FOLLOWING_MOVEMENT_SPEED;
             soldier.SetRunAnimation();
             soldier.Animation();
         }
@@ -46,7 +45,7 @@ namespace SoldierNamespace
             }
             else if (soldier.HasPath)
             {
-                soldier.Move(MOVEMENT_SPEED);
+                soldier.Move();
             }
         }
     }

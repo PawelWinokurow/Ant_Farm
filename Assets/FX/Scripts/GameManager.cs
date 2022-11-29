@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public Surface Surface;
-    public SurfaceOperations SurfaceOperations;
-    public BuildTestMap BuildWallsTest;
-    public WorkerJobScheduler WorkerJobScheduler;
-    public Graph PathGraph;
+    public Surface surface;
+    public SurfaceOperations surfaceOperations;
+    public BuildTestMap buildWallsTest;
+    public WorkerJobScheduler workerJobScheduler;
+    public Graph pathGraph;
+    public ScrollRectSnap slider;
+    public MobFactory mobFactory;
     private Pathfinder pathfinder;
     public GameSettings settings;
 
@@ -26,79 +28,106 @@ public class GameManager : MonoBehaviour
 
     private void LoadData()
     {
-        PathGraph = StoreService.LoadGraph();
+        pathGraph = StoreService.LoadGraph();
         HexagonSerializable[] hexagons = StoreService.LoadHexagons();
-        Surface.Init(PathGraph, hexagons);
-        pathfinder = new Pathfinder(PathGraph);
-        WorkerJobScheduler.pathfinder = pathfinder;
-        WorkerJobScheduler.pathfinder = pathfinder;
-        WorkerJobScheduler.SetSurfaceOperations(SurfaceOperations);
-        WorkerJobScheduler.StartJobScheuler();
+        surface.Init(pathGraph, hexagons);
+        pathfinder = new Pathfinder(pathGraph);
+        workerJobScheduler.pathfinder = pathfinder;
+        workerJobScheduler.pathfinder = pathfinder;
+        workerJobScheduler.SetSurfaceOperations(surfaceOperations);
+        workerJobScheduler.StartJobScheuler();
     }
 
     private void GenerateData()
     {
-        PathGraph = new Graph();
-        Surface.Init(PathGraph);
-        BuildWallsTest.Init(Surface);
-        pathfinder = new Pathfinder(PathGraph);
-        WorkerJobScheduler.pathfinder = pathfinder;
-        WorkerJobScheduler.SetSurfaceOperations(SurfaceOperations);
-        WorkerJobScheduler.StartJobScheuler();
-        // StoreService.SaveGraph(PathGraph);
+        pathGraph = new Graph();
+        surface.Init(pathGraph);
+        buildWallsTest.Init(surface);
+        pathfinder = new Pathfinder(pathGraph);
+        workerJobScheduler.pathfinder = pathfinder;
+        workerJobScheduler.SetSurfaceOperations(surfaceOperations);
+        workerJobScheduler.StartJobScheuler();
+        // StoreService.SaveGraph(pathGraph);
         // StoreService.SaveHexagons(Surface.Hexagons);
     }
 
 
     public void ProcessTap(Vector3 pos)
     {
-        FloorHexagon hex = Surface.PositionToHex(pos);
+        FloorHexagon hex = surface.PositionToHex(pos);
 
 
-        if (hex.type == HexType.FOOD)
+        if (slider.choosenValue == SliderValues.None)
         {
-            var foodHex = (CollectingHexagon)(hex.child);
-            var asssignedcarriersNum = foodHex.carriers.Count;
-            if (asssignedcarriersNum < 5)
-            {
-                WorkerJobScheduler.AssignJob(new CarrierJob($"{hex.id}_{asssignedcarriersNum + 1}", hex, (BaseHexagon)Surface.baseHex.child, foodHex));
-                foodHex.food.antCount++;
-            }
-            else
-            {
-                foodHex.ResetWorkers();
-                foodHex.food.antCount = 0;
-            }
-        }
-        else if (hex.type == HexType.EMPTY || hex.type == HexType.SOIL)
-        {
-            if (AreNoMobsInHex(hex))
-            {
-                if (SurfaceOperations.IsInOldHexagons(hex) && !WorkerJobScheduler.IsJobAssigned(hex.id))
-                {
-                    Surface.RemoveIcon(hex);
-                    WorkerJobScheduler.CancelJob(hex.id);
-                }
-                else
-                {
-                    Surface.AddIcon(hex);
-                    if (hex.type == HexType.EMPTY)
-                    {
-                        WorkerJobScheduler.AssignJob(new BuildJob(hex, hex.transform.position, JobType.FILL));
-                    }
-                    else if (hex.type == HexType.SOIL)
-                    {
-                        WorkerJobScheduler.AssignJob(new BuildJob(hex, hex.transform.position, JobType.DIG));
-                    }
 
-                }
-            }
         }
+        else if (slider.choosenValue == SliderValues.Soil)
+        {
+        }
+        else if (slider.choosenValue == SliderValues.Stone)
+        {
+
+        }
+        else if (slider.choosenValue == SliderValues.Spikes)
+        {
+        }
+        else if (slider.choosenValue == SliderValues.Worker)
+        {
+            mobFactory.AddWorker();
+        }
+        else if (slider.choosenValue == SliderValues.Soldier)
+        {
+            mobFactory.AddSoldier();
+        }
+
+
+
+        // if (hex.type == HexType.FOOD)
+        // {
+        //     var foodHex = (CollectingHexagon)(hex.child);
+        //     var asssignedcarriersNum = foodHex.carriers.Count;
+        //     if (asssignedcarriersNum < 5)
+        //     {
+        //         workerJobScheduler.AssignJob(new CarrierJob($"{hex.id}_{asssignedcarriersNum + 1}", hex, (BaseHexagon)surface.baseHex.child, foodHex));
+        //         foodHex.food.antCount++;
+        //     }
+        //     else
+        //     {
+        //         foodHex.ResetWorkers();
+        //         foodHex.food.antCount = 0;
+        //     }
+        // }
+        // else if (hex.type == HexType.EMPTY || hex.type == HexType.SOIL)
+        // {
+        //     if (AreNoMobsInHex(hex))
+        //     {
+        //         if (surfaceOperations.IsInOldHexagons(hex) && !workerJobScheduler.IsJobAssigned(hex.id))
+        //         {
+        //             surface.RemoveIcon(hex);
+        //             workerJobScheduler.CancelJob(hex.id);
+        //         }
+        //         else
+        //         {
+        //             surface.AddIcon(hex);
+        //             if (hex.type == HexType.EMPTY)
+        //             {
+        //                 workerJobScheduler.AssignJob(new BuildJob(hex, hex.transform.position, JobType.FILL));
+        //             }
+        //             else if (hex.type == HexType.SOIL)
+        //             {
+        //                 workerJobScheduler.AssignJob(new BuildJob(hex, hex.transform.position, JobType.DIG));
+        //             }
+
+        //         }
+        //     }
+        // }
     }
+
+
 
     private bool AreNoMobsInHex(Hexagon hex)
     {
-        return WorkerJobScheduler.allWorkers.Where(mob => mob.currentState.type != STATE.DEAD).All(mob => Surface.PositionToHex(mob.position).id != hex.id);
+        return workerJobScheduler.allWorkers.Where(mob => mob.currentState.type != STATE.DEAD).All(mob => surface.PositionToHex(mob.position).id != hex.id);
     }
 }
 

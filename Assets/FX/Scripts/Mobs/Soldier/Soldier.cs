@@ -29,6 +29,7 @@ namespace SoldierNamespace
         public int accessMask { get; set; }
         private GameSettings gameSettings;
         private SoldierSettings soldierSettings;
+        public int movementSpeed { get; set; }
 
         void Start()
         {
@@ -93,14 +94,14 @@ namespace SoldierNamespace
             path.wayPoints.AddRange(newRandomWalk.wayPoints);
         }
 
-        public void Move(int speed)
+        public void Move()
         {
             DrawDebugPath();
             if (t < lerpDuration)
             {
                 var a = (float)Mathf.Min(t / lerpDuration, 1f);
                 transform.position = Vector3.Lerp(currentPathEdge.from.position, currentPathEdge.to.position, a);
-                t += Time.deltaTime * speed;
+                t += Time.deltaTime * movementSpeed;
             }
             else if (path.HasWaypoints)
             {
