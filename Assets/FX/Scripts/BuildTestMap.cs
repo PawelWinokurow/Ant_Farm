@@ -24,7 +24,7 @@ public class BuildTestMap : MonoBehaviour
             var probability = UnityEngine.Random.Range(0, 100f);
             if (probability <= wallProbability)
             {
-                surface.AddBlock(surface.hexagons[i]);
+                surface.AddSoil(surface.hexagons[i]);
                 surface.pathGraph.SetAccesabillity(surface.hexagons[i], Settings.Instance.gameSettings.ACCESS_MASK_SOIL);
             }
             else if (probability <= wallProbability + foodProbability)

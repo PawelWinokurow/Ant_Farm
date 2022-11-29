@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public enum SliderValue
 {
-    NONE, WORKER, SOLDIER, SOIL, STONE, SPIKES
+    DEMOUNT, WORKER, SOLDIER, SOIL, STONE, SPIKES
 }
 
 public class ScrollRectSnap : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler

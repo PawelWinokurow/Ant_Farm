@@ -7,9 +7,11 @@ using System.Linq;
 public class Surface : MonoBehaviour
 {
     public FloorHexagon hexPrefab;
-    public WorkHexagon wallPrefab;
-    public WorkHexagon wallDigScaled;
-    public WorkHexagon wallFillScaled;
+    public WorkHexagon soilPrefab;
+    public WorkHexagon stonePrefab;
+    public WorkHexagon spikesPrefab;
+    public WorkHexagon soilDemountScaled;
+    public WorkHexagon soilMountScaled;
     public WorkHexagon digPrefab;
     public WorkHexagon soilMountPrefab;
     public WorkHexagon stoneMountPrefab;
@@ -118,7 +120,7 @@ public class Surface : MonoBehaviour
     //         }
     //         else if (hexagons[i].type == HexType.SOIL)
     //         {
-    //             AddBlock(hex);
+    //             AddSoil(hex);
     //             pathGraph.ProhibitHexagon(hex.transform.position);
     //         }
     //     }
@@ -165,23 +167,23 @@ public class Surface : MonoBehaviour
         return hexagons[z * width + x];
     }
 
-    public WorkHexagon AddBlock(FloorHexagon hex)
+    public WorkHexagon AddSoil(FloorHexagon hex)
     {
-        var block = WorkHexagon.CreateHexagon(hex, wallPrefab);
+        var block = WorkHexagon.CreateHexagon(hex, soilPrefab);
         block.type = HexType.SOIL;
         block.work = WorkHexagon.MAX_WORK;
         return block;
     }
     public WorkHexagon AddDigScaledBlock(FloorHexagon hex)
     {
-        var scaledBlock = WorkHexagon.CreateHexagon(hex, wallDigScaled);
+        var scaledBlock = WorkHexagon.CreateHexagon(hex, soilDemountScaled);
         scaledBlock.type = HexType.SOIL;
         scaledBlock.work = WorkHexagon.MAX_WORK;
         return scaledBlock;
     }
     public WorkHexagon AddFillScaledBlock(FloorHexagon hex)
     {
-        var scaledBlock = WorkHexagon.CreateHexagon(hex, wallFillScaled);
+        var scaledBlock = WorkHexagon.CreateHexagon(hex, soilMountScaled);
         scaledBlock.type = HexType.SOIL;
         scaledBlock.work = WorkHexagon.MAX_WORK;
         return scaledBlock;
@@ -231,7 +233,7 @@ public class Surface : MonoBehaviour
             PlaceMountIcon(hex, spikesMountPrefab, Settings.Instance.gameSettings.ACCESS_MASK_SPIKES);
         }
 
-        if (value == SliderValue.NONE)
+        if (value == SliderValue.DEMOUNT)
         {
             PlaceDemountIcon(hex, demountPrefab);
         }
@@ -249,34 +251,40 @@ public class Surface : MonoBehaviour
     private void PlaceDemountIcon(FloorHexagon hex, WorkHexagon prefab)
     {
         // TODO replace wallPrefab
-        WorkHexagon clonedHex = WorkHexagon.CreateHexagon(hex, wallPrefab);
+        WorkHexagon clonedHex = WorkHexagon.CreateHexagon(hex, soilPrefab);
         clonedHex.AssignProperties((WorkHexagon)hex.child);
         oldhexagons.Add(clonedHex.id, clonedHex);
         hex.RemoveChildren();
         WorkHexagon.CreateHexagon(hex, prefab);
     }
-}
 
-public void RemoveIcon(FloorHexagon hex)
-{
-    hex.RemoveChildren();
-    var oldIcon = oldhexagons[hex.id];
-    if (oldIcon.type == HexType.EMPTY)
+
+    public void RemoveIcon(FloorHexagon hex)
     {
-        pathGraph.SetAccesabillity(hex, Settings.Instance.gameSettings.ACCESS_MASK_FLOOR);
-        hex.AssignProperties((FloorHexagon)oldIcon);
+        hex.RemoveChildren();
+        var oldIcon = oldhexagons[hex.id];
+        if (oldIcon.type == HexType.EMPTY)
+        {
+            pathGraph.SetAccesabillity(hex, Settings.Instance.gameSettings.ACCESS_MASK_FLOOR);
+            hex.AssignProperties((FloorHexagon)oldIcon);
+        }
+        else if (oldIcon.type == HexType.SOIL)
+        {
+            pathGraph.SetAccesabillity(hex, Settings.Instance.gameSettings.ACCESS_MASK_SOIL);
+            WorkHexagon.CreateHexagon(hex, soilPrefab).AssignProperties((WorkHexagon)oldIcon);
+        }
+        else if (oldIcon.type == HexType.STONE)
+        {
+            pathGraph.SetAccesabillity(hex, Settings.Instance.gameSettings.ACCESS_MASK_STONE);
+            WorkHexagon.CreateHexagon(hex, stonePrefab).AssignProperties((WorkHexagon)oldIcon);
+        }
+        else if (oldIcon.type == HexType.SPIKES)
+        {
+            pathGraph.SetAccesabillity(hex, Settings.Instance.gameSettings.ACCESS_MASK_SPIKES);
+            WorkHexagon.CreateHexagon(hex, spikesPrefab).AssignProperties((WorkHexagon)oldIcon);
+        }
+        oldhexagons.Remove(hex.id);
     }
-    else if (oldIcon.type == HexType.SOIL)
-    {
-        pathGraph.SetAccesabillity(hex, Settings.Instance.gameSettings.ACCESS_MASK_SOIL);
-        WorkHexagon.CreateHexagon(hex, wallPrefab).AssignProperties((WorkHexagon)oldIcon);
-    }
-    else if (oldIcon.type == HexType.FOOD)
-    {
-        CollectingHexagon.CreateHexagon(hex, foodPrefab);
-    };
-    oldhexagons.Remove(hex.id);
-}
 
 
 

@@ -100,7 +100,7 @@ public class SurfaceOperations : MonoBehaviour
             if (scaledBlock.work <= 0)
             {
                 floorHex.RemoveChildren();
-                surface.AddBlock(floorHex);
+                surface.AddSoil(floorHex);
                 worker.job.Cancel();
                 oldHexagons.Remove(floorHex.id);
                 yield break;
