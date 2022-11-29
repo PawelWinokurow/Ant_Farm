@@ -65,39 +65,39 @@ public class GameManager : MonoBehaviour
         {
             if (hex.type == HexType.EMPTY)
             {
-                if (slider.choosenValue == SliderValue.Worker)
+                if (slider.choosenValue == SliderValue.WORKER)
                 {
                     mobFactory.AddWorker(hex);
                 }
-                else if (slider.choosenValue == SliderValue.Soldier)
+                else if (slider.choosenValue == SliderValue.SOLDIER)
                 {
                     mobFactory.AddSoldier(hex);
                 }
-                else if (slider.choosenValue == SliderValue.Soil
-                || slider.choosenValue == SliderValue.Stone
-                || slider.choosenValue == SliderValue.Spikes)
+                else if (slider.choosenValue == SliderValue.SOIL
+                || slider.choosenValue == SliderValue.STONE
+                || slider.choosenValue == SliderValue.SPIKES)
                 {
-                    surface.AddIcon(hex, slider.choosenValue);
-                    if (slider.choosenValue == SliderValue.Soil)
+                    surface.PlaceIcon(hex, slider.choosenValue);
+                    var jobType = JobType.NONE;
+                    if (slider.choosenValue == SliderValue.SOIL)
                     {
-                        workerJobScheduler.AssignJob(new BuildJob(hex, hex.transform.position, JobType.FILL));
+                        jobType = JobType.SOIL;
                     }
-                    else if (slider.choosenValue == SliderValue.Stone)
+                    else if (slider.choosenValue == SliderValue.STONE)
                     {
-                        //TODO
+                        jobType = JobType.STONE;
                     }
-                    else if (slider.choosenValue == SliderValue.Spikes)
+                    else if (slider.choosenValue == SliderValue.SPIKES)
                     {
-                        //TODO
+                        jobType = JobType.SPIKES;
                     }
-
+                    workerJobScheduler.AssignJob(new BuildJob(hex, hex.transform.position, jobType));
                 }
             }
-            else if (hex.type == HexType.SOIL && slider.choosenValue == SliderValue.None)
+            else if ((hex.type == HexType.SOIL || hex.type == HexType.STONE || hex.type == HexType.SPIKES) && slider.choosenValue == SliderValue.NONE)
             {
-                surface.AddIcon(hex, slider.choosenValue);
-                //TODO Stone spikes
-                workerJobScheduler.AssignJob(new BuildJob(hex, hex.transform.position, JobType.DIG));
+                surface.PlaceIcon(hex, slider.choosenValue);
+                workerJobScheduler.AssignJob(new BuildJob(hex, hex.transform.position, JobType.DEMOUNT));
             }
         }
     }
@@ -130,14 +130,14 @@ public class GameManager : MonoBehaviour
     //         }
     //         else
     //         {
-    //             surface.AddIcon(hex);
+    //             surface.PlaceIcon(hex);
     //             if (hex.type == HexType.EMPTY)
     //             {
-    //                 workerJobScheduler.AssignJob(new BuildJob(hex, hex.transform.position, JobType.FILL));
+    //                 workerJobScheduler.AssignJob(new BuildJob(hex, hex.transform.position, JobType.SOIL));
     //             }
     //             else if (hex.type == HexType.SOIL)
     //             {
-    //                 workerJobScheduler.AssignJob(new BuildJob(hex, hex.transform.position, JobType.DIG));
+    //                 workerJobScheduler.AssignJob(new BuildJob(hex, hex.transform.position, JobType.DEMOUNT));
     //             }
 
     //         }

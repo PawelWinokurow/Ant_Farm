@@ -51,7 +51,7 @@ namespace WorkerNamespace
             }
             else
             {
-                if (worker.job.type == JobType.DIG || worker.job.type == JobType.FILL)
+                if (worker.job.type == JobType.DEMOUNT || worker.job.type == JobType.SOIL)
                 {
                     worker.SetState(new BuildState(worker));
                 }

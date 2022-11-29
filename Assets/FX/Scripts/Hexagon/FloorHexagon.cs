@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum HexType
 {
-    EMPTY, SOIL, FOOD, BASE
+    EMPTY, SOIL, STONE, SPIKES, FOOD, BASE
 }
 
 public class FloorHexagon : MonoBehaviour, Hexagon

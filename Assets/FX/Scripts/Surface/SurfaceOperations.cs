@@ -54,11 +54,11 @@ public class SurfaceOperations : MonoBehaviour
 
     public void Build(WorkerJob job)
     {
-        if (job.type == JobType.DIG)
+        if (job.type == JobType.DEMOUNT)
         {
             StartCoroutine(Dig(job));
         }
-        else if (job.type == JobType.FILL)
+        else if (job.type == JobType.SOIL)
         {
             StartCoroutine(Fill(job));
         }

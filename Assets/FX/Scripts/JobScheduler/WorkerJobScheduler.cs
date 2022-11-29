@@ -110,7 +110,7 @@ public class WorkerJobScheduler : MonoBehaviour
     private void SetJobToWorker(WorkerJob job)
     {
         if (job.type == JobType.CARRYING) SetCarryingJob((CarrierJob)job);
-        else if (job.type == JobType.FILL || job.type == JobType.DIG) SetBuildJob((BuildJob)job);
+        else if (job.type == JobType.SOIL || job.type == JobType.DEMOUNT) SetBuildJob((BuildJob)job);
     }
 
     private void SetCarryingJob(CarrierJob job)
