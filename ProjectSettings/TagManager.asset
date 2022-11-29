@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Hexagon
   - Mob
+  - Soil_Mount_Icon
+  - Stone_Mount_Icon
+  - Spikes_Mount_Icon
   layers:
   - Default
   - TransparentFX

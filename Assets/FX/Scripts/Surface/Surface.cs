@@ -10,13 +10,16 @@ public class Surface : MonoBehaviour
     public WorkHexagon soilPrefab;
     public WorkHexagon stonePrefab;
     public WorkHexagon spikesPrefab;
-    public WorkHexagon soilDemountScaled;
+
     public WorkHexagon soilMountScaled;
-    public WorkHexagon digPrefab;
-    public WorkHexagon soilMountPrefab;
-    public WorkHexagon stoneMountPrefab;
-    public WorkHexagon spikesMountPrefab;
+    public WorkHexagon stoneMountScaled;
+    public WorkHexagon spikesMountScaled;
+
+    public WorkHexagon soilMountIconPrefab;
+    public WorkHexagon stoneMountIconPrefab;
+    public WorkHexagon spikesMountIconPrefab;
     public WorkHexagon demountPrefab;
+
     public BaseHexagon basePrefab;
     public CollectingHexagon foodPrefab;
     public CollectingHexagon carryingPrefab;
@@ -174,19 +177,59 @@ public class Surface : MonoBehaviour
         block.work = WorkHexagon.MAX_WORK;
         return block;
     }
-    public WorkHexagon AddDigScaledBlock(FloorHexagon hex)
+
+    public WorkHexagon AddBlock(FloorHexagon hex, HexType type)
     {
-        var scaledBlock = WorkHexagon.CreateHexagon(hex, soilDemountScaled);
-        scaledBlock.type = HexType.SOIL;
+        WorkHexagon blockPrefab = GetBlockPrefabByType(type);
+        var block = WorkHexagon.CreateHexagon(hex, blockPrefab);
+        block.type = type;
+        block.work = WorkHexagon.MAX_WORK;
+        return block;
+    }
+
+    public WorkHexagon AddMountScaledBlock(FloorHexagon hex, HexType type)
+    {
+        WorkHexagon scaledBlockPrefab = GetScaledBlockPrefabByType(type);
+        var scaledBlock = WorkHexagon.CreateHexagon(hex, scaledBlockPrefab);
+        scaledBlock.type = type;
         scaledBlock.work = WorkHexagon.MAX_WORK;
         return scaledBlock;
     }
-    public WorkHexagon AddFillScaledBlock(FloorHexagon hex)
+
+    private WorkHexagon GetScaledBlockPrefabByType(HexType type)
     {
-        var scaledBlock = WorkHexagon.CreateHexagon(hex, soilMountScaled);
-        scaledBlock.type = HexType.SOIL;
-        scaledBlock.work = WorkHexagon.MAX_WORK;
-        return scaledBlock;
+        WorkHexagon scaledBlockPrefab = null;
+        if (type == HexType.SOIL)
+        {
+            scaledBlockPrefab = soilMountScaled;
+        }
+        else if (type == HexType.STONE)
+        {
+            scaledBlockPrefab = stoneMountScaled;
+        }
+        else if (type == HexType.SPIKES)
+        {
+            scaledBlockPrefab = spikesMountScaled;
+        }
+        return scaledBlockPrefab;
+    }
+
+    private WorkHexagon GetBlockPrefabByType(HexType type)
+    {
+        WorkHexagon blockPrefab = null;
+        if (type == HexType.SOIL)
+        {
+            blockPrefab = soilPrefab;
+        }
+        else if (type == HexType.STONE)
+        {
+            blockPrefab = stonePrefab;
+        }
+        else if (type == HexType.SPIKES)
+        {
+            blockPrefab = spikesPrefab;
+        }
+        return blockPrefab;
     }
 
     public void AddGround(FloorHexagon hex)
@@ -222,15 +265,15 @@ public class Surface : MonoBehaviour
 
         if (value == SliderValue.SOIL)
         {
-            PlaceMountIcon(hex, soilMountPrefab, Settings.Instance.gameSettings.ACCESS_MASK_SOIL);
+            PlaceMountIcon(hex, soilMountIconPrefab, Settings.Instance.gameSettings.ACCESS_MASK_SOIL);
         }
         else if (value == SliderValue.STONE)
         {
-            PlaceMountIcon(hex, stoneMountPrefab, Settings.Instance.gameSettings.ACCESS_MASK_STONE);
+            PlaceMountIcon(hex, stoneMountIconPrefab, Settings.Instance.gameSettings.ACCESS_MASK_STONE);
         }
         else if (value == SliderValue.SPIKES)
         {
-            PlaceMountIcon(hex, spikesMountPrefab, Settings.Instance.gameSettings.ACCESS_MASK_SPIKES);
+            PlaceMountIcon(hex, spikesMountIconPrefab, Settings.Instance.gameSettings.ACCESS_MASK_SPIKES);
         }
 
         if (value == SliderValue.DEMOUNT)

@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 6292867049611899622}
   - component: {fileID: 2594841573337192449}
   m_Layer: 0
-  m_Name: Stone_Mount
-  m_TagString: Untagged
+  m_Name: Stone_Mount_Icon
+  m_TagString: Stone_Mount_Icon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -106,7 +106,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 284349690294522776, guid: 6ef6f73c1ef17de46868508c8bd2cd52, type: 3}
       propertyPath: m_Name
-      value: Hex_Stone
+      value: Stone
       objectReference: {fileID: 0}
     - target: {fileID: 628786673665116450, guid: 6ef6f73c1ef17de46868508c8bd2cd52, type: 3}
       propertyPath: m_RootOrder

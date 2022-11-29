@@ -8,11 +8,13 @@ public class SurfaceOperations : MonoBehaviour
 {
     public Surface surface;
     public Dictionary<string, Hexagon> oldHexagons { get => surface.oldhexagons; set => surface.oldhexagons = value; }
+    private GameSettings gameSettings;
     private WorkerSettings workerSettings;
 
     void Start()
     {
         workerSettings = Settings.Instance.workerSettings;
+        gameSettings = Settings.Instance.gameSettings;
     }
     public void Loading(CollectingHexagon collectingHex, LoadingState state, CarrierJob job)
     {
@@ -56,43 +58,45 @@ public class SurfaceOperations : MonoBehaviour
     {
         if (job.type == JobType.DEMOUNT)
         {
-            StartCoroutine(Dig(job));
+            // StartCoroutine(Demount(job));
         }
         else if (job.type == JobType.SOIL)
         {
-            StartCoroutine(Fill(job));
+            StartCoroutine(Mount(job));
         }
     }
 
-    public IEnumerator Dig(WorkerJob workerJob)
-    {
-        var worker = workerJob.worker;
-        var floorHex = workerJob.hex;
-        var wallHex = (WorkHexagon)(workerJob.hex.child);
-        floorHex.RemoveChildren();
-        var scaledBlock = surface.AddDigScaledBlock(floorHex);
-        while (scaledBlock != null)
-        {
-            scaledBlock.work -= workerSettings.CONSTRUCTION_SPEED;
-            scaledBlock.transform.localScale = Vector3.one * scaledBlock.work / WorkHexagon.MAX_WORK;
-            if (scaledBlock.work <= 0)
-            {
-                surface.AddGround(floorHex);
-                surface.pathGraph.SetAccesabillity(floorHex, Settings.Instance.gameSettings.ACCESS_MASK_FLOOR);
-                worker.job.Cancel();
-                oldHexagons.Remove(floorHex.id);
-                yield break;
-            }
-            yield return new WaitForSeconds(0.1f);
-        }
-    }
+    // public IEnumerator Demount(WorkerJob workerJob)
+    // {
+    //     var worker = workerJob.worker;
+    //     var floorHex = workerJob.hex;
+    //     var soilHex = (WorkHexagon)(workerJob.hex.child);
+    //     floorHex.RemoveChildren();
+    //     var scaledBlock = surface.AddDigScaledBlock(floorHex);
+    //     while (scaledBlock != null)
+    //     {
+    //         scaledBlock.work -= workerSettings.CONSTRUCTION_SPEED;
+    //         scaledBlock.transform.localScale = Vector3.one * scaledBlock.work / WorkHexagon.MAX_WORK;
+    //         if (scaledBlock.work <= 0)
+    //         {
+    //             surface.AddGround(floorHex);
+    //             surface.pathGraph.SetAccesabillity(floorHex, gameSettings.ACCESS_MASK_FLOOR);
+    //             worker.job.Cancel();
+    //             oldHexagons.Remove(floorHex.id);
+    //             yield break;
+    //         }
+    //         yield return new WaitForSeconds(0.1f);
+    //     }
+    // }
 
-    public IEnumerator Fill(WorkerJob workerJob)
+    public IEnumerator Mount(WorkerJob workerJob)
     {
         var worker = workerJob.worker;
         var floorHex = workerJob.hex;
+
+        var type = GetHexTypeByIcon(floorHex);
         floorHex.RemoveChildren();
-        var scaledBlock = surface.AddFillScaledBlock(floorHex);
+        var scaledBlock = surface.AddMountScaledBlock(floorHex, type);
         while (scaledBlock != null)
         {
             scaledBlock.work -= workerSettings.CONSTRUCTION_SPEED;
@@ -100,15 +104,50 @@ public class SurfaceOperations : MonoBehaviour
             if (scaledBlock.work <= 0)
             {
                 floorHex.RemoveChildren();
-                surface.AddSoil(floorHex);
+                surface.AddBlock(floorHex, type);
+                surface.pathGraph.SetAccesabillity(floorHex, GetAccessMaskByHexType(type));
                 worker.job.Cancel();
                 oldHexagons.Remove(floorHex.id);
                 yield break;
             }
             yield return new WaitForSeconds(0.1f);
         }
-        surface.pathGraph.SetAccesabillity(floorHex, Settings.Instance.gameSettings.ACCESS_MASK_FLOOR);
+        surface.pathGraph.SetAccesabillity(floorHex, gameSettings.ACCESS_MASK_FLOOR);
         worker.job.Cancel();
+    }
+
+    private int GetAccessMaskByHexType(HexType type)
+    {
+        if (type == HexType.SOIL)
+        {
+            return gameSettings.ACCESS_MASK_SOIL;
+        }
+        else if (type == HexType.STONE)
+        {
+            return gameSettings.ACCESS_MASK_STONE;
+        }
+        else if (type == HexType.SPIKES)
+        {
+            return gameSettings.ACCESS_MASK_SPIKES;
+        }
+        return gameSettings.ACCESS_MASK_FLOOR;
+    }
+    private HexType GetHexTypeByIcon(FloorHexagon floorHexagon)
+    {
+        var tag = ((WorkHexagon)floorHexagon.child).tag;
+        if (tag == "Soil_Mount_Icon")
+        {
+            return HexType.SOIL;
+        }
+        else if (tag == "Stone_Mount_Icon")
+        {
+            return HexType.STONE;
+        }
+        else if (tag == "Spikes_Mount_Icon")
+        {
+            return HexType.SPIKES;
+        }
+        return HexType.EMPTY;
     }
 
     public bool IsInOldHexagons(FloorHexagon hex)

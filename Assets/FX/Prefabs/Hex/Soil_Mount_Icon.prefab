@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 7097961056364739002}
   - component: {fileID: 1977940879894948748}
   m_Layer: 0
-  m_Name: Soil_Mount
-  m_TagString: Untagged
+  m_Name: Soil_Mount_Icon
+  m_TagString: Soil_Mount_Icon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -106,7 +106,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1691452921421368621, guid: 3e68a11dd730d1446b99d95886a65495, type: 3}
       propertyPath: m_Name
-      value: Hex_Wall
+      value: Soil
       objectReference: {fileID: 0}
     - target: {fileID: 2031950079957292951, guid: 3e68a11dd730d1446b99d95886a65495, type: 3}
       propertyPath: m_RootOrder
