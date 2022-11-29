@@ -7,6 +7,10 @@ using UnityEngine.UI;
 
 //namespace AntFarm
 //{
+public enum SliderValues
+{
+    None, Worker, Soldier, Soil, Stone, Spikes
+}
 public class ScrollRectSnap : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     public List<RectTransform> elements = new List<RectTransform>();
@@ -19,6 +23,7 @@ public class ScrollRectSnap : MonoBehaviour, IDragHandler, IBeginDragHandler, IE
     public int n;
     private float dist;
     public RectTransform selectedField;
+    public SliderValues choosenValue { get => (SliderValues)n; }
     private void Start()
     {
         selectedField.sizeDelta = new Vector2(selectedField.rect.height, 0);
