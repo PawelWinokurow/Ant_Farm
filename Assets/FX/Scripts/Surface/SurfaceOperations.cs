@@ -70,7 +70,10 @@ public class SurfaceOperations : MonoBehaviour
     {
         var worker = workerJob.worker;
         var floorHex = workerJob.hex;
-        var scaledBlock = (WorkHexagon)(workerJob.hex.child);
+        var type = GetHexTypeByIcon(floorHex);
+        // var scaledBlock = (WorkHexagon)(workerJob.hex.child);
+        floorHex.RemoveChildren();
+        var scaledBlock = surface.AddBlock(floorHex, type);
         while (scaledBlock != null)
         {
             scaledBlock.work -= workerSettings.CONSTRUCTION_SPEED;
