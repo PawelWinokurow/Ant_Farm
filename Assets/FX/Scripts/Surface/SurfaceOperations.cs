@@ -58,7 +58,7 @@ public class SurfaceOperations : MonoBehaviour
     {
         if (job.type == JobType.DEMOUNT)
         {
-            // StartCoroutine(Demount(job));
+            StartCoroutine(Demount(job));
         }
         else if (job.type == JobType.MOUNT)
         {
@@ -66,28 +66,26 @@ public class SurfaceOperations : MonoBehaviour
         }
     }
 
-    // public IEnumerator Demount(WorkerJob workerJob)
-    // {
-    //     var worker = workerJob.worker;
-    //     var floorHex = workerJob.hex;
-    //     var soilHex = (WorkHexagon)(workerJob.hex.child);
-    //     floorHex.RemoveChildren();
-    //     var scaledBlock = surface.AddDigScaledBlock(floorHex);
-    //     while (scaledBlock != null)
-    //     {
-    //         scaledBlock.work -= workerSettings.CONSTRUCTION_SPEED;
-    //         scaledBlock.transform.localScale = Vector3.one * scaledBlock.work / WorkHexagon.MAX_WORK;
-    //         if (scaledBlock.work <= 0)
-    //         {
-    //             surface.AddGround(floorHex);
-    //             surface.pathGraph.SetAccesabillity(floorHex, gameSettings.ACCESS_MASK_FLOOR);
-    //             worker.job.Cancel();
-    //             oldHexagons.Remove(floorHex.id);
-    //             yield break;
-    //         }
-    //         yield return new WaitForSeconds(0.1f);
-    //     }
-    // }
+    public IEnumerator Demount(WorkerJob workerJob)
+    {
+        var worker = workerJob.worker;
+        var floorHex = workerJob.hex;
+        var scaledBlock = (WorkHexagon)(workerJob.hex.child);
+        while (scaledBlock != null)
+        {
+            scaledBlock.work -= workerSettings.CONSTRUCTION_SPEED;
+            scaledBlock.transform.localScale = Vector3.one * scaledBlock.work / WorkHexagon.MAX_WORK;
+            if (scaledBlock.work <= 0)
+            {
+                surface.AddGround(floorHex);
+                surface.pathGraph.SetAccesabillity(floorHex, gameSettings.ACCESS_MASK_FLOOR);
+                worker.job.Cancel();
+                oldHexagons.Remove(floorHex.id);
+                yield break;
+            }
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
 
     public IEnumerator Mount(WorkerJob workerJob)
     {

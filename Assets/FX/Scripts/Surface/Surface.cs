@@ -22,7 +22,6 @@ public class Surface : MonoBehaviour
 
     public BaseHexagon basePrefab;
     public CollectingHexagon foodPrefab;
-    public CollectingHexagon carryingPrefab;
     private Camera cam;
     public int height;
     public int width;
