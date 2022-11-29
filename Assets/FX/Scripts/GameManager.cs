@@ -89,8 +89,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
-
     // if (hex.type == HexType.FOOD)
     // {
     //     var foodHex = (CollectingHexagon)(hex.child);
@@ -106,33 +104,6 @@ public class GameManager : MonoBehaviour
     //         foodHex.food.antCount = 0;
     //     }
     // }
-    // else if (hex.type == HexType.EMPTY || hex.type == HexType.SOIL)
-    // {
-    //     if (AreNoMobsInHex(hex))
-    //     {
-    //         if (surfaceOperations.IsInOldHexagons(hex) && !workerJobScheduler.IsJobAssigned(hex.id))
-    //         {
-    //             surface.RemoveIcon(hex);
-    //             workerJobScheduler.CancelJob(hex.id);
-    //         }
-    //         else
-    //         {
-    //             surface.PlaceIcon(hex);
-    //             if (hex.type == HexType.EMPTY)
-    //             {
-    //                 workerJobScheduler.AssignJob(new BuildJob(hex, hex.transform.position, JobType.SOIL));
-    //             }
-    //             else if (hex.type == HexType.SOIL)
-    //             {
-    //                 workerJobScheduler.AssignJob(new BuildJob(hex, hex.transform.position, JobType.DEMOUNT));
-    //             }
-
-    //         }
-    //     }
-    // }
-
-
-
 
     private bool AreNoMobsInHex(Hexagon hex)
     {

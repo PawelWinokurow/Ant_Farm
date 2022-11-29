@@ -274,8 +274,7 @@ public class Surface : MonoBehaviour
     }
     private void PlaceDemountIcon(FloorHexagon hex, WorkHexagon prefab)
     {
-        // TODO replace wallPrefab
-        WorkHexagon clonedHex = WorkHexagon.CreateHexagon(hex, soilPrefab);
+        WorkHexagon clonedHex = WorkHexagon.CreateHexagon(hex, GetBlockPrefabByType(hex.type));
         clonedHex.AssignProperties((WorkHexagon)hex.child);
         oldhexagons.Add(clonedHex.id, clonedHex);
         hex.RemoveChildren();

@@ -59,7 +59,6 @@ public class ScrollRectSnap : MonoBehaviour, IDragHandler, IBeginDragHandler, IE
     {
         if (onSlider && isDrag)
         {
-            Debug.Log(transform.lossyScale);
             a += (eventData.pointerCurrentRaycast.screenPosition.x - touchStartX) * 720f / Screen.width;
             touchStartX = eventData.pointerCurrentRaycast.screenPosition.x;
 
