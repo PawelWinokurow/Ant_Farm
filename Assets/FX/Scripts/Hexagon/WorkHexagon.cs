@@ -7,8 +7,8 @@ public class WorkHexagon : MonoBehaviour, Hexagon
     public Vector3 position { get => floorHexagon.position; set => floorHexagon.position = value; }
     public HexType type { get => floorHexagon.type; set => floorHexagon.type = value; }
     public FloorHexagon floorHexagon { get; set; }
-    public float work { get; set; }
     public static float MAX_WORK = 100f;
+    public float work = MAX_WORK;
 
 
     public static WorkHexagon CreateHexagon(FloorHexagon parent, WorkHexagon workHexPrefab)

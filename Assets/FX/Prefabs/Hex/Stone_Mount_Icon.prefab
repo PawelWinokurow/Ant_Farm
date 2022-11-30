@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8145111763567623265}
   - component: {fileID: 6292867049611899622}
   - component: {fileID: 2594841573337192449}
+  - component: {fileID: 7300087671223650242}
   m_Layer: 0
   m_Name: Stone_Mount_Icon
   m_TagString: Stone_Mount_Icon
@@ -97,6 +98,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a2cacea324c27a4ea7e7d19da329aab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7300087671223650242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2784981129338444685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7faefb676d6a5e943b889f3f7ae5838f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mountIconPrefab: {fileID: 2594841573337192449}
+  scaledIconPrefab: {fileID: 1323456790323941696}
 --- !u!1001 &8323112287669486306
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -166,6 +181,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6ef6f73c1ef17de46868508c8bd2cd52, type: 3}
+--- !u!114 &1323456790323941696 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7051650168049685410, guid: 6ef6f73c1ef17de46868508c8bd2cd52, type: 3}
+  m_PrefabInstance: {fileID: 8323112287669486306}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a2cacea324c27a4ea7e7d19da329aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &8878922131551128512 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 628786673665116450, guid: 6ef6f73c1ef17de46868508c8bd2cd52, type: 3}

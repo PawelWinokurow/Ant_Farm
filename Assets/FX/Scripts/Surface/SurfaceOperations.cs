@@ -96,14 +96,13 @@ public class SurfaceOperations : MonoBehaviour
     {
         var worker = workerJob.worker;
         var floorHex = workerJob.hex;
-
         var type = GetHexTypeByIcon(floorHex);
-        floorHex.RemoveChildren();
-        var scaledBlock = surface.AddMountScaledBlock(floorHex, type);
+        var icon = ((WorkHexagon)floorHex.child).GetComponent<MountIcon>();
+        var scaledBlock = icon.scaledIconPrefab;
         while (scaledBlock != null)
         {
             scaledBlock.work -= workerSettings.CONSTRUCTION_SPEED;
-            scaledBlock.transform.localScale = Vector3.one * (1 - scaledBlock.work / WorkHexagon.MAX_WORK);
+            scaledBlock.transform.localScale = Vector3.one * (0.3f + 0.7f * (1 - scaledBlock.work / WorkHexagon.MAX_WORK));
             if (scaledBlock.work <= 0)
             {
                 floorHex.RemoveChildren();

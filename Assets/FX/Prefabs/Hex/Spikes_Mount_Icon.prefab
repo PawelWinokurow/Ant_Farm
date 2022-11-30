@@ -92,6 +92,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4572131070376623151}
+  - component: {fileID: 5729198224053016045}
+  - component: {fileID: 2545541986591001544}
   m_Layer: 0
   m_Name: Trap_01
   m_TagString: Untagged
@@ -115,6 +117,33 @@ Transform:
   m_Father: {fileID: 5027982129609804310}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5729198224053016045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1259244230226645493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21879c50cae789146aa05a60fb3b2391, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spikes: {fileID: 5494308389105825565}
+  body: {fileID: 5427688932320537424}
+  isPlay: 0
+--- !u!114 &2545541986591001544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1259244230226645493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a2cacea324c27a4ea7e7d19da329aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3045908553014889796
 GameObject:
   m_ObjectHideFlags: 0
@@ -210,6 +239,7 @@ GameObject:
   - component: {fileID: 4378869554640269098}
   - component: {fileID: 1222461567735955811}
   - component: {fileID: -4469524149322463765}
+  - component: {fileID: 2206958196654102159}
   m_Layer: 0
   m_Name: Spikes_Mount_Icon
   m_TagString: Spikes_Mount_Icon
@@ -295,6 +325,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a2cacea324c27a4ea7e7d19da329aab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2206958196654102159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4152379798447890413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7faefb676d6a5e943b889f3f7ae5838f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mountIconPrefab: {fileID: -4469524149322463765}
+  scaledIconPrefab: {fileID: 2545541986591001544}
 --- !u!1 &5169342397564306481
 GameObject:
   m_ObjectHideFlags: 0
