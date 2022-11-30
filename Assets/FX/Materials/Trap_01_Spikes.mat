@@ -90,6 +90,7 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _ScaleUV: 1
+    - _Scl: 0.3
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -100,7 +101,7 @@ Material:
     - _BlinkFX_Color: {r: 1, g: 0, b: 0, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Color0: {r: 1, g: 0.31230167, b: 0, a: 1}
-    - _Color1: {r: 0.38679248, g: 0.38679248, b: 0.38679248, a: 1}
+    - _Color1: {r: 0.3301887, g: 0.32292038, b: 0.32292038, a: 1}
     - _Color2: {r: 0.81761, g: 1, b: 0.99447304, a: 1}
     - _Color3: {r: 0.08346045, g: 1, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
