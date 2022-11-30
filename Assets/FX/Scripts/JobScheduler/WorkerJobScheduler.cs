@@ -17,6 +17,12 @@ public class WorkerJobScheduler : MonoBehaviour
     private List<Worker> freeWorkers = new List<Worker>();
     public List<Worker> allWorkers = new List<Worker>();
     private static object monitorLock = new object();
+    public GameSettings gameSettings;
+
+    void Start()
+    {
+        gameSettings = Settings.Instance.gameSettings;
+    }
 
     void Update()
     {
@@ -89,8 +95,7 @@ public class WorkerJobScheduler : MonoBehaviour
         KDTree workerPositionsTree = new KDTree(freeWorkersClone.Select(worker => worker.position).ToArray());
         KDQuery query = new KDQuery();
         List<int> queryResults = new List<int>();
-        List<float> queryDistances = new List<float>();
-        query.KNearest(workerPositionsTree, job.destination, freeWorkersClone.Count, queryResults, queryDistances);
+        query.KNearest(workerPositionsTree, job.destination, freeWorkersClone.Count, queryResults);
         queryResults.Reverse();
         foreach (int i in queryResults)
         {
@@ -107,6 +112,24 @@ public class WorkerJobScheduler : MonoBehaviour
         unassignedJobsQueue.Remove(job);
         unassignedJobsQueue.Add(job);
     }
+
+    private Path FindPathToFood()
+    {
+        var baseNeighbour = surfaceOperations.surface.baseHex.vertex.neighbours[0];
+        var foodHexagons = surfaceOperations.surface.hexagons.Where(hex => hex.type == HexType.FOOD).ToList();
+
+        if (foodHexagons.Count != 0)
+        {
+
+            KDTree workerPositionsTree = new KDTree(foodHexagons.Select(hex => hex.position).ToArray());
+            KDQuery query = new KDQuery();
+            List<int> queryResults = new List<int>();
+            query.KNearest(workerPositionsTree, baseNeighbour.position, 1, queryResults);
+            return pathfinder.FindPath(baseNeighbour.position, foodHexagons[queryResults[0]].position, gameSettings.ACCESS_MASK_FLOOR + gameSettings.ACCESS_MASK_SOIL, SearchType.NEAREST_CENTRAL_VERTEX);
+        }
+        return null;
+    }
+
 
     private void SetJobToWorker(WorkerJob job)
     {

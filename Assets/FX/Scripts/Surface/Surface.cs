@@ -243,7 +243,6 @@ public class Surface : MonoBehaviour
 
     public void PlaceIcon(FloorHexagon hex, SliderValue value)
     {
-
         if (value == SliderValue.SOIL)
         {
             PlaceMountIcon(hex, soilMountIconPrefab, Settings.Instance.gameSettings.ACCESS_MASK_SOIL);
@@ -256,12 +255,10 @@ public class Surface : MonoBehaviour
         {
             PlaceMountIcon(hex, spikesMountIconPrefab, Settings.Instance.gameSettings.ACCESS_MASK_SPIKES);
         }
-
         if (value == SliderValue.DEMOUNT)
         {
             PlaceDemountIcon(hex, demountPrefab);
         }
-
     }
 
     private void PlaceMountIcon(FloorHexagon hex, WorkHexagon prefab, int accessMask)
@@ -274,11 +271,11 @@ public class Surface : MonoBehaviour
     }
     private void PlaceDemountIcon(FloorHexagon hex, WorkHexagon prefab)
     {
-        WorkHexagon clonedHex = WorkHexagon.CreateHexagon(hex, GetBlockPrefabByType(hex.type));
-        clonedHex.AssignProperties((WorkHexagon)hex.child);
-        oldhexagons.Add(clonedHex.id, clonedHex);
-        hex.RemoveChildren();
-        WorkHexagon.CreateHexagon(hex, prefab);
+        // WorkHexagon clonedHex = WorkHexagon.CreateHexagon(hex, GetBlockPrefabByType(hex.type));
+        // clonedHex.AssignProperties((WorkHexagon)hex.child);
+        // oldhexagons.Add(clonedHex.id, clonedHex);
+        // hex.RemoveChildren();
+        // WorkHexagon.CreateHexagon(hex, prefab);
     }
 
 
