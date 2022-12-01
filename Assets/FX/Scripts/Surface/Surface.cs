@@ -271,11 +271,14 @@ public class Surface : MonoBehaviour
     }
     private void PlaceDemountIcon(FloorHexagon hex, WorkHexagon prefab)
     {
-        // WorkHexagon clonedHex = WorkHexagon.CreateHexagon(hex, GetBlockPrefabByType(hex.type));
-        // clonedHex.AssignProperties((WorkHexagon)hex.child);
-        // oldhexagons.Add(clonedHex.id, clonedHex);
-        // hex.RemoveChildren();
-        // WorkHexagon.CreateHexagon(hex, prefab);
+        WorkHexagon clonedHex = WorkHexagon.CreateHexagon(hex, GetBlockPrefabByType(hex.type));
+        clonedHex.AssignProperties((WorkHexagon)hex.child);
+        oldhexagons.Add(clonedHex.id, clonedHex);
+        hex.RemoveChildren();
+        WorkHexagon hexNew = WorkHexagon.CreateHexagon(hex, GetBlockPrefabByType(hex.type));
+        hexNew.AssignProperties(clonedHex);
+        hexNew.transform.localScale = 0.95f * Vector3.one;
+        Instantiate(prefab, hexNew.position, Quaternion.identity, hexNew.transform);
     }
 
 

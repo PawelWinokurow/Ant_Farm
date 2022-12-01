@@ -75,7 +75,7 @@ public class SurfaceOperations : MonoBehaviour
         while (scaledBlock != null)
         {
             scaledBlock.work -= workerSettings.CONSTRUCTION_SPEED;
-            scaledBlock.transform.localScale = Vector3.one * scaledBlock.work / WorkHexagon.MAX_WORK;
+            scaledBlock.transform.localScale = 0.95f * Vector3.one * scaledBlock.work / WorkHexagon.MAX_WORK;
             if (scaledBlock.work <= 0)
             {
                 surface.AddGround(floorHex);
