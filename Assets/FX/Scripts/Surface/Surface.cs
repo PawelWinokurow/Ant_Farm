@@ -39,6 +39,9 @@ public class Surface : MonoBehaviour
 
     public Dictionary<string, Hexagon> oldhexagons = new Dictionary<string, Hexagon>();
     public Vector3 center;
+    private GameSettings gameSettings;
+
+
     public void Init(Graph pathGraph)
     {
         this.pathGraph = pathGraph;
@@ -48,6 +51,7 @@ public class Surface : MonoBehaviour
         SetCameraPositionToCenter();
         SetbaseHex();
         GetComponent<AddTextureToHex>().Init();
+        gameSettings = Settings.Instance.gameSettings;
     }
 
     public void Init(Graph pathGraph, HexagonSerializable[] hexagons)
@@ -279,8 +283,25 @@ public class Surface : MonoBehaviour
         hexNew.AssignProperties(clonedHex);
         hexNew.transform.localScale = 0.95f * Vector3.one;
         Instantiate(prefab, hexNew.position, Quaternion.identity, hexNew.transform);
+        pathGraph.SetAccesabillity(hex, GetAccessMaskByHexType(hex.type));
     }
 
+    public int GetAccessMaskByHexType(HexType type)
+    {
+        if (type == HexType.SOIL) return gameSettings.ACCESS_MASK_SOIL;
+        else if (type == HexType.STONE) return gameSettings.ACCESS_MASK_STONE;
+        else if (type == HexType.SPIKES) return gameSettings.ACCESS_MASK_SPIKES;
+        return gameSettings.ACCESS_MASK_FLOOR;
+    }
+
+    public HexType GetHexTypeByIcon(FloorHexagon floorHexagon)
+    {
+        var tag = ((WorkHexagon)floorHexagon.child).tag;
+        if (tag == "Soil_Mount_Icon") return HexType.SOIL;
+        else if (tag == "Stone_Mount_Icon") return HexType.STONE;
+        else if (tag == "Spikes_Mount_Icon") return HexType.SPIKES;
+        return HexType.EMPTY;
+    }
 
     public void RemoveIcon(FloorHexagon hex)
     {

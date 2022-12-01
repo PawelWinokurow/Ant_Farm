@@ -70,7 +70,7 @@ public class SurfaceOperations : MonoBehaviour
     {
         var worker = workerJob.worker;
         var floorHex = workerJob.hex;
-        var type = GetHexTypeByIcon(floorHex);
+        var type = surface.GetHexTypeByIcon(floorHex);
         var scaledBlock = (WorkHexagon)(floorHex.child);
         while (scaledBlock != null)
         {
@@ -92,7 +92,7 @@ public class SurfaceOperations : MonoBehaviour
     {
         var worker = workerJob.worker;
         var floorHex = workerJob.hex;
-        var type = GetHexTypeByIcon(floorHex);
+        var type = surface.GetHexTypeByIcon(floorHex);
         var icon = ((WorkHexagon)floorHex.child).GetComponent<MountIcon>();
         var scaledBlock = icon.scaledIconPrefab;
         while (scaledBlock != null)
@@ -103,7 +103,7 @@ public class SurfaceOperations : MonoBehaviour
             {
                 floorHex.RemoveChildren();
                 surface.AddBlock(floorHex, type);
-                surface.pathGraph.SetAccesabillity(floorHex, GetAccessMaskByHexType(type));
+                surface.pathGraph.SetAccesabillity(floorHex, surface.GetAccessMaskByHexType(type));
                 worker.job.Cancel();
                 oldHexagons.Remove(floorHex.id);
                 yield break;
@@ -114,21 +114,7 @@ public class SurfaceOperations : MonoBehaviour
         worker.job.Cancel();
     }
 
-    private int GetAccessMaskByHexType(HexType type)
-    {
-        if (type == HexType.SOIL) return gameSettings.ACCESS_MASK_SOIL;
-        else if (type == HexType.STONE) return gameSettings.ACCESS_MASK_STONE;
-        else if (type == HexType.SPIKES) return gameSettings.ACCESS_MASK_SPIKES;
-        return gameSettings.ACCESS_MASK_FLOOR;
-    }
-    private HexType GetHexTypeByIcon(FloorHexagon floorHexagon)
-    {
-        var tag = ((WorkHexagon)floorHexagon.child).tag;
-        if (tag == "Soil_Mount_Icon") return HexType.SOIL;
-        else if (tag == "Stone_Mount_Icon") return HexType.STONE;
-        else if (tag == "Spikes_Mount_Icon") return HexType.SPIKES;
-        return HexType.EMPTY;
-    }
+
 
     public bool IsInOldHexagons(FloorHexagon hex)
     {
