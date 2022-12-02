@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -16,9 +14,9 @@ public class Controller : MonoBehaviour
 
     private void Update()
     {
-       if( Input.GetMouseButtonUp(0) && Input.mousePosition.y/Screen.height>0.09f)
+        if (Input.GetMouseButtonUp(0) && Input.mousePosition.y / Screen.height > 0.09f)
         {
-           Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             GameManager.ProcessTap(pos);
         }
     }

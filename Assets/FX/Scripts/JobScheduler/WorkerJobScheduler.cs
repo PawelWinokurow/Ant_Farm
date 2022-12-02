@@ -18,6 +18,7 @@ public class WorkerJobScheduler : MonoBehaviour
     public List<Worker> allWorkers = new List<Worker>();
     private static object monitorLock = new object();
     public GameSettings gameSettings;
+    public List<Hexagon> foodHexagons = new List<Hexagon>();
 
     void Start()
     {
@@ -26,12 +27,35 @@ public class WorkerJobScheduler : MonoBehaviour
 
     void Update()
     {
+        PathToFood();
         while (assignedJobsQueue.Count != 0)
         {
             var job = assignedJobsQueue[0];
             assignedJobsQueue.Remove(job);
             MoveFreeMobToBusyMobs(job.worker);
             SetJobToWorker(job);
+        }
+    }
+
+    private void PathToFood()
+    {
+        if (foodHexagons.Count == 0)
+        {
+            var nearestFoodHex = FindNearestFood();
+            if (nearestFoodHex != null)
+            {
+                var path = pathfinder.FindPath(surfaceOperations.surface.baseHex.vertex.neighbours[0].position, nearestFoodHex.position, gameSettings.ACCESS_MASK_FLOOR + gameSettings.ACCESS_MASK_SOIL + gameSettings.ACCESS_MASK_BASE, SearchType.NEAREST_CENTRAL_VERTEX);
+                if (path != null)
+                {
+                    var soilHexagons = path.wayPoints
+                        .Select(edge => edge.floorHexagon)
+                        .Distinct()
+                        .Where(hex => hex.type == HexType.SOIL)
+                        .ToList();
+                    soilHexagons.ForEach(hex => { surfaceOperations.surface.PlaceIcon(hex, SliderValue.DEMOUNT); AssignJob(new BuildJob(hex, hex.transform.position, JobType.DEMOUNT)); });
+                    foodHexagons.Add(nearestFoodHex);
+                }
+            }
         }
     }
 
@@ -113,23 +137,21 @@ public class WorkerJobScheduler : MonoBehaviour
         unassignedJobsQueue.Add(job);
     }
 
-    private Path FindPathToFood()
+    private FloorHexagon FindNearestFood()
     {
         var baseNeighbour = surfaceOperations.surface.baseHex.vertex.neighbours[0];
         var foodHexagons = surfaceOperations.surface.hexagons.Where(hex => hex.type == HexType.FOOD).ToList();
 
         if (foodHexagons.Count != 0)
         {
-
             KDTree workerPositionsTree = new KDTree(foodHexagons.Select(hex => hex.position).ToArray());
             KDQuery query = new KDQuery();
             List<int> queryResults = new List<int>();
             query.KNearest(workerPositionsTree, baseNeighbour.position, 1, queryResults);
-            return pathfinder.FindPath(baseNeighbour.position, foodHexagons[queryResults[0]].position, gameSettings.ACCESS_MASK_FLOOR + gameSettings.ACCESS_MASK_SOIL, SearchType.NEAREST_CENTRAL_VERTEX);
+            return foodHexagons[queryResults[0]];
         }
         return null;
     }
-
 
     private void SetJobToWorker(WorkerJob job)
     {
