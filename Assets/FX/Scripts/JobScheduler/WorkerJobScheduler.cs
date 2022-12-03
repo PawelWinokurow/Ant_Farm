@@ -8,10 +8,10 @@ using WorkerNamespace;
 public class WorkerJobScheduler : MonoBehaviour
 {
     private Dictionary<string, WorkerJob> jobMap = new Dictionary<string, WorkerJob>();
-    private List<WorkerJob> unassignedCarryingJobsQueue = new List<WorkerJob>();
     private List<WorkerJob> unassignedBuildingJobsQueue = new List<WorkerJob>();
-    private List<WorkerJob> assignedCarryingJobsQueue = new List<WorkerJob>();
     private List<WorkerJob> assignedBuildingJobsQueue = new List<WorkerJob>();
+    private List<WorkerJob> unassignedCarryingJobsQueue = new List<WorkerJob>();
+    private List<WorkerJob> assignedCarryingJobsQueue = new List<WorkerJob>();
     private Graph pathGraph;
     private SurfaceOperations surfaceOperations;
     public Pathfinder pathfinder { get; set; }
@@ -21,7 +21,16 @@ public class WorkerJobScheduler : MonoBehaviour
     public List<Worker> allWorkers = new List<Worker>();
     private static object monitorLock = new object();
     public GameSettings gameSettings;
-    public List<Hexagon> foodHexagons = new List<Hexagon>();
+    public List<FloorHexagon> foodHexagons = new List<FloorHexagon>();
+
+
+    private bool someUnassignedBuildingJobLeft { get => unassignedBuildingJobsQueue.Count != 0; }
+    private bool someAssignedBuildingJobLeft { get => assignedBuildingJobsQueue.Count != 0; }
+    private bool someUnassignedCarryingJobLeft { get => unassignedCarryingJobsQueue.Count != 0; }
+    private bool someAssignedCarryingJobLeft { get => assignedCarryingJobsQueue.Count != 0; }
+    private bool someFreeWorkersLeft { get => freeWorkers.Count != 0; }
+    private bool someCarryingWorkersLeft { get => carryingWorkers.Count != 0; }
+    private bool someFoodLeft { get => foodHexagons.Count != 0; }
 
     void Start()
     {
@@ -30,16 +39,23 @@ public class WorkerJobScheduler : MonoBehaviour
 
     void Update()
     {
-        if (freeWorkers.Count != 0 && foodHexagons.Count == 0)
+        if (!someFoodLeft)
         {
             //TODO remove foodHexagons if not exist
             PathToFood();
         }
-        while (assignedBuildingJobsQueue.Count != 0)
+        while (someAssignedBuildingJobLeft)
         {
-            var job = assignedBuildingJobsQueue[0];
+            var job = assignedBuildingJobsQueue.First();
             assignedBuildingJobsQueue.Remove(job);
-            MoveFreeMobToBuildingMobs(job.worker);
+            MoveFreeMobToBusyMobs(job);
+            SetJobToWorker(job);
+        }
+        while (someAssignedCarryingJobLeft)
+        {
+            var job = assignedCarryingJobsQueue.First();
+            assignedCarryingJobsQueue.Remove(job);
+            MoveFreeMobToBusyMobs(job);
             SetJobToWorker(job);
         }
     }
@@ -72,12 +88,36 @@ public class WorkerJobScheduler : MonoBehaviour
     {
         while (true)
         {
-            if (SomeBuildingJobLeft())
+            if (someUnassignedBuildingJobLeft)
             {
-                AssignWork();
+                if (someFreeWorkersLeft) AssignBuildingWork();
+                else if (!someFreeWorkersLeft && someCarryingWorkersLeft && ReleaseCarryingWorker())
+                {
+                    AssignBuildingWork();
+                }
+            }
+            else
+            {
+                if (someFreeWorkersLeft && someFoodLeft)
+                {
+                    AssignCarryingWork();
+                }
             }
             yield return new WaitForSeconds(0.2f);
         }
+    }
+
+    private bool ReleaseCarryingWorker()
+    {
+        var nearestWorker = carryingWorkers.Where(worker => worker.carryingWeight == 0).OrderBy(worker => Distance.Manhattan(worker.position, foodHexagons[0].position)).FirstOrDefault();
+        if (nearestWorker == null) return false;
+        nearestWorker.CancelJob();
+        return true;
+    }
+
+    private bool IsPathToFoodExists()
+    {
+        return pathfinder.FindPath(surfaceOperations.surface.baseHex.vertex.neighbours[0].position, foodHexagons[0].position, gameSettings.ACCESS_MASK_FLOOR, SearchType.NEAREST_CENTRAL_VERTEX) != null;
     }
 
     public void SetSurfaceOperations(SurfaceOperations setSurfaceOperations)
@@ -105,21 +145,15 @@ public class WorkerJobScheduler : MonoBehaviour
             buildingWorkers.Remove(worker);
             freeWorkers.Remove(worker);
             worker.CancelJob();
-            // Destroy(worker);
         }
         worker.SetState(new DeadState(worker));
     }
 
-    private bool SomeBuildingJobLeft()
-    {
-        return unassignedBuildingJobsQueue.Count != 0 && freeWorkers.Count != 0;
-    }
-
-    private void AssignWork()
+    private void AssignBuildingWork()
     {
 
         var freeWorkersClone = new List<Worker>(freeWorkers);
-        var job = unassignedBuildingJobsQueue[0];
+        var job = unassignedBuildingJobsQueue.First();
 
         KDTree workerPositionsTree = new KDTree(freeWorkersClone.Select(worker => worker.position).ToArray());
         KDQuery query = new KDQuery();
@@ -134,7 +168,7 @@ public class WorkerJobScheduler : MonoBehaviour
                 job.worker = freeWorkersClone[i];
                 job.worker.job = job;
                 job.path = path; ;
-                MoveUnassignedJobToAssignedJobs(job);
+                MoveUnassignedJobToAssignedJobs(job, assignedBuildingJobsQueue, unassignedBuildingJobsQueue);
                 return;
             }
         }
@@ -142,9 +176,25 @@ public class WorkerJobScheduler : MonoBehaviour
         unassignedBuildingJobsQueue.Add(job);
     }
 
+    private void AssignCarryingWork()
+    {
+        var freeWorker = freeWorkers.First();
+        var foodHex = foodHexagons.First();
+        var job = new CarrierJob(foodHex, (BaseHexagon)surfaceOperations.surface.baseHex.child);
+        var path = pathfinder.FindPath(freeWorker.position, job.destination, freeWorker.accessMask, SearchType.NEAREST_CENTRAL_VERTEX);
+        if (path != null)
+        {
+            job.worker = freeWorker;
+            job.worker.job = job;
+            job.path = path;
+            MoveUnassignedJobToAssignedJobs(job, assignedCarryingJobsQueue, unassignedCarryingJobsQueue);
+            return;
+        }
+    }
+
     private FloorHexagon FindNearestFood()
     {
-        var baseNeighbour = surfaceOperations.surface.baseHex.vertex.neighbours[0];
+        var baseNeighbour = surfaceOperations.surface.baseHex.vertex.neighbours.First();
         var foodHexagons = surfaceOperations.surface.hexagons.Where(hex => hex.type == HexType.FOOD).ToList();
 
         if (foodHexagons.Count != 0)
@@ -153,7 +203,7 @@ public class WorkerJobScheduler : MonoBehaviour
             KDQuery query = new KDQuery();
             List<int> queryResults = new List<int>();
             query.KNearest(workerPositionsTree, baseNeighbour.position, 1, queryResults);
-            return foodHexagons[queryResults[0]];
+            return foodHexagons[queryResults.First()];
         }
         return null;
     }
@@ -204,14 +254,17 @@ public class WorkerJobScheduler : MonoBehaviour
             return IsJobAlreadyCreated(job.id);
         }
     }
+
     public bool IsJobAlreadyCreated(string jobId)
     {
         return jobMap.ContainsKey(jobId);
     }
+
     public bool IsJobUnassigned(WorkerJob job)
     {
         return IsJobUnassigned(job.id);
     }
+
     public bool IsJobUnassigned(string jobId)
     {
         lock (monitorLock)
@@ -219,10 +272,12 @@ public class WorkerJobScheduler : MonoBehaviour
             return unassignedBuildingJobsQueue.Any(item => item.id == jobId);
         }
     }
+
     public bool IsJobAssigned(WorkerJob job)
     {
         return IsJobAssigned(job.id);
     }
+
     public bool IsJobAssigned(string jobId)
     {
         lock (monitorLock)
@@ -233,6 +288,7 @@ public class WorkerJobScheduler : MonoBehaviour
 
     public void AssignJob(WorkerJob job)
     {
+        //TODO
         if (!IsJobAlreadyCreated(job) && !IsJobUnassigned(job))
         {
             jobMap.Add(job.id, job);
@@ -252,58 +308,70 @@ public class WorkerJobScheduler : MonoBehaviour
     {
         lock (monitorLock)
         {
-            Remove(job);
             if (job.worker != null)
             {
-                MoveBuildingMobToFreeMobs(job.worker);
+                if (job.type == JobType.MOUNT || job.type == JobType.DEMOUNT)
+                {
+                    assignedBuildingJobsQueue.Remove(job);
+                    unassignedBuildingJobsQueue.Remove(job);
+                    MoveBusyMobToFreeMobs(job.worker, buildingWorkers);
+                }
+                else if (job.type == JobType.CARRYING)
+                {
+
+                    assignedCarryingJobsQueue.Remove(job);
+                    unassignedCarryingJobsQueue.Remove(job);
+                    MoveBusyMobToFreeMobs(job.worker, carryingWorkers);
+                }
                 job.worker.SetState(new IdleState(job.worker));
                 job.worker.path = null;
             }
         }
     }
 
-
-    private void Remove(WorkerJob job)
+    private void MoveFreeMobToBusyMobs(WorkerJob job)
     {
-        lock (monitorLock)
+        if (job.type == JobType.MOUNT || job.type == JobType.DEMOUNT)
         {
-            assignedBuildingJobsQueue.Remove(job);
-            unassignedBuildingJobsQueue.Remove(job);
-            jobMap.Remove(job.id);
+            MoveFreeMobToBusyMobs(job.worker, buildingWorkers);
+        }
+        else if (job.type == JobType.CARRYING)
+        {
+            MoveFreeMobToBusyMobs(job.worker, carryingWorkers);
         }
     }
 
-    private void MoveFreeMobToBuildingMobs(Worker freeWorker)
+    private void MoveFreeMobToBusyMobs(Worker freeWorker, List<Worker> busyWorkers)
     {
         lock (monitorLock)
         {
             freeWorkers.Remove(freeWorker);
-            buildingWorkers.Add(freeWorker);
+            busyWorkers.Add(freeWorker);
         }
     }
-    private void MoveBuildingMobToFreeMobs(Worker buildingWorker)
+    private void MoveBusyMobToFreeMobs(Worker busyWorker, List<Worker> busyWorkers)
     {
         lock (monitorLock)
         {
-            buildingWorkers.Remove(buildingWorker);
-            freeWorkers.Add(buildingWorker);
+            busyWorkers.Remove(busyWorker);
+            freeWorkers.Add(busyWorker);
         }
     }
 
-    private void MoveUnassignedJobToAssignedJobs(WorkerJob unassignedJob)
+    private void MoveUnassignedJobToAssignedJobs(WorkerJob unassignedJob, List<WorkerJob> assignedJobQueue, List<WorkerJob> unassignedJobQueue)
     {
         lock (monitorLock)
         {
-            unassignedBuildingJobsQueue.Remove(unassignedJob);
-            assignedBuildingJobsQueue.Add(unassignedJob);
+            unassignedJobQueue.Remove(unassignedJob);
+            assignedJobQueue.Add(unassignedJob);
         }
     }
-    private void MoveAssignedJobToUnssignedJobs(WorkerJob assignedJob)
+    private void MoveAssignedJobToUnssignedJobs(WorkerJob assignedJob, List<WorkerJob> assignedJobQueue, List<WorkerJob> unassignedJobQueue)
     {
         lock (monitorLock)
         {
-            assignedBuildingJobsQueue.Remove(assignedJob);
-            unassignedBuildingJobsQueue.Add(assignedJob);
+            assignedJobQueue.Remove(assignedJob);
+            unassignedJobQueue.Add(assignedJob);
         }
     }
 

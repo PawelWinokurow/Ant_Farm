@@ -20,14 +20,14 @@ public class CarrierJob : WorkerJob
     public JobType type { get; set; }
     public Path path { get; set; }
 
-    public CarrierJob(string id, FloorHexagon hex, BaseHexagon storageHex, CollectingHexagon collectingHex)
+    public CarrierJob(FloorHexagon hex, BaseHexagon storageHex)
     {
-        this.id = id;
         this.hex = hex;
-        destination = collectingHex.position;
+        this.id = hex.id;
         direction = Direction.COLLECTING;
         storageHexagon = storageHex;
-        collectingHexagon = collectingHex;
+        collectingHexagon = (CollectingHexagon)hex.child;
+        destination = collectingHexagon.position;
         type = JobType.CARRYING;
     }
 

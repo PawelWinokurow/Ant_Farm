@@ -89,22 +89,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // if (hex.type == HexType.FOOD)
-    // {
-    //     var foodHex = (CollectingHexagon)(hex.child);
-    //     var asssignedcarriersNum = foodHex.carriers.Count;
-    //     if (asssignedcarriersNum < 5)
-    //     {
-    //         workerJobScheduler.AssignJob(new CarrierJob($"{hex.id}_{asssignedcarriersNum + 1}", hex, (BaseHexagon)surface.baseHex.child, foodHex));
-    //         foodHex.food.antCount++;
-    //     }
-    //     else
-    //     {
-    //         foodHex.ResetWorkers();
-    //         foodHex.food.antCount = 0;
-    //     }
-    // }
-
     private bool AreNoMobsInHex(Hexagon hex)
     {
         return workerJobScheduler.allWorkers.Where(mob => mob.currentState.type != STATE.DEAD).All(mob => surface.PositionToHex(mob.position).id != hex.id);
