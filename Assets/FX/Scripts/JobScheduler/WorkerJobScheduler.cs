@@ -39,11 +39,10 @@ public class WorkerJobScheduler : MonoBehaviour
 
     void Update()
     {
-        if (!someFoodLeft)
-        {
-            //TODO remove foodHexagons if not exist
-            PathToFood();
-        }
+
+        if (someFoodLeft && ((CollectingHexagon)(foodHexagons.First().child)).Quantity <= 0) foodHexagons.RemoveAt(0);
+        if (!someFoodLeft) SetPathToFood();
+
         while (someAssignedBuildingJobLeft)
         {
             var job = assignedBuildingJobsQueue.First();
@@ -60,7 +59,7 @@ public class WorkerJobScheduler : MonoBehaviour
         }
     }
 
-    private void PathToFood()
+    private void SetPathToFood()
     {
         var nearestFoodHex = FindNearestFood();
         if (nearestFoodHex != null)

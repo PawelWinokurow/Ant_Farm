@@ -26,8 +26,9 @@ public class SurfaceOperations : MonoBehaviour
             worker.carryingWeight += collectingHex.Quantity;
             collectingHex.Quantity = 0;
             collectingHex.carriers.Where(w => w.id != worker.id).ToList().ForEach(w => w.CancelJob());
-            collectingHex.type = HexType.EMPTY;
+            collectingHex.ResetWorkers();
             collectingHex.floorHexagon.RemoveChildren();
+            collectingHex.type = HexType.EMPTY;
             state.Done();
         }
         else
