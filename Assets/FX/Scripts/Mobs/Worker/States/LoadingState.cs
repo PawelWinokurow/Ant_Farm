@@ -35,7 +35,6 @@ namespace WorkerNamespace
         }
 
         override public void CancelJob()
-
         {
             if (worker.carryingWeight != 0)
             {
