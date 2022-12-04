@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Health : MonoBehaviour
@@ -25,7 +24,13 @@ public class Health : MonoBehaviour
     {
         bodyProps = new MaterialPropertyBlock();
         progressbarProps = new MaterialPropertyBlock();
-        hp = MAX_HP;
+    }
+
+    public void InitHp(float maxHP)
+    {
+        MAX_HP = maxHP;
+        hp = maxHP;
+        progressbar.enabled = false;
     }
 
     // Update is called once per frame

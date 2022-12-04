@@ -13,10 +13,6 @@ public class MobAnimator : MonoBehaviour
     public int f = 0;
     public MeshFilter mf;
     public MeshRenderer mr;
-    private Vector3 forward;
-    private Quaternion smoothRot;
-    public Transform angl;
-
     public bool isHitMade;
     private float fOld;
 

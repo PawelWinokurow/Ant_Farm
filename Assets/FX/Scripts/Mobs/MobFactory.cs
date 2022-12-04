@@ -3,6 +3,7 @@ using UnityEngine;
 using ScorpionNamespace;
 using WorkerNamespace;
 using SoldierNamespace;
+using GunnerNamespace;
 
 public class MobFactory : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class MobFactory : MonoBehaviour
     public SurfaceOperations surfaceOperations;
     public Worker workerPrefab;
     public Scorpion scorpionPrefab;
+    public Gunner gunnerPrefab;
     public Soldier soldierPrefab;
     public Store store;
 
@@ -24,31 +26,22 @@ public class MobFactory : MonoBehaviour
     {
         StartCoroutine(SpawnWorker($"worker_{id}", hex));
     }
-    public void AddScorpion()
+    public void AddScorpion(FloorHexagon hex)
     {
-        StartCoroutine(SpawnScorpion($"scorpion_{id}"));
+        StartCoroutine(SpawnScorpion($"scorpion_{id}", hex));
+    }
+    public void AddGunner(FloorHexagon hex)
+    {
+        StartCoroutine(SpawnGunner($"gunner{id}", hex));
     }
     public void AddSoldier(FloorHexagon hex)
     {
         StartCoroutine(SpawnSoldier($"soldier_{id}", hex));
     }
 
-    IEnumerator SpawnWorker(string id, FloorHexagon hex)
+    IEnumerator SpawnScorpion(string id, FloorHexagon hex)
     {
-        var baseNeighbours = surface.baseHex.vertex.neighbours;
         var spawnPosition = hex.position;
-        Worker worker = Instantiate(workerPrefab, spawnPosition, Quaternion.identity);
-        worker.id = id;
-        workerJobScheduler.AddWorker(worker);
-        store.AddMob(worker);
-        yield return null;
-    }
-    IEnumerator SpawnScorpion(string id)
-    {
-        var spawnHex = surface.PositionToHex(surface.baseHex.position + new Vector3(10, 0, 20));
-        var spawnPosition = surface.PositionToHex(surface.baseHex.position + new Vector3(10, 0, 20)).position;
-        spawnHex.vertex.neighbours.ForEach(n => surface.AddGround(n.floorHexagon));
-        surface.AddGround(spawnHex);
         Scorpion scorpion = Instantiate(scorpionPrefab, spawnPosition, Quaternion.identity);
         scorpion.id = id;
         scorpion.pathfinder = pathfinder;
@@ -56,15 +49,33 @@ public class MobFactory : MonoBehaviour
         store.AddScorpion(scorpion);
         yield return null;
     }
+    IEnumerator SpawnWorker(string id, FloorHexagon hex)
+    {
+        var spawnPosition = hex.position;
+        Worker worker = Instantiate(workerPrefab, spawnPosition, Quaternion.identity);
+        worker.id = id;
+        workerJobScheduler.AddWorker(worker);
+        store.AddMob(worker);
+        yield return null;
+    }
     IEnumerator SpawnSoldier(string id, FloorHexagon hex)
     {
-        var baseNeighbours = surface.baseHex.vertex.neighbours;
         var spawnPosition = hex.position;
         Soldier soldier = Instantiate(soldierPrefab, spawnPosition, Quaternion.identity);
         soldier.id = id;
         soldier.pathfinder = pathfinder;
         soldier.store = store;
         store.AddMob(soldier);
+        yield return null;
+    }
+    IEnumerator SpawnGunner(string id, FloorHexagon hex)
+    {
+        var spawnPosition = hex.position;
+        Gunner gunner = Instantiate(gunnerPrefab, spawnPosition, Quaternion.identity);
+        gunner.id = id;
+        gunner.pathfinder = pathfinder;
+        gunner.store = store;
+        store.AddMob(gunner);
         yield return null;
     }
 }

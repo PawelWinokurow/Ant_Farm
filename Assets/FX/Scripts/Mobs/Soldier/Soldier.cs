@@ -43,7 +43,7 @@ namespace SoldierNamespace
             type = MobType.SOLDIER;
             accessMask = gameSettings.ACCESS_MASK_FLOOR + gameSettings.ACCESS_MASK_BASE;
             health = GetComponent<Health>();
-            health.MAX_HP = soldierSettings.HP;
+            health.InitHp(soldierSettings.HP);
             SetState(new PatrolState(this));
         }
 

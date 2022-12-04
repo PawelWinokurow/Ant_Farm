@@ -45,7 +45,7 @@ namespace GunnerNamespace
             type = MobType.GUNNER;
             accessMask = gameSettings.ACCESS_MASK_FLOOR + gameSettings.ACCESS_MASK_BASE;
             health = GetComponent<Health>();
-            health.MAX_HP = gunnerSettings.HP;
+            health.InitHp(gunnerSettings.HP);
             SetState(new PatrolState(this));
         }
 

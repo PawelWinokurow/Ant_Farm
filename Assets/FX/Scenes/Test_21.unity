@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44402242, g: 0.49316543, b: 0.5722324, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -283,6 +283,7 @@ MonoBehaviour:
   gameSettings: {fileID: 11400000, guid: e01c0b5e440a74c43a6284f1128aac73, type: 2}
   workerSettings: {fileID: 11400000, guid: bcafd542741c60646bff1c7fb12d48fa, type: 2}
   soldierSettings: {fileID: 11400000, guid: 80d94af6db8c7ae43a84568a16c9cfc8, type: 2}
+  gunnerSettings: {fileID: 11400000, guid: d28cc6543090c7d4f91cc3994a8151f0, type: 2}
   scorpionSettings: {fileID: 11400000, guid: 86aa08d44249ede4b991b571cac631aa, type: 2}
 --- !u!1 &348439227
 GameObject:
@@ -315,6 +316,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allWorkers: []
   gameSettings: {fileID: 0}
+  foodHexagons: []
 --- !u!1 &514851202 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e64b0dca1b7aeb649b49c9d7358d81a0, type: 3}
@@ -381,9 +383,6 @@ MonoBehaviour:
   soilPrefab: {fileID: 8455358244910370071, guid: 3e68a11dd730d1446b99d95886a65495, type: 3}
   stonePrefab: {fileID: 7051650168049685410, guid: 6ef6f73c1ef17de46868508c8bd2cd52, type: 3}
   spikesPrefab: {fileID: -962059493816826475, guid: 3182f398ee4d8de43b1691bc65af1d84, type: 3}
-  soilMountScaled: {fileID: 8455358244910370071, guid: 2e4942d5f403cae4a8766122faeec229, type: 3}
-  stoneMountScaled: {fileID: 7051650168049685410, guid: ef73f7c8ad156ad4089ff97e4ab13b89, type: 3}
-  spikesMountScaled: {fileID: -962059493816826475, guid: b755e9b30f6585542bc6a99857c5093a, type: 3}
   soilMountIconPrefab: {fileID: 1977940879894948748, guid: a5cb0394b24cb6e498b98739a23c66cc, type: 3}
   stoneMountIconPrefab: {fileID: 2594841573337192449, guid: b7190cfcc024d4f4e8dd1919ad9698b1, type: 3}
   spikesMountIconPrefab: {fileID: -4469524149322463765, guid: 0d2e999d7b11c6d488f20b315c186b2d, type: 3}
@@ -850,7 +849,8 @@ MonoBehaviour:
   surface: {fileID: 685065891}
   surfaceOperations: {fileID: 1531417191}
   workerPrefab: {fileID: -7619036694779697723, guid: d76627fe718a559439689ca54c475515, type: 3}
-  enemyPrefab: {fileID: 376137783415288789, guid: 6ea998787382aa64db8b8af70a6fb869, type: 3}
+  scorpionPrefab: {fileID: 376137783415288789, guid: 6ea998787382aa64db8b8af70a6fb869, type: 3}
+  gunnerPrefab: {fileID: 6630924159982131818, guid: bcf9c3d895ca58b4291a4b3b308974df, type: 3}
   soldierPrefab: {fileID: 6674348483651007441, guid: 3a0f38204bd838b42a8cdc55556aa0c3, type: 3}
   store: {fileID: 1633955861}
 --- !u!4 &2118494095978837243

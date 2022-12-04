@@ -54,7 +54,7 @@ namespace ScorpionNamespace
             animator = GetComponent<MobAnimator>();
             type = MobType.SCORPION;
             health = GetComponent<Health>();
-            health.MAX_HP = scorpionSettings.HP;
+            health.InitHp(scorpionSettings.HP);
             accessMask = gameSettings.ACCESS_MASK_FLOOR;
             SetState(new PatrolState(this));
         }
