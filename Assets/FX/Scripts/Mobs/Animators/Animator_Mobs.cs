@@ -8,7 +8,7 @@ public class Animator_Mobs : MonoBehaviour
     private AnimationsScriptableObject current;
     public AnimationsScriptableObject run;
     public AnimationsScriptableObject idleFight;
-
+    public AnimationsScriptableObject runFood;
 
     public int f = 0;
     public MeshFilter mf;
@@ -36,6 +36,11 @@ public class Animator_Mobs : MonoBehaviour
     public void IdleFight()
     {
         current = idleFight;
+        mr.materials = current.materials;
+    }
+    public void RunFood()
+    {
+        current = runFood;
         mr.materials = current.materials;
     }
 
