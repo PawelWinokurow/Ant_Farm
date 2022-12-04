@@ -18,7 +18,7 @@ namespace SoldierNamespace
             soldier.SetIdleAnimation();
             soldierTarget = soldier.target;
             soldier.Animation();
-            soldier.animator.ResetAttack();
+            soldier.ResetAttack();
         }
         override public void OnStateExit()
         {
@@ -40,6 +40,7 @@ namespace SoldierNamespace
             {
                 soldier.SetState(new PatrolState(soldier));
             }
+            soldier.AttackAnimation();
         }
     }
 }

@@ -30,6 +30,12 @@ namespace SoldierNamespace
         private GameSettings gameSettings;
         private SoldierSettings soldierSettings;
         public int movementSpeed { get; set; }
+        public MeshFilter mf;
+        public Transform angl;
+        private Quaternion smoothRot;
+        public float startTime;
+        public bool isHitMade = false;
+        private float fOld = 0f;
 
         void Start()
         {
@@ -37,7 +43,6 @@ namespace SoldierNamespace
             soldierSettings = Settings.Instance.soldierSettings;
             Kill = () => SetState(new DeadState(this));
             animator = GetComponent<SoldierAnimator>();
-            animator.soldier = this;
             type = MobType.SOLDIER;
             accessMask = gameSettings.ACCESS_MASK_FLOOR + gameSettings.ACCESS_MASK_BASE;
             health = GetComponent<Health>();
@@ -153,7 +158,57 @@ namespace SoldierNamespace
         void Update()
         {
             currentState.Tick();
+            Rotation();
         }
+
+        private void Rotation()
+        {
+            Vector3 forward = Vector3.zero;
+            int f = (int)(Time.time * 30f * 1.5f) % animator.current.sequence.Length;
+            mf.mesh = animator.current.sequence[f];
+            if (currentState.type == STATE.ATTACK && target?.mob != null)
+            {
+                forward = target.mob.position - transform.position;
+            }
+            else if (currentPathEdge != null)
+            {
+                forward = currentPathEdge.to.position - transform.position;
+            }
+            Quaternion rot = Quaternion.LookRotation(angl.up, forward);
+            smoothRot = Quaternion.Slerp(smoothRot, rot, Time.deltaTime * 10f);
+            mf.transform.rotation = smoothRot;
+            mf.transform.Rotate(new Vector3(-90f, 0f, 180f), Space.Self);
+        }
+
+        public void AttackAnimation()
+        {
+            if (currentState.type == STATE.ATTACK)
+            {
+                var fFloat = (Time.time - startTime) * 30f * 1.5f;
+                int f = (int)(fFloat) % animator.current.sequence.Length;
+                var rest = fFloat - (int)fFloat;
+
+                if (fOld > (f + rest))
+                {
+                    isHitMade = false;
+                }
+
+                if (!isHitMade && (f + rest) >= 14)
+                {
+                    Attack();
+                    isHitMade = true;
+                }
+                fOld = f + rest;
+            }
+        }
+
+        public void ResetAttack()
+        {
+            startTime = Time.time;
+            isHitMade = false;
+            fOld = 0f;
+        }
+
 
         public void SetRunAnimation()
         {

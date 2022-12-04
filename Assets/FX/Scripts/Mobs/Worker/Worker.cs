@@ -30,7 +30,6 @@ namespace WorkerNamespace
         private GameSettings gameSettings;
         private WorkerSettings workerSettings;
         public int movementSpeed { get; set; }
-        private int f;
         public MeshFilter mf;
         public Transform angl;
         private Quaternion smoothRot;
@@ -41,7 +40,6 @@ namespace WorkerNamespace
             gameSettings = Settings.Instance.gameSettings;
             workerSettings = Settings.Instance.workerSettings;
             animator = GetComponent<WorkerAnimator>();
-            // animator.worker = this;
             health = GetComponent<Health>();
             health.MAX_HP = workerSettings.HP;
             type = MobType.WORKER;

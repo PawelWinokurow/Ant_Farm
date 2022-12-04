@@ -8,13 +8,9 @@ public class WorkerAnimator : MonoBehaviour
     public AnimationsScriptableObject runFood;
 
     public MeshRenderer mr;
-    private Vector3 antBaseForwardOld;
-    private Vector3 posOld;
 
     private void Start()
     {
-        posOld = transform.position;
-        antBaseForwardOld = transform.forward;
         current = run;
     }
 
