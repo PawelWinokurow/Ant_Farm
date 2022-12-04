@@ -1,12 +1,12 @@
 using UnityEngine;
-using EnemyNamespace;
+using ScorpionNamespace;
 using UnityEngine.Events;
 
-public class Animator_Mobs : MonoBehaviour
+public class MobAnimator : MonoBehaviour
 {
-    public Enemy enemy;
-    private AnimationsScriptableObject current;
+    public AnimationsScriptableObject current;
     public AnimationsScriptableObject run;
+    public AnimationsScriptableObject idle;
     public AnimationsScriptableObject idleFight;
     public AnimationsScriptableObject runFood;
 
@@ -17,10 +17,10 @@ public class Animator_Mobs : MonoBehaviour
     private Quaternion smoothRot;
     public Transform angl;
 
-    public bool isHitMade ;
+    public bool isHitMade;
     private float fOld;
 
-   public  UnityEvent m_Shoot;
+    public UnityEvent m_Shoot;
 
     private void Start()
     {
@@ -31,6 +31,11 @@ public class Animator_Mobs : MonoBehaviour
     public void Run()
     {
         current = run;
+        mr.materials = current.materials;
+    }
+    public void Idle()
+    {
+        current = idle;
         mr.materials = current.materials;
     }
     public void IdleFight()
@@ -44,30 +49,9 @@ public class Animator_Mobs : MonoBehaviour
         mr.materials = current.materials;
     }
 
+
     void Update()
     {
-
-        if (enemy != null)
-        {
-            if (enemy.currentState.type == STATE.ATTACK && enemy.target?.mob != null)
-            {
-                forward = enemy.target.mob.position - transform.position;
-            }
-            else if (enemy.currentPathEdge != null)
-            {
-                forward = enemy.currentPathEdge.to.position - transform.position;
-            }
-            Quaternion rot = Quaternion.LookRotation(angl.up, forward);
-            smoothRot = Quaternion.Slerp(smoothRot, rot, Time.deltaTime * 10f);
-            mf.transform.rotation = smoothRot;
-            mf.transform.Rotate(new Vector3(-90f, 0f, 180f), Space.Self);
-
-            if (enemy.currentState.type == STATE.ATTACK)
-            {
-                current = idleFight;
-            }
-        }
-
         f = (int)(Time.time * 30f * 1.5f) % current.sequence.Length;
         mf.mesh = current.sequence[f];
 
@@ -76,7 +60,7 @@ public class Animator_Mobs : MonoBehaviour
             if (f > 14 && !isHitMade)
             {
                 isHitMade = true;
-                // enemy.Attack();//?
+                // scorpion.Attack();//?
                 m_Shoot.Invoke();
             }
 
@@ -86,6 +70,12 @@ public class Animator_Mobs : MonoBehaviour
             }
         }
         fOld = f;
+    }
+
+    public void ResetAttack()
+    {
+        isHitMade = false;
+        fOld = 0f;
     }
 
 }

@@ -1,0 +1,46 @@
+using UnityEngine;
+
+namespace ScorpionNamespace
+{
+    public class AttackState : State
+    {
+
+        private Scorpion scorpion;
+        private ScorpionTarget scorpionTarget;
+        public AttackState(Scorpion scorpion) : base(scorpion)
+        {
+            this.type = STATE.ATTACK;
+            this.scorpion = scorpion;
+        }
+
+        override public void OnStateEnter()
+        {
+            scorpion.SetIdleFightAnimation();
+            scorpionTarget = scorpion.target;
+            scorpion.Animation();
+            scorpion.animator.ResetAttack();
+        }
+        override public void OnStateExit()
+        {
+            scorpion.RemovePath();
+        }
+
+        override public void CancelJob()
+        {
+            scorpion.SetTarget(null);
+        }
+
+        public override void Tick()
+        {
+            if (!scorpion.IsTargetInNeighbourhood())
+            {
+                scorpion.SetState(new FollowingState(scorpion));
+            }
+            if (scorpion.target.mob.currentState.type == STATE.DEAD)
+            {
+                scorpion.SetState(new PatrolState(scorpion));
+            }
+        }
+
+    }
+}

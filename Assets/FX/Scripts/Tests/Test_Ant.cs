@@ -32,15 +32,15 @@ namespace AntFarm
             */
             if (Input.GetKeyDown(KeyCode.E))
             {
-                GetComponent<WorkerAnimator>().Idle();
+                GetComponent<MobAnimator>().Idle();
             }
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                GetComponent<WorkerAnimator>().Run();
+                GetComponent<MobAnimator>().Run();
             }
             if (Input.GetKeyDown(KeyCode.R))
             {
-                GetComponent<WorkerAnimator>().RunFood();
+                GetComponent<MobAnimator>().RunFood();
             }
 
             if (Input.GetKeyDown(KeyCode.A))

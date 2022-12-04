@@ -11,7 +11,7 @@ public class Store : MonoBehaviour
     {
         allMobs.Add(mob);
     }
-    public void AddEnemy(Mob mob)
+    public void AddScorpion(Mob mob)
     {
         allEnemies.Add(mob);
     }

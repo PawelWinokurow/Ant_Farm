@@ -407,10 +407,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4689637310385045601}
   - component: {fileID: 5623056589175685038}
-  - component: {fileID: 5623056589175685039}
   - component: {fileID: 5623056589175685032}
+  - component: {fileID: -7513144323744193284}
   m_Layer: 0
-  m_Name: Bomber
+  m_Name: Gunner
   m_TagString: Mob
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -454,41 +454,6 @@ MonoBehaviour:
   MAX_HP: 0
   hp: 0
   healTime: 10
---- !u!114 &5623056589175685039
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4689637310385045629}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d6b110e2170fe04aa6ce3bb9872c6dd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemy: {fileID: 0}
-  run: {fileID: 11400000, guid: 87a4df4fd743f7a4d8cc7505f65598e9, type: 2}
-  idleFight: {fileID: 11400000, guid: ae174852c41a7e74bafa5dd82132ffb1, type: 2}
-  f: 0
-  mf: {fileID: 2928974046518718093}
-  mr: {fileID: 1893487833255054486}
-  angl: {fileID: 3637670549930944496}
-  isHitMade: 0
-  m_Shoot:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2381269297423956022}
-        m_TargetAssemblyTypeName: AntFarm.Cannon, Assembly-CSharp
-        m_MethodName: Shoot
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &5623056589175685032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -501,6 +466,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57d5f9c5c4702af42a89b368c316ccd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-7513144323744193284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4689637310385045629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcab5501421007b4f82dff0a797262b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  current: {fileID: 0}
+  run: {fileID: 11400000, guid: 87a4df4fd743f7a4d8cc7505f65598e9, type: 2}
+  idle: {fileID: 0}
+  idleFight: {fileID: 11400000, guid: ae174852c41a7e74bafa5dd82132ffb1, type: 2}
+  runFood: {fileID: 0}
+  f: 0
+  mf: {fileID: 2928974046518718093}
+  mr: {fileID: 1893487833255054486}
+  angl: {fileID: 3637670549930944496}
+  isHitMade: 0
+  m_Shoot:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &6471508474402604861
 GameObject:
   m_ObjectHideFlags: 0

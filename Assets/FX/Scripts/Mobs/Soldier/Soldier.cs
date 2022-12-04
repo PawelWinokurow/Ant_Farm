@@ -10,7 +10,7 @@ namespace SoldierNamespace
     {
         public string id { get; set; }
         public MobType type { get; set; }
-        public SoldierAnimator animator { get; set; }
+        public MobAnimator animator { get; set; }
         public Health health { get; set; }
         public Action Animation { get; set; }
         public Vector3 position { get => transform.position; }
@@ -42,7 +42,7 @@ namespace SoldierNamespace
             gameSettings = Settings.Instance.gameSettings;
             soldierSettings = Settings.Instance.soldierSettings;
             Kill = () => SetState(new DeadState(this));
-            animator = GetComponent<SoldierAnimator>();
+            animator = GetComponent<MobAnimator>();
             type = MobType.SOLDIER;
             accessMask = gameSettings.ACCESS_MASK_FLOOR + gameSettings.ACCESS_MASK_BASE;
             health = GetComponent<Health>();
@@ -164,8 +164,7 @@ namespace SoldierNamespace
         private void Rotation()
         {
             Vector3 forward = Vector3.zero;
-            int f = (int)(Time.time * 30f * 1.5f) % animator.current.sequence.Length;
-            mf.mesh = animator.current.sequence[f];
+            mf.mesh = animator.current.sequence[animator.f];
             if (currentState.type == STATE.ATTACK && target?.mob != null)
             {
                 forward = target.mob.position - transform.position;
@@ -179,36 +178,6 @@ namespace SoldierNamespace
             mf.transform.rotation = smoothRot;
             mf.transform.Rotate(new Vector3(-90f, 0f, 180f), Space.Self);
         }
-
-        public void AttackAnimation()
-        {
-            if (currentState.type == STATE.ATTACK)
-            {
-                var fFloat = (Time.time - startTime) * 30f * 1.5f;
-                int f = (int)(fFloat) % animator.current.sequence.Length;
-                var rest = fFloat - (int)fFloat;
-
-                if (fOld > (f + rest))
-                {
-                    isHitMade = false;
-                }
-
-                if (!isHitMade && (f + rest) >= 14)
-                {
-                    Attack();
-                    isHitMade = true;
-                }
-                fOld = f + rest;
-            }
-        }
-
-        public void ResetAttack()
-        {
-            startTime = Time.time;
-            isHitMade = false;
-            fOld = 0f;
-        }
-
 
         public void SetRunAnimation()
         {

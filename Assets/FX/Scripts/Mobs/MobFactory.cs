@@ -1,6 +1,6 @@
 using System.Collections;
 using UnityEngine;
-using EnemyNamespace;
+using ScorpionNamespace;
 using WorkerNamespace;
 using SoldierNamespace;
 
@@ -12,7 +12,7 @@ public class MobFactory : MonoBehaviour
     public Surface surface;
     public SurfaceOperations surfaceOperations;
     public Worker workerPrefab;
-    public Enemy enemyPrefab;
+    public Scorpion scorpionPrefab;
     public Soldier soldierPrefab;
     public Store store;
 
@@ -24,9 +24,9 @@ public class MobFactory : MonoBehaviour
     {
         StartCoroutine(SpawnWorker($"worker_{id}", hex));
     }
-    public void AddEnemy()
+    public void AddScorpion()
     {
-        StartCoroutine(SpawnEnemy($"enemy_{id}"));
+        StartCoroutine(SpawnScorpion($"scorpion_{id}"));
     }
     public void AddSoldier(FloorHexagon hex)
     {
@@ -43,17 +43,17 @@ public class MobFactory : MonoBehaviour
         store.AddMob(worker);
         yield return null;
     }
-    IEnumerator SpawnEnemy(string id)
+    IEnumerator SpawnScorpion(string id)
     {
         var spawnHex = surface.PositionToHex(surface.baseHex.position + new Vector3(10, 0, 20));
         var spawnPosition = surface.PositionToHex(surface.baseHex.position + new Vector3(10, 0, 20)).position;
         spawnHex.vertex.neighbours.ForEach(n => surface.AddGround(n.floorHexagon));
         surface.AddGround(spawnHex);
-        Enemy enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
-        enemy.id = id;
-        enemy.pathfinder = pathfinder;
-        enemy.store = store;
-        store.AddEnemy(enemy);
+        Scorpion scorpion = Instantiate(scorpionPrefab, spawnPosition, Quaternion.identity);
+        scorpion.id = id;
+        scorpion.pathfinder = pathfinder;
+        scorpion.store = store;
+        store.AddScorpion(scorpion);
         yield return null;
     }
     IEnumerator SpawnSoldier(string id, FloorHexagon hex)

@@ -5,14 +5,14 @@ using System.Linq;
 using DataStructures.ViliWonka.KDTree;
 using UnityEngine;
 
-namespace EnemyNamespace
+namespace ScorpionNamespace
 {
 
-    public class Enemy : MonoBehaviour, Mob
+    public class Scorpion : MonoBehaviour, Mob
     {
         public string id { get; set; }
         public MobType type { get; set; }
-        public EnemyAnimator animator { get; set; }
+        public MobAnimator animator { get; set; }
         public Health health { get; set; }
         public Action Animation { get; set; }
         public Vector3 position { get => transform.position; }
@@ -20,7 +20,7 @@ namespace EnemyNamespace
         public State currentState { get; set; }
         public Pathfinder pathfinder { get; set; }
         public SurfaceOperations surfaceOperations { get; set; }
-        public EnemyTarget target { get; set; }
+        public ScorpionTarget target { get; set; }
         public Action Kill { get; set; }
         public FloorHexagon currentHex { get; set; }
         public bool HasPath { get => path != null && currentPathEdge != null; }
@@ -48,8 +48,7 @@ namespace EnemyNamespace
                 }
                 SetState(new DeadState(this));
             };
-            animator = GetComponent<EnemyAnimator>();
-            animator.enemy = this;
+            animator = GetComponent<MobAnimator>();
             type = MobType.ENEMY;
             health = GetComponent<Health>();
             health.MAX_HP = scorpionSettings.HP;
@@ -63,7 +62,7 @@ namespace EnemyNamespace
                 currentState.OnStateExit();
 
             currentState = state;
-            gameObject.name = "Enemy - " + state.GetType().Name;
+            gameObject.name = "Scorpion - " + state.GetType().Name;
 
             if (currentState != null)
                 currentState.OnStateEnter();
@@ -206,11 +205,6 @@ namespace EnemyNamespace
             Animation = animator.Run;
         }
 
-        public void SetRunAtackAnimation()
-        {
-            Animation = animator.RunFight;
-        }
-
         public void SetIdleAnimation()
         {
             Animation = animator.Idle;
@@ -221,7 +215,7 @@ namespace EnemyNamespace
             Animation = animator.IdleFight;
         }
 
-        public EnemyTarget SearchTarget()
+        public ScorpionTarget SearchTarget()
         {
             var notDeadMobs = new List<Mob>(store.allMobs.Where(mob => mob.currentState?.type != STATE.DEAD));
             if (notDeadMobs.Count == 0) return null;
@@ -241,7 +235,7 @@ namespace EnemyNamespace
                 var path = pathfinder.FindPath(position, targetMob.currentHex.position, gameSettings.ACCESS_MASK_FLOOR + gameSettings.ACCESS_MASK_SOIL, SearchType.NEAREST_CENTRAL_VERTEX);
                 if (path != null)
                 {
-                    var target = new EnemyTarget($"{id}_{targetMob.id}", this, targetMob);
+                    var target = new ScorpionTarget($"{id}_{targetMob.id}", this, targetMob);
                     target.path = path;
                     target.mob = targetMob;
                     return target;
@@ -250,7 +244,7 @@ namespace EnemyNamespace
             return null;
         }
 
-        public void SetTarget(EnemyTarget target)
+        public void SetTarget(ScorpionTarget target)
         {
             this.target = target;
             if (target != null)

@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace EnemyNamespace
+namespace ScorpionNamespace
 {
 
     public class DeadState : State

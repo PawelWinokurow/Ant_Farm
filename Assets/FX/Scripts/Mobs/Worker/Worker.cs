@@ -10,7 +10,7 @@ namespace WorkerNamespace
         public string id { get; set; }
         public MobType type { get; set; }
         public float carryingWeight = 0;
-        public WorkerAnimator animator { get; set; }
+        public MobAnimator animator { get; set; }
         public Health health { get; set; }
         public Action Animation { get; set; }
         public Vector3 position { get => transform.position; }
@@ -39,7 +39,7 @@ namespace WorkerNamespace
         {
             gameSettings = Settings.Instance.gameSettings;
             workerSettings = Settings.Instance.workerSettings;
-            animator = GetComponent<WorkerAnimator>();
+            animator = GetComponent<MobAnimator>();
             health = GetComponent<Health>();
             health.MAX_HP = workerSettings.HP;
             type = MobType.WORKER;
@@ -167,9 +167,7 @@ namespace WorkerNamespace
         private void Rotation()
         {
             Vector3 forward = Vector3.zero;
-            int f = (int)(Time.time * 30f * 1.5f) % animator.current.sequence.Length;
-            mf.mesh = animator.current.sequence[f];
-
+            mf.mesh = animator.current.sequence[animator.f];
             if (currentPathEdge != null)
             {
                 forward = currentPathEdge.to.position - transform.position;

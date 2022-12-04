@@ -208,10 +208,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7321344284963672305}
-  - component: {fileID: 7321344284963672304}
   - component: {fileID: 7321344284963672307}
   - component: {fileID: 376137783415288789}
   - component: {fileID: -2437768602649910727}
+  - component: {fileID: 6520136189584267238}
   m_Layer: 0
   m_Name: Scorpion
   m_TagString: Mob
@@ -236,29 +236,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7321344284963672304
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7321344284963672301}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d8a29f74ceb6f846aea911af424d530, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemy: {fileID: 0}
-  idle: {fileID: 11400000, guid: 9c39d57b4db095c4785a4f291446b9f6, type: 2}
-  idleFight: {fileID: 11400000, guid: 8e4ae8eea964213468c0742caf297070, type: 2}
-  run: {fileID: 11400000, guid: 7cf34025e5e32684ea6ab463e13a605b, type: 2}
-  runFight: {fileID: 11400000, guid: 7198fc0f3aa53d44c8f8b95b4d90efda, type: 2}
-  f: 0
-  mf: {fileID: 876968272109895197}
-  mr: {fileID: 4524242656641080326}
-  angl: {fileID: 1654450027167971168}
-  startTime: 0
-  isHitMade: 0
 --- !u!114 &7321344284963672307
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -268,7 +245,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7321344284963672301}
   m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b3c4d3a03e785d45b51be66042b295a, type: 3}
+  m_Script: {fileID: 11500000, guid: 277b81b342c42f2498dd5dd9bc75d311, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &376137783415288789
@@ -280,11 +257,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 7321344284963672301}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c29461a2da24b66458f3217c2c319cb7, type: 3}
+  m_Script: {fileID: 11500000, guid: 125df72cd5fc4504cb0171001398ae51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   store: {fileID: 0}
   DigFX: {fileID: 6238018754146974196, guid: fe67a9fb628b12d449d285918bc3e4af, type: 3}
+  digFX: {fileID: 0}
 --- !u!114 &-2437768602649910727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -302,9 +280,34 @@ MonoBehaviour:
   popUp_prefad: {fileID: 668541531679047375, guid: 8868b609e6e2e446ebda1e61c70b03b8, type: 3}
   progressbar: {fileID: 7597500574436897942}
   shadow: {fileID: 1506458663420377076}
-  MAX_HEALTH: 250
-  health: 250
+  MAX_HP: 0
+  hp: 0
   healTime: 10
+--- !u!114 &6520136189584267238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7321344284963672301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcab5501421007b4f82dff0a797262b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  current: {fileID: 0}
+  run: {fileID: 11400000, guid: 7cf34025e5e32684ea6ab463e13a605b, type: 2}
+  idle: {fileID: 11400000, guid: 9c39d57b4db095c4785a4f291446b9f6, type: 2}
+  idleFight: {fileID: 11400000, guid: 8e4ae8eea964213468c0742caf297070, type: 2}
+  runFood: {fileID: 0}
+  f: 0
+  mf: {fileID: 876968272109895197}
+  mr: {fileID: 4524242656641080326}
+  angl: {fileID: 1654450027167971168}
+  isHitMade: 0
+  m_Shoot:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &9128280933621934098
 PrefabInstance:
   m_ObjectHideFlags: 0

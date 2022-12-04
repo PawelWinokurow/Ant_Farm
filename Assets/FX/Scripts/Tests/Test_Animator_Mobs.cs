@@ -10,12 +10,12 @@ namespace AntFarm
         {
             if (Input.GetKeyDown(KeyCode.A))
             {
-                GetComponent<Animator_Mobs>().IdleFight();
+                GetComponent<MobAnimator>().IdleFight();
             }
 
             if (Input.GetKeyDown(KeyCode.S))
             {
-                GetComponent<Animator_Mobs>().Run();
+                GetComponent<MobAnimator>().Run();
             }
 
         }
