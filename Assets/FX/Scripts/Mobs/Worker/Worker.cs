@@ -143,7 +143,7 @@ namespace WorkerNamespace
         void Update()
         {
             currentState.Tick();
-            SetRotation();
+            Rotation();
         }
 
         public void SetRunAnimation()
@@ -164,7 +164,7 @@ namespace WorkerNamespace
             health.Hit(damage);
         }
 
-        private void SetRotation()
+        private void Rotation()
         {
             Vector3 forward = Vector3.zero;
             int f = (int)(Time.time * 30f * 1.5f) % animator.current.sequence.Length;
