@@ -7,6 +7,7 @@ public class Settings : MonoBehaviour
     public GameSettings gameSettings;
     public WorkerSettings workerSettings;
     public SoldierSettings soldierSettings;
+    public GunnerSettings gunnerSettings;
     public ScorpionSettings scorpionSettings;
     private void Awake()
     {
