@@ -66,6 +66,9 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _AddUV: 7.12
+    - _Add_U: 0.06
+    - _Add_V: 0.1
     - _Angl: 0
     - _BlendDetails: 0.5
     - _BlendTexture: 0
@@ -90,7 +93,8 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _ScaleUV: 1
-    - _Scl: 1.28
+    - _Scl: 1
+    - _SclUV: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -101,11 +105,12 @@ Material:
     - _BlinkFX_Color: {r: 1, g: 0, b: 0, a: 1}
     - _Color: {r: 0.8344013, g: 0.8915587, b: 0.9245283, a: 1}
     - _Color0: {r: 1, g: 0.31230167, b: 0, a: 1}
-    - _Color1: {r: 0.2264151, g: 0.14239943, b: 0.14239943, a: 1}
-    - _Color2: {r: 0.4339623, g: 0.4339623, b: 0.4339623, a: 1}
+    - _Color1: {r: 0.15824136, g: 0.18387328, b: 0.1981132, a: 1}
+    - _Color2: {r: 0.9528302, g: 0.7610656, b: 0.7610656, a: 1}
     - _Color3: {r: 0.08346045, g: 1, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _TintColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
     - _U: {r: -1, g: 0, b: 0, a: 0}
     - _V: {r: 0, g: 0, b: 1, a: 0}
+    - _Vector0: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
