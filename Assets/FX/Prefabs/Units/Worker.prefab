@@ -95,8 +95,8 @@ GameObject:
   - component: {fileID: 4135837485797866615}
   - component: {fileID: 239454578239907001}
   - component: {fileID: -7619036694779697723}
-  - component: {fileID: -8210300535694150561}
   - component: {fileID: 1285057584965964699}
+  - component: {fileID: 405548972230644977}
   m_Layer: 0
   m_Name: Worker
   m_TagString: Mob
@@ -146,24 +146,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   carryingWeight: 0
---- !u!114 &-8210300535694150561
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4135837485797866603}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48012dff1dab0764d8082920cf4c5e10, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  worker: {fileID: 0}
-  run: {fileID: 11400000, guid: bdc6aceed5d541a459ffd6cb15c59064, type: 2}
-  idle: {fileID: 11400000, guid: a02a82089797691498dc1b5d0bde4e94, type: 2}
-  runFood: {fileID: 11400000, guid: 50db63c6c3fb22843b79e91ad0c96a88, type: 2}
   mf: {fileID: 2383876763917858186}
-  mr: {fileID: 2360862903416325171}
   angl: {fileID: 5335103204996291558}
 --- !u!114 &1285057584965964699
 MonoBehaviour:
@@ -182,9 +165,26 @@ MonoBehaviour:
   popUp_prefad: {fileID: 668541531679047375, guid: 8868b609e6e2e446ebda1e61c70b03b8, type: 3}
   progressbar: {fileID: 1711813855352781168}
   shadow: {fileID: 7677299087498399184}
-  MAX_HEALTH: 100
-  health: 100
+  MAX_HP: 0
+  hp: 0
   healTime: 10
+--- !u!114 &405548972230644977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4135837485797866603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fafdcd17226b3e54a9859dd600ff7213, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  current: {fileID: 0}
+  run: {fileID: 11400000, guid: bdc6aceed5d541a459ffd6cb15c59064, type: 2}
+  idle: {fileID: 11400000, guid: a02a82089797691498dc1b5d0bde4e94, type: 2}
+  runFood: {fileID: 11400000, guid: 50db63c6c3fb22843b79e91ad0c96a88, type: 2}
+  mr: {fileID: 2360862903416325171}
 --- !u!1 &5335103204996291557
 GameObject:
   m_ObjectHideFlags: 0

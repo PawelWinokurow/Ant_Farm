@@ -10,7 +10,7 @@ namespace WorkerNamespace
         public string id { get; set; }
         public MobType type { get; set; }
         public float carryingWeight = 0;
-        public AntAnimator animator { get; set; }
+        public WorkerAnimator animator { get; set; }
         public Health health { get; set; }
         public Action Animation { get; set; }
         public Vector3 position { get => transform.position; }
@@ -30,12 +30,18 @@ namespace WorkerNamespace
         private GameSettings gameSettings;
         private WorkerSettings workerSettings;
         public int movementSpeed { get; set; }
+        private int f;
+        public MeshFilter mf;
+        public Transform angl;
+        private Quaternion smoothRot;
+
+
         void Start()
         {
             gameSettings = Settings.Instance.gameSettings;
             workerSettings = Settings.Instance.workerSettings;
-            animator = GetComponent<AntAnimator>();
-            animator.worker = this;
+            animator = GetComponent<WorkerAnimator>();
+            // animator.worker = this;
             health = GetComponent<Health>();
             health.MAX_HP = workerSettings.HP;
             type = MobType.WORKER;
@@ -139,6 +145,7 @@ namespace WorkerNamespace
         void Update()
         {
             currentState.Tick();
+            SetRotation();
         }
 
         public void SetRunAnimation()
@@ -158,6 +165,28 @@ namespace WorkerNamespace
         {
             health.Hit(damage);
         }
+
+        private void SetRotation()
+        {
+            Vector3 forward = Vector3.zero;
+            int f = (int)(Time.time * 30f * 1.5f) % animator.current.sequence.Length;
+            mf.mesh = animator.current.sequence[f];
+
+            if (currentPathEdge != null)
+            {
+                forward = currentPathEdge.to.position - transform.position;
+            }
+            else if (job?.destination != null)
+            {
+                forward = job.destination - transform.position;
+            }
+
+            Quaternion rot = Quaternion.LookRotation(angl.up, forward);
+            smoothRot = Quaternion.Slerp(smoothRot, rot, Time.deltaTime * 10f);
+            mf.transform.rotation = smoothRot;
+            mf.transform.Rotate(new Vector3(-90f, 0f, 180f), Space.Self);
+        }
+
         void DrawDebugPath()
         {
             if (path != null && path.HasWaypoints)
