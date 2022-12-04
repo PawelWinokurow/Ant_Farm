@@ -10,7 +10,7 @@ namespace GunnerNamespace
     {
         public string id { get; set; }
         public MobType type { get; set; }
-        // public GunnerAnimator animator { get; set; }
+        public MobAnimator animator { get; set; }
         public Health health { get; set; }
         public Action Animation { get; set; }
         public Vector3 position { get => transform.position; }
@@ -30,16 +30,16 @@ namespace GunnerNamespace
         private GameSettings gameSettings;
         private GunnerSettings gunnerSettings;
         public int movementSpeed { get; set; }
-        public Cannon cannon { get; set; }
+        private Cannon cannon { get; set; }
 
         void Start()
         {
             gameSettings = Settings.Instance.gameSettings;
             gunnerSettings = Settings.Instance.gunnerSettings;
             Kill = () => SetState(new DeadState(this));
-            // animator = GetComponent<GunnerAnimator>();
-            // animator.gunner = this;
-            type = MobType.SOLDIER;
+            animator = GetComponent<MobAnimator>();
+            cannon = GetComponent<Cannon>();
+            type = MobType.GUNNER;
             accessMask = gameSettings.ACCESS_MASK_FLOOR + gameSettings.ACCESS_MASK_BASE;
             health = GetComponent<Health>();
             health.MAX_HP = gunnerSettings.HP;
@@ -158,11 +158,11 @@ namespace GunnerNamespace
 
         public void SetRunAnimation()
         {
-            // Animation = animator.Run;
+            Animation = animator.Run;
         }
         public void SetIdleAnimation()
         {
-            // Animation = animator.Idle;
+            Animation = animator.Idle;
         }
 
         public GunnerTarget SearchTarget()

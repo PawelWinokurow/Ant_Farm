@@ -263,6 +263,9 @@ MonoBehaviour:
   store: {fileID: 0}
   DigFX: {fileID: 6238018754146974196, guid: fe67a9fb628b12d449d285918bc3e4af, type: 3}
   digFX: {fileID: 0}
+  mf: {fileID: 876968272109895197}
+  angl: {fileID: 1654450027167971168}
+  isHitMade: 0
 --- !u!114 &-2437768602649910727
 MonoBehaviour:
   m_ObjectHideFlags: 0

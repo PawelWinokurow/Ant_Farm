@@ -3,7 +3,7 @@ using System;
 
 public enum MobType
 {
-    WORKER, SOLDIER, ENEMY
+    WORKER, SOLDIER, GUNNER, SCORPION
 }
 
 public interface Mob

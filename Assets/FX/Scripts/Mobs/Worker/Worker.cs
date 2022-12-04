@@ -176,7 +176,6 @@ namespace WorkerNamespace
             {
                 forward = job.destination - transform.position;
             }
-
             Quaternion rot = Quaternion.LookRotation(angl.up, forward);
             smoothRot = Quaternion.Slerp(smoothRot, rot, Time.deltaTime * 10f);
             mf.transform.rotation = smoothRot;

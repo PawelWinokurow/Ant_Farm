@@ -34,6 +34,11 @@ namespace ScorpionNamespace
         private GameSettings gameSettings;
         private ScorpionSettings scorpionSettings;
         public int movementSpeed { get; set; }
+        public MeshFilter mf;
+        public Transform angl;
+        private Quaternion smoothRot;
+        public bool isHitMade = false;
+        private float fOld = 0f;
 
         void Start()
         {
@@ -49,7 +54,7 @@ namespace ScorpionNamespace
                 SetState(new DeadState(this));
             };
             animator = GetComponent<MobAnimator>();
-            type = MobType.ENEMY;
+            type = MobType.SCORPION;
             health = GetComponent<Health>();
             health.MAX_HP = scorpionSettings.HP;
             accessMask = gameSettings.ACCESS_MASK_FLOOR;
@@ -198,6 +203,25 @@ namespace ScorpionNamespace
         void Update()
         {
             currentState.Tick();
+            Rotation();
+        }
+
+        private void Rotation()
+        {
+            Vector3 forward = Vector3.zero;
+            mf.mesh = animator.current.sequence[animator.f];
+            if (currentState.type == STATE.ATTACK && target?.mob != null)
+            {
+                forward = target.mob.position - transform.position;
+            }
+            else if (currentPathEdge != null)
+            {
+                forward = currentPathEdge.to.position - transform.position;
+            }
+            Quaternion rot = Quaternion.LookRotation(angl.up, forward);
+            smoothRot = Quaternion.Slerp(smoothRot, rot, Time.deltaTime * 10f);
+            mf.transform.rotation = smoothRot;
+            mf.transform.Rotate(new Vector3(-90f, 0f, 180f), Space.Self);
         }
 
         public void SetRunAnimation()
