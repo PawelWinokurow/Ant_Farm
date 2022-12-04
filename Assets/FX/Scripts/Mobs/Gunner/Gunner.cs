@@ -31,6 +31,9 @@ namespace GunnerNamespace
         private GunnerSettings gunnerSettings;
         public int movementSpeed { get; set; }
         private Cannon cannon { get; set; }
+        public MeshFilter mf;
+        public Transform angl;
+        private Quaternion smoothRot;
 
         void Start()
         {
@@ -154,6 +157,25 @@ namespace GunnerNamespace
         void Update()
         {
             currentState.Tick();
+            Rotation();
+        }
+
+        private void Rotation()
+        {
+            Vector3 forward = Vector3.zero;
+            mf.mesh = animator.current.sequence[animator.f];
+            if (currentState.type == STATE.ATTACK && target?.mob != null)
+            {
+                forward = target.mob.position - transform.position;
+            }
+            else if (currentPathEdge != null)
+            {
+                forward = currentPathEdge.to.position - transform.position;
+            }
+            Quaternion rot = Quaternion.LookRotation(angl.up, forward);
+            smoothRot = Quaternion.Slerp(smoothRot, rot, Time.deltaTime * 10f);
+            mf.transform.rotation = smoothRot;
+            mf.transform.Rotate(new Vector3(-90f, 0f, 180f), Space.Self);
         }
 
         public void SetRunAnimation()

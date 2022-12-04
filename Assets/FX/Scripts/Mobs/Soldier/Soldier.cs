@@ -33,8 +33,6 @@ namespace SoldierNamespace
         public MeshFilter mf;
         public Transform angl;
         private Quaternion smoothRot;
-        public bool isHitMade = false;
-        private float fOld = 0f;
 
         void Start()
         {
