@@ -60,7 +60,6 @@ public class MobAnimator : MonoBehaviour
             if (f > 14 && !isHitMade)
             {
                 isHitMade = true;
-                // scorpion.Attack();//?
                 m_Shoot.Invoke();
             }
 
