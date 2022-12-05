@@ -35,7 +35,6 @@ namespace WorkerNamespace
             worker.movementSpeed = workerSettings.MOVEMENT_SPEED;
             worker.RemovePath();
             worker.SetRunAnimation();
-            worker.Animation();
         }
         override public void OnStateExit()
         {

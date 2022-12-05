@@ -37,7 +37,6 @@ namespace SoldierNamespace
             soldier.movementSpeed = soldierSettings.PATROL_MOVEMENT_SPEED;
             soldier.RemovePath();
             soldier.SetRunAnimation();
-            soldier.Animation();
             soldier.SetRandomWalk();
         }
         override public void OnStateExit()

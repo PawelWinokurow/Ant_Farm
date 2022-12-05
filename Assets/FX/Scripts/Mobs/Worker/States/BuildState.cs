@@ -33,8 +33,6 @@ namespace WorkerNamespace
             job = (WorkerJob)worker.job;
             worker.surfaceOperations.Build(job);
             worker.SetIdleAnimation();
-            worker.Animation();
-
         }
 
         override public void OnStateExit()

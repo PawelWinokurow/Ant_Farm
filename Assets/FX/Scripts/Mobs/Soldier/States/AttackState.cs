@@ -17,7 +17,6 @@ namespace SoldierNamespace
         {
             soldierTarget = soldier.target;
             soldier.SetIdleFightAnimation();
-            soldier.Animation();
             soldier.animator.ResetAttack();
         }
         override public void OnStateExit()

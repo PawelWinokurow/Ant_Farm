@@ -12,7 +12,6 @@ namespace WorkerNamespace
         public float carryingWeight = 0;
         public MobAnimator animator { get; set; }
         public Health health { get; set; }
-        public Action Animation { get; set; }
         public Vector3 position { get => transform.position; }
         public WorkerJob job { get; set; }
         public Path path { get; set; }
@@ -148,15 +147,15 @@ namespace WorkerNamespace
 
         public void SetRunAnimation()
         {
-            Animation = animator.Run;
+            animator.Run();
         }
         public void SetRunFoodAnimation()
         {
-            Animation = animator.RunFood;
+            animator.RunFood();
         }
         public void SetIdleAnimation()
         {
-            Animation = animator.Idle;
+            animator.Idle();
         }
 
         public float Hit(int damage)

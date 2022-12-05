@@ -37,7 +37,6 @@ namespace ScorpionNamespace
             scorpion.movementSpeed = scorpionSettings.PATROL_MOVEMENT_SPEED;
             scorpion.RemovePath();
             scorpion.SetRunAnimation();
-            scorpion.Animation();
             scorpion.SetRandomWalk();
         }
         override public void OnStateExit()

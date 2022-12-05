@@ -18,7 +18,6 @@ namespace SoldierNamespace
         {
             soldier.movementSpeed = soldierSettings.FOLLOWING_MOVEMENT_SPEED;
             soldier.SetRunAnimation();
-            soldier.Animation();
         }
         override public void OnStateExit()
         {

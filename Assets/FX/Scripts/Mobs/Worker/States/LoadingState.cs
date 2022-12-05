@@ -53,7 +53,6 @@ namespace WorkerNamespace
             IsDone = false;
             job = (CarrierJob)worker.job;
             worker.SetIdleAnimation();
-            worker.Animation();
         }
 
         override public void OnStateExit()

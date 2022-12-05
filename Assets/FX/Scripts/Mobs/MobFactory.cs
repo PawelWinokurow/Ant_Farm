@@ -49,7 +49,7 @@ public class MobFactory : MonoBehaviour
         scorpion.Kill = () =>
         {
             store.DeleteEnemy(scorpion);
-            scorpion.SetState(new ScorpionNamespace.DeadState(scorpion));
+            scorpion.SetState(new DeadState(scorpion));
             scorpion.CancelJob();
         };
         store.AddEnemy(scorpion);
@@ -75,7 +75,7 @@ public class MobFactory : MonoBehaviour
         soldier.Kill = () =>
         {
             store.DeleteAlly(soldier);
-            soldier.SetState(new SoldierNamespace.DeadState(soldier));
+            soldier.SetState(new DeadState(soldier));
             soldier.CancelJob();
         };
         store.AddAlly(soldier);
@@ -91,7 +91,7 @@ public class MobFactory : MonoBehaviour
         gunner.Kill = () =>
         {
             store.DeleteAlly(gunner);
-            gunner.SetState(new GunnerNamespace.DeadState(gunner));
+            gunner.SetState(new DeadState(gunner));
             gunner.CancelJob();
         };
         store.AddAlly(gunner);

@@ -37,7 +37,6 @@ namespace GunnerNamespace
             gunner.movementSpeed = gunnerSettings.PATROL_MOVEMENT_SPEED;
             gunner.RemovePath();
             gunner.SetRunAnimation();
-            gunner.Animation();
             gunner.SetRandomWalk();
         }
         override public void OnStateExit()

@@ -26,5 +26,4 @@ public interface Mob
     public float Hit(int damage);
     public void SetRunAnimation();
     public void SetIdleAnimation();
-    public Action Animation { get; set; }
 }

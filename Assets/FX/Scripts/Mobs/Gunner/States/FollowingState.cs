@@ -18,7 +18,6 @@ namespace GunnerNamespace
         {
             gunner.movementSpeed = gunnerSettings.FOLLOWING_MOVEMENT_SPEED;
             gunner.SetRunAnimation();
-            gunner.Animation();
         }
         override public void OnStateExit()
         {

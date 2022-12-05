@@ -12,7 +12,6 @@ namespace GunnerNamespace
         public MobType type { get; set; }
         public MobAnimator animator { get; set; }
         public Health health { get; set; }
-        public Action Animation { get; set; }
         public Vector3 position { get => transform.position; }
         public Path path { get; set; }
         public State currentState { get; set; }
@@ -178,15 +177,15 @@ namespace GunnerNamespace
 
         public void SetRunAnimation()
         {
-            Animation = animator.Run;
+            animator.Run();
         }
         public void SetIdleAnimation()
         {
-            Animation = animator.Idle;
+            animator.Idle();
         }
         public void SetIdleFightAnimation()
         {
-            Animation = animator.IdleFight;
+            animator.IdleFight();
         }
 
 
@@ -236,8 +235,10 @@ namespace GunnerNamespace
             {
                 var vecNorm = Vector3.Normalize(vec);
                 var hexagonsOnTrajectory = new List<FloorHexagon>();
-                for (float i = 0; i < Mathf.Floor(vecLength); i += 1f)
+                for (int i = 0; i < Mathf.Floor(vecLength); i++)
                 {
+                    var newPos = position + i * vecNorm;
+                    Debug.Log(newPos);
                     hexagonsOnTrajectory.Add(surfaceOperations.surface.PositionToHex(position + i * vecNorm));
                 }
                 hexagonsOnTrajectory.Add(surfaceOperations.surface.PositionToHex(targetPosition));

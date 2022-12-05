@@ -12,7 +12,6 @@ namespace SoldierNamespace
         public MobType type { get; set; }
         public MobAnimator animator { get; set; }
         public Health health { get; set; }
-        public Action Animation { get; set; }
         public Vector3 position { get => transform.position; }
         public Path path { get; set; }
         public State currentState { get; set; }
@@ -38,7 +37,6 @@ namespace SoldierNamespace
         {
             gameSettings = Settings.Instance.gameSettings;
             soldierSettings = Settings.Instance.soldierSettings;
-            Kill = () => SetState(new DeadState(this));
             animator = GetComponent<MobAnimator>();
             animator.Attack = () => Attack();
             type = MobType.SOLDIER;
@@ -177,16 +175,15 @@ namespace SoldierNamespace
 
         public void SetRunAnimation()
         {
-            Animation = animator.Run;
+            animator.Run();
         }
         public void SetIdleAnimation()
         {
-
-            Animation = animator.Idle;
+            animator.Idle();
         }
         public void SetIdleFightAnimation()
         {
-            Animation = animator.IdleFight;
+            animator.IdleFight();
         }
 
         public SoldierTarget SearchTarget()

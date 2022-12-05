@@ -19,7 +19,6 @@ namespace ScorpionNamespace
         override public void OnStateEnter()
         {
             scorpion.SetRunAnimation();
-            scorpion.Animation();
             scorpion.accessMask = gameSettings.ACCESS_MASK_FLOOR + gameSettings.ACCESS_MASK_SOIL;
             scorpion.movementSpeed = scorpionSettings.FOLLOWING_MOVEMENT_SPEED;
         }

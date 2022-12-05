@@ -17,7 +17,6 @@ namespace ScorpionNamespace
         {
             scorpionTarget = scorpion.target;
             scorpion.SetIdleFightAnimation();
-            scorpion.Animation();
             scorpion.animator.ResetAttack();
         }
         override public void OnStateExit()

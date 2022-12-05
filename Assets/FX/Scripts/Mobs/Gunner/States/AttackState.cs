@@ -17,7 +17,6 @@ namespace GunnerNamespace
         {
             gunner.SetIdleFightAnimation();
             gunnerTarget = gunner.target;
-            gunner.Animation();
             gunner.animator.ResetAttack();
         }
         override public void OnStateExit()

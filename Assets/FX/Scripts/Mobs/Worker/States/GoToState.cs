@@ -20,8 +20,6 @@ namespace WorkerNamespace
         {
             worker.movementSpeed = workerSettings.MOVEMENT_SPEED;
             job = worker.job;
-            worker.Animation();
-
         }
         override public void OnStateExit()
         {
