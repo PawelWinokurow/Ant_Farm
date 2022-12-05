@@ -71,6 +71,7 @@ namespace GunnerNamespace
 
         public void Attack()
         {
+            cannon.Shoot(target.mob.position);
             if (target.mob.Hit(gunnerSettings.ATTACK_STRENGTH) <= 0)
             {
                 CancelJob();
@@ -231,7 +232,7 @@ namespace GunnerNamespace
             var targetPosition = target.mob.position;
             var vec = targetPosition - position;
             var vecLength = Vector3.Magnitude(vec);
-            if (vecLength < 7f)
+            if (vecLength < 20f)
             {
                 var vecNorm = Vector3.Normalize(vec);
                 var hexagonsOnTrajectory = new List<FloorHexagon>();
