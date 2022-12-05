@@ -29,23 +29,24 @@ namespace GunnerNamespace
         private GameSettings gameSettings;
         private GunnerSettings gunnerSettings;
         public int movementSpeed { get; set; }
-        private Cannon cannon { get; set; }
+        public Cannon cannon;
         public MeshFilter mf;
         public Transform angl;
         private Quaternion smoothRot;
 
+
+     
         void Start()
         {
             gameSettings = Settings.Instance.gameSettings;
             gunnerSettings = Settings.Instance.gunnerSettings;
             animator = GetComponent<MobAnimator>();
-            animator.Attack = () => Attack();
-            cannon = GetComponent<Cannon>();
             type = MobType.GUNNER;
             accessMask = gameSettings.ACCESS_MASK_FLOOR + gameSettings.ACCESS_MASK_BASE;
             health = GetComponent<Health>();
             health.InitHp(gunnerSettings.HP);
             SetState(new PatrolState(this));
+            cannon.gunner=this;
         }
 
         public void SetState(State state)
@@ -66,16 +67,6 @@ namespace GunnerNamespace
             if (path != null)
             {
                 if (path.HasWaypoints) SetcurrentPathEdge();
-            }
-        }
-
-        public void Attack()
-        {
-            cannon.Shoot(target.mob.position);
-            if (target.mob.Hit(gunnerSettings.ATTACK_STRENGTH) <= 0)
-            {
-                CancelJob();
-                SetState(new PatrolState(this));
             }
         }
 

@@ -19639,6 +19639,8 @@ MonoBehaviour:
   speed: 25
   shoot_FX: {fileID: 2266513408033644261}
   ball_FX: {fileID: 2097989179}
+  gunner: {fileID: 0}
+  marker: {fileID: 8376736067164919744, guid: 3c5161b4dcbb8f743b06207676449b67, type: 3}
 --- !u!1 &2381269298352812388
 GameObject:
   m_ObjectHideFlags: 0
@@ -19916,7 +19918,6 @@ GameObject:
   - component: {fileID: 5623056589175685038}
   - component: {fileID: 5623056589175685032}
   - component: {fileID: -7513144323744193284}
-  - component: {fileID: 7571152315644393501}
   - component: {fileID: 6826684635683908350}
   m_Layer: 0
   m_Name: Gunner
@@ -19998,25 +19999,19 @@ MonoBehaviour:
   isHitMade: 0
   m_Shoot:
     m_PersistentCalls:
-      m_Calls: []
---- !u!114 &7571152315644393501
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4689637310385045629}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ed7e0bedb18f6542adf45d64fa9af73, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ball_p: {fileID: 2381269298565259244}
-  ball: {fileID: 2381269298352812389}
-  target: {fileID: 2381269298406872866}
-  speed: 1
-  shoot_FX: {fileID: 2266513408033644261}
-  ball_FX: {fileID: 2097989179}
+      m_Calls:
+      - m_Target: {fileID: 2381269297423956022}
+        m_TargetAssemblyTypeName: GunnerNamespace.Cannon, Assembly-CSharp
+        m_MethodName: Shoot
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &6826684635683908350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20030,6 +20025,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   store: {fileID: 0}
+  cannon: {fileID: 2381269297423956022}
   mf: {fileID: 2928974046518718093}
   angl: {fileID: 3637670549930944496}
 --- !u!1 &4942867508392615086

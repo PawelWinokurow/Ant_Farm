@@ -57,8 +57,7 @@ public class MobAnimator : MonoBehaviour
             if (f > 14 && !isHitMade)
             {
                 isHitMade = true;
-                Attack();
-                // m_Shoot.Invoke();
+                 m_Shoot.Invoke();
             }
 
             if (fOld < 14 && isHitMade)
