@@ -850,7 +850,7 @@ MonoBehaviour:
   surfaceOperations: {fileID: 1531417191}
   workerPrefab: {fileID: -7619036694779697723, guid: d76627fe718a559439689ca54c475515, type: 3}
   scorpionPrefab: {fileID: 376137783415288789, guid: 6ea998787382aa64db8b8af70a6fb869, type: 3}
-  gunnerPrefab: {fileID: 6630924159982131818, guid: bcf9c3d895ca58b4291a4b3b308974df, type: 3}
+  gunnerPrefab: {fileID: 6826684635683908350, guid: bcf9c3d895ca58b4291a4b3b308974df, type: 3}
   soldierPrefab: {fileID: 6674348483651007441, guid: 3a0f38204bd838b42a8cdc55556aa0c3, type: 3}
   store: {fileID: 1633955861}
 --- !u!4 &2118494095978837243
