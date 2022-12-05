@@ -40,6 +40,7 @@ namespace SoldierNamespace
             soldierSettings = Settings.Instance.soldierSettings;
             Kill = () => SetState(new DeadState(this));
             animator = GetComponent<MobAnimator>();
+            animator.Attack = () => Attack();
             type = MobType.SOLDIER;
             accessMask = gameSettings.ACCESS_MASK_FLOOR + gameSettings.ACCESS_MASK_BASE;
             health = GetComponent<Health>();
@@ -70,10 +71,8 @@ namespace SoldierNamespace
 
         public void Attack()
         {
-            target.mob.Hit(soldierSettings.ATTACK_STRENGTH);
-            if (target.mob.health.hp <= 0)
+            if (target.mob.Hit(soldierSettings.ATTACK_STRENGTH) <= 0)
             {
-                target.mob.Kill();
                 CancelJob();
                 SetState(new PatrolState(this));
             }
@@ -182,7 +181,12 @@ namespace SoldierNamespace
         }
         public void SetIdleAnimation()
         {
+
             Animation = animator.Idle;
+        }
+        public void SetIdleFightAnimation()
+        {
+            Animation = animator.IdleFight;
         }
 
         public SoldierTarget SearchTarget()
@@ -227,9 +231,13 @@ namespace SoldierNamespace
             return currentHex.vertex.neighbours.Select(vertex => vertex.id).Append(currentHex.id).Contains(target.mob.currentHex.id);
         }
 
-        public void Hit(int damage)
+        public float Hit(int damage)
         {
-            health.Hit(damage);
+            if (health.Hit(damage) <= 0)
+            {
+                Kill();
+            }
+            return health.hp;
         }
 
         void DrawDebugPath()

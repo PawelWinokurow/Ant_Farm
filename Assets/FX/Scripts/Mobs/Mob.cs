@@ -23,5 +23,8 @@ public interface Mob
     public void SetPath(Path path);
     public void Move();
     public void RemovePath();
-    public void Hit(int damage);
+    public float Hit(int damage);
+    public void SetRunAnimation();
+    public void SetIdleAnimation();
+    public Action Animation { get; set; }
 }

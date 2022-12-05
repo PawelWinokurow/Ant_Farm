@@ -19,8 +19,8 @@ namespace GunnerNamespace
         public Pathfinder pathfinder { get; set; }
         public SurfaceOperations surfaceOperations { get; set; }
         public GunnerTarget target { get; set; }
-        public Action Kill { get; set; }
         public FloorHexagon currentHex { get; set; }
+        public Action Kill { get; set; }
         public bool HasPath { get => path != null && currentPathEdge != null; }
         private float lerpDuration;
         private float t = 0f;
@@ -39,8 +39,8 @@ namespace GunnerNamespace
         {
             gameSettings = Settings.Instance.gameSettings;
             gunnerSettings = Settings.Instance.gunnerSettings;
-            Kill = () => SetState(new DeadState(this));
             animator = GetComponent<MobAnimator>();
+            animator.Attack = () => Attack();
             cannon = GetComponent<Cannon>();
             type = MobType.GUNNER;
             accessMask = gameSettings.ACCESS_MASK_FLOOR + gameSettings.ACCESS_MASK_BASE;
@@ -72,10 +72,8 @@ namespace GunnerNamespace
 
         public void Attack()
         {
-            target.mob.Hit(gunnerSettings.ATTACK_STRENGTH);
-            if (target.mob.health.hp <= 0)
+            if (target.mob.Hit(gunnerSettings.ATTACK_STRENGTH) <= 0)
             {
-                target.mob.Kill();
                 CancelJob();
                 SetState(new PatrolState(this));
             }
@@ -186,6 +184,11 @@ namespace GunnerNamespace
         {
             Animation = animator.Idle;
         }
+        public void SetIdleFightAnimation()
+        {
+            Animation = animator.IdleFight;
+        }
+
 
         public GunnerTarget SearchTarget()
         {
@@ -244,9 +247,13 @@ namespace GunnerNamespace
             return false;
         }
 
-        public void Hit(int damage)
+        public float Hit(int damage)
         {
-            health.Hit(damage);
+            if (health.Hit(damage) <= 0)
+            {
+                Kill();
+            }
+            return health.hp;
         }
 
         void DrawDebugPath()

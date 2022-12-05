@@ -15,7 +15,7 @@ namespace GunnerNamespace
 
         override public void OnStateEnter()
         {
-            gunner.SetIdleAnimation();
+            gunner.SetIdleFightAnimation();
             gunnerTarget = gunner.target;
             gunner.Animation();
             gunner.animator.ResetAttack();

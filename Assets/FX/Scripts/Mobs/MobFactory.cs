@@ -46,7 +46,14 @@ public class MobFactory : MonoBehaviour
         scorpion.id = id;
         scorpion.pathfinder = pathfinder;
         scorpion.store = store;
-        store.AddScorpion(scorpion);
+        scorpion.Kill = () =>
+        {
+            store.DeleteEnemy(scorpion);
+            scorpion.SetState(new ScorpionNamespace.DeadState(scorpion));
+            scorpion.CancelJob();
+        };
+        store.AddEnemy(scorpion);
+
         yield return null;
     }
     IEnumerator SpawnWorker(string id, FloorHexagon hex)
@@ -55,7 +62,7 @@ public class MobFactory : MonoBehaviour
         Worker worker = Instantiate(workerPrefab, spawnPosition, Quaternion.identity);
         worker.id = id;
         workerJobScheduler.AddWorker(worker);
-        store.AddMob(worker);
+        store.AddAlly(worker);
         yield return null;
     }
     IEnumerator SpawnSoldier(string id, FloorHexagon hex)
@@ -65,7 +72,13 @@ public class MobFactory : MonoBehaviour
         soldier.id = id;
         soldier.pathfinder = pathfinder;
         soldier.store = store;
-        store.AddMob(soldier);
+        soldier.Kill = () =>
+        {
+            store.DeleteAlly(soldier);
+            soldier.SetState(new SoldierNamespace.DeadState(soldier));
+            soldier.CancelJob();
+        };
+        store.AddAlly(soldier);
         yield return null;
     }
     IEnumerator SpawnGunner(string id, FloorHexagon hex)
@@ -75,7 +88,13 @@ public class MobFactory : MonoBehaviour
         gunner.id = id;
         gunner.pathfinder = pathfinder;
         gunner.store = store;
-        store.AddMob(gunner);
+        gunner.Kill = () =>
+        {
+            store.DeleteAlly(gunner);
+            gunner.SetState(new GunnerNamespace.DeadState(gunner));
+            gunner.CancelJob();
+        };
+        store.AddAlly(gunner);
         yield return null;
     }
 }

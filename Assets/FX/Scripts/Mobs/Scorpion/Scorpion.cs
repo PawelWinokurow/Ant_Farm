@@ -21,8 +21,8 @@ namespace ScorpionNamespace
         public Pathfinder pathfinder { get; set; }
         public SurfaceOperations surfaceOperations { get; set; }
         public ScorpionTarget target { get; set; }
-        public Action Kill { get; set; }
         public FloorHexagon currentHex { get; set; }
+        public Action Kill { get; set; }
         public bool HasPath { get => path != null && currentPathEdge != null; }
         private float lerpDuration;
         private float t = 0f;
@@ -42,16 +42,8 @@ namespace ScorpionNamespace
         {
             gameSettings = Settings.Instance.gameSettings;
             scorpionSettings = Settings.Instance.scorpionSettings;
-            Kill = () =>
-            {
-                if (digFX != null)
-                {
-                    digFX.StopFx();
-                    Destroy(digFX, 5f);
-                }
-                SetState(new DeadState(this));
-            };
             animator = GetComponent<MobAnimator>();
+            animator.Attack = () => Attack();
             type = MobType.SCORPION;
             health = GetComponent<Health>();
             health.InitHp(scorpionSettings.HP);
@@ -82,10 +74,8 @@ namespace ScorpionNamespace
 
         public void Attack()
         {
-            target.mob.Hit(scorpionSettings.ATTACK_STRENGTH);
-            if (target.mob.health.hp <= 0)
+            if (target.mob.Hit(scorpionSettings.ATTACK_STRENGTH) <= 0)
             {
-                target.mob.Kill();
                 CancelJob();
                 SetState(new PatrolState(this));
             }
@@ -239,7 +229,7 @@ namespace ScorpionNamespace
 
         public ScorpionTarget SearchTarget()
         {
-            var notDeadMobs = new List<Mob>(store.allMobs.Where(mob => mob.currentState?.type != STATE.DEAD));
+            var notDeadMobs = new List<Mob>(store.allAllies.Where(mob => mob.currentState?.type != STATE.DEAD));
             if (notDeadMobs.Count == 0) return null;
             KDTree mobPositionsTree = new KDTree(notDeadMobs.Select(mob => mob.position).ToArray());
             KDQuery query = new KDQuery();
@@ -284,9 +274,18 @@ namespace ScorpionNamespace
             return false;
         }
 
-        public void Hit(int damage)
+        public float Hit(int damage)
         {
-            health.Hit(damage);
+            if (health.Hit(damage) <= 0)
+            {
+                if (digFX != null)
+                {
+                    digFX.StopFx();
+                    Destroy(digFX, 5f);
+                }
+                Kill();
+            }
+            return health.hp;
         }
 
         void DrawDebugPath()

@@ -73,7 +73,7 @@ public class Health : MonoBehaviour
         hp = MAX_HP;
         mr.transform.localScale = Vector3.one;
     }
-    public void Hit(int damage)
+    public float Hit(int damage)
     {
         hp -= damage;
         if (hp > 0)//���� ����
@@ -90,6 +90,7 @@ public class Health : MonoBehaviour
             }
         }
         hitTime = 0f;
+        return hp;
     }
     private IEnumerator Dead_Cor()
     {

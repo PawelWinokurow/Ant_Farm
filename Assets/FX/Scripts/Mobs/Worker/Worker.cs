@@ -159,9 +159,13 @@ namespace WorkerNamespace
             Animation = animator.Idle;
         }
 
-        public void Hit(int damage)
+        public float Hit(int damage)
         {
-            health.Hit(damage);
+            if (health.Hit(damage) <= 0)
+            {
+                Kill();
+            }
+            return health.hp;
         }
 
         private void Rotation()

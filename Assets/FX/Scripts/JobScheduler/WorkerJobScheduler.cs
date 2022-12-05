@@ -125,7 +125,6 @@ public class WorkerJobScheduler : MonoBehaviour
     }
     public void AddWorker(Worker worker)
     {
-
         worker.surfaceOperations = surfaceOperations;
         worker.pathfinder = pathfinder;
         worker.Kill = () => Kill(worker);

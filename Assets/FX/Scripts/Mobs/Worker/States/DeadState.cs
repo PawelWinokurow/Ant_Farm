@@ -4,11 +4,11 @@ namespace WorkerNamespace
 
     public class DeadState : State
     {
-        // private Mob mob;
         public DeadState(Mob mob) : base(mob)
         {
             this.type = STATE.DEAD;
-            // this.mob = mob;
+            mob.SetIdleAnimation();
+            mob.Animation();
         }
 
         public override void Tick()

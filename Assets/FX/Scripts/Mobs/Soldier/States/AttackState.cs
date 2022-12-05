@@ -15,8 +15,8 @@ namespace SoldierNamespace
 
         override public void OnStateEnter()
         {
-            soldier.SetIdleAnimation();
             soldierTarget = soldier.target;
+            soldier.SetIdleFightAnimation();
             soldier.Animation();
             soldier.animator.ResetAttack();
         }

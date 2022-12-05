@@ -1,6 +1,6 @@
 using UnityEngine;
-using ScorpionNamespace;
 using UnityEngine.Events;
+using System;
 
 public class MobAnimator : MonoBehaviour
 {
@@ -18,10 +18,11 @@ public class MobAnimator : MonoBehaviour
 
     public UnityEvent m_Shoot;
 
+    public Action Attack;
+
     private void Start()
     {
         current = run;
-
     }
 
     public void Run()
@@ -56,7 +57,8 @@ public class MobAnimator : MonoBehaviour
             if (f > 14 && !isHitMade)
             {
                 isHitMade = true;
-                m_Shoot.Invoke();
+                Attack();
+                // m_Shoot.Invoke();
             }
 
             if (fOld < 14 && isHitMade)

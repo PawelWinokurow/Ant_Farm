@@ -4,16 +4,37 @@ using UnityEngine;
 
 public class Store : MonoBehaviour
 {
-    public List<Mob> allMobs = new List<Mob>();
+    public List<Mob> allAllies = new List<Mob>();
     public List<Mob> allEnemies = new List<Mob>();
+    private static object monitorLock = new object();
 
-    public void AddMob(Mob mob)
+    public void AddAlly(Mob mob)
     {
-        allMobs.Add(mob);
+        lock (monitorLock)
+        {
+            allAllies.Add(mob);
+        }
     }
-    public void AddScorpion(Mob mob)
+    public void DeleteAlly(Mob mob)
     {
-        allEnemies.Add(mob);
+        lock (monitorLock)
+        {
+            allAllies.Remove(mob);
+        }
+    }
+    public void AddEnemy(Mob mob)
+    {
+        lock (monitorLock)
+        {
+            allEnemies.Add(mob);
+        }
+    }
+    public void DeleteEnemy(Mob mob)
+    {
+        lock (monitorLock)
+        {
+            allEnemies.Remove(mob);
+        }
     }
 }
 
