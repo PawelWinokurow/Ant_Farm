@@ -6,7 +6,7 @@ namespace SoldierNamespace
     {
 
         private Soldier soldier;
-        private SoldierTarget soldierTarget;
+        private Target soldierTarget;
         public AttackState(Soldier soldier) : base(soldier)
         {
             this.type = STATE.ATTACK;

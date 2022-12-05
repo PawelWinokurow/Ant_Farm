@@ -46,6 +46,7 @@ public class MobFactory : MonoBehaviour
         scorpion.id = id;
         scorpion.pathfinder = pathfinder;
         scorpion.store = store;
+        scorpion.surfaceOperations = surfaceOperations;
         scorpion.Kill = () =>
         {
             store.DeleteEnemy(scorpion);
@@ -72,6 +73,7 @@ public class MobFactory : MonoBehaviour
         soldier.id = id;
         soldier.pathfinder = pathfinder;
         soldier.store = store;
+        soldier.surfaceOperations = surfaceOperations;
         soldier.Kill = () =>
         {
             store.DeleteAlly(soldier);
@@ -88,6 +90,7 @@ public class MobFactory : MonoBehaviour
         gunner.id = id;
         gunner.pathfinder = pathfinder;
         gunner.store = store;
+        gunner.surfaceOperations = surfaceOperations;
         gunner.Kill = () =>
         {
             store.DeleteAlly(gunner);

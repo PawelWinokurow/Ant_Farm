@@ -6,7 +6,7 @@ namespace GunnerNamespace
     {
 
         private Gunner gunner;
-        private GunnerTarget gunnerTarget;
+        private Target gunnerTarget;
         public AttackState(Gunner gunner) : base(gunner)
         {
             this.type = STATE.ATTACK;

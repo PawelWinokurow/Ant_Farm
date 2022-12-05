@@ -19,7 +19,7 @@ namespace ScorpionNamespace
         public State currentState { get; set; }
         public Pathfinder pathfinder { get; set; }
         public SurfaceOperations surfaceOperations { get; set; }
-        public ScorpionTarget target { get; set; }
+        public Target target { get; set; }
         public FloorHexagon currentHex { get; set; }
         public Action Kill { get; set; }
         public bool HasPath { get => path != null && currentPathEdge != null; }
@@ -226,7 +226,7 @@ namespace ScorpionNamespace
             animator.IdleFight();
         }
 
-        public ScorpionTarget SearchTarget()
+        public Target SearchTarget()
         {
             var notDeadMobs = new List<Mob>(store.allAllies.Where(mob => mob.currentState?.type != STATE.DEAD));
             if (notDeadMobs.Count == 0) return null;
@@ -246,7 +246,7 @@ namespace ScorpionNamespace
                 var path = pathfinder.FindPath(position, targetMob.currentHex.position, gameSettings.ACCESS_MASK_FLOOR + gameSettings.ACCESS_MASK_SOIL, SearchType.NEAREST_CENTRAL_VERTEX);
                 if (path != null)
                 {
-                    var target = new ScorpionTarget($"{id}_{targetMob.id}", this, targetMob);
+                    var target = new Target($"{id}_{targetMob.id}", this, targetMob);
                     target.path = path;
                     target.mob = targetMob;
                     return target;
@@ -255,7 +255,7 @@ namespace ScorpionNamespace
             return null;
         }
 
-        public void SetTarget(ScorpionTarget target)
+        public void SetTarget(Target target)
         {
             this.target = target;
             if (target != null)

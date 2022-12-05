@@ -123,6 +123,7 @@ public class WorkerJobScheduler : MonoBehaviour
     {
         this.surfaceOperations = setSurfaceOperations;
     }
+
     public void AddWorker(Worker worker)
     {
         worker.surfaceOperations = surfaceOperations;

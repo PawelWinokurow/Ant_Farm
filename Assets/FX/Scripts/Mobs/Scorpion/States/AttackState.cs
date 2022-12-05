@@ -6,7 +6,7 @@ namespace ScorpionNamespace
     {
 
         private Scorpion scorpion;
-        private ScorpionTarget scorpionTarget;
+        private Target scorpionTarget;
         public AttackState(Scorpion scorpion) : base(scorpion)
         {
             this.type = STATE.ATTACK;

@@ -17,7 +17,7 @@ namespace GunnerNamespace
         public State currentState { get; set; }
         public Pathfinder pathfinder { get; set; }
         public SurfaceOperations surfaceOperations { get; set; }
-        public GunnerTarget target { get; set; }
+        public Target target { get; set; }
         public FloorHexagon currentHex { get; set; }
         public Action Kill { get; set; }
         public bool HasPath { get => path != null && currentPathEdge != null; }
@@ -189,7 +189,7 @@ namespace GunnerNamespace
         }
 
 
-        public GunnerTarget SearchTarget()
+        public Target SearchTarget()
         {
             var notDeadMobs = new List<Mob>(store.allEnemies.Where(mob => mob.currentState?.type != STATE.DEAD));
             KDTree mobPositionsTree = new KDTree(notDeadMobs.Select(mob => mob.position).ToArray());
@@ -208,7 +208,7 @@ namespace GunnerNamespace
                 var path = pathfinder.FindPath(position, targetMob.currentHex.position, accessMask, SearchType.NEAREST_VERTEX);
                 if (path != null)
                 {
-                    var target = new GunnerTarget($"{id}_{targetMob.id}", this, targetMob);
+                    var target = new Target($"{id}_{targetMob.id}", this, targetMob);
                     target.path = path;
                     target.mob = targetMob;
                     return target;
@@ -217,7 +217,7 @@ namespace GunnerNamespace
             return null;
         }
 
-        public void SetTarget(GunnerTarget target)
+        public void SetTarget(Target target)
         {
             this.target = target;
             if (target != null)
@@ -237,8 +237,6 @@ namespace GunnerNamespace
                 var hexagonsOnTrajectory = new List<FloorHexagon>();
                 for (int i = 0; i < Mathf.Floor(vecLength); i++)
                 {
-                    var newPos = position + i * vecNorm;
-                    Debug.Log(newPos);
                     hexagonsOnTrajectory.Add(surfaceOperations.surface.PositionToHex(position + i * vecNorm));
                 }
                 hexagonsOnTrajectory.Add(surfaceOperations.surface.PositionToHex(targetPosition));
