@@ -482,13 +482,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   current: {fileID: 0}
   run: {fileID: 11400000, guid: 87a4df4fd743f7a4d8cc7505f65598e9, type: 2}
-  idle: {fileID: 0}
+  idle: {fileID: 11400000, guid: ae174852c41a7e74bafa5dd82132ffb1, type: 2}
   idleFight: {fileID: 11400000, guid: ae174852c41a7e74bafa5dd82132ffb1, type: 2}
   runFood: {fileID: 0}
   f: 0
   mf: {fileID: 2928974046518718093}
   mr: {fileID: 1893487833255054486}
-  angl: {fileID: 3637670549930944496}
   isHitMade: 0
   m_Shoot:
     m_PersistentCalls:
@@ -524,7 +523,6 @@ MonoBehaviour:
   store: {fileID: 0}
   mf: {fileID: 2928974046518718093}
   angl: {fileID: 3637670549930944496}
-  isHitMade: 0
 --- !u!1 &6471508474402604861
 GameObject:
   m_ObjectHideFlags: 0

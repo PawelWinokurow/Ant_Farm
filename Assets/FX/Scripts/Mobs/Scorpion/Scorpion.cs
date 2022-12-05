@@ -264,7 +264,7 @@ namespace ScorpionNamespace
             }
         }
 
-        public bool IsTargetInNeighbourhood()
+        public bool IsTargetInSight()
         {
             if (currentHex != null && target.mob.currentHex != null)
             {

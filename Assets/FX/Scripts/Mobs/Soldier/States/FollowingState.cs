@@ -34,11 +34,11 @@ namespace SoldierNamespace
             {
                 soldier.SetState(new PatrolState(soldier));
             }
-            else if (soldier.IsTargetInNeighbourhood())
+            else if (soldier.IsTargetInSight())
             {
                 soldier.SetState(new AttackState(soldier));
             }
-            else if (soldier.target.hex != soldier.target.mob.currentHex && !soldier.IsTargetInNeighbourhood())
+            else if (soldier.target.hex != soldier.target.mob.currentHex && !soldier.IsTargetInSight())
             {
                 soldier.Rerouting();
             }

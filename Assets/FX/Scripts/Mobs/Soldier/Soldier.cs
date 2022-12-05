@@ -223,7 +223,7 @@ namespace SoldierNamespace
             }
         }
 
-        public bool IsTargetInNeighbourhood()
+        public bool IsTargetInSight()
         {
             return currentHex.vertex.neighbours.Select(vertex => vertex.id).Append(currentHex.id).Contains(target.mob.currentHex.id);
         }

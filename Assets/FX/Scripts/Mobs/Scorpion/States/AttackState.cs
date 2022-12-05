@@ -31,7 +31,7 @@ namespace ScorpionNamespace
 
         public override void Tick()
         {
-            if (!scorpion.IsTargetInNeighbourhood())
+            if (!scorpion.IsTargetInSight())
             {
                 scorpion.SetState(new FollowingState(scorpion));
             }

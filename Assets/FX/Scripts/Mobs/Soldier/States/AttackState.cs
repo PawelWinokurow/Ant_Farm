@@ -31,7 +31,7 @@ namespace SoldierNamespace
 
         public override void Tick()
         {
-            if (!soldier.IsTargetInNeighbourhood())
+            if (!soldier.IsTargetInSight())
             {
                 soldier.SetState(new FollowingState(soldier));
             }

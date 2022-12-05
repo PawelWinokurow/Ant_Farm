@@ -43,11 +43,11 @@ namespace ScorpionNamespace
             {
                 scorpion.SetState(new PatrolState(scorpion));
             }
-            else if (scorpion.IsTargetInNeighbourhood() && scorpion.currentHex.type != HexType.SOIL)
+            else if (scorpion.IsTargetInSight() && scorpion.currentHex.type != HexType.SOIL)
             {
                 scorpion.SetState(new AttackState(scorpion));
             }
-            else if (scorpion.target.hex != scorpion.target.mob.currentHex && !scorpion.IsTargetInNeighbourhood())
+            else if (scorpion.target.hex != scorpion.target.mob.currentHex && !scorpion.IsTargetInSight())
             {
                 scorpion.Rerouting();
             }
