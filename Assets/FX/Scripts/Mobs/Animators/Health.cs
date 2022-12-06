@@ -37,13 +37,13 @@ public class Health : MonoBehaviour
     {
         hitTime += Time.deltaTime;
 
-        if (hitTime <= 0.2f)
+        if (hitTime <= 0.2f)//������� ��� �����
         {
             if (!isDead)
             {
-                mr.transform.localScale = Vector3.one * ExtensionMethods.RemapClamp(hitTime / 0.1f, 0f, 1f, 1.2f, 1f);
+                mr.transform.localScale = Vector3.one * ExtensionMethods.RemapClamp(hitTime / 0.1f, 0f, 1f, 1.2f, 1f);//���������
             }
-            bodyProps.SetFloat("_Blink_FX", ExtensionMethods.RemapClamp(hitTime, 0f, 0.1f, 1f, 0f));
+            bodyProps.SetFloat("_Blink_FX", ExtensionMethods.RemapClamp(hitTime, 0f, 0.1f, 1f, 0f));//�������
             mr.SetPropertyBlock(bodyProps);
 
         }
@@ -52,12 +52,12 @@ public class Health : MonoBehaviour
         {
             progressbar.transform.localScale = new Vector3(MAX_HP / 100f, 1f, 1f);
 
-            if (hitTime > 2f)
+            if (hitTime > 2f)//����������� ���� ��� ������� �� ���� �����
             {
                 hp += Time.deltaTime * MAX_HP / healTime;
             }
         }
-        progressbar.enabled = !isDead && hp < MAX_HP;
+        progressbar.enabled = !isDead && hp < MAX_HP;//��� ����������� ���������� �����������
 
 
 
@@ -74,16 +74,12 @@ public class Health : MonoBehaviour
     }
     public float Hit(int damage)
     {
-        Debug.Log(gameObject.name);
         hp -= damage;
 
-        if (hp < 0)
+        if (hp <= 0 && !isDead)
         {
-            if (!isDead)
-            {
                 isDead = true;
                 StartCoroutine(Dead_Cor());
-            }
         }
         hitTime = 0f;
         return hp;

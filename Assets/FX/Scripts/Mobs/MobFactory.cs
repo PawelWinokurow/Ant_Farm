@@ -55,7 +55,7 @@ public class MobFactory : MonoBehaviour
             scorpion.CancelJob();
         };
         store.AddEnemy(scorpion);
-
+        Buy(scorpion, 10);
         yield return null;
     }
     IEnumerator SpawnWorker(string id, FloorHexagon hex)
@@ -65,6 +65,7 @@ public class MobFactory : MonoBehaviour
         worker.id = id;
         workerJobScheduler.AddWorker(worker);
         store.AddAlly(worker);
+        Buy(worker, 10);
         yield return null;
     }
     IEnumerator SpawnSoldier(string id, FloorHexagon hex)
@@ -82,6 +83,7 @@ public class MobFactory : MonoBehaviour
             soldier.CancelJob();
         };
         store.AddAlly(soldier);
+        Buy(soldier, 10);
         yield return null;
     }
     IEnumerator SpawnGunner(string id, FloorHexagon hex)
