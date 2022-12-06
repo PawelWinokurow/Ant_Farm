@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: CannonFX_Clouds
-  m_Shader: {fileID: 4800000, guid: ba025274e7106a54f8ef3aada4aead78, type: 3}
+  m_Shader: {fileID: 4800000, guid: 6cc1c559b353e9b448403324580d9498, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4

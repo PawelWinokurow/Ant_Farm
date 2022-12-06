@@ -29,7 +29,6 @@ namespace GunnerNamespace
         private GameSettings gameSettings;
         private GunnerSettings gunnerSettings;
         public int movementSpeed { get; set; }
-        public Cannon cannon;
         public MeshFilter mf;
         public Transform angl;
         private Quaternion smoothRot;
@@ -46,7 +45,6 @@ namespace GunnerNamespace
             health = GetComponent<Health>();
             health.InitHp(gunnerSettings.HP);
             SetState(new PatrolState(this));
-            cannon.gunner=this;
         }
 
         public void SetState(State state)

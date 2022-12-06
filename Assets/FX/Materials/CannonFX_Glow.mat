@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: CannonFX_Glow
-  m_Shader: {fileID: 4800000, guid: bca5fb1586f7e824a9287dcc2c603264, type: 3}
+  m_Shader: {fileID: 4800000, guid: 9e0ed1d3fab49224daed922f30ff5204, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4

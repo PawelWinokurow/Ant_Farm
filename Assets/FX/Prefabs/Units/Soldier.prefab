@@ -64,8 +64,6 @@ MonoBehaviour:
   store: {fileID: 0}
   mf: {fileID: 5865166322797337075}
   angl: {fileID: 5456979313225486478}
-  startTime: 0
-  isHitMade: 0
 --- !u!114 &4019906864090253520
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101,12 +99,11 @@ MonoBehaviour:
   current: {fileID: 0}
   run: {fileID: 11400000, guid: be00dad06daf7b8419e6f2565ba01199, type: 2}
   idle: {fileID: 11400000, guid: 9c83920a985a5f64d9fb4df3b380c3d1, type: 2}
-  idleFight: {fileID: 11400000, guid: a02a82089797691498dc1b5d0bde4e94, type: 2}
+  idleFight: {fileID: 11400000, guid: 9c83920a985a5f64d9fb4df3b380c3d1, type: 2}
   runFood: {fileID: 0}
   f: 0
   mf: {fileID: 5865166322797337075}
   mr: {fileID: 7171853714776161256}
-  angl: {fileID: 5456979313225486478}
   isHitMade: 0
   m_Shoot:
     m_PersistentCalls:
