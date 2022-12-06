@@ -9,7 +9,7 @@ public class WorkHexagon : MonoBehaviour, Hexagon
     public FloorHexagon floorHexagon { get; set; }
     public static float MAX_WORK = 100f;
     public float work = MAX_WORK;
-
+    public bool isGroundMat;
 
     public static WorkHexagon CreateHexagon(FloorHexagon parent, WorkHexagon workHexPrefab)
     {

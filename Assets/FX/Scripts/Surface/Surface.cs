@@ -240,6 +240,7 @@ public class Surface : MonoBehaviour
             PlaceDemountIcon(hex, demountPrefab);
         }
     }
+   
 
     private void PlaceMountIcon(FloorHexagon hex, WorkHexagon prefab, int accessMask)
     {
@@ -248,6 +249,7 @@ public class Surface : MonoBehaviour
         hex.RemoveChildren();
         pathGraph.SetAccesabillity(hex, accessMask);
         WorkHexagon.CreateHexagon(hex, prefab);
+
     }
     private void PlaceDemountIcon(FloorHexagon hex, WorkHexagon prefab)
     {
