@@ -601,7 +601,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60a9fb91b6f80354888b2f2d335b72e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wallProbability: 80
+  wallProbability: 10
   foodProbability: 1
 --- !u!4 &1176967604
 Transform:
