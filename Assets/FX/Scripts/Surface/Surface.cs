@@ -248,8 +248,8 @@ public class Surface : MonoBehaviour
         oldhexagons.Add(clonedHex.id, clonedHex);
         hex.RemoveChildren();
         pathGraph.SetAccesabillity(hex, accessMask);
-        WorkHexagon.CreateHexagon(hex, prefab);
-
+       WorkHexagon.CreateHexagon(hex, prefab);
+  
     }
     private void PlaceDemountIcon(FloorHexagon hex, WorkHexagon prefab)
     {
