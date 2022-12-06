@@ -31,13 +31,9 @@ namespace ScorpionNamespace
 
         public override void Tick()
         {
-            if (!scorpion.IsTargetInSight())
+            if (!scorpion.IsTargetInSight() || scorpion.target.IsDead)
             {
                 scorpion.SetState(new FollowingState(scorpion));
-            }
-            if (scorpion.target.mob.currentState.type == STATE.DEAD)
-            {
-                scorpion.SetState(new PatrolState(scorpion));
             }
         }
 

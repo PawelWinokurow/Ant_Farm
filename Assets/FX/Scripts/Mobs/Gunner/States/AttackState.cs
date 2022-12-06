@@ -31,13 +31,9 @@ namespace GunnerNamespace
 
         public override void Tick()
         {
-            if (!gunner.IsTargetInSight())
+            if (!gunner.IsTargetInSight() || gunner.target.IsDead)
             {
                 gunner.SetState(new FollowingState(gunner));
-            }
-            if (gunner.target.mob.currentState.type == STATE.DEAD)
-            {
-                gunner.SetState(new PatrolState(gunner));
             }
         }
     }

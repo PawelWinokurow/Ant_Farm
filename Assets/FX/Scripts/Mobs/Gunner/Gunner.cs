@@ -29,7 +29,7 @@ namespace GunnerNamespace
         private GameSettings gameSettings;
         private GunnerSettings gunnerSettings;
         public int movementSpeed { get; set; }
-        private Cannon cannon { get; set; }
+        public Cannon cannon { get; set; }
         public MeshFilter mf;
         public Transform angl;
         private Quaternion smoothRot;
@@ -209,7 +209,7 @@ namespace GunnerNamespace
                 var path = pathfinder.FindPath(position, targetMob.currentHex.position, accessMask, SearchType.NEAREST_VERTEX);
                 if (path != null)
                 {
-                    var target = new Target($"{id}_{targetMob.id}", this, targetMob);
+                    var target = new Target($"{id}_{targetMob.id}", targetMob);
                     target.path = path;
                     target.mob = targetMob;
                     return target;
