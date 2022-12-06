@@ -17,6 +17,7 @@ public class MobFactory : MonoBehaviour
     public Gunner gunnerPrefab;
     public Soldier soldierPrefab;
     public Store store;
+    public PopUp popUp_prefad;
 
     void Start()
     {
@@ -98,6 +99,13 @@ public class MobFactory : MonoBehaviour
             gunner.CancelJob();
         };
         store.AddAlly(gunner);
+        Buy(gunner,10);
         yield return null;
+    }
+
+    public void Buy(Mob mob,int cost)
+    {
+        PopUp popUp = Instantiate(popUp_prefad, mob.position, Quaternion.identity, transform);
+        popUp.tmp.text= -cost+" $";
     }
 }

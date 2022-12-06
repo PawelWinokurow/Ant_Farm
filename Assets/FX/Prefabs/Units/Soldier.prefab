@@ -62,7 +62,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   store: {fileID: 0}
-  mf: {fileID: 5865166322797337075}
+  body: {fileID: 1776496133414637284}
   angl: {fileID: 5456979313225486478}
 --- !u!114 &4019906864090253520
 MonoBehaviour:
@@ -107,7 +107,19 @@ MonoBehaviour:
   isHitMade: 0
   m_Shoot:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6674348483651007441}
+        m_TargetAssemblyTypeName: SoldierNamespace.Soldier, Assembly-CSharp
+        m_MethodName: Attack
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5456979313225486477
 GameObject:
   m_ObjectHideFlags: 0
@@ -152,7 +164,7 @@ GameObject:
   - component: {fileID: 5865166322797337075}
   - component: {fileID: 7171853714776161256}
   m_Layer: 0
-  m_Name: Mesh
+  m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

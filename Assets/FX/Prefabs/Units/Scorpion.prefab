@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 876968272109895197}
   - component: {fileID: 4524242656641080326}
   m_Layer: 0
-  m_Name: Mesh
+  m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -263,9 +263,8 @@ MonoBehaviour:
   store: {fileID: 0}
   DigFX: {fileID: 6238018754146974196, guid: fe67a9fb628b12d449d285918bc3e4af, type: 3}
   digFX: {fileID: 0}
-  mf: {fileID: 876968272109895197}
+  body: {fileID: 5037766150424258826}
   angl: {fileID: 1654450027167971168}
-  isHitMade: 0
 --- !u!114 &-2437768602649910727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -306,11 +305,22 @@ MonoBehaviour:
   f: 0
   mf: {fileID: 876968272109895197}
   mr: {fileID: 4524242656641080326}
-  angl: {fileID: 1654450027167971168}
   isHitMade: 0
   m_Shoot:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 376137783415288789}
+        m_TargetAssemblyTypeName: ScorpionNamespace.Scorpion, Assembly-CSharp
+        m_MethodName: Attack
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &9128280933621934098
 PrefabInstance:
   m_ObjectHideFlags: 0

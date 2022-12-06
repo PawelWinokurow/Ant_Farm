@@ -2,23 +2,21 @@ using UnityEngine;
 using TMPro;
 using DG.Tweening;
 
-public class HealthPopUp : MonoBehaviour
+public class PopUp : MonoBehaviour
 {
     public TextMeshPro tmp;
     private float a;
 
 
+    private void OnEnable()
+    {
+        PlayAnimation();
+    }
 
     private void Update()
     {
         tmp.transform.localPosition = Vector3.forward * a * 5f;
         tmp.alpha = ExtensionMethods.RemapClamp(a, 0.8f, 1f, 1f, 0f);
-    }
-
-    public void Hit(float damage)
-    {
-        PlayAnimation();
-        tmp.text = "-" + damage;
     }
 
     private void PlayAnimation()

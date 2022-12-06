@@ -6,7 +6,6 @@ public class Health : MonoBehaviour
     public MeshRenderer mr;
 
     public ParticleSystemRenderer deadFX_prefab;
-    public HealthPopUp popUp_prefad;
 
     MaterialPropertyBlock bodyProps;
     MaterialPropertyBlock progressbarProps;
@@ -38,13 +37,13 @@ public class Health : MonoBehaviour
     {
         hitTime += Time.deltaTime;
 
-        if (hitTime <= 0.2f)//������� ��� �����
+        if (hitTime <= 0.2f)
         {
             if (!isDead)
             {
-                mr.transform.localScale = Vector3.one * ExtensionMethods.RemapClamp(hitTime / 0.1f, 0f, 1f, 1.2f, 1f);//���������
+                mr.transform.localScale = Vector3.one * ExtensionMethods.RemapClamp(hitTime / 0.1f, 0f, 1f, 1.2f, 1f);
             }
-            bodyProps.SetFloat("_Blink_FX", ExtensionMethods.RemapClamp(hitTime, 0f, 0.1f, 1f, 0f));//�������
+            bodyProps.SetFloat("_Blink_FX", ExtensionMethods.RemapClamp(hitTime, 0f, 0.1f, 1f, 0f));
             mr.SetPropertyBlock(bodyProps);
 
         }
@@ -53,12 +52,12 @@ public class Health : MonoBehaviour
         {
             progressbar.transform.localScale = new Vector3(MAX_HP / 100f, 1f, 1f);
 
-            if (hitTime > 2f)//����������� ���� ��� ������� �� ���� �����
+            if (hitTime > 2f)
             {
                 hp += Time.deltaTime * MAX_HP / healTime;
             }
         }
-        progressbar.enabled = !isDead && hp < MAX_HP;//��� ����������� ���������� �����������
+        progressbar.enabled = !isDead && hp < MAX_HP;
 
 
 
@@ -75,13 +74,10 @@ public class Health : MonoBehaviour
     }
     public float Hit(int damage)
     {
+        Debug.Log(gameObject.name);
         hp -= damage;
-        if (hp > 0)//���� ����
-        {
-            HealthPopUp healthPopUp = Instantiate(popUp_prefad, transform.position, transform.rotation, transform);//��������� ����� � ��������
-            healthPopUp.Hit((int)Mathf.Round(damage * Random.Range(0.5f, 1.0f)));
-        }
-        else
+
+        if (hp < 0)
         {
             if (!isDead)
             {

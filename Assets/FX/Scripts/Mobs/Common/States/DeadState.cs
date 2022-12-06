@@ -4,7 +4,7 @@ public class DeadState : State
     public DeadState(Mob mob) : base(mob)
     {
         this.type = STATE.DEAD;
-        mob.SetIdleAnimation();
+        mob.SetRunAnimation();
     }
 
     public override void Tick()
