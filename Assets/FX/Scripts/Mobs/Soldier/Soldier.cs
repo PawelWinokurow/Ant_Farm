@@ -205,7 +205,7 @@ namespace SoldierNamespace
                 var path = pathfinder.FindPath(position, targetMob.currentHex.position, accessMask, SearchType.NEAREST_VERTEX);
                 if (path != null)
                 {
-                    var target = new Target($"{id}_{targetMob.id}", this, targetMob);
+                    var target = new Target($"{id}_{targetMob.id}", targetMob);
                     target.path = path;
                     target.mob = targetMob;
                     return target;

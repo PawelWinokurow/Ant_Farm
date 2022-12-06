@@ -31,13 +31,9 @@ namespace SoldierNamespace
 
         public override void Tick()
         {
-            if (!soldier.IsTargetInSight())
+            if (!soldier.IsTargetInSight() || soldier.target.IsDead)
             {
                 soldier.SetState(new FollowingState(soldier));
-            }
-            if (soldier.target.mob.currentState.type == STATE.DEAD)
-            {
-                soldier.SetState(new PatrolState(soldier));
             }
         }
     }

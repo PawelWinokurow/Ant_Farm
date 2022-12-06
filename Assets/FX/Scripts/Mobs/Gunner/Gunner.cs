@@ -29,17 +29,18 @@ namespace GunnerNamespace
         private GameSettings gameSettings;
         private GunnerSettings gunnerSettings;
         public int movementSpeed { get; set; }
+        public Cannon cannon { get; set; }
         public MeshFilter mf;
         public Transform angl;
         private Quaternion smoothRot;
 
-
-     
         void Start()
         {
             gameSettings = Settings.Instance.gameSettings;
             gunnerSettings = Settings.Instance.gunnerSettings;
             animator = GetComponent<MobAnimator>();
+            animator.Attack = () => Attack();
+            cannon = GetComponent<Cannon>();
             type = MobType.GUNNER;
             accessMask = gameSettings.ACCESS_MASK_FLOOR + gameSettings.ACCESS_MASK_BASE;
             health = GetComponent<Health>();
@@ -65,6 +66,16 @@ namespace GunnerNamespace
             if (path != null)
             {
                 if (path.HasWaypoints) SetcurrentPathEdge();
+            }
+        }
+
+        public void Attack()
+        {
+            cannon.Shoot(target.mob.position);
+            if (target.mob.Hit(gunnerSettings.ATTACK_STRENGTH) <= 0)
+            {
+                CancelJob();
+                SetState(new PatrolState(this));
             }
         }
 
@@ -198,7 +209,7 @@ namespace GunnerNamespace
                 var path = pathfinder.FindPath(position, targetMob.currentHex.position, accessMask, SearchType.NEAREST_VERTEX);
                 if (path != null)
                 {
-                    var target = new Target($"{id}_{targetMob.id}", this, targetMob);
+                    var target = new Target($"{id}_{targetMob.id}", targetMob);
                     target.path = path;
                     target.mob = targetMob;
                     return target;

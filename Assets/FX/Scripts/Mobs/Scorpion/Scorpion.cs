@@ -246,7 +246,7 @@ namespace ScorpionNamespace
                 var path = pathfinder.FindPath(position, targetMob.currentHex.position, gameSettings.ACCESS_MASK_FLOOR + gameSettings.ACCESS_MASK_SOIL, SearchType.NEAREST_CENTRAL_VERTEX);
                 if (path != null)
                 {
-                    var target = new Target($"{id}_{targetMob.id}", this, targetMob);
+                    var target = new Target($"{id}_{targetMob.id}", targetMob);
                     target.path = path;
                     target.mob = targetMob;
                     return target;
