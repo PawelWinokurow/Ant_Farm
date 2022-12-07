@@ -263,6 +263,15 @@ public class Surface : MonoBehaviour
         hexNew.transform.localScale = 0.95f * Vector3.one;
         Instantiate(prefab, hexNew.position, Quaternion.identity, hexNew.transform);
         pathGraph.SetAccesabillity(hex, GetAccessMaskByHexType(hex.type));
+
+        WorkHexagon[] workHexagons = hex.GetComponentsInChildren<WorkHexagon>();
+        for (int i = 0; i < workHexagons.Length; i++)
+        {
+            if (workHexagons[i].isGroundMat == true)
+            {
+                workHexagons[i].GetComponent<MeshRenderer>().sharedMaterial = hex.mr.sharedMaterial;
+            }
+        }
     }
 
     public int GetAccessMaskByHexType(HexType type)

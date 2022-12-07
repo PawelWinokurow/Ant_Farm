@@ -19633,7 +19633,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ball_p: {fileID: 2381269298565259244}
   ball: {fileID: 2381269298352812389}
-  target: {fileID: 0}
   speed: 25
   shoot_FX: {fileID: 2266513408033644261}
   ball_FX: {fileID: 2097989179}
@@ -19766,7 +19765,7 @@ GameObject:
   - component: {fileID: 2928974046518718093}
   - component: {fileID: 1893487833255054486}
   m_Layer: 0
-  m_Name: Mesh
+  m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19923,14 +19922,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad566de7ab78790458dc979655823c2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mr: {fileID: 1893487833255054486}
-  deadFX_prefab: {fileID: 3272130487407376758, guid: 39c28e67acc0741eda505500a9133922, type: 3}
-  popUp_prefad: {fileID: 668541531679047375, guid: 8868b609e6e2e446ebda1e61c70b03b8, type: 3}
+  deadFX_prefab: {fileID: 3272130487407376759, guid: 39c28e67acc0741eda505500a9133922, type: 3}
+  hitFX_prefab: {fileID: 3272130487407376759, guid: 11b753cc1e21c41e393bd07e86b78fb9, type: 3}
   progressbar: {fileID: 1786696478848772234}
-  shadow: {fileID: 855945886619293409}
   MAX_HP: 0
   hp: 0
   healTime: 10
+  renderers:
+  - {fileID: 1893487833255054486}
 --- !u!114 &5623056589175685032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19992,7 +19991,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   store: {fileID: 0}
-  mf: {fileID: 2928974046518718093}
+  body: {fileID: 7018840229607225754}
   angl: {fileID: 3637670549930944496}
 --- !u!1 &4942867508392615086
 GameObject:

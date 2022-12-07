@@ -45,7 +45,7 @@ public class SurfaceOperations : MonoBehaviour
     public void Unloading(BaseHexagon storageHex, UnloadingState state, CarrierJob job)
     {
         var worker = state.worker;
-        var toStore = Mathf.Min((workerSettings.LOADING_SPEED * Time.deltaTime), worker.carryingWeight);
+        var toStore = Mathf.Min((workerSettings.UPLOADING_SPEED * Time.deltaTime), worker.carryingWeight);
         storageHex.storage += toStore;
         worker.carryingWeight -= toStore;
         if (worker.carryingWeight <= 0)

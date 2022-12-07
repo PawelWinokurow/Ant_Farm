@@ -17,6 +17,7 @@ public class MobFactory : MonoBehaviour
     public Gunner gunnerPrefab;
     public Soldier soldierPrefab;
     public Store store;
+    public PopUp popUp_prefad;
 
     void Start()
     {
@@ -54,7 +55,7 @@ public class MobFactory : MonoBehaviour
             scorpion.CancelJob();
         };
         store.AddEnemy(scorpion);
-
+        Buy(scorpion, 10);
         yield return null;
     }
     IEnumerator SpawnWorker(string id, FloorHexagon hex)
@@ -64,6 +65,7 @@ public class MobFactory : MonoBehaviour
         worker.id = id;
         workerJobScheduler.AddWorker(worker);
         store.AddAlly(worker);
+        Buy(worker, 10);
         yield return null;
     }
     IEnumerator SpawnSoldier(string id, FloorHexagon hex)
@@ -81,6 +83,7 @@ public class MobFactory : MonoBehaviour
             soldier.CancelJob();
         };
         store.AddAlly(soldier);
+        Buy(soldier, 10);
         yield return null;
     }
     IEnumerator SpawnGunner(string id, FloorHexagon hex)
@@ -98,6 +101,13 @@ public class MobFactory : MonoBehaviour
             gunner.CancelJob();
         };
         store.AddAlly(gunner);
+        Buy(gunner,10);
         yield return null;
+    }
+
+    public void Buy(Mob mob,int cost)
+    {
+        PopUp popUp = Instantiate(popUp_prefad, mob.position, Quaternion.identity, transform);
+        popUp.tmp.text= (-cost).ToString();
     }
 }

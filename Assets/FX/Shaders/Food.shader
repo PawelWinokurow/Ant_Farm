@@ -1,3 +1,5 @@
+// Upgrade NOTE: upgraded instancing buffer 'CustomFood' to new syntax.
+
 // Made with Amplify Shader Editor
 // Available at the Unity Asset Store - http://u3d.as/y3X 
 Shader "Custom/Food"
@@ -5,6 +7,8 @@ Shader "Custom/Food"
 	Properties
 	{
 		_Mult("Mult", Float) = 1
+		_BlinkFX_Color("BlinkFX_Color", Color) = (1,0,0,1)
+		_Blink_FX("Blink_FX", Range( 0 , 1)) = 0
 
 	}
 	
@@ -25,14 +29,7 @@ Shader "Custom/Food"
 		ZWrite On
 		ZTest LEqual
 		Offset 0 , 0
-		Stencil
-		{
-			Ref 1
-			Comp Always
-			Pass Replace
-			Fail Keep
-			ZFail Keep
-		}
+		
 		
 		
 		Pass
@@ -74,6 +71,11 @@ Shader "Custom/Food"
 			};
 
 			uniform float _Mult;
+			uniform float4 _BlinkFX_Color;
+			UNITY_INSTANCING_BUFFER_START(CustomFood)
+				UNITY_DEFINE_INSTANCED_PROP(float, _Blink_FX)
+#define _Blink_FX_arr CustomFood
+			UNITY_INSTANCING_BUFFER_END(CustomFood)
 
 			
 			v2f vert ( appdata v )
@@ -116,9 +118,11 @@ Shader "Custom/Food"
 				#endif
 				float2 texCoord190 = i.ase_texcoord1.xy * float2( 1,1 ) + float2( 0,0 );
 				float temp_output_220_0 = ( texCoord190.y - 0.5 );
+				float _Blink_FX_Instance = UNITY_ACCESS_INSTANCED_PROP(_Blink_FX_arr, _Blink_FX);
+				float4 lerpResult225 = lerp( float4( 0,0,0,1 ) , _BlinkFX_Color , _Blink_FX_Instance);
 				
 				
-				finalColor = ( ( ( i.ase_color + saturate( ( 0.5 * temp_output_220_0 ) ) ) * ( 1.0 - saturate( ( -0.3 * temp_output_220_0 ) ) ) ) * _Mult );
+				finalColor = saturate( ( ( ( i.ase_color + saturate( ( 0.5 * temp_output_220_0 ) ) ) * ( 1.0 - saturate( ( -0.3 * temp_output_220_0 ) ) ) * _Mult ) + lerpResult225 ) );
 				return finalColor;
 			}
 			ENDCG
@@ -130,32 +134,40 @@ Shader "Custom/Food"
 }
 /*ASEBEGIN
 Version=18500
-1182;72.66667;1043.333;777.6667;1861.567;1102.78;1;True;False
+1210;83;743;679;1721.538;1080.758;1.721858;True;False
 Node;AmplifyShaderEditor.TextureCoordinatesNode;190;-2403.125,-517.2972;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SimpleSubtractOpNode;220;-2000.376,-511.9448;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;0.5;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;217;-1764.522,-506.492;Inherit;False;2;2;0;FLOAT;-0.3;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;221;-1972.411,-686.2755;Inherit;False;2;2;0;FLOAT;0.5;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.VertexColorNode;210;-1973.763,-1034.462;Inherit;False;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;217;-1764.522,-506.492;Inherit;False;2;2;0;FLOAT;-0.3;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SaturateNode;218;-1765.278,-648.5502;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SaturateNode;214;-1854.633,-761.9332;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleAddOpNode;215;-1654.006,-808.8679;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
+Node;AmplifyShaderEditor.VertexColorNode;210;-2283.763,-1171.462;Inherit;False;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.ColorNode;224;-1190.293,-555.3223;Inherit;False;Property;_BlinkFX_Color;BlinkFX_Color;1;0;Create;True;0;0;False;0;False;1,0,0,1;1,0,0,1;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.OneMinusNode;219;-1563.188,-571.748;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;216;-1422.027,-717.0569;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
-Node;AmplifyShaderEditor.RangedFloatNode;224;-1324.9,-554.1132;Inherit;False;Property;_Mult;Mult;0;0;Create;True;0;0;False;0;False;1;0;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;223;-1269.9,-747.1133;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;134;-1136.982,-838.874;Float;False;True;-1;2;ASEMaterialInspector;100;1;Custom/Food;0770190933193b94aaa3065e307002fa;True;Unlit;0;0;Unlit;2;True;0;1;False;-1;0;False;-1;0;1;False;-1;0;False;-1;True;0;False;-1;0;False;-1;False;False;False;False;False;False;True;0;False;-1;True;0;False;-1;True;True;True;True;True;0;False;-1;False;False;False;True;True;1;False;-1;255;False;-1;255;False;-1;7;False;-1;3;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;True;1;False;-1;True;3;False;-1;True;True;0;False;-1;0;False;-1;True;1;RenderType=Opaque=RenderType;True;2;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=ForwardBase;False;0;;0;0;Standard;1;Vertex Position,InvertActionOnDeselection;1;0;1;True;False;;False;0
+Node;AmplifyShaderEditor.SimpleAddOpNode;215;-1654.006,-808.8679;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
+Node;AmplifyShaderEditor.RangedFloatNode;223;-1402.783,-445.39;Inherit;False;Property;_Mult;Mult;0;0;Create;True;0;0;False;0;False;1;1;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;227;-1277.313,-306.8567;Inherit;False;InstancedProperty;_Blink_FX;Blink_FX;2;0;Create;True;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;216;-1422.027,-717.0569;Inherit;False;3;3;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;2;FLOAT;0;False;1;COLOR;0
+Node;AmplifyShaderEditor.LerpOp;225;-913.27,-506.1006;Inherit;False;3;0;COLOR;0,0,0,1;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
+Node;AmplifyShaderEditor.SimpleAddOpNode;226;-826.9441,-755.9315;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.SaturateNode;228;-647.1002,-760.4912;Inherit;False;1;0;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;134;-482.6693,-769.204;Float;False;True;-1;2;ASEMaterialInspector;100;1;Custom/Food;0770190933193b94aaa3065e307002fa;True;Unlit;0;0;Unlit;2;True;0;1;False;-1;0;False;-1;0;1;False;-1;0;False;-1;True;0;False;-1;0;False;-1;False;False;False;False;False;False;True;0;False;-1;True;0;False;-1;True;True;True;True;True;0;False;-1;False;False;False;True;False;1;False;-1;255;False;-1;255;False;-1;6;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;True;1;False;-1;True;3;False;-1;True;True;0;False;-1;0;False;-1;True;1;RenderType=Opaque=RenderType;True;2;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=ForwardBase;False;0;;0;0;Standard;1;Vertex Position,InvertActionOnDeselection;1;0;1;True;False;;False;0
 WireConnection;220;0;190;2
-WireConnection;217;1;220;0
 WireConnection;221;1;220;0
+WireConnection;217;1;220;0
 WireConnection;218;0;217;0
 WireConnection;214;0;221;0
+WireConnection;219;0;218;0
 WireConnection;215;0;210;0
 WireConnection;215;1;214;0
-WireConnection;219;0;218;0
 WireConnection;216;0;215;0
 WireConnection;216;1;219;0
-WireConnection;223;0;216;0
-WireConnection;223;1;224;0
-WireConnection;134;0;223;0
+WireConnection;216;2;223;0
+WireConnection;225;1;224;0
+WireConnection;225;2;227;0
+WireConnection;226;0;216;0
+WireConnection;226;1;225;0
+WireConnection;228;0;226;0
+WireConnection;134;0;228;0
 ASEEND*/
-//CHKSM=000EE748A97A86E1C778520AC15DC72E23C9375A
+//CHKSM=DC5DAD8D1547FBDEB358AC091C7D81F4D837BB02

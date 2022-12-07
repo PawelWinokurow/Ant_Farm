@@ -29,7 +29,7 @@ namespace SoldierNamespace
         private GameSettings gameSettings;
         private SoldierSettings soldierSettings;
         public int movementSpeed { get; set; }
-        public MeshFilter mf;
+        public Transform body;
         public Transform angl;
         private Quaternion smoothRot;
 
@@ -158,7 +158,6 @@ namespace SoldierNamespace
         private void Rotation()
         {
             Vector3 forward = Vector3.zero;
-            mf.mesh = animator.current.sequence[animator.f];
             if (currentState.type == STATE.ATTACK && target?.mob != null)
             {
                 forward = target.mob.position - transform.position;
@@ -169,8 +168,8 @@ namespace SoldierNamespace
             }
             Quaternion rot = Quaternion.LookRotation(angl.up, forward);
             smoothRot = Quaternion.Slerp(smoothRot, rot, Time.deltaTime * 10f);
-            mf.transform.rotation = smoothRot;
-            mf.transform.Rotate(new Vector3(-90f, 0f, 180f), Space.Self);
+            body.rotation = smoothRot;
+            body.Rotate(new Vector3(-90f, 0f, 180f), Space.Self);
         }
 
         public void SetRunAnimation()

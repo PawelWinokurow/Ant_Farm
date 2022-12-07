@@ -6,6 +6,7 @@ public class Food : MonoBehaviour
 {
     public Transform angl;
     public Transform foodBody;
+    public Transform shadow;
     public float costMax { get; set; }
     public float cost { get; set; }
     void Start()
@@ -15,7 +16,8 @@ public class Food : MonoBehaviour
 
     void Update()
     {
-        angl.localPosition = new Vector3(angl.localPosition.x, ExtensionMethods.RemapClamp(1f - cost / costMax, 0f, 1f, 0f, -1.6f), angl.localPosition.z);
+        shadow.localScale= angl.localScale = Vector3.one * ExtensionMethods.RemapClamp(1f - cost / costMax, 0f, 1f, 1f, 0.4f);
+        angl.localPosition = new Vector3(angl.localPosition.x, ExtensionMethods.RemapClamp(1f - cost / costMax, 0f, 1f, 0f, -0.5f), angl.localPosition.z);
         foodBody.gameObject.SetActive(cost > 0);
 
     }

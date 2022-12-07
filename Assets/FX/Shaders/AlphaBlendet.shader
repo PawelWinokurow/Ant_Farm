@@ -7,6 +7,7 @@ Shader "Custom/AlphaBlendet"
 		_TintColor ("Tint Color", Color) = (0.5,0.5,0.5,0.5)
 		_MainTex ("Particle Texture", 2D) = "white" {}
 		_InvFade ("Soft Particles Factor", Range(0.01,3.0)) = 1.0
+		_Mult("Mult", Float) = 0
 		[HideInInspector] _texcoord( "", 2D ) = "white" {}
 
 	}
@@ -82,7 +83,8 @@ Shader "Custom/AlphaBlendet"
 				uniform fixed4 _TintColor;
 				uniform float4 _MainTex_ST;
 				uniform float _InvFade;
-				
+				uniform float _Mult;
+
 
 				v2f vert ( appdata_t v  )
 				{
@@ -119,7 +121,7 @@ Shader "Custom/AlphaBlendet"
 					float2 uv_MainTex = i.texcoord.xy * _MainTex_ST.xy + _MainTex_ST.zw;
 					
 
-					fixed4 col = ( _TintColor * i.color * tex2D( _MainTex, uv_MainTex ) );
+					fixed4 col = ( _TintColor * i.color * tex2D( _MainTex, uv_MainTex ) * _Mult );
 					UNITY_APPLY_FOG(i.fogCoord, col);
 					return col;
 				}
@@ -133,17 +135,19 @@ Shader "Custom/AlphaBlendet"
 }
 /*ASEBEGIN
 Version=18500
-1111.333;80;838;845;808.4672;574.9211;1.639519;True;False
-Node;AmplifyShaderEditor.TemplateShaderPropertyNode;4;-430.3334,293.1667;Inherit;False;0;0;_MainTex;Shader;0;5;SAMPLER2D;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+1325.5;84;818;679;1011.746;225.7029;1.639519;True;False
+Node;AmplifyShaderEditor.TemplateShaderPropertyNode;4;-563.4952,263.6552;Inherit;False;0;0;_MainTex;Shader;0;5;SAMPLER2D;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.TemplateShaderPropertyNode;2;-359.3334,-69.8333;Inherit;False;0;0;_TintColor;Shader;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.VertexColorNode;3;-377.3334,98.16666;Inherit;False;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.SamplerNode;5;-203.3333,396.1667;Inherit;True;Property;_TextureSample0;Texture Sample 0;0;0;Create;True;0;0;False;0;False;-1;None;None;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;6;-4.009644,159.0371;Inherit;False;3;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.SamplerNode;5;-336.4951,366.6552;Inherit;True;Property;_TextureSample0;Texture Sample 0;0;0;Create;True;0;0;False;0;False;-1;None;None;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.RangedFloatNode;7;-19.85852,651.4397;Inherit;False;Property;_Mult;Mult;0;0;Create;True;0;0;False;0;False;0;0;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;6;-4.009644,159.0371;Inherit;False;4;4;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;COLOR;0,0,0,0;False;3;FLOAT;0;False;1;COLOR;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;0;224.6142,25.59279;Float;False;True;-1;2;ASEMaterialInspector;0;7;Custom/AlphaBlendet;0b6a9f8b4f707c74ca64c0be8e590de0;True;SubShader 0 Pass 0;0;0;SubShader 0 Pass 0;2;True;2;5;False;-1;10;False;-1;0;1;False;-1;0;False;-1;False;False;False;False;False;False;False;False;True;2;False;-1;True;True;True;True;False;0;False;-1;False;False;False;False;True;2;False;-1;True;3;False;-1;False;True;4;Queue=Transparent=Queue=0;IgnoreProjector=True;RenderType=Transparent=RenderType;PreviewType=Plane;False;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;0;;0;0;Standard;0;0;1;True;False;;False;0
 WireConnection;5;0;4;0
 WireConnection;6;0;2;0
 WireConnection;6;1;3;0
 WireConnection;6;2;5;0
+WireConnection;6;3;7;0
 WireConnection;0;0;6;0
 ASEEND*/
-//CHKSM=707840F22884026A8098C4B4D7B86051D9677D89
+//CHKSM=6F90BB7E7DD2EAD6AB45C51BDEADFA997794DC72

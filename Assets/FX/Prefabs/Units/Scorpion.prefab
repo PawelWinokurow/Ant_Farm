@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 876968272109895197}
   - component: {fileID: 4524242656641080326}
   m_Layer: 0
-  m_Name: Mesh
+  m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -263,9 +263,8 @@ MonoBehaviour:
   store: {fileID: 0}
   DigFX: {fileID: 6238018754146974196, guid: fe67a9fb628b12d449d285918bc3e4af, type: 3}
   digFX: {fileID: 0}
-  mf: {fileID: 876968272109895197}
+  body: {fileID: 5037766150424258826}
   angl: {fileID: 1654450027167971168}
-  isHitMade: 0
 --- !u!114 &-2437768602649910727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -278,14 +277,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad566de7ab78790458dc979655823c2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mr: {fileID: 4524242656641080326}
-  deadFX_prefab: {fileID: 3272130487407376758, guid: 39c28e67acc0741eda505500a9133922, type: 3}
-  popUp_prefad: {fileID: 668541531679047375, guid: 8868b609e6e2e446ebda1e61c70b03b8, type: 3}
+  deadFX_prefab: {fileID: 3272130487407376759, guid: 39c28e67acc0741eda505500a9133922, type: 3}
+  hitFX_prefab: {fileID: 3272130487407376759, guid: 11b753cc1e21c41e393bd07e86b78fb9, type: 3}
   progressbar: {fileID: 7597500574436897942}
-  shadow: {fileID: 1506458663420377076}
   MAX_HP: 0
   hp: 0
   healTime: 10
+  renderers:
+  - {fileID: 4524242656641080326}
 --- !u!114 &6520136189584267238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -306,11 +305,22 @@ MonoBehaviour:
   f: 0
   mf: {fileID: 876968272109895197}
   mr: {fileID: 4524242656641080326}
-  angl: {fileID: 1654450027167971168}
   isHitMade: 0
   m_Shoot:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 376137783415288789}
+        m_TargetAssemblyTypeName: ScorpionNamespace.Scorpion, Assembly-CSharp
+        m_MethodName: Attack
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &9128280933621934098
 PrefabInstance:
   m_ObjectHideFlags: 0

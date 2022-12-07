@@ -62,7 +62,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   store: {fileID: 0}
-  mf: {fileID: 5865166322797337075}
+  body: {fileID: 1776496133414637284}
   angl: {fileID: 5456979313225486478}
 --- !u!114 &4019906864090253520
 MonoBehaviour:
@@ -76,14 +76,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad566de7ab78790458dc979655823c2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mr: {fileID: 7171853714776161256}
-  deadFX_prefab: {fileID: 3272130487407376758, guid: 39c28e67acc0741eda505500a9133922, type: 3}
-  popUp_prefad: {fileID: 668541531679047375, guid: 8868b609e6e2e446ebda1e61c70b03b8, type: 3}
+  deadFX_prefab: {fileID: 3272130487407376759, guid: 39c28e67acc0741eda505500a9133922, type: 3}
+  hitFX_prefab: {fileID: 3272130487407376759, guid: 11b753cc1e21c41e393bd07e86b78fb9, type: 3}
   progressbar: {fileID: 6992701715334406132}
-  shadow: {fileID: 8223680593789657503}
   MAX_HP: 0
   hp: 0
   healTime: 10
+  renderers:
+  - {fileID: 7171853714776161256}
 --- !u!114 &6130434672100705975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -99,7 +99,7 @@ MonoBehaviour:
   current: {fileID: 0}
   run: {fileID: 11400000, guid: be00dad06daf7b8419e6f2565ba01199, type: 2}
   idle: {fileID: 11400000, guid: 9c83920a985a5f64d9fb4df3b380c3d1, type: 2}
-  idleFight: {fileID: 11400000, guid: 9c83920a985a5f64d9fb4df3b380c3d1, type: 2}
+  idleFight: {fileID: 11400000, guid: 666472de15c91694085e4853cbaa266c, type: 2}
   runFood: {fileID: 0}
   f: 0
   mf: {fileID: 5865166322797337075}
@@ -107,7 +107,19 @@ MonoBehaviour:
   isHitMade: 0
   m_Shoot:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6674348483651007441}
+        m_TargetAssemblyTypeName: SoldierNamespace.Soldier, Assembly-CSharp
+        m_MethodName: Attack
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5456979313225486477
 GameObject:
   m_ObjectHideFlags: 0
@@ -152,7 +164,7 @@ GameObject:
   - component: {fileID: 5865166322797337075}
   - component: {fileID: 7171853714776161256}
   m_Layer: 0
-  m_Name: Mesh
+  m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
