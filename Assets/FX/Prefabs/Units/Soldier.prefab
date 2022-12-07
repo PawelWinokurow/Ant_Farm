@@ -99,7 +99,7 @@ MonoBehaviour:
   current: {fileID: 0}
   run: {fileID: 11400000, guid: be00dad06daf7b8419e6f2565ba01199, type: 2}
   idle: {fileID: 11400000, guid: 9c83920a985a5f64d9fb4df3b380c3d1, type: 2}
-  idleFight: {fileID: 11400000, guid: 9c83920a985a5f64d9fb4df3b380c3d1, type: 2}
+  idleFight: {fileID: 11400000, guid: 666472de15c91694085e4853cbaa266c, type: 2}
   runFood: {fileID: 0}
   f: 0
   mf: {fileID: 5865166322797337075}
