@@ -965,51 +965,6 @@ Transform:
   m_Father: {fileID: 8619579961857435961}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 25, y: 0, z: 0}
---- !u!1 &1248071469379589767
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1248071469379589761}
-  - component: {fileID: 1248071469379589762}
-  m_Layer: 0
-  m_Name: Controller
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1248071469379589761
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1248071469379589767}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -23.323532, y: -3880.4407, z: 74.06263}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7101241707985254853}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1248071469379589762
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1248071469379589767}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 141af0b3b678b40208ade63a7b184d2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GameManager: {fileID: 0}
 --- !u!1 &1248071470866970606
 GameObject:
   m_ObjectHideFlags: 0
@@ -1042,7 +997,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7101241707985254853}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1248071470866970601
 MeshFilter:
@@ -1364,6 +1319,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   work: 100
+  isGroundMat: 0
 --- !u!1 &2438893357179117817
 GameObject:
   m_ObjectHideFlags: 0
@@ -1958,6 +1914,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   work: 100
+  isGroundMat: 0
 --- !u!1 &5149630705920410685
 GameObject:
   m_ObjectHideFlags: 0
@@ -2505,7 +2462,6 @@ Transform:
   m_Children:
   - {fileID: 7101241709090334046}
   - {fileID: 7101241708562844896}
-  - {fileID: 1248071469379589761}
   - {fileID: 1248071470866970602}
   m_Father: {fileID: 0}
   m_RootOrder: 0

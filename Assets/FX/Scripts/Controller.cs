@@ -1,8 +1,10 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-
-public class Controller : MonoBehaviour
+public class Controller : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
+    private bool onSlider;
+    private bool isDrag;
 
     private FloorHexagon hex;
     public GameManager GameManager;
@@ -10,17 +12,36 @@ public class Controller : MonoBehaviour
     {
         Screen.orientation = ScreenOrientation.Portrait;
     }
-
-
-    private void Update()
+    public void OnPointerEnter(PointerEventData eventData)
     {
-        if (Input.GetMouseButtonUp(0) && Input.mousePosition.y / Screen.height > 0.09f)
+        onSlider = true;
+    }
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        onSlider = false;
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        isDrag = true;
+    }
+    public void OnDrag(PointerEventData eventData)
+    { 
+    }
+        public void OnEndDrag(PointerEventData eventData)
+    {
+        isDrag = false;
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (!isDrag && onSlider)
         {
+            
             Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             GameManager.ProcessTap(pos);
         }
     }
-
 
 }
 
