@@ -17,8 +17,12 @@ public class WorkHexagon : MonoBehaviour, Hexagon
         hex.floorHexagon = parent;
         hex.floorHexagon.child = hex;
         hex.work = MAX_WORK;
-
-        WorkHexagon[] workHexagons = hex.GetComponentsInChildren<WorkHexagon>();
+        AddMaterial(parent);
+        return hex;
+    }
+    public static void AddMaterial(FloorHexagon parent)
+    {
+        WorkHexagon[] workHexagons = parent.GetComponentsInChildren<WorkHexagon>();
         for (int i = 0; i < workHexagons.Length; i++)
         {
             if (workHexagons[i].isGroundMat == true)
@@ -26,7 +30,6 @@ public class WorkHexagon : MonoBehaviour, Hexagon
                 workHexagons[i].GetComponent<MeshRenderer>().sharedMaterial = parent.mr.sharedMaterial;
             }
         }
-        return hex;
     }
 
     public WorkHexagon AssignProperties(WorkHexagon hex)

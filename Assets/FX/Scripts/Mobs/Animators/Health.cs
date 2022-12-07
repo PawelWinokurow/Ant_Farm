@@ -1,22 +1,21 @@
 using System.Collections;
+using AntFarm;
 using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    public MeshRenderer mr;
-
-    public ParticleSystemRenderer deadFX_prefab;
-
+    public GameObject deadFX_prefab;
+    public GameObject hitFX_prefab;
     MaterialPropertyBlock bodyProps;
     MaterialPropertyBlock progressbarProps;
     public MeshRenderer progressbar;
-    public GameObject shadow;
 
     public float MAX_HP;
     public float hp;
     public float healTime;
     private float hitTime = 1000f;
     private bool isDead;
+    public Renderer[] renderers;
 
     // Start is called before the first frame update
     void Start()
@@ -35,16 +34,21 @@ public class Health : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        hitTime += Time.deltaTime;
 
-        if (hitTime <= 0.2f)//������� ��� �����
+        hitTime += Time.deltaTime / 0.2f;
+        if (hitTime < 1f)//������� ��� �����
         {
+
             if (!isDead)
             {
-                mr.transform.localScale = Vector3.one * ExtensionMethods.RemapClamp(hitTime / 0.1f, 0f, 1f, 1.2f, 1f);//���������
+                renderers[0].transform.localScale = Vector3.one * ExtensionMethods.RemapClamp(Mathf.Min(1f, hitTime) / 0.1f, 0f, 1f, 1.2f, 1f);//���������
             }
-            bodyProps.SetFloat("_Blink_FX", ExtensionMethods.RemapClamp(hitTime, 0f, 0.1f, 1f, 0f));//�������
-            mr.SetPropertyBlock(bodyProps);
+            bodyProps.SetFloat("_Blink_FX", ExtensionMethods.RemapClamp(Mathf.Min(1f, hitTime), 0f, 1f, 1f, 0f));//�������
+
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                renderers[i].SetPropertyBlock(bodyProps);
+            }
 
         }
 
@@ -67,32 +71,35 @@ public class Health : MonoBehaviour
 
     public void Restart()//test
     {
-        mr.enabled = true;
+        renderers[0].gameObject.SetActive(true);
         isDead = false;
         hp = MAX_HP;
-        mr.transform.localScale = Vector3.one;
+        renderers[0].transform.localScale = Vector3.one;
     }
     public float Hit(int damage)
     {
-        hp -= damage;
-
-        if (hp <= 0 && !isDead)
+        if (!isDead)
         {
+            hp -= damage;
+            ColorFX colorFX = FX_Manager.instance.SpawnFromPool(hitFX_prefab, transform.position, transform.rotation).GetComponent<ColorFX>();
+            colorFX.Colorize(renderers[0].sharedMaterial);
+
+            if (hp <= 0)
+            {
                 isDead = true;
                 StartCoroutine(Dead_Cor());
+            }
+            hitTime = 0f;
         }
-        hitTime = 0f;
         return hp;
     }
     private IEnumerator Dead_Cor()
     {
-        ParticleSystemRenderer rend = Instantiate(deadFX_prefab, transform.position, transform.rotation);
-        rend.material.SetColor("_Color", mr.material.GetColor("_Color"));
-        rend.material.SetColor("_Color1", mr.material.GetColor("_Color1"));
-        mr.transform.localScale = Vector3.one * 1.3f;
+        ColorFX colorFX = FX_Manager.instance.SpawnFromPool(deadFX_prefab, transform.position, transform.rotation).GetComponent<ColorFX>();
+        colorFX.Colorize(renderers[0].sharedMaterial);
+        renderers[0].transform.localScale = Vector3.one * 1.3f;
         yield return new WaitForSeconds(0.1f);
-        mr.enabled = false;
-        shadow.SetActive(false);
+        renderers[0].gameObject.SetActive(false);
     }
 }
 

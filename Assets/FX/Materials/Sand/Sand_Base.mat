@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Sand_Base
-  m_Shader: {fileID: 4800000, guid: 8fdc71820a583b74fa86db0651e1855d, type: 3}
+  m_Shader: {fileID: 4800000, guid: fb610ee558d4c4349aed3be1f3f1cfbd, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -77,6 +77,7 @@ Material:
     - _Blend: 1
     - _BlendDetails: 0.457
     - _BlendTexture: 0.653
+    - _Blink_FX: 0
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
@@ -108,7 +109,10 @@ Material:
     - _ZWrite: 1
     - __dirty: 0
     m_Colors:
-    - _Color: {r: 1, g: 0.77091193, b: 0.70440245, a: 1}
+    - _BlinkFX_Color: {r: 1, g: 0, b: 0, a: 1}
+    - _BlinkFX_Color1: {r: 1, g: 0, b: 0, a: 1}
+    - _Color: {r: 0.4811321, g: 0.018867927, b: 0, a: 1}
+    - _ColorGround: {r: 1, g: 0.514151, b: 0.514151, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowColor: {r: 0.21568628, g: 0.03295701, b: 0, a: 1}
   m_BuildTextureStacks: []
