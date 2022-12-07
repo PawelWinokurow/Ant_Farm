@@ -108,6 +108,6 @@ public class MobFactory : MonoBehaviour
     public void Buy(Mob mob,int cost)
     {
         PopUp popUp = Instantiate(popUp_prefad, mob.position, Quaternion.identity, transform);
-        popUp.tmp.text= -cost+" $";
+        popUp.tmp.text= (-cost).ToString();
     }
 }
