@@ -240,16 +240,17 @@ public class Surface : MonoBehaviour
             PlaceDemountIcon(hex, demountPrefab);
         }
     }
-   
+
 
     private void PlaceMountIcon(FloorHexagon hex, WorkHexagon prefab, int accessMask)
     {
         var clonedHex = Instantiate(hex).AssignProperties(hex);
+        clonedHex.gameObject.SetActive(false);
         oldhexagons.Add(clonedHex.id, clonedHex);
         hex.RemoveChildren();
         pathGraph.SetAccesabillity(hex, accessMask);
-       WorkHexagon.CreateHexagon(hex, prefab);
-  
+        WorkHexagon.CreateHexagon(hex, prefab);
+
     }
     private void PlaceDemountIcon(FloorHexagon hex, WorkHexagon prefab)
     {
@@ -306,6 +307,7 @@ public class Surface : MonoBehaviour
             WorkHexagon.CreateHexagon(hex, spikesPrefab).AssignProperties((WorkHexagon)oldIcon);
         }
         oldhexagons.Remove(hex.id);
+        Destroy((FloorHexagon)oldIcon);
     }
 
 
