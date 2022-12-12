@@ -15,6 +15,7 @@ public class Health : MonoBehaviour
     public float healTime;
     private float hitTime = 1000f;
     private bool isDead;
+    public Color particlesColor;
     public Renderer[] renderers;
 
     // Start is called before the first frame update
@@ -82,7 +83,7 @@ public class Health : MonoBehaviour
         {
             hp -= damage;
             ColorFX colorFX = FX_Manager.instance.SpawnFromPool(hitFX_prefab, transform.position, transform.rotation).GetComponent<ColorFX>();
-            colorFX.Colorize(renderers[0].sharedMaterial);
+            colorFX.Colorize(particlesColor);
 
             if (hp <= 0)
             {
@@ -96,7 +97,7 @@ public class Health : MonoBehaviour
     private IEnumerator Dead_Cor()
     {
         ColorFX colorFX = FX_Manager.instance.SpawnFromPool(deadFX_prefab, transform.position, transform.rotation).GetComponent<ColorFX>();
-        colorFX.Colorize(renderers[0].sharedMaterial);
+        colorFX.Colorize(particlesColor);
         renderers[0].transform.localScale = Vector3.one * 1.3f;
         yield return new WaitForSeconds(0.1f);
         renderers[0].gameObject.SetActive(false);

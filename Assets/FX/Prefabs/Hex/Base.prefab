@@ -118,6 +118,7 @@ MonoBehaviour:
   MAX_HP: 100
   hp: 100
   healTime: 10
+  particlesColor: {r: 0.4811321, g: 0.018867927, b: 0, a: 1}
   renderers:
   - {fileID: 8441365619345449782}
   - {fileID: 4520785011583278185}
@@ -1910,6 +1911,7 @@ MonoBehaviour:
   MAX_HP: 100
   hp: 100
   healTime: 10
+  particlesColor: {r: 0.4811321, g: 0.018867927, b: 0, a: 1}
   renderers:
   - {fileID: 726813929806576735}
   - {fileID: 3886958900158936049}
@@ -1977,6 +1979,7 @@ MonoBehaviour:
   MAX_HP: 100
   hp: 100
   healTime: 10
+  particlesColor: {r: 0.4811321, g: 0.018867927, b: 0, a: 1}
   renderers:
   - {fileID: 726813929605068799}
   - {fileID: 3886958900795157509}
@@ -2044,6 +2047,7 @@ MonoBehaviour:
   MAX_HP: 100
   hp: 100
   healTime: 10
+  particlesColor: {r: 0.4811321, g: 0.018867927, b: 0, a: 1}
   renderers:
   - {fileID: 726813931364572565}
   - {fileID: 4604765614082825533}
@@ -2111,6 +2115,7 @@ MonoBehaviour:
   MAX_HP: 100
   hp: 100
   healTime: 10
+  particlesColor: {r: 0.4811321, g: 0.018867927, b: 0, a: 1}
   renderers:
   - {fileID: 726813929758077911}
   - {fileID: 3886958901687490999}
@@ -2178,6 +2183,7 @@ MonoBehaviour:
   MAX_HP: 100
   hp: 100
   healTime: 10
+  particlesColor: {r: 0.4811321, g: 0.018867927, b: 0, a: 1}
   renderers:
   - {fileID: 726813931307947049}
   - {fileID: 3886958900653020411}
@@ -2245,6 +2251,7 @@ MonoBehaviour:
   MAX_HP: 100
   hp: 100
   healTime: 10
+  particlesColor: {r: 0.4811321, g: 0.018867927, b: 0, a: 1}
   renderers:
   - {fileID: 726813929933070969}
   - {fileID: 3886958901656418650}

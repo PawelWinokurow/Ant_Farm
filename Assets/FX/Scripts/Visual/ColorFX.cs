@@ -12,11 +12,11 @@ namespace AntFarm
         {
         
         }
-       public void Colorize(Material mat)
+       public void Colorize(Color col)
         {
             for (int i = 0; i < renders.Length; i++)
             {
-                renders[i].material.SetColor("_Color", mat.GetColor("_Color"));
+                renders[i].material.SetColor("_Color", col);
             }
         }
 
