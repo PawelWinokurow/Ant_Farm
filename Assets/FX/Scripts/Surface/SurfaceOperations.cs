@@ -80,7 +80,7 @@ public class SurfaceOperations : MonoBehaviour
             if (scaledBlock.work <= 0)
             {
                 surface.AddGround(floorHex);
-                surface.pathGraph.SetAccesabillity(floorHex, gameSettings.ACCESS_MASK_FLOOR);
+                surface.pathGraph.SetAccesabillity(floorHex, gameSettings.ACCESS_MASK_FLOOR, gameSettings.EDGE_WEIGHT_NORMAL);
                 worker.job.Cancel();
                 oldHexagons.Remove(floorHex.id);
                 yield break;
@@ -104,14 +104,14 @@ public class SurfaceOperations : MonoBehaviour
             {
                 floorHex.RemoveChildren();
                 surface.AddBlock(floorHex, type);
-                surface.pathGraph.SetAccesabillity(floorHex, surface.GetAccessMaskByHexType(type));
+                surface.pathGraph.SetAccesabillity(floorHex, surface.GetAccessMaskByHexType(type), surface.GetEdgeWeightByHexType(type));
                 worker.job.Cancel();
                 oldHexagons.Remove(floorHex.id);
                 yield break;
             }
             yield return new WaitForSeconds(0.1f);
         }
-        surface.pathGraph.SetAccesabillity(floorHex, gameSettings.ACCESS_MASK_FLOOR);
+        surface.pathGraph.SetAccesabillity(floorHex, gameSettings.ACCESS_MASK_FLOOR, gameSettings.EDGE_WEIGHT_NORMAL);
         worker.job.Cancel();
     }
 

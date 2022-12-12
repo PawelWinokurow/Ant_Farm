@@ -3,21 +3,18 @@ public class Edge
     public string id;
     public Vertex from;
     public Vertex to;
-    public int MULTIPLIER = 10;
     public float edgeWeight;
-    public float edgeWeightBase;
-    public float edgeWeightMod;
+    public int edgeMultiplier;
     public int accessMask;
     public FloorHexagon floorHexagon;
 
-    public Edge(string id, Vertex from, Vertex to, float edgeWeight, FloorHexagon floorHexagon, int accessMask)
+    public Edge(string id, Vertex from, Vertex to, float edgeWeight, FloorHexagon floorHexagon, int accessMask, int edgeMultiplier)
     {
         this.id = id;
         this.from = from;
         this.to = to;
         this.edgeWeight = edgeWeight;
-        this.edgeWeightBase = edgeWeight;
-        this.edgeWeightMod = edgeWeight * MULTIPLIER;
+        this.edgeMultiplier = edgeMultiplier;
         this.floorHexagon = floorHexagon;
         this.accessMask = accessMask;
     }

@@ -213,11 +213,11 @@ public class Surface : MonoBehaviour
         {
             vertex.floorHexagon.RemoveChildren();
             vertex.floorHexagon.type = HexType.BASE;
-            pathGraph.SetAccesabillity(vertex.floorHexagon, Settings.Instance.gameSettings.ACCESS_MASK_BASE);
+            pathGraph.SetAccesabillity(vertex.floorHexagon, gameSettings.ACCESS_MASK_BASE, gameSettings.EDGE_WEIGHT_NORMAL);
         });
         baseHex.RemoveChildren();
         BaseHexagon.CreateHexagon(baseHex, basePrefab).type = HexType.BASE;
-        pathGraph.SetAccesabillity(baseHex, Settings.Instance.gameSettings.ACCESS_MASK_PROHIBIT);
+        pathGraph.SetAccesabillity(baseHex, gameSettings.ACCESS_MASK_PROHIBIT, gameSettings.EDGE_WEIGHT_NORMAL);
     }
 
 
@@ -225,15 +225,15 @@ public class Surface : MonoBehaviour
     {
         if (value == SliderValue.SOIL)
         {
-            PlaceMountIcon(hex, soilMountIconPrefab, Settings.Instance.gameSettings.ACCESS_MASK_SOIL);
+            PlaceMountIcon(hex, soilMountIconPrefab, gameSettings.ACCESS_MASK_SOIL, gameSettings.EDGE_WEIGHT_OBSTACLE);
         }
         else if (value == SliderValue.STONE)
         {
-            PlaceMountIcon(hex, stoneMountIconPrefab, Settings.Instance.gameSettings.ACCESS_MASK_STONE);
+            PlaceMountIcon(hex, stoneMountIconPrefab, gameSettings.ACCESS_MASK_STONE, gameSettings.EDGE_WEIGHT_OBSTACLE);
         }
         else if (value == SliderValue.SPIKES)
         {
-            PlaceMountIcon(hex, spikesMountIconPrefab, Settings.Instance.gameSettings.ACCESS_MASK_SPIKES);
+            PlaceMountIcon(hex, spikesMountIconPrefab, gameSettings.ACCESS_MASK_SPIKES, gameSettings.EDGE_WEIGHT_NORMAL);
         }
         if (value == SliderValue.DEMOUNT)
         {
@@ -242,13 +242,13 @@ public class Surface : MonoBehaviour
     }
 
 
-    private void PlaceMountIcon(FloorHexagon hex, WorkHexagon prefab, int accessMask)
+    private void PlaceMountIcon(FloorHexagon hex, WorkHexagon prefab, int accessMask, int edgeMultiplier)
     {
         var clonedHex = Instantiate(hex).AssignProperties(hex);
         clonedHex.gameObject.SetActive(false);
         oldhexagons.Add(clonedHex.id, clonedHex);
         hex.RemoveChildren();
-        pathGraph.SetAccesabillity(hex, accessMask);
+        pathGraph.SetAccesabillity(hex, accessMask, edgeMultiplier);
         WorkHexagon.CreateHexagon(hex, prefab);
 
     }
@@ -262,7 +262,7 @@ public class Surface : MonoBehaviour
         hexNew.AssignProperties(clonedHex);
         hexNew.transform.localScale = 0.95f * Vector3.one;
         Instantiate(prefab, hexNew.position, Quaternion.identity, hexNew.transform);
-        pathGraph.SetAccesabillity(hex, GetAccessMaskByHexType(hex.type));
+        pathGraph.SetAccesabillity(hex, GetAccessMaskByHexType(hex.type), GetEdgeWeightByHexType(hex.type));
 
         WorkHexagon[] workHexagons = hex.GetComponentsInChildren<WorkHexagon>();
         for (int i = 0; i < workHexagons.Length; i++)
@@ -290,6 +290,13 @@ public class Surface : MonoBehaviour
         else if (tag == "Spikes_Mount_Icon") return HexType.SPIKES;
         return HexType.EMPTY;
     }
+    public int GetEdgeWeightByHexType(HexType type)
+    {
+        if (type == HexType.SOIL) return gameSettings.EDGE_WEIGHT_OBSTACLE;
+        else if (type == HexType.STONE) return gameSettings.EDGE_WEIGHT_OBSTACLE;
+        else if (type == HexType.SPIKES) return gameSettings.EDGE_WEIGHT_NORMAL;
+        return gameSettings.EDGE_WEIGHT_NORMAL;
+    }
 
     public void RemoveIcon(FloorHexagon hex)
     {
@@ -297,22 +304,22 @@ public class Surface : MonoBehaviour
         var oldIcon = oldhexagons[hex.id];
         if (oldIcon.type == HexType.EMPTY)
         {
-            pathGraph.SetAccesabillity(hex, Settings.Instance.gameSettings.ACCESS_MASK_FLOOR);
+            pathGraph.SetAccesabillity(hex, gameSettings.ACCESS_MASK_FLOOR, gameSettings.EDGE_WEIGHT_NORMAL);
             hex.AssignProperties((FloorHexagon)oldIcon);
         }
         else if (oldIcon.type == HexType.SOIL)
         {
-            pathGraph.SetAccesabillity(hex, Settings.Instance.gameSettings.ACCESS_MASK_SOIL);
+            pathGraph.SetAccesabillity(hex, gameSettings.ACCESS_MASK_SOIL, gameSettings.EDGE_WEIGHT_OBSTACLE);
             WorkHexagon.CreateHexagon(hex, soilPrefab).AssignProperties((WorkHexagon)oldIcon);
         }
         else if (oldIcon.type == HexType.STONE)
         {
-            pathGraph.SetAccesabillity(hex, Settings.Instance.gameSettings.ACCESS_MASK_STONE);
+            pathGraph.SetAccesabillity(hex, gameSettings.ACCESS_MASK_STONE, gameSettings.EDGE_WEIGHT_OBSTACLE);
             WorkHexagon.CreateHexagon(hex, stonePrefab).AssignProperties((WorkHexagon)oldIcon);
         }
         else if (oldIcon.type == HexType.SPIKES)
         {
-            pathGraph.SetAccesabillity(hex, Settings.Instance.gameSettings.ACCESS_MASK_SPIKES);
+            pathGraph.SetAccesabillity(hex, gameSettings.ACCESS_MASK_SPIKES, gameSettings.EDGE_WEIGHT_NORMAL);
             WorkHexagon.CreateHexagon(hex, spikesPrefab).AssignProperties((WorkHexagon)oldIcon);
         }
         oldhexagons.Remove(hex.id);
