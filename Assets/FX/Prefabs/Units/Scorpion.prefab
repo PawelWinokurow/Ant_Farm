@@ -283,6 +283,7 @@ MonoBehaviour:
   MAX_HP: 0
   hp: 0
   healTime: 10
+  particlesColor: {r: 0.5372549, g: 0.043137256, b: 0.023529412, a: 1}
   renderers:
   - {fileID: 4524242656641080326}
 --- !u!114 &6520136189584267238
