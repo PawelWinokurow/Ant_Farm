@@ -4,6 +4,7 @@ using ScorpionNamespace;
 using WorkerNamespace;
 using SoldierNamespace;
 using GunnerNamespace;
+using GobberNamespace;
 
 public class MobFactory : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class MobFactory : MonoBehaviour
     public SurfaceOperations surfaceOperations;
     public Worker workerPrefab;
     public Scorpion scorpionPrefab;
+    public Gobber gobberPrefab;
     public Gunner gunnerPrefab;
     public Soldier soldierPrefab;
     public Store store;
@@ -30,6 +32,10 @@ public class MobFactory : MonoBehaviour
     public void AddScorpion(FloorHexagon hex)
     {
         StartCoroutine(SpawnScorpion($"scorpion_{id}", hex));
+    }
+    public void AddGobber(FloorHexagon hex)
+    {
+        StartCoroutine(SpawnGobber($"gobber{id}", hex));
     }
     public void AddGunner(FloorHexagon hex)
     {
@@ -56,6 +62,24 @@ public class MobFactory : MonoBehaviour
         };
         store.AddEnemy(scorpion);
         Buy(scorpion, 10);
+        yield return null;
+    }
+    IEnumerator SpawnGobber(string id, FloorHexagon hex)
+    {
+        var spawnPosition = hex.position;
+        Gobber gobber = Instantiate(gobberPrefab, spawnPosition, Quaternion.identity);
+        gobber.id = id;
+        gobber.pathfinder = pathfinder;
+        gobber.store = store;
+        gobber.surfaceOperations = surfaceOperations;
+        gobber.Kill = () =>
+        {
+            store.DeleteEnemy(gobber);
+            gobber.SetState(new DeadState(gobber));
+            gobber.CancelJob();
+        };
+        store.AddEnemy(gobber);
+        Buy(gobber, 10);
         yield return null;
     }
     IEnumerator SpawnWorker(string id, FloorHexagon hex)
@@ -101,13 +125,13 @@ public class MobFactory : MonoBehaviour
             gunner.CancelJob();
         };
         store.AddAlly(gunner);
-        Buy(gunner,10);
+        Buy(gunner, 10);
         yield return null;
     }
 
-    public void Buy(Mob mob,int cost)
+    public void Buy(Mob mob, int cost)
     {
         PopUp popUp = Instantiate(popUp_prefad, mob.position, Quaternion.identity, transform);
-        popUp.tmp.text= (-cost).ToString();
+        popUp.tmp.text = (-cost).ToString();
     }
 }

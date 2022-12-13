@@ -82,6 +82,11 @@ public class GameManager : MonoBehaviour
                     //Test only
                     mobFactory.AddScorpion(hex);
                 }
+                else if (slider.choosenValue == SliderValue.GOBBER)
+                {
+                    //Test only
+                    mobFactory.AddGobber(hex);
+                }
                 else if (slider.choosenValue == SliderValue.SOIL
                 || slider.choosenValue == SliderValue.STONE
                 || slider.choosenValue == SliderValue.SPIKES)
