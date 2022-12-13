@@ -4,7 +4,7 @@ Shader "Custom/AlphaBlendet"
 {
 	Properties
 	{
-		_TintColor ("Tint Color", Color) = (0.5,0.5,0.5,0.5)
+		_Color ("Color", Color) = (0.5,0.5,0.5,0.5)
 		_MainTex ("Particle Texture", 2D) = "white" {}
 		_InvFade ("Soft Particles Factor", Range(0.01,3.0)) = 1.0
 		_Mult("Mult", Float) = 0
@@ -80,7 +80,7 @@ Shader "Custom/AlphaBlendet"
 				// uniform sampler2D_float _CameraDepthTexture;
 
 				uniform sampler2D _MainTex;
-				uniform fixed4 _TintColor;
+				uniform fixed4 _Color;
 				uniform float4 _MainTex_ST;
 				uniform float _InvFade;
 				uniform float _Mult;
@@ -121,7 +121,7 @@ Shader "Custom/AlphaBlendet"
 					float2 uv_MainTex = i.texcoord.xy * _MainTex_ST.xy + _MainTex_ST.zw;
 					
 
-					fixed4 col = ( _TintColor * i.color * tex2D( _MainTex, uv_MainTex ) * _Mult );
+					fixed4 col = ( _Color * i.color * tex2D( _MainTex, uv_MainTex ) * _Mult );
 					UNITY_APPLY_FOG(i.fogCoord, col);
 					return col;
 				}

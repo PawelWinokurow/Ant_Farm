@@ -16,6 +16,8 @@ namespace GunnerNamespace
         private Sequence sequence;
         private float a;
         private Vector3 targetPos;
+        private Vector3 ballPosOld;
+
         void Start()
         {
             ball_p.gameObject.SetActive(false);
@@ -37,6 +39,11 @@ namespace GunnerNamespace
             {
                 targetPos = gunner.target.mob.position;
             }
+           // else//test
+            //{
+                //targetPos = new Vector3(transform.position.x + Random.Range(-10f, 10f), 0, transform.position.z + Random.Range(-10f, 10f));//test
+            //}
+
             float dist = Vector3.Distance(transform.position, targetPos);
             float t = dist / speed;
             ball_p.position = transform.position;
@@ -51,6 +58,8 @@ namespace GunnerNamespace
                     targetPos = gunner.target.mob.position;
                 }
                 ball_p.transform.position = Vector3.Lerp(transform.position, targetPos, a);
+                ball.LookAt(ballPosOld);
+                ballPosOld = ball.position;
             }
             ).OnComplete(() =>
        {

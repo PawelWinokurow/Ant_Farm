@@ -44,7 +44,7 @@ public class Health : MonoBehaviour
             {
                 renderers[0].transform.localScale = Vector3.one * ExtensionMethods.RemapClamp(Mathf.Min(1f, hitTime) / 0.1f, 0f, 1f, 1.2f, 1f);//���������
             }
-            bodyProps.SetFloat("_Blink_FX", ExtensionMethods.RemapClamp(Mathf.Min(1f, hitTime), 0f, 1f, 1f, 0f));//�������
+            bodyProps.SetFloat("_Blink_FX", ExtensionMethods.RemapClamp(Mathf.Min(1f, hitTime), 0f, 1f, 0.7f, 0f));//�������
 
             for (int i = 0; i < renderers.Length; i++)
             {
