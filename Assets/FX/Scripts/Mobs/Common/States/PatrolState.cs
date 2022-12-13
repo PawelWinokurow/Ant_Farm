@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace FighterNamespace
 {
     public class PatrolState : State

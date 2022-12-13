@@ -50,7 +50,7 @@ namespace FighterNamespace
 
         public IEnumerator Dig(FloorHexagon hex)
         {
-            movementSpeed = ((ScorpionSettings)(mobSettings)).DIG_MOVEMENT_SPEED;
+            movementSpeed = 3;
             if (digFX == null) digFX = Instantiate(DigFX, position, Quaternion.identity);
             digFX.transform.position = hex.position;
             digFX.StartFx(hex);

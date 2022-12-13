@@ -33,7 +33,6 @@ namespace WorkerNamespace
         public Transform angl;
         private Quaternion smoothRot;
 
-
         void Start()
         {
             gameSettings = Settings.Instance.gameSettings;
@@ -52,7 +51,7 @@ namespace WorkerNamespace
                 currentState.OnStateExit();
 
             currentState = state;
-            gameObject.name = "Worker - " + state.GetType().Name;
+            gameObject.name = type.ToString() + " - " + state.GetType().Name;
 
             if (currentState != null)
                 currentState.OnStateEnter();

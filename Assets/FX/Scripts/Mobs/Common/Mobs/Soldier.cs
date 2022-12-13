@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using UnityEngine;
 
 namespace FighterNamespace
 {
@@ -8,7 +9,12 @@ namespace FighterNamespace
         void Start()
         {
             gameSettings = Settings.Instance.gameSettings;
-            mobSettings = Settings.Instance.soldierSettings;
+            //TODO
+            mobSettings = new FighterSettings();
+            mobSettings.ATTACK_STRENGTH = Settings.Instance.soldierSettings.ATTACK_STRENGTH;
+            mobSettings.FOLLOWING_MOVEMENT_SPEED = Settings.Instance.soldierSettings.FOLLOWING_MOVEMENT_SPEED;
+            mobSettings.HP = Settings.Instance.soldierSettings.HP;
+            mobSettings.PATROL_MOVEMENT_SPEED = Settings.Instance.soldierSettings.PATROL_MOVEMENT_SPEED;
             animator = GetComponent<MobAnimator>();
             animator.Attack = () => Attack();
             type = MobType.SOLDIER;
