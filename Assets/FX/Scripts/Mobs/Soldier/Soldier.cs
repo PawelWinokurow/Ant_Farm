@@ -124,7 +124,7 @@ namespace SoldierNamespace
             path.wayPoints.RemoveAt(0);
             var currentHexNew = currentPathEdge.floorHexagon;
             currentHex = currentHexNew;
-            lerpDuration = Vector3.Distance(currentPathEdge.from.position, currentPathEdge.to.position) * currentPathEdge.edgeWeight / currentPathEdge.edgeWeightBase;
+            lerpDuration = currentPathEdge.edgeWeight * currentPathEdge.edgeMultiplier;
         }
 
         public void CancelJob()

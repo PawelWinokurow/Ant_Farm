@@ -25,7 +25,7 @@ public class Graph
 
     public void ResetAllEdgesToWalkable()
     {
-        adjacencyList.ForEach(edge => edge.edgeWeight = edge.edgeWeightBase);
+        adjacencyList.ForEach(edge => edge.edgeMultiplier = gameSettings.EDGE_WEIGHT_NORMAL);
     }
 
     public Vertex GetVertexByPoistion(Vector3 position)
@@ -44,8 +44,8 @@ public class Graph
 
     public void AddEdge(Vertex v1, Vertex v2, float edgeWeight, FloorHexagon hex, int accessMask)
     {
-        Edge v1Edge = new Edge($"{v1.id}{v2.id}", v1, v2, edgeWeight, hex, accessMask);
-        Edge v2Edge = new Edge($"{v2.id}{v1.id}", v2, v1, edgeWeight, hex, accessMask);
+        Edge v1Edge = new Edge($"{v1.id}{v2.id}", v1, v2, edgeWeight, hex, accessMask, gameSettings.EDGE_WEIGHT_NORMAL);
+        Edge v2Edge = new Edge($"{v2.id}{v1.id}", v2, v1, edgeWeight, hex, accessMask, gameSettings.EDGE_WEIGHT_NORMAL);
         v1.edges.Add(v1Edge);
         v2.edges.Add(v2Edge);
         adjacencyList.Add(v1Edge);
@@ -73,9 +73,9 @@ public class Graph
         });
     }
 
-    public void SetAccesabillity(FloorHexagon hex, int accessMask)
+    public void SetAccesabillity(FloorHexagon hex, int accessMask, int edgeMultiplier)
     {
-        GetHexagonEdges(hex).ForEach(edge => { edge.accessMask = accessMask; edge.edgeWeight = accessMask == gameSettings.ACCESS_MASK_SOIL ? edge.edgeWeightMod : edge.edgeWeightBase; });
+        GetHexagonEdges(hex).ForEach(edge => { edge.accessMask = accessMask; edge.edgeMultiplier = edgeMultiplier; });
     }
 
     private List<Edge> GetHexagonEdges(FloorHexagon hex)

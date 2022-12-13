@@ -4,9 +4,9 @@ using System.Linq;
 using DataStructures.ViliWonka.KDTree;
 using UnityEngine;
 
-namespace GunnerNamespace
+namespace GobberNamespace
 {
-    public class Gunner : MonoBehaviour, Mob
+    public class Gobber : MonoBehaviour, Mob
     {
         public string id { get; set; }
         public MobType type { get; set; }
@@ -27,7 +27,7 @@ namespace GunnerNamespace
         public Store store;
         public int accessMask { get; set; }
         private GameSettings gameSettings;
-        private GunnerSettings gunnerSettings;
+        private GobberSettings gobberSettings;
         public int movementSpeed { get; set; }
         public Transform body;
         public Transform angl;
@@ -36,12 +36,12 @@ namespace GunnerNamespace
         void Start()
         {
             gameSettings = Settings.Instance.gameSettings;
-            gunnerSettings = Settings.Instance.gunnerSettings;
+            gobberSettings = Settings.Instance.gobberSettings;
             animator = GetComponent<MobAnimator>();
             type = MobType.GUNNER;
             accessMask = gameSettings.ACCESS_MASK_FLOOR + gameSettings.ACCESS_MASK_BASE;
             health = GetComponent<Health>();
-            health.InitHp(gunnerSettings.HP);
+            health.InitHp(gobberSettings.HP);
             SetState(new PatrolState(this));
         }
 
@@ -51,7 +51,7 @@ namespace GunnerNamespace
                 currentState.OnStateExit();
 
             currentState = state;
-            gameObject.name = "Gunner - " + state.GetType().Name;
+            gameObject.name = "Gobber - " + state.GetType().Name;
 
             if (currentState != null)
                 currentState.OnStateEnter();
@@ -180,7 +180,8 @@ namespace GunnerNamespace
 
         public Target SearchTarget()
         {
-            var notDeadMobs = new List<Mob>(store.allEnemies.Where(mob => mob.currentState?.type != STATE.DEAD));
+            var notDeadMobs = new List<Mob>(store.allAllies.Where(mob => mob.currentState?.type != STATE.DEAD));
+            if (notDeadMobs.Count == 0) return null;
             KDTree mobPositionsTree = new KDTree(notDeadMobs.Select(mob => mob.position).ToArray());
             KDQuery query = new KDQuery();
             List<int> queryResults = new List<int>();
@@ -194,7 +195,7 @@ namespace GunnerNamespace
                 {
                     continue;
                 }
-                var path = pathfinder.FindPath(position, targetMob.currentHex.position, accessMask, SearchType.NEAREST_VERTEX);
+                var path = pathfinder.FindPath(position, targetMob.currentHex.position, gameSettings.ACCESS_MASK_FLOOR + gameSettings.ACCESS_MASK_SOIL, SearchType.NEAREST_CENTRAL_VERTEX);
                 if (path != null)
                 {
                     var target = new Target($"{id}_{targetMob.id}", targetMob);

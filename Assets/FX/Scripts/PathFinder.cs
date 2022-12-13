@@ -138,7 +138,7 @@ public class Pathfinder
             {
                 if (!nextEdge.HasAccess(accessMask)) continue;
                 var next = nextEdge.to;
-                var newCost = costSoFar[current.id] + nextEdge.edgeWeight;
+                var newCost = costSoFar[current.id] + nextEdge.edgeWeight * nextEdge.edgeMultiplier;
                 if (!costSoFar.ContainsKey(next.id) || newCost < costSoFar[next.id])
                 {
                     costSoFar[next.id] = newCost;

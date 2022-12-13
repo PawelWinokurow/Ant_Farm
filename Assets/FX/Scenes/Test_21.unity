@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44402242, g: 0.49316543, b: 0.5722324, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -187,6 +187,7 @@ MonoBehaviour:
   soldierSettings: {fileID: 11400000, guid: 80d94af6db8c7ae43a84568a16c9cfc8, type: 2}
   gunnerSettings: {fileID: 11400000, guid: d28cc6543090c7d4f91cc3994a8151f0, type: 2}
   scorpionSettings: {fileID: 11400000, guid: 86aa08d44249ede4b991b571cac631aa, type: 2}
+  gobberSettings: {fileID: 11400000, guid: 164d77fc56ba2d0409b66c5398f60915, type: 2}
 --- !u!1 &262357869
 GameObject:
   m_ObjectHideFlags: 0
@@ -549,7 +550,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60a9fb91b6f80354888b2f2d335b72e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wallProbability: 10
+  wallProbability: 60
   foodProbability: 1
 --- !u!4 &1176967604
 Transform:
@@ -855,6 +856,7 @@ MonoBehaviour:
   surfaceOperations: {fileID: 1531417191}
   workerPrefab: {fileID: -7619036694779697723, guid: d76627fe718a559439689ca54c475515, type: 3}
   scorpionPrefab: {fileID: 376137783415288789, guid: 6ea998787382aa64db8b8af70a6fb869, type: 3}
+  gobberPrefab: {fileID: 822783226273399532, guid: 4e5823a52d7024b95a649f8d8f0267e5, type: 3}
   gunnerPrefab: {fileID: 6826684635683908350, guid: bcf9c3d895ca58b4291a4b3b308974df, type: 3}
   soldierPrefab: {fileID: 6674348483651007441, guid: 3a0f38204bd838b42a8cdc55556aa0c3, type: 3}
   store: {fileID: 1633955861}

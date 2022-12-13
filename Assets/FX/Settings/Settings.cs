@@ -9,6 +9,7 @@ public class Settings : MonoBehaviour
     public SoldierSettings soldierSettings;
     public GunnerSettings gunnerSettings;
     public ScorpionSettings scorpionSettings;
+    public GobberSettings gobberSettings;
     private void Awake()
     {
         if (Instance != null && Instance != this)
