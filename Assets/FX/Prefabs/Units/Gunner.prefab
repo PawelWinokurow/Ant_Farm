@@ -19628,15 +19628,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 2381269297423956020}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ed7e0bedb18f6542adf45d64fa9af73, type: 3}
+  m_Script: {fileID: 11500000, guid: 8a1d948f7b4c85d498b514cf0842877b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ball_p: {fileID: 2381269298565259244}
   ball: {fileID: 2381269298352812389}
-  speed: 25
+  speed: 1
   shoot_FX: {fileID: 2266513408033644261}
   ball_FX: {fileID: 2097989179}
-  gunner: {fileID: 6826684635683908350}
+  fighter: {fileID: 6826684635683908350}
 --- !u!1 &2381269298352812388
 GameObject:
   m_ObjectHideFlags: 0
@@ -19967,9 +19967,9 @@ MonoBehaviour:
   m_Shoot:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2381269297423956022}
+      - m_Target: {fileID: 2381269297423956020}
         m_TargetAssemblyTypeName: GunnerNamespace.Cannon, Assembly-CSharp
-        m_MethodName: Shoot
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -19988,10 +19988,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 4689637310385045629}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64aebeceefb68504e830470a1083091e, type: 3}
+  m_Script: {fileID: 11500000, guid: 7badca38d49390f4f8b59f98cae746b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   store: {fileID: 0}
+  gameSettings: {fileID: 0}
+  mobSettings: {fileID: 0}
   body: {fileID: 7018840229607225754}
   angl: {fileID: 3637670549930944496}
 --- !u!1 &4942867508392615086

@@ -1,10 +1,7 @@
 using System.Collections;
+using FighterNamespace;
 using UnityEngine;
-using ScorpionNamespace;
 using WorkerNamespace;
-using SoldierNamespace;
-using GunnerNamespace;
-using GobberNamespace;
 
 public class MobFactory : MonoBehaviour
 {
@@ -57,7 +54,7 @@ public class MobFactory : MonoBehaviour
         scorpion.Kill = () =>
         {
             store.DeleteEnemy(scorpion);
-            scorpion.SetState(new DeadState(scorpion));
+            scorpion.SetState(new FighterNamespace.DeadState(scorpion));
             scorpion.CancelJob();
         };
         store.AddEnemy(scorpion);
@@ -75,7 +72,7 @@ public class MobFactory : MonoBehaviour
         gobber.Kill = () =>
         {
             store.DeleteEnemy(gobber);
-            gobber.SetState(new DeadState(gobber));
+            gobber.SetState(new FighterNamespace.DeadState(gobber));
             gobber.CancelJob();
         };
         store.AddEnemy(gobber);
@@ -103,7 +100,7 @@ public class MobFactory : MonoBehaviour
         soldier.Kill = () =>
         {
             store.DeleteAlly(soldier);
-            soldier.SetState(new DeadState(soldier));
+            soldier.SetState(new FighterNamespace.DeadState(soldier));
             soldier.CancelJob();
         };
         store.AddAlly(soldier);
@@ -121,7 +118,7 @@ public class MobFactory : MonoBehaviour
         gunner.Kill = () =>
         {
             store.DeleteAlly(gunner);
-            gunner.SetState(new DeadState(gunner));
+            gunner.SetState(new FighterNamespace.DeadState(gunner));
             gunner.CancelJob();
         };
         store.AddAlly(gunner);

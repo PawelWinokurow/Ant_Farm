@@ -98,7 +98,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1034679383004664771}
-        m_TargetAssemblyTypeName: GobberNamespace.Cannon, Assembly-CSharp
+        m_TargetAssemblyTypeName: FighterNamespace.Cannon, Assembly-CSharp
         m_MethodName: Shoot
         m_Mode: 1
         m_Arguments:
@@ -130,10 +130,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2897646515293321488}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37c9910755b8b2242b0825696ab5c937, type: 3}
+  m_Script: {fileID: 11500000, guid: 04fa82ce1e134df4581d7c72b133c6ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   store: {fileID: 0}
+  gameSettings: {fileID: 0}
+  mobSettings: {fileID: 0}
   body: {fileID: 596054522404143351}
   angl: {fileID: 6582547940204027549}
 --- !u!1 &3295198558098056643
@@ -5270,15 +5272,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 5199834173411426649}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfbd862f91e133e4c8699829c62cf368, type: 3}
+  m_Script: {fileID: 11500000, guid: 8a1d948f7b4c85d498b514cf0842877b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ball_p: {fileID: 5199834172282709633}
   ball: {fileID: 5199834172193196040}
-  speed: 25
+  speed: 1
   shoot_FX: {fileID: 8527063975469180808}
   ball_FX: {fileID: 7575743340957892438}
-  gobber: {fileID: 822783226273399532}
+  fighter: {fileID: 822783226273399532}
 --- !u!1 &5717971941179152337
 GameObject:
   m_ObjectHideFlags: 0

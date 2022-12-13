@@ -58,10 +58,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 4095038265270613763}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c27b3cc0d064fb54bb25e3e956a8c586, type: 3}
+  m_Script: {fileID: 11500000, guid: c9a7677e416d19645b161536b20d09c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   store: {fileID: 0}
+  gameSettings: {fileID: 0}
+  mobSettings: {fileID: 0}
   body: {fileID: 1776496133414637284}
   angl: {fileID: 5456979313225486478}
 --- !u!114 &4019906864090253520
