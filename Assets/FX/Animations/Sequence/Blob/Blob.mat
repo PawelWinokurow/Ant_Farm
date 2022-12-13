@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Ant(Queen)
-  m_Shader: {fileID: 4800000, guid: 6df5731ebadb5e140ba06c2c38f13a0f, type: 3}
+  m_Name: Blob
+  m_Shader: {fileID: 4800000, guid: 3b60178d9924442899c5a5edf888e2f5, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -41,10 +41,22 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 7bcbc3cef8578244ca7fc84667b66b79, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex1:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Mat:
+        m_Texture: {fileID: 2800000, guid: fa9784bf53dee4322b5fd85d1dd1c77a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Matcap:
+        m_Texture: {fileID: 2800000, guid: fa9784bf53dee4322b5fd85d1dd1c77a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Matcap1:
         m_Texture: {fileID: 2800000, guid: fa9784bf53dee4322b5fd85d1dd1c77a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -60,6 +72,18 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Texture0:
+        m_Texture: {fileID: 2800000, guid: e98742f3728cc406a9035e40c548c24c, type: 3}
+        m_Scale: {x: 0.5, y: 0.5}
+        m_Offset: {x: 0, y: 0}
+    - _TextureSample1:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Voronoi:
+        m_Texture: {fileID: 2800000, guid: e98742f3728cc406a9035e40c548c24c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _texcoord:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -67,21 +91,23 @@ Material:
     m_Ints: []
     m_Floats:
     - _Blink_FX: 0
+    - _Blink_FX1: 0
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _Emission: 0
+    - _Forward: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _Matcap_Intensity: 0.502
     - _Metallic: 0
     - _Mode: 0
-    - _Mult: 1
+    - _Mult: 3.21
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _Shading: 0.299
+    - _Pow: 11.16
+    - _ScaleUV: 0.02
+    - _ScaleUV1: 1
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -90,9 +116,14 @@ Material:
     - __dirty: 0
     m_Colors:
     - _BlinkFX_Color: {r: 1, g: 0, b: 0, a: 1}
-    - _Color: {r: 0.10980392, g: 0.39215687, b: 0.4509804, a: 1}
-    - _Color1: {r: 0.012682448, g: 0.15052755, b: 0.1792453, a: 1}
+    - _BlinkFX_Color1: {r: 1, g: 0, b: 0, a: 1}
+    - _Color: {r: 0.3857143, g: 1, b: 0, a: 1}
+    - _Color1: {r: 0.14643769, g: 0.3773585, b: 0, a: 1}
+    - _Color2: {r: 1, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _U: {r: -1, g: 0, b: 0, a: 0}
+    - _U1: {r: -1, g: 0, b: 0, a: 0}
     - _V: {r: 0, g: 0, b: 1, a: 0}
+    - _V1: {r: 0, g: 0, b: 1, a: 0}
+    - _VTInfoBlock: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

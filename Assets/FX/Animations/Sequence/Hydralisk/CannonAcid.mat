@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Ant(Queen)
+  m_Name: CannonAcid
   m_Shader: {fileID: 4800000, guid: 6df5731ebadb5e140ba06c2c38f13a0f, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -66,6 +66,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Angl: 0
     - _Blink_FX: 0
     - _BumpScale: 1
     - _Cutoff: 0.5
@@ -75,6 +76,7 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _Hight: 0
     - _Matcap_Intensity: 0.502
     - _Metallic: 0
     - _Mode: 0
@@ -90,8 +92,9 @@ Material:
     - __dirty: 0
     m_Colors:
     - _BlinkFX_Color: {r: 1, g: 0, b: 0, a: 1}
-    - _Color: {r: 0.10980392, g: 0.39215687, b: 0.4509804, a: 1}
-    - _Color1: {r: 0.012682448, g: 0.15052755, b: 0.1792453, a: 1}
+    - _Color: {r: 0.0043654535, g: 0.5566038, b: 0, a: 1}
+    - _Color1: {r: 0.46659112, g: 1, b: 0, a: 1}
+    - _Color2: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _U: {r: -1, g: 0, b: 0, a: 0}
     - _V: {r: 0, g: 0, b: 1, a: 0}
