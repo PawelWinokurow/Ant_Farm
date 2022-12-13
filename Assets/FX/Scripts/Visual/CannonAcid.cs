@@ -15,8 +15,9 @@ namespace AntFarm
         {
             float flip = Random.Range(0, 2);
             flip = ExtensionMethods.Remap(flip, 0, 1, -1, 1);
-            float scl = Random.Range(0.4f, 1f);
+            float scl = Random.Range(0.7f, 1f);
             transform.localScale = new Vector3(scl* flip, scl, scl);
         }
+   
     }
 }
