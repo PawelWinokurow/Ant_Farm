@@ -9,7 +9,6 @@ namespace SoldierNamespace
     public class Soldier : Fighter
     {
 
-        private GameSettings gameSettings;
         private SoldierSettings soldierSettings;
 
         void Start()

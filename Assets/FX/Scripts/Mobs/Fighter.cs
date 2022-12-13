@@ -19,12 +19,12 @@ public class Fighter : MonoBehaviour, Mob
     public FloorHexagon currentHex { get; set; }
     public Action Kill { get; set; }
     public bool HasPath { get => path != null && currentPathEdge != null; }
-    private float lerpDuration;
-    private float t = 0f;
+    protected float lerpDuration;
+    protected float t = 0f;
     public Edge currentPathEdge;
     public Store store;
     public int accessMask { get; set; }
-    private GameSettings gameSettings;
+    protected GameSettings gameSettings;
     public int movementSpeed { get; set; }
     public Transform body;
     public Transform angl;
@@ -93,7 +93,7 @@ public class Fighter : MonoBehaviour, Mob
         currentPathEdge = null;
     }
 
-    private void SetcurrentPathEdge()
+    protected virtual void SetcurrentPathEdge()
     {
         currentPathEdge = path.wayPoints[0];
         path.wayPoints.RemoveAt(0);
@@ -199,7 +199,7 @@ public class Fighter : MonoBehaviour, Mob
     }
 
 
-    public float Hit(int damage)
+    public virtual float Hit(int damage)
     {
         if (health.Hit(damage) <= 0)
         {
