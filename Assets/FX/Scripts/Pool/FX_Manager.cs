@@ -38,14 +38,16 @@ public class FX_Manager : MonoBehaviour
         Pool pool;
         if (!poolDictionary.ContainsKey(tag))
         {
-            pool = new Pool();
-            pool.tag = tag;
-            pool.prefab = prefab;
-            pool.fxList = new List<GameObject>();
+            pool = new Pool()
+            {
+                tag = tag,
+                prefab = prefab,
+                fxList = new List<GameObject>()
+            };
+
+
             poolDictionary.Add(tag, pool);
             pools.Add(pool);
-
-
         }
     
         pool = poolDictionary[tag];
@@ -55,7 +57,7 @@ public class FX_Manager : MonoBehaviour
         for (i = 0; i < pool.fxList.Count; i++)
         {
             go = pool.fxList[i];
-
+            /*
             //Фикс. Периодически выскакивал null reference exception и пропадал эффект стрельбы.
 
             if (go == null)
@@ -63,7 +65,7 @@ public class FX_Manager : MonoBehaviour
                 pool.fxList.RemoveAt(i);
                 continue;
             }
-            
+            */
 
             if (!go.gameObject.activeInHierarchy)
             {

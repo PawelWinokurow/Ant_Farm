@@ -57,9 +57,9 @@ public class Health : MonoBehaviour
         {
             progressbar.transform.localScale = new Vector3(MAX_HP / 100f, 1f, 1f);
 
-            if (hitTime > 2f)//����������� ���� ��� ������� �� ���� �����
+            if (hitTime > 5f)//����������� ���� ��� ������� �� ���� �����
             {
-                hp += Time.deltaTime * MAX_HP / healTime;
+                hp += Time.deltaTime * 100f / healTime;
             }
         }
         progressbar.enabled = !isDead && hp < MAX_HP;//��� ����������� ���������� �����������
