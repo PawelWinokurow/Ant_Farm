@@ -33,23 +33,20 @@ namespace FighterNamespace
 
         protected override void SetcurrentPathEdge()
         {
-            currentPathEdge = path.wayPoints[0];
-            path.wayPoints.RemoveAt(0);
-            var currentHexNew = currentPathEdge.floorHexagon;
-            if ((currentHex == null || currentHexNew.id != currentHex.id))
+            if (path.wayPoints.Count > 1 && path.wayPoints[1].floorHexagon.type == HexType.SOIL)
             {
-                if (currentHexNew.type == HexType.SOIL)
-                {
-                    StartCoroutine(Dig(currentHexNew));
-                }
+                StartCoroutine(Dig(path.wayPoints[1].floorHexagon));
             }
+            currentPathEdge = path.wayPoints[0];
+            var currentHexNew = currentPathEdge.floorHexagon;
+            path.wayPoints.RemoveAt(0);
             currentHex = currentHexNew;
             lerpDuration = currentPathEdge.edgeWeight * currentPathEdge.edgeMultiplier;
         }
 
         public IEnumerator Dig(FloorHexagon hex)
         {
-            movementSpeed = 3;
+            movementSpeed = 0;
             if (digFX == null) digFX = Instantiate(DigFX, position, Quaternion.identity);
             digFX.transform.position = hex.position;
             digFX.StartFx(hex);
