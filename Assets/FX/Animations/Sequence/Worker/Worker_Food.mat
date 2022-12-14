@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Food_Foot
+  m_Name: Worker_Food
   m_Shader: {fileID: 4800000, guid: ad56d6ee7afe6464682afa2ffbc47386, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
