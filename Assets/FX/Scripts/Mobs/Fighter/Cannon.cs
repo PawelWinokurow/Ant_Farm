@@ -15,7 +15,6 @@ namespace FighterNamespace
         private float a;
         private Vector3 targetPos;
         private Vector3 ballPosOld;
-
         void Start()
         {
             ball_p.gameObject.SetActive(false);
@@ -56,7 +55,8 @@ namespace FighterNamespace
                     targetPos = fighter.target.mob.position;
                 }
                 ball_p.transform.position = Vector3.Lerp(transform.position, targetPos, a);
-                ball.LookAt(ballPosOld);
+                ball_p.LookAt(targetPos,transform.up);
+                ball.LookAt(ballPosOld, Vector3.up);
                 ballPosOld = ball.position;
             }
             ).OnComplete(() =>
