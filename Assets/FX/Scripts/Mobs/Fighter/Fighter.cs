@@ -202,7 +202,7 @@ public class Fighter : MonoBehaviour, Mob
 
     public virtual float Hit(int damage)
     {
-        if (health.Hit(damage) <= 0)
+        if (health.hp > 0 && health.Hit(damage) <= 0)
         {
             Kill();
         }

@@ -32,6 +32,8 @@ namespace WorkerNamespace
         public Transform body;
         public Transform angl;
         private Quaternion smoothRot;
+        public Store store;
+
 
         void Start()
         {
@@ -159,7 +161,7 @@ namespace WorkerNamespace
 
         public float Hit(int damage)
         {
-            if (health.Hit(damage) <= 0)
+            if (health.hp > 0 && health.Hit(damage) <= 0)
             {
                 Kill();
             }

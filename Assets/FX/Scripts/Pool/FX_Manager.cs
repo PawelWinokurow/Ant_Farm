@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 [ExecuteInEditMode]
 public class FX_Manager : MonoBehaviour
@@ -52,25 +53,20 @@ public class FX_Manager : MonoBehaviour
 
         pool = poolDictionary[tag];
         GameObject go = null;
-        int i;
 
-        for (i = 0; i < pool.fxList.Count; i++)
-        {
-            go = pool.fxList[i];
+        pool.fxList = pool.fxList.Where(fx => fx != null).ToList();
 
-            if (!go.gameObject.activeInHierarchy)
-            {
-                break;
-            }
-        }
-
-        if (i == pool.fxList.Count || go == null)
+        var index = pool.fxList.FindIndex(fx => !fx.gameObject.activeInHierarchy);
+        if (index == -1)
         {
             go = Instantiate(pool.prefab);
             pool.fxList.Add(go);
             go.transform.parent = transform;
         }
-
+        else
+        {
+            go = pool.fxList[index];
+        }
 
         go.SetActive(false);
         go.transform.position = position;
@@ -81,6 +77,8 @@ public class FX_Manager : MonoBehaviour
         {
             go.transform.parent = parent;
         }
+        //TODO remove assert if it's working
+        Debug.Assert(go != null);
         return go;
     }
 

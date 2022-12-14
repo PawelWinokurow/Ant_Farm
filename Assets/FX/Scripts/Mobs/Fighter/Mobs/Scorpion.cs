@@ -89,7 +89,7 @@ namespace FighterNamespace
 
         public override float Hit(int damage)
         {
-            if (health.Hit(damage) <= 0)
+            if (health.hp > 0 && health.Hit(damage) <= 0)
             {
                 if (digFX != null)
                 {
