@@ -6,10 +6,10 @@ public class Settings : MonoBehaviour
 
     public GameSettings gameSettings;
     public WorkerSettings workerSettings;
-    public SoldierSettings soldierSettings;
-    public GunnerSettings gunnerSettings;
-    public ScorpionSettings scorpionSettings;
-    public GobberSettings gobberSettings;
+    public FighterSettings soldierSettings;
+    public FighterSettings gunnerSettings;
+    public FighterSettings scorpionSettings;
+    public FighterSettings gobberSettings;
     private void Awake()
     {
         if (Instance != null && Instance != this)

@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[CreateAssetMenu]
 public class FighterSettings : ScriptableObject
 {
     public int HP;
