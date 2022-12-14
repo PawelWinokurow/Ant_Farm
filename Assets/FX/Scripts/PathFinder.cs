@@ -27,13 +27,13 @@ public class Pathfinder
         this.pathGraph = pathGraph;
     }
 
-    public Path RandomWalk(Vector3 fromVec, int numberOfSteps, int accessMask)
+    public Path RandomWalk(Vector3 fromVec, int numberOfSteps, int accessMask, EdgeType edgeType = EdgeType.SECONDARY)
     {
         Path overallPath = new Path();
         Vertex from = pathGraph.GetVertex(fromVec);
         for (int i = 0; i < numberOfSteps; i++)
         {
-            var path = PathToSomeNeighbour(from, accessMask);
+            var path = PathToSomeNeighbour(from, accessMask, edgeType);
             if (path != null)
             {
                 overallPath.wayPoints.AddRange(path.wayPoints);
@@ -48,7 +48,7 @@ public class Pathfinder
         return overallPath;
     }
 
-    private Path PathToSomeNeighbour(Vertex from, int accessMask)
+    private Path PathToSomeNeighbour(Vertex from, int accessMask, EdgeType edgeType)
     {
         if (from.isCentralVertex)
         {
@@ -70,7 +70,7 @@ public class Pathfinder
             var edges = from.edges.OrderBy(e => Guid.NewGuid()).ToList();
             foreach (var edge in edges)
             {
-                if (edge.HasAccess(accessMask) && edge.to.isCentralVertex)
+                if (edge.HasAccess(accessMask) && (edgeType == EdgeType.SECONDARY || edge.type == EdgeType.PRIMARY) && edge.to.isCentralVertex)
                 {
                     return FindPath(from.position, edge.to.position, accessMask);
                 }
@@ -79,7 +79,7 @@ public class Pathfinder
         return null;
     }
 
-    public Path FindPath(Vector3 fromVec, Vector3 toVec, int accessMask, SearchType searchType = SearchType.VERTEX)
+    public Path FindPath(Vector3 fromVec, Vector3 toVec, int accessMask, SearchType searchType = SearchType.VERTEX, EdgeType edgeType = EdgeType.SECONDARY)
     {
         Vertex from = pathGraph.GetVertex(fromVec);
         Vertex to = pathGraph.GetVertex(toVec);
@@ -87,28 +87,28 @@ public class Pathfinder
         if (from.id == to.id) return path;
         if (searchType == SearchType.VERTEX)
         {
-            path = Astar(from, to, accessMask);
+            path = Astar(from, to, accessMask, edgeType);
         }
         else if (searchType == SearchType.NEAREST_CENTRAL_VERTEX)
         {
-            var nearestCentralVertex = pathGraph.NearestCentralVertex(from, to, accessMask);
+            var nearestCentralVertex = pathGraph.NearestCentralVertex(from, to, accessMask, edgeType);
             if (nearestCentralVertex != null)
             {
-                path = Astar(from, nearestCentralVertex, accessMask);
+                path = Astar(from, nearestCentralVertex, accessMask, edgeType);
             }
         }
         else if (searchType == SearchType.NEAREST_VERTEX)
         {
-            var nearestVertex = pathGraph.NearestVertex(from, to, accessMask);
+            var nearestVertex = pathGraph.NearestVertex(from, to, accessMask, edgeType);
             if (nearestVertex != null)
             {
-                path = Astar(from, nearestVertex, accessMask);
+                path = Astar(from, nearestVertex, accessMask, edgeType);
             }
         }
         return path;
     }
 
-    private Path Astar(Vertex start, Vertex goal, int accessMask)
+    private Path Astar(Vertex start, Vertex goal, int accessMask, EdgeType edgeType)
     {
         PriorityQueue<Vertex, float> frontier = new PriorityQueue<Vertex, float>(0);
         frontier.Enqueue(start, 0);
@@ -136,7 +136,7 @@ public class Pathfinder
 
             foreach (var nextEdge in current.edges)
             {
-                if (!nextEdge.HasAccess(accessMask)) continue;
+                if (!nextEdge.HasAccess(accessMask) || edgeType == EdgeType.PRIMARY && nextEdge.type == EdgeType.SECONDARY) continue;
                 var next = nextEdge.to;
                 var newCost = costSoFar[current.id] + nextEdge.edgeWeight * nextEdge.edgeMultiplier;
                 if (!costSoFar.ContainsKey(next.id) || newCost < costSoFar[next.id])

@@ -58,7 +58,7 @@ public class Fighter : MonoBehaviour, Mob
         path = null;
     }
 
-    public void SetRandomWalk()
+    public virtual void SetRandomWalk()
     {
         SetPath(pathfinder.RandomWalk(position, 5, accessMask));
     }
@@ -163,7 +163,7 @@ public class Fighter : MonoBehaviour, Mob
     }
 
 
-    public Target SearchTarget(List<Mob> mobs)
+    public Target SearchTarget(List<Mob> mobs, int accessMask, EdgeType edgeType = EdgeType.SECONDARY)
     {
         var notDeadMobs = new List<Mob>(mobs.Where(mob => mob.currentState?.type != STATE.DEAD));
         KDTree mobPositionsTree = new KDTree(notDeadMobs.Select(mob => mob.position).ToArray());
@@ -179,7 +179,7 @@ public class Fighter : MonoBehaviour, Mob
             {
                 continue;
             }
-            var path = pathfinder.FindPath(position, targetMob.currentHex.position, accessMask, SearchType.NEAREST_VERTEX);
+            var path = pathfinder.FindPath(position, targetMob.currentHex.position, accessMask, SearchType.NEAREST_VERTEX, edgeType);
             if (path != null)
             {
                 var target = new Target($"{id}_{targetMob.id}", targetMob);

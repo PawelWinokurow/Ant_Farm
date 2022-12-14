@@ -19967,9 +19967,9 @@ MonoBehaviour:
   m_Shoot:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2381269297423956020}
-        m_TargetAssemblyTypeName: GunnerNamespace.Cannon, Assembly-CSharp
-        m_MethodName: 
+      - m_Target: {fileID: 2381269297423956022}
+        m_TargetAssemblyTypeName: FighterNamespace.Cannon, Assembly-CSharp
+        m_MethodName: Shoot
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

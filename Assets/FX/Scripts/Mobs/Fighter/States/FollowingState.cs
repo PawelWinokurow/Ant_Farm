@@ -14,6 +14,7 @@ namespace FighterNamespace
         override public void OnStateEnter()
         {
             fighter.movementSpeed = fighter.mobSettings.FOLLOWING_MOVEMENT_SPEED;
+            fighter.accessMask = fighter.mobSettings.FOLLOWING_ACCESS_MASK;
             fighter.SetRunAnimation();
         }
         override public void OnStateExit()

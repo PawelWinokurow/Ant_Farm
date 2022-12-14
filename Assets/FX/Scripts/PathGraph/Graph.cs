@@ -42,10 +42,10 @@ public class Graph
         return newVertex;
     }
 
-    public void AddEdge(Vertex v1, Vertex v2, float edgeWeight, FloorHexagon hex, int accessMask)
+    public void AddEdge(Vertex v1, Vertex v2, EdgeType type, float edgeWeight, FloorHexagon hex)
     {
-        Edge v1Edge = new Edge($"{v1.id}{v2.id}", v1, v2, edgeWeight, hex, accessMask, gameSettings.EDGE_WEIGHT_NORMAL);
-        Edge v2Edge = new Edge($"{v2.id}{v1.id}", v2, v1, edgeWeight, hex, accessMask, gameSettings.EDGE_WEIGHT_NORMAL);
+        Edge v1Edge = new Edge($"{v1.id}{v2.id}", type, v1, v2, edgeWeight, hex, 1, gameSettings.EDGE_WEIGHT_NORMAL);
+        Edge v2Edge = new Edge($"{v2.id}{v1.id}", type, v2, v1, edgeWeight, hex, 1, gameSettings.EDGE_WEIGHT_NORMAL);
         v1.edges.Add(v1Edge);
         v2.edges.Add(v2Edge);
         adjacencyList.Add(v1Edge);
@@ -102,9 +102,9 @@ public class Graph
             else return acc;
         });
     }
-    public Vertex NearestCentralVertex(Vertex from, Vertex to, int accessMask)
+    public Vertex NearestCentralVertex(Vertex from, Vertex to, int accessMask, EdgeType edgeType)
     {
-        var toNeighbours = to.neighbours.Where(vertex => vertex.edges.Any(edge => edge.HasAccess(accessMask))).ToList();
+        var toNeighbours = to.neighbours.Where(vertex => vertex.edges.Any(edge => edge.HasAccess(accessMask) && (edgeType == EdgeType.SECONDARY || edge.type == EdgeType.PRIMARY))).ToList();
         if (toNeighbours.Count == 0) return null;
         return toNeighbours.Aggregate(toNeighbours[0], (acc, vertex) =>
         {
@@ -113,9 +113,9 @@ public class Graph
             else return acc;
         });
     }
-    public Vertex NearestVertex(Vertex from, Vertex to, int accessMask)
+    public Vertex NearestVertex(Vertex from, Vertex to, int accessMask, EdgeType edgeType)
     {
-        var toNeighbours = to.edges.Select(e => e.to).Where(vertex => vertex.edges.Any(edge => edge.HasAccess(accessMask))).ToList();
+        var toNeighbours = to.edges.Select(e => e.to).Where(vertex => vertex.edges.Any(edge => edge.HasAccess(accessMask) && (edgeType == EdgeType.SECONDARY || edge.type == EdgeType.PRIMARY))).ToList();
         if (toNeighbours.Count == 0) return null;
         return toNeighbours.Aggregate(toNeighbours[0], (acc, vertex) =>
         {
@@ -147,8 +147,8 @@ public class Graph
         }
         for (int i = 0; i < pathPoints.Count; i++)
         {
-            AddEdge(centerPathPoint, pathPoints[i], Vector3.Distance(centerPathPoint.position, pathPoints[i].position), hex, 3);
-            AddEdge(pathPoints[i], pathPoints[(i + 2) % pathPoints.Count], Vector3.Distance(pathPoints[i].position, pathPoints[(i + 2) % pathPoints.Count].position), hex, 1);
+            AddEdge(centerPathPoint, pathPoints[i], EdgeType.PRIMARY, Vector3.Distance(centerPathPoint.position, pathPoints[i].position), hex);
+            AddEdge(pathPoints[i], pathPoints[(i + 2) % pathPoints.Count], EdgeType.SECONDARY, Vector3.Distance(pathPoints[i].position, pathPoints[(i + 2) % pathPoints.Count].position), hex);
         }
         return centerPathPoint;
     }

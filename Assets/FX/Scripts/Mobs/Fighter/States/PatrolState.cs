@@ -34,6 +34,7 @@ namespace FighterNamespace
         override public void OnStateEnter()
         {
             fighter.movementSpeed = fighter.mobSettings.PATROL_MOVEMENT_SPEED;
+            fighter.accessMask = fighter.mobSettings.PATROL_ACCESS_MASK;
             fighter.RemovePath();
             fighter.SetRunAnimation();
             fighter.SetRandomWalk();

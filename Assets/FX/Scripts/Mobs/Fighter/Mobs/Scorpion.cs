@@ -18,7 +18,6 @@ namespace FighterNamespace
             type = MobType.SCORPION;
             health = GetComponent<Health>();
             health.InitHp(mobSettings.HP);
-            accessMask = gameSettings.ACCESS_MASK_FLOOR;
             SetState(new PatrolState(this));
         }
 
@@ -73,9 +72,14 @@ namespace FighterNamespace
             }
         }
 
+        public override void SetRandomWalk()
+        {
+            SetPath(pathfinder.RandomWalk(position, 5, accessMask, EdgeType.PRIMARY));
+        }
+
         public override Target SearchTarget()
         {
-            return SearchTarget(store.allAllies);
+            return SearchTarget(store.allAllies, mobSettings.FOLLOWING_ACCESS_MASK, EdgeType.PRIMARY);
         }
 
         public override bool IsTargetInSight()

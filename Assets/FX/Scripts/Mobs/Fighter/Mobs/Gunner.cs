@@ -12,7 +12,6 @@ namespace FighterNamespace
             mobSettings = Settings.Instance.gunnerSettings;
             animator = GetComponent<MobAnimator>();
             type = MobType.GUNNER;
-            accessMask = gameSettings.ACCESS_MASK_FLOOR + gameSettings.ACCESS_MASK_BASE;
             health = GetComponent<Health>();
             health.InitHp(mobSettings.HP);
             SetState(new PatrolState(this));
@@ -40,7 +39,7 @@ namespace FighterNamespace
 
         public override Target SearchTarget()
         {
-            return SearchTarget(store.allEnemies);
+            return SearchTarget(store.allEnemies, mobSettings.FOLLOWING_ACCESS_MASK);
         }
     }
 }

@@ -9,16 +9,10 @@ namespace FighterNamespace
         void Start()
         {
             gameSettings = Settings.Instance.gameSettings;
-            //TODO
-            mobSettings = new FighterSettings();
-            mobSettings.ATTACK_STRENGTH = Settings.Instance.soldierSettings.ATTACK_STRENGTH;
-            mobSettings.FOLLOWING_MOVEMENT_SPEED = Settings.Instance.soldierSettings.FOLLOWING_MOVEMENT_SPEED;
-            mobSettings.HP = Settings.Instance.soldierSettings.HP;
-            mobSettings.PATROL_MOVEMENT_SPEED = Settings.Instance.soldierSettings.PATROL_MOVEMENT_SPEED;
+            mobSettings = Settings.Instance.soldierSettings;
             animator = GetComponent<MobAnimator>();
             animator.Attack = () => Attack();
             type = MobType.SOLDIER;
-            accessMask = gameSettings.ACCESS_MASK_FLOOR + gameSettings.ACCESS_MASK_BASE;
             health = GetComponent<Health>();
             health.InitHp(mobSettings.HP);
             SetState(new PatrolState(this));
@@ -35,7 +29,7 @@ namespace FighterNamespace
 
         public override Target SearchTarget()
         {
-            return SearchTarget(store.allEnemies);
+            return SearchTarget(store.allEnemies, mobSettings.FOLLOWING_ACCESS_MASK);
         }
 
         public override bool IsTargetInSight()
