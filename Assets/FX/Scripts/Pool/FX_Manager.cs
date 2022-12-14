@@ -38,14 +38,16 @@ public class FX_Manager : MonoBehaviour
         Pool pool;
         if (!poolDictionary.ContainsKey(tag))
         {
-            pool = new Pool();
-            pool.tag = tag;
-            pool.prefab = prefab;
-            pool.fxList = new List<GameObject>();
+            pool = new Pool()
+            {
+                tag = tag,
+                prefab = prefab,
+                fxList = new List<GameObject>()
+            };
+
+
             poolDictionary.Add(tag, pool);
             pools.Add(pool);
-
-
         }
 
         pool = poolDictionary[tag];

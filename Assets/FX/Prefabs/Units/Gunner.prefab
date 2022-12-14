@@ -19633,7 +19633,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ball_p: {fileID: 2381269298565259244}
   ball: {fileID: 2381269298352812389}
-  speed: 1
+  speed: 25
   shoot_FX: {fileID: 2266513408033644261}
   ball_FX: {fileID: 2097989179}
   fighter: {fileID: 6826684635683908350}
@@ -19890,7 +19890,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4689637310385045601
 Transform:
   m_ObjectHideFlags: 0

@@ -5277,7 +5277,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ball_p: {fileID: 5199834172282709633}
   ball: {fileID: 5199834172193196040}
-  speed: 1
+  speed: 25
   shoot_FX: {fileID: 8527063975469180808}
   ball_FX: {fileID: 7575743340957892438}
   fighter: {fileID: 822783226273399532}
