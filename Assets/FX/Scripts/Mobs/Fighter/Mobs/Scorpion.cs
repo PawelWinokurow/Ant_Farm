@@ -30,7 +30,6 @@ namespace FighterNamespace
             }
         }
 
-
         protected override void SetcurrentPathEdge()
         {
             if (path.wayPoints.Count > 1 && path.wayPoints[1].floorHexagon.type == HexType.SOIL)

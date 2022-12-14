@@ -140,12 +140,18 @@ public class WorkerJobScheduler : MonoBehaviour
     {
         lock (monitorLock)
         {
+            Debug.Log("1");
             carryingWorkers.Remove(worker);
+            Debug.Log("2");
             buildingWorkers.Remove(worker);
+            Debug.Log("3");
             freeWorkers.Remove(worker);
+            Debug.Log("4");
             worker.CancelJob();
         }
+        Debug.Log("5");
         worker.SetState(new DeadState(worker));
+        Debug.Log("6");
     }
 
     private void AssignBuildingWork()
