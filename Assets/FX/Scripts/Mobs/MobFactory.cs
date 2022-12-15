@@ -84,6 +84,7 @@ public class MobFactory : MonoBehaviour
         var spawnPosition = hex.position;
         Worker worker = Instantiate(workerPrefab, spawnPosition, Quaternion.identity);
         worker.id = id;
+        worker.store = store;
         workerJobScheduler.AddWorker(worker);
         store.AddAlly(worker);
         Buy(worker, 10);

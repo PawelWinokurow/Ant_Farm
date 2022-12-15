@@ -59,60 +59,50 @@ public class SurfaceOperations : MonoBehaviour
     {
         if (job.type == JobType.DEMOUNT)
         {
-            StartCoroutine(Demount(job));
+            Demount(job);
         }
         else if (job.type == JobType.MOUNT)
         {
-            StartCoroutine(Mount(job));
+            Mount(job);
         }
     }
 
-    public IEnumerator Demount(WorkerJob workerJob)
+    public void Demount(WorkerJob workerJob)
     {
         var worker = workerJob.worker;
         var floorHex = workerJob.hex;
         var type = surface.GetHexTypeByIcon(floorHex);
         var scaledBlock = (WorkHexagon)(floorHex.child);
-        while (scaledBlock != null)
+
+        scaledBlock.work -= worker.workerSettings.CONSTRUCTION_SPEED * Time.deltaTime;
+        scaledBlock.transform.localScale = 0.95f * Vector3.one * scaledBlock.work / WorkHexagon.MAX_WORK;
+        if (scaledBlock.work <= 0)
         {
-            scaledBlock.work -= workerSettings.CONSTRUCTION_SPEED;
-            scaledBlock.transform.localScale = 0.95f * Vector3.one * scaledBlock.work / WorkHexagon.MAX_WORK;
-            if (scaledBlock.work <= 0)
-            {
-                surface.AddGround(floorHex);
-                surface.pathGraph.SetAccesabillity(floorHex, gameSettings.ACCESS_MASK_FLOOR, gameSettings.EDGE_WEIGHT_NORMAL);
-                worker.job.Cancel();
-                oldHexagons.Remove(floorHex.id);
-                yield break;
-            }
-            yield return new WaitForSeconds(0.1f);
+            surface.AddGround(floorHex);
+            surface.pathGraph.SetAccesabillity(floorHex, gameSettings.ACCESS_MASK_FLOOR, gameSettings.EDGE_WEIGHT_NORMAL);
+            worker.job.Cancel();
+            oldHexagons.Remove(floorHex.id);
         }
     }
 
-    public IEnumerator Mount(WorkerJob workerJob)
+    public void Mount(WorkerJob workerJob)
     {
         var worker = workerJob.worker;
         var floorHex = workerJob.hex;
         var type = surface.GetHexTypeByIcon(floorHex);
         var icon = ((WorkHexagon)floorHex.child).GetComponent<MountIcon>();
         var scaledBlock = icon.scaledIconPrefab;
-        while (scaledBlock != null)
+
+        scaledBlock.work -= worker.workerSettings.CONSTRUCTION_SPEED * Time.deltaTime;
+        scaledBlock.transform.localScale = Vector3.one * (0.3f + 0.7f * (1 - scaledBlock.work / WorkHexagon.MAX_WORK));
+        if (scaledBlock.work <= 0)
         {
-            scaledBlock.work -= workerSettings.CONSTRUCTION_SPEED;
-            scaledBlock.transform.localScale = Vector3.one * (0.3f + 0.7f * (1 - scaledBlock.work / WorkHexagon.MAX_WORK));
-            if (scaledBlock.work <= 0)
-            {
-                floorHex.RemoveChildren();
-                surface.AddBlock(floorHex, type);
-                surface.pathGraph.SetAccesabillity(floorHex, surface.GetAccessMaskByHexType(type), surface.GetEdgeWeightByHexType(type));
-                worker.job.Cancel();
-                oldHexagons.Remove(floorHex.id);
-                yield break;
-            }
-            yield return new WaitForSeconds(0.1f);
+            floorHex.RemoveChildren();
+            surface.AddBlock(floorHex, type);
+            surface.pathGraph.SetAccesabillity(floorHex, surface.GetAccessMaskByHexType(type), surface.GetEdgeWeightByHexType(type));
+            worker.job.Cancel();
+            oldHexagons.Remove(floorHex.id);
         }
-        surface.pathGraph.SetAccesabillity(floorHex, gameSettings.ACCESS_MASK_FLOOR, gameSettings.EDGE_WEIGHT_NORMAL);
-        worker.job.Cancel();
     }
 
 

@@ -30,7 +30,6 @@ namespace FighterNamespace
             }
         }
 
-
         protected override void SetcurrentPathEdge()
         {
             if (path.wayPoints.Count > 1 && path.wayPoints[1].floorHexagon.type == HexType.SOIL)
@@ -90,7 +89,7 @@ namespace FighterNamespace
 
         public override float Hit(int damage)
         {
-            if (health.Hit(damage) <= 0)
+            if (health.hp > 0 && health.Hit(damage) <= 0)
             {
                 if (digFX != null)
                 {

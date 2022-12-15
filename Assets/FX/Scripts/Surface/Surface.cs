@@ -233,7 +233,7 @@ public class Surface : MonoBehaviour
         }
         else if (value == SliderValue.SPIKES)
         {
-            PlaceMountIcon(hex, spikesMountIconPrefab, gameSettings.ACCESS_MASK_SPIKES, gameSettings.EDGE_WEIGHT_NORMAL);
+            PlaceMountIcon(hex, spikesMountIconPrefab, gameSettings.ACCESS_MASK_FLOOR, gameSettings.EDGE_WEIGHT_NORMAL);
         }
         if (value == SliderValue.DEMOUNT)
         {
@@ -278,7 +278,7 @@ public class Surface : MonoBehaviour
     {
         if (type == HexType.SOIL) return gameSettings.ACCESS_MASK_SOIL;
         else if (type == HexType.STONE) return gameSettings.ACCESS_MASK_STONE;
-        else if (type == HexType.SPIKES) return gameSettings.ACCESS_MASK_SPIKES;
+        else if (type == HexType.SPIKES) return gameSettings.ACCESS_MASK_FLOOR;
         return gameSettings.ACCESS_MASK_FLOOR;
     }
 
@@ -319,7 +319,7 @@ public class Surface : MonoBehaviour
         }
         else if (oldIcon.type == HexType.SPIKES)
         {
-            pathGraph.SetAccesabillity(hex, gameSettings.ACCESS_MASK_SPIKES, gameSettings.EDGE_WEIGHT_NORMAL);
+            pathGraph.SetAccesabillity(hex, gameSettings.ACCESS_MASK_FLOOR, gameSettings.EDGE_WEIGHT_NORMAL);
             WorkHexagon.CreateHexagon(hex, spikesPrefab).AssignProperties((WorkHexagon)oldIcon);
         }
         oldhexagons.Remove(hex.id);

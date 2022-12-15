@@ -27,11 +27,13 @@ namespace WorkerNamespace
         public FloorHexagon currentHex { get; set; }
         public int accessMask { get; set; }
         private GameSettings gameSettings;
-        private WorkerSettings workerSettings;
+        public WorkerSettings workerSettings;
         public int movementSpeed { get; set; }
         public Transform body;
         public Transform angl;
         private Quaternion smoothRot;
+        public Store store;
+
 
         void Start()
         {
@@ -159,7 +161,7 @@ namespace WorkerNamespace
 
         public float Hit(int damage)
         {
-            if (health.Hit(damage) <= 0)
+            if (health.hp > 0 && health.Hit(damage) <= 0)
             {
                 Kill();
             }

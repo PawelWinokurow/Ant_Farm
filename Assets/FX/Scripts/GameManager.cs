@@ -92,13 +92,13 @@ public class GameManager : MonoBehaviour
                 || slider.choosenValue == SliderValue.SPIKES)
                 {
                     surface.PlaceIcon(hex, slider.choosenValue);
-                    workerJobScheduler.AssignJob(new BuildJob(hex, hex.transform.position, JobType.MOUNT));
+                    workerJobScheduler.AssignBuildJob(new BuildJob(hex, hex.transform.position, JobType.MOUNT));
                 }
             }
             else if ((hex.type == HexType.SOIL || hex.type == HexType.STONE || hex.type == HexType.SPIKES) && slider.choosenValue == SliderValue.DEMOUNT)
             {
                 surface.PlaceIcon(hex, slider.choosenValue);
-                workerJobScheduler.AssignJob(new BuildJob(hex, hex.transform.position, JobType.DEMOUNT));
+                workerJobScheduler.AssignBuildJob(new BuildJob(hex, hex.transform.position, JobType.DEMOUNT));
             }
         }
     }
