@@ -8,13 +8,13 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Blob UI
-  m_Shader: {fileID: 4800000, guid: 6df5731ebadb5e140ba06c2c38f13a0f, type: 3}
+  m_Shader: {fileID: 4800000, guid: 7c383db59935ef64282609b2e525cef6, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2000
+  m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
@@ -41,7 +41,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 7bcbc3cef8578244ca7fc84667b66b79, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 2.39}
+    - _Mat:
+        m_Texture: {fileID: 2800000, guid: fa9784bf53dee4322b5fd85d1dd1c77a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Matcap:
@@ -81,6 +85,7 @@ Material:
     - _Mult: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _ScaleUV: 0.04
     - _Shading: 0.299
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -90,8 +95,8 @@ Material:
     - __dirty: 0
     m_Colors:
     - _BlinkFX_Color: {r: 1, g: 0, b: 0, a: 1}
-    - _Color: {r: 0.25623867, g: 0.5372549, b: 0.023529427, a: 1}
-    - _Color1: {r: 0.14934278, g: 0.2, b: 0, a: 1}
+    - _Color: {r: 0.45038164, g: 1, b: 0, a: 1}
+    - _Color1: {r: 0.1792453, g: 0.1792453, b: 0.1792453, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _U: {r: -1, g: 0, b: 0, a: 0}
     - _V: {r: 0, g: 1, b: -0.13, a: 0}
