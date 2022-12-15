@@ -91,7 +91,7 @@ Material:
     m_Colors:
     - _BlinkFX_Color: {r: 1, g: 0, b: 0, a: 1}
     - _Color: {r: 0.25623867, g: 0.5372549, b: 0.023529427, a: 1}
-    - _Color1: {r: 0.14934278, g: 0.2, b: 0, a: 1}
+    - _Color1: {r: 0.14761378, g: 0.1981132, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _U: {r: -1, g: 0, b: 0, a: 0}
     - _V: {r: 0.33, g: 1, b: -0.13, a: 0}
