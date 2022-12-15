@@ -27,7 +27,7 @@ namespace WorkerNamespace
         public FloorHexagon currentHex { get; set; }
         public int accessMask { get; set; }
         private GameSettings gameSettings;
-        private WorkerSettings workerSettings;
+        public WorkerSettings workerSettings;
         public int movementSpeed { get; set; }
         public Transform body;
         public Transform angl;

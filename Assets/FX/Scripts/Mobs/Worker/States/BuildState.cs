@@ -15,11 +15,8 @@ namespace WorkerNamespace
 
         public override void Tick()
         {
-        }
 
-        public void Done()
-        {
-            IsDone = true;
+            worker.surfaceOperations.Build(job);
         }
 
         override public void CancelJob()

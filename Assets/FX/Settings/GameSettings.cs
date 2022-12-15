@@ -4,7 +4,6 @@ using UnityEngine;
 public class GameSettings : ScriptableObject
 {
     public int ACCESS_MASK_FLOOR = 1;
-    public int ACCESS_MASK_SPIKES = 1;
     public int ACCESS_MASK_SOIL = 2;
     public int ACCESS_MASK_BASE = 4;
     public int ACCESS_MASK_STONE = 8;
