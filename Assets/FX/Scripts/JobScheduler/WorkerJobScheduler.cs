@@ -39,7 +39,6 @@ public class WorkerJobScheduler : MonoBehaviour
 
     void Update()
     {
-
         if (someFoodLeft && ((CollectingHexagon)(foodHexagons.First().child)).Quantity <= 0) foodHexagons.RemoveAt(0);
         if (!someFoodLeft) SetPathToFood();
 
@@ -72,7 +71,7 @@ public class WorkerJobScheduler : MonoBehaviour
                     .Distinct()
                     .Where(hex => hex.type == HexType.SOIL)
                     .ToList();
-                soilHexagons.ForEach(hex => { surfaceOperations.surface.PlaceIcon(hex, SliderValue.DEMOUNT); AssignJob(new BuildJob(hex, hex.transform.position, JobType.DEMOUNT)); });
+                soilHexagons.ForEach(hex => { surfaceOperations.surface.PlaceIcon(hex, SliderValue.DEMOUNT); AssignBuildJob(new BuildJob(hex, hex.transform.position, JobType.DEMOUNT)); });
                 foodHexagons.Add(nearestFoodHex);
             }
         }
@@ -151,7 +150,6 @@ public class WorkerJobScheduler : MonoBehaviour
 
     private void AssignBuildingWork()
     {
-
         var freeWorkersClone = new List<Worker>(freeWorkers);
         var job = unassignedBuildingJobsQueue.First();
 
@@ -247,32 +245,6 @@ public class WorkerJobScheduler : MonoBehaviour
         worker.SetPath(path);
     }
 
-    public bool IsJobAlreadyCreated(WorkerJob job)
-    {
-        lock (monitorLock)
-        {
-            return IsJobAlreadyCreated(job.id);
-        }
-    }
-
-    public bool IsJobAlreadyCreated(string jobId)
-    {
-        return jobMap.ContainsKey(jobId);
-    }
-
-    public bool IsJobUnassigned(WorkerJob job)
-    {
-        return IsJobUnassigned(job.id);
-    }
-
-    public bool IsJobUnassigned(string jobId)
-    {
-        lock (monitorLock)
-        {
-            return unassignedBuildingJobsQueue.Any(item => item.id == jobId);
-        }
-    }
-
     public bool IsJobAssigned(WorkerJob job)
     {
         return IsJobAssigned(job.id);
@@ -286,10 +258,9 @@ public class WorkerJobScheduler : MonoBehaviour
         }
     }
 
-    public void AssignJob(WorkerJob job)
+    public void AssignBuildJob(WorkerJob job)
     {
-        //TODO
-        if (!IsJobAlreadyCreated(job) && !IsJobUnassigned(job))
+        lock (monitorLock)
         {
             jobMap.Add(job.id, job);
             unassignedBuildingJobsQueue.Add(job);
@@ -323,6 +294,7 @@ public class WorkerJobScheduler : MonoBehaviour
                     unassignedCarryingJobsQueue.Remove(job);
                     MoveBusyMobToFreeMobs(job.worker, carryingWorkers);
                 }
+                jobMap.Remove(job.id);
                 job.worker.SetState(new IdleState(job.worker));
                 job.worker.path = null;
             }
