@@ -15,7 +15,6 @@ namespace FighterNamespace
         {
             fighter.SetIdleFightAnimation();
             fighterTarget = fighter.target;
-            fighter.animator.ResetAttack();
         }
         override public void OnStateExit()
         {
