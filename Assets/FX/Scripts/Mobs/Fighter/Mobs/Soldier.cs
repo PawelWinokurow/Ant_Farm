@@ -11,7 +11,7 @@ namespace FighterNamespace
             gameSettings = Settings.Instance.gameSettings;
             mobSettings = Settings.Instance.soldierSettings;
             animator = GetComponent<MobAnimator>();
-            animator.Attack = () => Attack();
+           // animator.Attack = () => Attack();
             type = MobType.SOLDIER;
             health = GetComponent<Health>();
             health.InitHp(mobSettings.HP);

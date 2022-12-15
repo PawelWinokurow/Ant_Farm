@@ -6,8 +6,8 @@ public class Health : MonoBehaviour
 {
     public GameObject deadFX_prefab;
     public GameObject hitFX_prefab;
-    MaterialPropertyBlock bodyProps;
-    MaterialPropertyBlock progressbarProps;
+    private MaterialPropertyBlock bodyProps;
+    private MaterialPropertyBlock progressbarProps;
     public MeshRenderer progressbar;
 
     public float MAX_HP;

@@ -14,7 +14,7 @@ namespace FighterNamespace
             gameSettings = Settings.Instance.gameSettings;
             mobSettings = Settings.Instance.scorpionSettings;
             animator = GetComponent<MobAnimator>();
-            animator.Attack = () => Attack();
+           // animator.Attack = () => Attack();
             type = MobType.SCORPION;
             health = GetComponent<Health>();
             health.InitHp(mobSettings.HP);

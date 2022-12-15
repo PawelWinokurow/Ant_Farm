@@ -144,8 +144,8 @@ public class WorkerJobScheduler : MonoBehaviour
             buildingWorkers.Remove(worker);
             freeWorkers.Remove(worker);
             worker.CancelJob();
-        }
-        worker.SetState(new DeadState(worker));
+        }                                      
+            worker.SetState(new DeadState(worker));
     }
 
     private void AssignBuildingWork()

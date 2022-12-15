@@ -9,7 +9,7 @@ public class Fighter : MonoBehaviour, Mob
 {
     public string id { get; set; }
     public MobType type { get; set; }
-    public MobAnimator animator { get; set; }
+    public IMobAnimator animator { get; set; }
     public Health health { get; set; }
     public Vector3 position { get => transform.position; }
     public Path path { get; set; }
