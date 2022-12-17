@@ -68,7 +68,7 @@ Material:
     m_Floats:
     - _Add_U: 1.47
     - _Add_V: 0
-    - _Angl: 0.1
+    - _Angl: 1.4
     - _BlendDetails: 0.5
     - _BlendTexture: 0
     - _Blink_FX: 0
@@ -77,7 +77,7 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _Emission: 0
-    - _Float0: 93.6
+    - _Float0: 0
     - _Float1: 0.56
     - _GlossMapScale: 1
     - _Glossiness: 0.5

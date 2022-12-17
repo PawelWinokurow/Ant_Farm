@@ -12,10 +12,6 @@ namespace AntFarm
         public bool isHitMade;
         private float fOld;
         public UnityEvent m_Shoot;
-
-        private bool isIdleFight;
-        private bool isRun;
-        private bool isIdle;
         private enum StateType
         {
             IdleFight, Run, Idle
@@ -27,9 +23,6 @@ namespace AntFarm
         public MeshRenderer mr;
         private float t;
         private float a;
-
-
-        //public Action Attack;
 
         private void Start()
         {
@@ -61,25 +54,26 @@ namespace AntFarm
         {
             f = (int)(Time.time * 30f * 1.5f) % 32;
 
-            if (state == StateType.IdleFight)
+            if (f > 14 && !isHitMade)
             {
-                if (f > 14 && !isHitMade)
+                isHitMade = true;
+                if (state == StateType.IdleFight)
                 {
-                    isHitMade = true;
                     m_Shoot.Invoke();
                     tentackles.Play();
-                    mr.transform.localScale = 1.5f*Vector3.one;
-                }
-
-                if (fOld < 14 && isHitMade)
-                {
-                    isHitMade = false;
-                    tentackles.Stop();
+                    mr.transform.localScale = 1.5f * Vector3.one;
                 }
             }
+
+            if (fOld < 14 && isHitMade)
+            {
+                isHitMade = false;
+                tentackles.Stop();
+            }
+
             fOld = f;
 
-            if ( mr.transform.localScale!= Vector3.one)
+            if (mr.transform.localScale != Vector3.one)
             {
                 mr.transform.localScale = Vector3.Lerp(mr.transform.localScale, Vector3.one, Time.deltaTime * 20f);
             }
@@ -87,7 +81,7 @@ namespace AntFarm
             if (state == StateType.Run)
             {
                 t += Time.deltaTime * 5f;
-                a = ExtensionMethods.Remap(Mathf.Sin(t-Mathf.PI/2f), -1f, 1f, 0f, 1f);
+                a = ExtensionMethods.Remap(Mathf.Sin(t - Mathf.PI / 2f), -1f, 1f, 0f, 1f);
                 props.SetFloat("_Forward", a);
                 mr.SetPropertyBlock(props);
             }
@@ -95,7 +89,7 @@ namespace AntFarm
             {
                 if (a > 0)
                 {
-                    a = Mathf.Lerp(a,0, Time.deltaTime*10f);
+                    a = Mathf.Lerp(a, 0, Time.deltaTime * 10f);
                     a = Mathf.Max(a, 0);
                     props.SetFloat("_Forward", a);
                     mr.SetPropertyBlock(props);
@@ -104,10 +98,5 @@ namespace AntFarm
             }
         }
 
-        public void ResetAttack()
-        {
-            isHitMade = false;
-            fOld = 0f;
-        }
     }
 }

@@ -17,7 +17,6 @@ public class Health : MonoBehaviour
     private bool isDead;
     public Color particlesColor;
     public Renderer[] renderers;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -39,17 +38,20 @@ public class Health : MonoBehaviour
         hitTime += Time.deltaTime / 0.2f;
         if (hitTime < 1f)//������� ��� �����
         {
-
-            if (!isDead)
+            if(hitFX_prefab != null)
             {
-                renderers[0].transform.localScale = Vector3.one * ExtensionMethods.RemapClamp(Mathf.Min(1f, hitTime) / 0.1f, 0f, 1f, 1.2f, 1f);//���������
-            }
-            bodyProps.SetFloat("_Blink_FX", ExtensionMethods.RemapClamp(Mathf.Min(1f, hitTime), 0f, 1f, 0.7f, 0f));//�������
+                if (!isDead)
+                {
+                    renderers[0].transform.localScale = Vector3.one * ExtensionMethods.RemapClamp(Mathf.Min(1f, hitTime) / 0.1f, 0f, 1f, 1.2f, 1f);//���������
+                }
+                bodyProps.SetFloat("_Blink_FX", ExtensionMethods.RemapClamp(Mathf.Min(1f, hitTime), 0f, 1f, 0.7f, 0f));//�������
 
-            for (int i = 0; i < renderers.Length; i++)
-            {
-                renderers[i].SetPropertyBlock(bodyProps);
+                for (int i = 0; i < renderers.Length; i++)
+                {
+                    renderers[i].SetPropertyBlock(bodyProps);
+                }
             }
+
 
         }
 
@@ -82,8 +84,11 @@ public class Health : MonoBehaviour
         if (!isDead)
         {
             hp -= damage;
-            ColorFX colorFX = FX_Manager.instance.SpawnFromPool(hitFX_prefab, transform.position, transform.rotation).GetComponent<ColorFX>();
-            colorFX.Colorize(particlesColor);
+            if (hitFX_prefab != null)
+            {
+                ColorFX colorFX = FX_Manager.instance.SpawnFromPool(hitFX_prefab, transform.position, transform.rotation).GetComponent<ColorFX>();
+                colorFX.Colorize(particlesColor);
+            }
 
             if (hp <= 0)
             {
