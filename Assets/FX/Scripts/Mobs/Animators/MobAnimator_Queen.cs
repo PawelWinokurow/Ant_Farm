@@ -5,22 +5,26 @@ using DG.Tweening;
 
 namespace AntFarm
 {
-    public class Queen : MonoBehaviour
+    public class MobAnimator_Queen : MonoBehaviour, IMobAnimator
     {
         public Animator anim;
         private Tween tween;
+        public Vector3 enemyPos;
 
         void Start()
         {
             Idle();
         }
-        public void Idle()
+
+        public void Run()
+        {
+        }
+            public void Idle()
         {
             if (tween != null)
             {
                 tween.Kill();
             }
-
 
             anim.SetTrigger("Idle");
             float angl = Random.Range(-90f, 90f);
@@ -31,13 +35,19 @@ namespace AntFarm
                   .OnComplete(() => { Idle(); });
         }
 
-        public void Fight(Vector3 enemyPos)
+        public void IdleFight()
         {
+            tween.Kill();
+            tween = anim.transform.DOLocalRotate(Vector3.zero, 0.3f, RotateMode.Fast).SetEase(Ease.OutQuad).OnStart(() => { anim.SetTrigger("Fight"); });
+            /*
             tween.Kill();
             Quaternion look = Quaternion.LookRotation(anim.transform.parent.up, enemyPos - transform.position);
             look *= Quaternion.Euler(new Vector3(-90, 0, 180));
             tween = anim.transform.DORotateQuaternion(look, 0.3f).SetEase(Ease.OutQuad).OnStart(() => { anim.SetTrigger("Fight"); });
-
+            */
+        }
+        public void RunFood()
+        {
         }
         public void Shoot() 
         {

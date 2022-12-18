@@ -14,7 +14,8 @@ public class MobAnimator : MonoBehaviour, IMobAnimator
     public MeshFilter mf;
     public MeshRenderer mr;
     public bool isHitMade;
-    private float fOld;
+    private int fMod;
+    private float fModOld;
 
     public UnityEvent m_Shoot;
 
@@ -49,11 +50,12 @@ public class MobAnimator : MonoBehaviour, IMobAnimator
 
     void Update()
     {
-        f = (int)(Time.time * 30f * 1.5f) % current.sequence.Length;
-        mf.mesh = current.sequence[f];
+        f = (int)(Time.time * 30f * 1.5f);
+        fMod = f % current.sequence.Length;
+        mf.mesh = current.sequence[fMod];
 
 
-            if (f > 14 && !isHitMade)
+            if (fMod > 14 && !isHitMade)
             {
                 isHitMade = true;
                 if (current == idleFight)
@@ -62,12 +64,12 @@ public class MobAnimator : MonoBehaviour, IMobAnimator
                 }
             }
 
-            if (fOld < 14 && isHitMade)
+            if (fModOld < 14 && isHitMade)
             {
                 isHitMade = false;
             }
 
-            fOld = f;
+         fModOld = fMod;
 
     }
 

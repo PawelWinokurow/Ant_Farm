@@ -6,10 +6,10 @@ namespace AntFarm
 {
     public class Test_Queen : MonoBehaviour
     {
-        private Queen queen;
+        private IMobAnimator mobAnimator;
         void Start()
         {
-            queen = gameObject.GetComponent<Queen>();
+            mobAnimator = gameObject.GetComponent<IMobAnimator>();
         }
 
         void Update()
@@ -17,11 +17,12 @@ namespace AntFarm
             if (Input.GetKeyDown(KeyCode.S))
             {
               Vector3 randDir= new Vector3(Random.Range(-1f, 1f),0f, Random.Range(-1f, 1f));
-                queen.Fight(transform.position+ randDir);
+                mobAnimator.IdleFight();
+               // mobAnimator.enemyPos = transform.position + randDir;
             }
             if (Input.GetKeyDown(KeyCode.D))
             {
-                queen.Idle();
+                mobAnimator.Idle();
             }
         }
     }

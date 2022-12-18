@@ -6,7 +6,7 @@ namespace AntFarm
 {
     public class Test_Health : MonoBehaviour
     {
-        private Health health;
+        public Health health;
 
         void Start()
         {
