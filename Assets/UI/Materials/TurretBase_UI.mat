@@ -43,7 +43,7 @@ Material:
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 5caa548012aeac0418cb37fb68e99385, type: 3}
         m_Scale: {x: 0.5, y: -0.5}
-        m_Offset: {x: 1.92, y: -3.07}
+        m_Offset: {x: 1.92, y: -2.42}
     - _MainTexture:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -101,7 +101,7 @@ Material:
     - _Pow: 1
     - _Pow1: 2
     - _Pow2: 0.65
-    - _Power: 3.4
+    - _Power: 1.51
     - _Power1: 1.15
     - _ScaleUV: 0.08
     - _ScaleUV1: 1
@@ -112,12 +112,12 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     - __dirty: 0
-    - _mult: 1.7
+    - _mult: 1.65
     m_Colors:
     - _BlinkFX_Color: {r: 1, g: 0, b: 0, a: 1}
     - _Color: {r: 0.1792453, g: 0.1792453, b: 0.1792453, a: 1}
     - _Color1: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _LightDir: {r: 0, g: 0.24, b: -1, a: 0}
+    - _LightDir: {r: 1.38, g: 1, b: -1, a: 0}
     - _ShadowColor: {r: 0.21568628, g: 0.03295701, b: 0, a: 1}
   m_BuildTextureStacks: []
