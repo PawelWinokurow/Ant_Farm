@@ -3,12 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - Hexagon
-  - Mob
-  - Soil_Mount_Icon
-  - Stone_Mount_Icon
-  - Spikes_Mount_Icon
+  tags: []
   layers:
   - Default
   - TransparentFX
@@ -16,7 +11,7 @@ TagManager:
   - 
   - Water
   - UI
-  - NavMesh
+  - 
   - 
   - 
   - 
