@@ -109,5 +109,12 @@ namespace FighterNamespace
             body.rotation = smoothRot;
             body.Rotate(new Vector3(-90f, 0f, 180f), Space.Self);
         }
+
+        public void CancelDigging()
+        {
+            digJob.Cancel();
+            digJob = null;
+            StopDigFX();
+        }
     }
 }

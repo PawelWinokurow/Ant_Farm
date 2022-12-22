@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using System.Linq;
 using WorkerNamespace;
+using FighterNamespace;
 
 public class SurfaceOperations : MonoBehaviour
 {
@@ -73,17 +74,22 @@ public class SurfaceOperations : MonoBehaviour
     {
         var scorpion = digJob.scorpion;
         var floorHex = digJob.hex;
-        var type = surface.GetHexTypeByIcon(floorHex);
-        var scaledBlock = (WorkHexagon)(floorHex.child);
-        scaledBlock.work -= scorpion.mobSettings.DIG_SPEED * Time.deltaTime;
-        scaledBlock.transform.localScale = 0.95f * Vector3.one * scaledBlock.work / WorkHexagon.MAX_WORK;
-        if (scaledBlock.work <= 0)
+        if (floorHex.child == null || floorHex.child.Equals(null))
         {
-            surface.AddGround(floorHex);
-            surface.pathGraph.SetAccesabillity(floorHex, gameSettings.ACCESS_MASK_FLOOR, gameSettings.EDGE_WEIGHT_NORMAL);
-            scorpion.digJob.Cancel();
-            scorpion.digJob = null;
-            scorpion.StopDigFX();
+            scorpion.CancelDigging();
+        }
+        else
+        {
+            var type = surface.GetHexTypeByIcon(floorHex);
+            var scaledBlock = (WorkHexagon)(floorHex.child);
+            scaledBlock.work -= scorpion.mobSettings.DIG_SPEED * Time.deltaTime;
+            scaledBlock.transform.localScale = 0.95f * Vector3.one * scaledBlock.work / WorkHexagon.MAX_WORK;
+            if (scaledBlock.work <= 0)
+            {
+                surface.AddGround(floorHex);
+                surface.pathGraph.SetAccesabillity(floorHex, gameSettings.ACCESS_MASK_FLOOR, gameSettings.EDGE_WEIGHT_NORMAL);
+                scorpion.CancelDigging();
+            }
         }
     }
 

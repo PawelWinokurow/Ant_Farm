@@ -284,7 +284,7 @@ public class Surface : MonoBehaviour
 
     public HexType GetHexTypeByIcon(FloorHexagon floorHexagon)
     {
-        var tag = ((WorkHexagon)floorHexagon.child).tag;
+        var tag = ((WorkHexagon)(floorHexagon.child)).tag;
         if (tag == "Soil_Mount_Icon") return HexType.SOIL;
         else if (tag == "Stone_Mount_Icon") return HexType.STONE;
         else if (tag == "Spikes_Mount_Icon") return HexType.SPIKES;
