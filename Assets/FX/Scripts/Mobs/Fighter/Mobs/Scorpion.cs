@@ -14,11 +14,10 @@ namespace FighterNamespace
             gameSettings = Settings.Instance.gameSettings;
             mobSettings = Settings.Instance.scorpionSettings;
             animator = GetComponent<MobAnimator>();
-           // animator.Attack = () => Attack();
             type = MobType.SCORPION;
             health = GetComponent<Health>();
             health.InitHp(mobSettings.HP);
-            SetState(new PatrolState(this));
+            SetInitialState();
         }
 
         public void Attack()
@@ -34,38 +33,27 @@ namespace FighterNamespace
         {
             if (path.wayPoints.Count > 1 && path.wayPoints[1].floorHexagon.type == HexType.SOIL)
             {
-                StartCoroutine(Dig(path.wayPoints[1].floorHexagon));
+                var hex = path.wayPoints[1].floorHexagon;
+                digJob = new DigJob(hex, hex.transform.position, this);
+                StartDigFX(hex);
+                SetState(new DigState(this));
             }
-            currentPathEdge = path.wayPoints[0];
-            var currentHexNew = currentPathEdge.floorHexagon;
-            path.wayPoints.RemoveAt(0);
-            currentHex = currentHexNew;
-            lerpDuration = currentPathEdge.edgeWeight * currentPathEdge.edgeMultiplier;
+            else
+            {
+                base.SetcurrentPathEdge();
+            }
         }
 
-        public IEnumerator Dig(FloorHexagon hex)
+        public void StartDigFX(FloorHexagon hex)
         {
-            movementSpeed = 0;
             if (digFX == null) digFX = Instantiate(DigFX, position, Quaternion.identity);
             digFX.transform.position = hex.position;
             digFX.StartFx(hex);
-            yield return new WaitForSeconds(5f);
-            digFX.StopFx();
-            hex.RemoveChildren();
-            hex.type = HexType.EMPTY;
-            movementSpeed = mobSettings.FOLLOWING_MOVEMENT_SPEED;
         }
 
-        public void RemoveDigFX()
+        public void StopDigFX()
         {
-            var digFxOld = currentHex.GetComponentInChildren<Dig_FX>();
-            if (digFxOld != null)
-            {
-                digFxOld.StopFx();
-                Destroy(digFxOld);
-                currentHex.RemoveChildren();
-                currentHex.type = HexType.EMPTY;
-            }
+            digFX.StopFx();
         }
 
         public override void SetRandomWalk()
@@ -99,6 +87,27 @@ namespace FighterNamespace
                 Kill();
             }
             return health.hp;
+        }
+
+        protected override void Rotation()
+        {
+            Vector3 forward = Vector3.zero;
+            if (currentState.type == STATE.ATTACK && target?.mob != null)
+            {
+                forward = target.mob.position - transform.position;
+            }
+            else if (digJob?.destination != null)
+            {
+                forward = digJob.destination - transform.position;
+            }
+            else if (currentPathEdge != null)
+            {
+                forward = currentPathEdge.to.position - transform.position;
+            }
+            Quaternion rot = Quaternion.LookRotation(angl.up, forward);
+            smoothRot = Quaternion.Slerp(smoothRot, rot, Time.deltaTime * 10f);
+            body.rotation = smoothRot;
+            body.Rotate(new Vector3(-90f, 0f, 180f), Space.Self);
         }
     }
 }

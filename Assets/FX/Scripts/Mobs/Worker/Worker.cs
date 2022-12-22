@@ -31,7 +31,7 @@ namespace WorkerNamespace
         public int movementSpeed { get; set; }
         public Transform body;
         public Transform angl;
-        private Quaternion smoothRot;
+        protected Quaternion smoothRot;
         public Store store;
 
 

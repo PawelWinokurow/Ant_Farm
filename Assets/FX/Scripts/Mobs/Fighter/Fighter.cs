@@ -30,7 +30,22 @@ public class Fighter : MonoBehaviour, Mob
     public int movementSpeed { get; set; }
     public Transform body;
     public Transform angl;
-    private Quaternion smoothRot;
+    protected Quaternion smoothRot;
+    public DigJob digJob;
+
+    protected void SetInitialState()
+    {
+        var target = SearchTarget();
+        if (target != null)
+        {
+            SetTarget(target);
+            SetState(new FollowingState(this));
+        }
+        else
+        {
+            SetState(new PatrolState(this));
+        }
+    }
 
     public void SetState(State state)
     {
@@ -132,7 +147,7 @@ public class Fighter : MonoBehaviour, Mob
         Rotation();
     }
 
-    private void Rotation()
+    protected virtual void Rotation()
     {
         Vector3 forward = Vector3.zero;
         if (currentState.type == STATE.ATTACK && target?.mob != null)

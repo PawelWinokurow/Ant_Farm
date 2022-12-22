@@ -28,7 +28,6 @@ namespace WorkerNamespace
         {
             IsDone = false;
             job = (WorkerJob)worker.job;
-            worker.surfaceOperations.Build(job);
             worker.SetIdleAnimation();
         }
 
