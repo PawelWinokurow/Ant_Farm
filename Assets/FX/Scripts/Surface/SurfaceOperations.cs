@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using System.Linq;
 using WorkerNamespace;
+using FighterNamespace;
 
 public class SurfaceOperations : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class SurfaceOperations : MonoBehaviour
         workerSettings = Settings.Instance.workerSettings;
         gameSettings = Settings.Instance.gameSettings;
     }
+
     public void Loading(CollectingHexagon collectingHex, LoadingState state, CarrierJob job)
     {
         var worker = state.worker;
@@ -42,6 +44,7 @@ public class SurfaceOperations : MonoBehaviour
             }
         }
     }
+
     public void Unloading(BaseHexagon storageHex, UnloadingState state, CarrierJob job)
     {
         var worker = state.worker;
@@ -67,6 +70,29 @@ public class SurfaceOperations : MonoBehaviour
         }
     }
 
+    public void Dig(DigJob digJob)
+    {
+        var scorpion = digJob.scorpion;
+        var floorHex = digJob.hex;
+        if (floorHex.child == null || floorHex.child.Equals(null))
+        {
+            scorpion.CancelDigging();
+        }
+        else
+        {
+            var type = surface.GetHexTypeByIcon(floorHex);
+            var scaledBlock = (WorkHexagon)(floorHex.child);
+            scaledBlock.work -= scorpion.mobSettings.DIG_SPEED * Time.deltaTime;
+            scaledBlock.transform.localScale = 0.95f * Vector3.one * scaledBlock.work / WorkHexagon.MAX_WORK;
+            if (scaledBlock.work <= 0)
+            {
+                surface.AddGround(floorHex);
+                surface.pathGraph.SetAccesabillity(floorHex, gameSettings.ACCESS_MASK_FLOOR, gameSettings.EDGE_WEIGHT_NORMAL);
+                scorpion.CancelDigging();
+            }
+        }
+    }
+
     public void Demount(WorkerJob workerJob)
     {
         var worker = workerJob.worker;
@@ -80,7 +106,7 @@ public class SurfaceOperations : MonoBehaviour
         {
             surface.AddGround(floorHex);
             surface.pathGraph.SetAccesabillity(floorHex, gameSettings.ACCESS_MASK_FLOOR, gameSettings.EDGE_WEIGHT_NORMAL);
-            worker.job.Cancel();
+            workerJob.Cancel();
             oldHexagons.Remove(floorHex.id);
         }
     }
@@ -100,12 +126,10 @@ public class SurfaceOperations : MonoBehaviour
             floorHex.RemoveChildren();
             surface.AddBlock(floorHex, type);
             surface.pathGraph.SetAccesabillity(floorHex, surface.GetAccessMaskByHexType(type), surface.GetEdgeWeightByHexType(type));
-            worker.job.Cancel();
+            workerJob.Cancel();
             oldHexagons.Remove(floorHex.id);
         }
     }
-
-
 
     public bool IsInOldHexagons(FloorHexagon hex)
     {

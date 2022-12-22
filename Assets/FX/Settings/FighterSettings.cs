@@ -9,4 +9,5 @@ public class FighterSettings : ScriptableObject
     public int PATROL_ACCESS_MASK;
     public int FOLLOWING_MOVEMENT_SPEED;
     public int FOLLOWING_ACCESS_MASK;
+    public float DIG_SPEED = 5f;
 }

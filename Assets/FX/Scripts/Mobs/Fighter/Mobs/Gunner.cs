@@ -14,7 +14,7 @@ namespace FighterNamespace
             type = MobType.GUNNER;
             health = GetComponent<Health>();
             health.InitHp(mobSettings.HP);
-            SetState(new PatrolState(this));
+            SetInitialState();
         }
 
         public override bool IsTargetInSight()

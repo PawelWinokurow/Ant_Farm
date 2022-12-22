@@ -24,23 +24,23 @@ public class MobFactory : MonoBehaviour
     }
     public void AddWorker(FloorHexagon hex)
     {
-        StartCoroutine(SpawnWorker($"worker_{id}", hex));
+        StartCoroutine(SpawnWorker($"worker_{id++}", hex));
     }
     public void AddScorpion(FloorHexagon hex)
     {
-        StartCoroutine(SpawnScorpion($"scorpion_{id}", hex));
+        StartCoroutine(SpawnScorpion($"scorpion_{id++}", hex));
     }
     public void AddGobber(FloorHexagon hex)
     {
-        StartCoroutine(SpawnGobber($"gobber{id}", hex));
+        StartCoroutine(SpawnGobber($"gobber_{id++}", hex));
     }
     public void AddGunner(FloorHexagon hex)
     {
-        StartCoroutine(SpawnGunner($"gunner{id}", hex));
+        StartCoroutine(SpawnGunner($"gunner_{id++}", hex));
     }
     public void AddSoldier(FloorHexagon hex)
     {
-        StartCoroutine(SpawnSoldier($"soldier_{id}", hex));
+        StartCoroutine(SpawnSoldier($"soldier_{id++}", hex));
     }
 
     IEnumerator SpawnScorpion(string id, FloorHexagon hex)
