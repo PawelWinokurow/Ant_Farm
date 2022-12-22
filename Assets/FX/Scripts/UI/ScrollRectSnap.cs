@@ -9,6 +9,7 @@ public enum SliderValue
 }
 public class ScrollRectSnap : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
+    private List<ScrollRectSnapItem> elementsItem = new List<ScrollRectSnapItem>();
     public List<RectTransform> elements = new List<RectTransform>();
     private bool onSlider;
     private bool isDrag;
@@ -17,7 +18,7 @@ public class ScrollRectSnap : MonoBehaviour, IDragHandler, IBeginDragHandler, IE
     private float touchStartX;
     private float aR;
     public int n = 0;
-    public SliderValue choosenValue { get => (SliderValue)n; }
+    public SliderValue choosenValue { get => elementsItem[n].sliderValue; }
     private float dist;
     public RectTransform selectedField;
     private void Start()
@@ -31,6 +32,8 @@ public class ScrollRectSnap : MonoBehaviour, IDragHandler, IBeginDragHandler, IE
             float x = (Mathf.Round((a + i * dist) / dist)) * dist;
             x = x % (elements.Count * dist);
             elements[i].anchoredPosition = new Vector2(x, elements[i].anchoredPosition.y);
+
+            elementsItem.Add(elements[i].GetComponent<ScrollRectSnapItem>());
         }
     }
 
