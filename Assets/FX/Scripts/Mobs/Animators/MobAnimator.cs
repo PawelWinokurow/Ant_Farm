@@ -55,24 +55,24 @@ public class MobAnimator : MonoBehaviour, IMobAnimator
         mf.mesh = current.sequence[fMod];
 
 
-            if (fMod > 14 && !isHitMade)
+        if (fMod > 14 && !isHitMade)
+        {
+            isHitMade = true;
+            if (current == idleFight)
             {
-                isHitMade = true;
-                if (current == idleFight)
-                {
-                    m_Shoot.Invoke();
-                }
+                m_Shoot.Invoke();
             }
+        }
 
-            if (fModOld < 14 && isHitMade)
-            {
-                isHitMade = false;
-            }
+        if (fModOld < 14 && isHitMade)
+        {
+            isHitMade = false;
+        }
 
-         fModOld = fMod;
+        fModOld = fMod;
 
     }
 
-    }
+}
 
 

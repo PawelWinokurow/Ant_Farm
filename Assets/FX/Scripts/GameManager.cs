@@ -70,7 +70,8 @@ public class GameManager : MonoBehaviour
                 || slider.choosenValue == SliderValue.GUNNER
                 || slider.choosenValue == SliderValue.SCORPION
                 || slider.choosenValue == SliderValue.SOLDIER
-                || slider.choosenValue == SliderValue.ZOMBIE)
+                || slider.choosenValue == SliderValue.ZOMBIE
+                || slider.choosenValue == SliderValue.BLOB)
                 {
                     mobFactory.AddMobByType(slider.choosenValue, hex);
                 }

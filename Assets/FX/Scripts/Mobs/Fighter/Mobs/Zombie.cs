@@ -9,7 +9,7 @@ namespace FighterNamespace
         void Start()
         {
             gameSettings = Settings.Instance.gameSettings;
-            mobSettings = Settings.Instance.soldierSettings;
+            mobSettings = Settings.Instance.zombieSettings;
             animator = GetComponent<MobAnimator>();
             type = MobType.ZOMBIE;
             health = GetComponent<Health>();

@@ -188,6 +188,8 @@ MonoBehaviour:
   gunnerSettings: {fileID: 11400000, guid: d28cc6543090c7d4f91cc3994a8151f0, type: 2}
   scorpionSettings: {fileID: 11400000, guid: 86aa08d44249ede4b991b571cac631aa, type: 2}
   gobberSettings: {fileID: 11400000, guid: 164d77fc56ba2d0409b66c5398f60915, type: 2}
+  zombieSettings: {fileID: 11400000, guid: 251ac7c78c1013242b4cd24db9158213, type: 2}
+  blobSettings: {fileID: 11400000, guid: 080bf5e7567c6b14aa305b4648013511, type: 2}
 --- !u!1 &262357869
 GameObject:
   m_ObjectHideFlags: 0
@@ -550,7 +552,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60a9fb91b6f80354888b2f2d335b72e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wallProbability: 80
+  wallProbability: 1
   foodProbability: 1
 --- !u!4 &1176967604
 Transform:
@@ -803,6 +805,7 @@ MonoBehaviour:
   gobberPrefab: {fileID: 822783226273399532, guid: 4e5823a52d7024b95a649f8d8f0267e5, type: 3}
   gunnerPrefab: {fileID: 6826684635683908350, guid: bcf9c3d895ca58b4291a4b3b308974df, type: 3}
   soldierPrefab: {fileID: 6674348483651007441, guid: 3a0f38204bd838b42a8cdc55556aa0c3, type: 3}
+  blobPrefab: {fileID: 8341925598511469700, guid: 9edd0512399568847b892b39fdc1507d, type: 3}
   store: {fileID: 1633955861}
   popUp_prefad: {fileID: 668541531679047375, guid: 8868b609e6e2e446ebda1e61c70b03b8, type: 3}
 --- !u!4 &2118494095978837243

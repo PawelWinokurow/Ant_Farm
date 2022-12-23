@@ -17,6 +17,7 @@ public class MobFactory : MonoBehaviour
     public Gobber gobberPrefab;
     public Gunner gunnerPrefab;
     public Soldier soldierPrefab;
+    public Blob blobPrefab;
     public Store store;
     public PopUp popUp_prefad;
 
@@ -33,6 +34,7 @@ public class MobFactory : MonoBehaviour
         else if (type == SliderValue.SCORPION) action = SpawnScorpion;
         else if (type == SliderValue.SOLDIER) action = SpawnSoldier;
         else if (type == SliderValue.ZOMBIE) action = SpawnZombie;
+        else if (type == SliderValue.BLOB) action = SpawnBlob;
         StartCoroutine(action($"{type}_{id++}", hex));
     }
 
@@ -72,6 +74,25 @@ public class MobFactory : MonoBehaviour
         zombie.MutateMob = AddMobByType;
         store.AddEnemy(zombie);
         Buy(zombie, 10);
+        yield return null;
+    }
+
+    IEnumerator SpawnBlob(string id, FloorHexagon hex)
+    {
+        var spawnPosition = hex.position;
+        Blob blob = Instantiate(blobPrefab, spawnPosition, Quaternion.identity);
+        blob.id = id;
+        blob.pathfinder = pathfinder;
+        blob.store = store;
+        blob.surfaceOperations = surfaceOperations;
+        blob.Kill = () =>
+        {
+            store.DeleteEnemy(blob);
+            blob.SetState(new FighterNamespace.DeadState(blob));
+            blob.CancelJob();
+        };
+        store.AddEnemy(blob);
+        Buy(blob, 10);
         yield return null;
     }
 
