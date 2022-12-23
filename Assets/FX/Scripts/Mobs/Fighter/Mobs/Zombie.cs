@@ -1,17 +1,17 @@
 using System;
 using System.Linq;
-using UnityEngine;
 
 namespace FighterNamespace
 {
-    public class Soldier : Fighter
+    public class Zombie : Fighter
     {
+        public Action<SliderValue, FloorHexagon> MutateMob;
         void Start()
         {
             gameSettings = Settings.Instance.gameSettings;
             mobSettings = Settings.Instance.soldierSettings;
             animator = GetComponent<MobAnimator>();
-            type = MobType.SOLDIER;
+            type = MobType.ZOMBIE;
             health = GetComponent<Health>();
             health.InitHp(mobSettings.HP);
             SetInitialState();
@@ -19,7 +19,14 @@ namespace FighterNamespace
 
         public void Attack()
         {
-            if (target.mob.Hit(mobSettings.ATTACK_STRENGTH) <= 0)
+            if (UnityEngine.Random.Range(0, 100f) < 5)
+            {
+                target.mob.Hit(Int32.MaxValue);
+                MutateMob(SliderValue.ZOMBIE, target.mob.currentHex);
+                CancelJob();
+                SetState(new PatrolState(this));
+            }
+            else if (target.mob.Hit(mobSettings.ATTACK_STRENGTH) <= 0)
             {
                 CancelJob();
                 SetState(new PatrolState(this));
@@ -28,7 +35,7 @@ namespace FighterNamespace
 
         public override Target SearchTarget()
         {
-            return SearchTarget(store.allEnemies, mobSettings.FOLLOWING_ACCESS_MASK);
+            return SearchTarget(store.allAllies, mobSettings.FOLLOWING_ACCESS_MASK);
         }
 
         public override bool IsTargetInSight()

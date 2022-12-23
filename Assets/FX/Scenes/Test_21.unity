@@ -799,6 +799,7 @@ MonoBehaviour:
   surfaceOperations: {fileID: 1531417191}
   workerPrefab: {fileID: -7619036694779697723, guid: d76627fe718a559439689ca54c475515, type: 3}
   scorpionPrefab: {fileID: 376137783415288789, guid: 6ea998787382aa64db8b8af70a6fb869, type: 3}
+  zombiePrefab: {fileID: 1697374103793227601, guid: c3eda04a6f6557746b73ac2569f639f8, type: 3}
   gobberPrefab: {fileID: 822783226273399532, guid: 4e5823a52d7024b95a649f8d8f0267e5, type: 3}
   gunnerPrefab: {fileID: 6826684635683908350, guid: bcf9c3d895ca58b4291a4b3b308974df, type: 3}
   soldierPrefab: {fileID: 6674348483651007441, guid: 3a0f38204bd838b42a8cdc55556aa0c3, type: 3}
@@ -914,6 +915,10 @@ PrefabInstance:
       propertyPath: GameManager
       value: 
       objectReference: {fileID: 1041044677}
+    - target: {fileID: 60737135276989, guid: 465f21d7f82950741b51465480634072, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.015594482
+      objectReference: {fileID: 0}
     - target: {fileID: 7101241707985254853, guid: 465f21d7f82950741b51465480634072, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -961,6 +966,10 @@ PrefabInstance:
     - target: {fileID: 7101241707985254856, guid: 465f21d7f82950741b51465480634072, type: 3}
       propertyPath: m_Name
       value: UI
+      objectReference: {fileID: 0}
+    - target: {fileID: 7101241709256306329, guid: 465f21d7f82950741b51465480634072, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -40.80005
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 465f21d7f82950741b51465480634072, type: 3}

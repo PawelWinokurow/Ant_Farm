@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using FighterNamespace;
 using UnityEngine;
@@ -12,6 +13,7 @@ public class MobFactory : MonoBehaviour
     public SurfaceOperations surfaceOperations;
     public Worker workerPrefab;
     public Scorpion scorpionPrefab;
+    public Zombie zombiePrefab;
     public Gobber gobberPrefab;
     public Gunner gunnerPrefab;
     public Soldier soldierPrefab;
@@ -22,25 +24,16 @@ public class MobFactory : MonoBehaviour
     {
         pathfinder = workerJobScheduler.pathfinder;
     }
-    public void AddWorker(FloorHexagon hex)
+    public void AddMobByType(SliderValue type, FloorHexagon hex)
     {
-        StartCoroutine(SpawnWorker($"worker_{id++}", hex));
-    }
-    public void AddScorpion(FloorHexagon hex)
-    {
-        StartCoroutine(SpawnScorpion($"scorpion_{id++}", hex));
-    }
-    public void AddGobber(FloorHexagon hex)
-    {
-        StartCoroutine(SpawnGobber($"gobber_{id++}", hex));
-    }
-    public void AddGunner(FloorHexagon hex)
-    {
-        StartCoroutine(SpawnGunner($"gunner_{id++}", hex));
-    }
-    public void AddSoldier(FloorHexagon hex)
-    {
-        StartCoroutine(SpawnSoldier($"soldier_{id++}", hex));
+        Func<string, FloorHexagon, IEnumerator> action = null;
+        if (type == SliderValue.WORKER) action = SpawnWorker;
+        else if (type == SliderValue.GOBBER) action = SpawnGobber;
+        else if (type == SliderValue.GUNNER) action = SpawnGunner;
+        else if (type == SliderValue.SCORPION) action = SpawnScorpion;
+        else if (type == SliderValue.SOLDIER) action = SpawnSoldier;
+        else if (type == SliderValue.ZOMBIE) action = SpawnZombie;
+        StartCoroutine(action($"{type}_{id++}", hex));
     }
 
     IEnumerator SpawnScorpion(string id, FloorHexagon hex)
@@ -61,6 +54,27 @@ public class MobFactory : MonoBehaviour
         Buy(scorpion, 10);
         yield return null;
     }
+
+    IEnumerator SpawnZombie(string id, FloorHexagon hex)
+    {
+        var spawnPosition = hex.position;
+        Zombie zombie = Instantiate(zombiePrefab, spawnPosition, Quaternion.identity);
+        zombie.id = id;
+        zombie.pathfinder = pathfinder;
+        zombie.store = store;
+        zombie.surfaceOperations = surfaceOperations;
+        zombie.Kill = () =>
+        {
+            store.DeleteEnemy(zombie);
+            zombie.SetState(new FighterNamespace.DeadState(zombie));
+            zombie.CancelJob();
+        };
+        zombie.MutateMob = AddMobByType;
+        store.AddEnemy(zombie);
+        Buy(zombie, 10);
+        yield return null;
+    }
+
     IEnumerator SpawnGobber(string id, FloorHexagon hex)
     {
         var spawnPosition = hex.position;
