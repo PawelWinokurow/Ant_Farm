@@ -1,9 +1,7 @@
 using System.Collections.Generic;
-using System.Collections;
 using UnityEngine;
 using System.Linq;
 using WorkerNamespace;
-using FighterNamespace;
 
 public class SurfaceOperations : MonoBehaviour
 {
@@ -119,12 +117,9 @@ public class SurfaceOperations : MonoBehaviour
         var icon = ((WorkHexagon)floorHex.child).GetComponent<MountIcon>();
         var scaledBlock = icon.scaledIconPrefab;
 
-        if (scaledBlock.work > 0)
-        {
-            scaledBlock.work -= worker.workerSettings.CONSTRUCTION_SPEED * Time.deltaTime;
-            scaledBlock.transform.localScale = Vector3.one * (0.3f + 0.7f * (1 - scaledBlock.work / WorkHexagon.MAX_WORK));
-        }
-        else
+        scaledBlock.work -= worker.workerSettings.CONSTRUCTION_SPEED * Time.deltaTime;
+        scaledBlock.transform.localScale = Vector3.one * (0.3f + 0.7f * (1 - scaledBlock.work / WorkHexagon.MAX_WORK));
+        if (scaledBlock.work <= 0)
         {
             floorHex.RemoveChildren();
             surface.AddBlock(floorHex, type);

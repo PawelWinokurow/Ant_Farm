@@ -3,7 +3,6 @@ using System.Collections;
 using FighterNamespace;
 using UnityEngine;
 using WorkerNamespace;
-using FighterNamespace;
 
 public class MobFactory : MonoBehaviour
 {

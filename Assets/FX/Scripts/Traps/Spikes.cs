@@ -1,4 +1,5 @@
 using System.Linq;
+using UnityEngine;
 
 namespace TrapNamespace
 {
@@ -14,6 +15,7 @@ namespace TrapNamespace
             type = TrapType.SPIKES;
             health = GetComponent<Health>();
             currentHex = GetComponent<WorkHexagon>().floorHexagon;
+            store = currentHex.store;
             health.InitHp(trapSettings.HP);
             Kill = () =>
             {

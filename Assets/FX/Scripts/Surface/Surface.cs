@@ -30,6 +30,7 @@ public class Surface : MonoBehaviour
     public FloorHexagon[] hexagons;
 
     public Graph pathGraph;
+    public Store store;
 
     public Dictionary<string, Hexagon> oldhexagons = new Dictionary<string, Hexagon>();
     public Vector3 center;
@@ -88,6 +89,7 @@ public class Surface : MonoBehaviour
             {
                 Vector3 hexPosition = new Vector3(w * (x + (z % 2f) / 2f), 0f, z * h);
                 FloorHexagon hex = FloorHexagon.CreateHexagon($"{x}_{z}", hexPrefab, hexPosition, transform, HexType.EMPTY, 50f);
+                hex.store = store;
                 pathGraph.AddHexagonSubGraph(hex, Hexagon.radius, $"{x}_{z}");
                 hexagons[z * width + x] = hex;
             }
