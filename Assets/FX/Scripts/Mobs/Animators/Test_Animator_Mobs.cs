@@ -2,28 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace AntFarm
+public class Test_Animator_Mobs : MonoBehaviour
 {
-    public class Test_Animator_Mobs : MonoBehaviour
+    private void Update()
     {
-        private void Update()
+        if (Input.GetKeyDown(KeyCode.A))
         {
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                GetComponent<IMobAnimator>().IdleFight();
-            }
+            GetComponent<IMobAnimator>().IdleFight();
+        }
 
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-                GetComponent<IMobAnimator>().Run();
-            }
-            if (Input.GetKeyDown(KeyCode.D))
-            {
-                GetComponent<IMobAnimator>().Idle();
-            }
-
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            GetComponent<IMobAnimator>().Run();
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            GetComponent<IMobAnimator>().Idle();
         }
 
     }
+
 }
+
 

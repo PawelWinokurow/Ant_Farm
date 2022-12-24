@@ -65,27 +65,15 @@ public class GameManager : MonoBehaviour
         {
             if (hex.type == HexType.EMPTY)
             {
-                if (slider.choosenValue == SliderValue.WORKER)
+                if (slider.choosenValue == SliderValue.WORKER
+                || slider.choosenValue == SliderValue.GOBBER
+                || slider.choosenValue == SliderValue.GUNNER
+                || slider.choosenValue == SliderValue.SCORPION
+                || slider.choosenValue == SliderValue.SOLDIER
+                || slider.choosenValue == SliderValue.ZOMBIE
+                || slider.choosenValue == SliderValue.BLOB)
                 {
-                    mobFactory.AddWorker(hex);
-                }
-                else if (slider.choosenValue == SliderValue.SOLDIER)
-                {
-                    mobFactory.AddSoldier(hex);
-                }
-                else if (slider.choosenValue == SliderValue.GUNNER)
-                {
-                    mobFactory.AddGunner(hex);
-                }
-                else if (slider.choosenValue == SliderValue.SCORPION)
-                {
-                    //Test only
-                    mobFactory.AddScorpion(hex);
-                }
-                else if (slider.choosenValue == SliderValue.GOBBER)
-                {
-                    //Test only
-                    mobFactory.AddGobber(hex);
+                    mobFactory.AddMobByType(slider.choosenValue, hex);
                 }
                 else if (slider.choosenValue == SliderValue.SOIL
                 || slider.choosenValue == SliderValue.STONE

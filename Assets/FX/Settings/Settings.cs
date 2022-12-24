@@ -10,6 +10,8 @@ public class Settings : MonoBehaviour
     public FighterSettings gunnerSettings;
     public FighterSettings scorpionSettings;
     public FighterSettings gobberSettings;
+    public FighterSettings zombieSettings;
+    public FighterSettings blobSettings;
     private void Awake()
     {
         if (Instance != null && Instance != this)

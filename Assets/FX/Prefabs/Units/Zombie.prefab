@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4095038265270613791}
   - component: {fileID: 4095038265270613788}
-  - component: {fileID: 6674348483651007441}
   - component: {fileID: 4019906864090253520}
   - component: {fileID: 6130434672100705975}
+  - component: {fileID: 1697374103793227601}
   - component: {fileID: 1142669101}
   - component: {fileID: 1142669102}
   m_Layer: 0
@@ -46,28 +46,11 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4095038265270613763}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 667edc4b203116842a9788a810af9204, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6674348483651007441
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4095038265270613763}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9a7677e416d19645b161536b20d09c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  store: {fileID: 0}
-  gameSettings: {fileID: 0}
-  mobSettings: {fileID: 0}
-  body: {fileID: 1776496133414637284}
-  angl: {fileID: 5456979313225486478}
 --- !u!114 &4019906864090253520
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,8 +96,8 @@ MonoBehaviour:
   m_Shoot:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6674348483651007441}
-        m_TargetAssemblyTypeName: SoldierNamespace.Soldier, Assembly-CSharp
+      - m_Target: {fileID: 1697374103793227601}
+        m_TargetAssemblyTypeName: FighterNamespace.Zombie, Assembly-CSharp
         m_MethodName: Attack
         m_Mode: 1
         m_Arguments:
@@ -125,7 +108,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1142669101
+--- !u!114 &1697374103793227601
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -133,6 +116,23 @@ MonoBehaviour:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4095038265270613763}
   m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 262dfdaa745c44948b0141ae9a216567, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  store: {fileID: 0}
+  gameSettings: {fileID: 0}
+  mobSettings: {fileID: 0}
+  body: {fileID: 1776496133414637284}
+  angl: {fileID: 5456979313225486478}
+--- !u!114 &1142669101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4095038265270613763}
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 57d5f9c5c4702af42a89b368c316ccd3, type: 3}
   m_Name: 
@@ -144,7 +144,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4095038265270613763}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0e834a3630e5b4564a2c778aeba7d3bb, type: 3}
   m_Name: 
