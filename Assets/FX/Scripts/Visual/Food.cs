@@ -16,7 +16,9 @@ public class Food : MonoBehaviour
 
     void Update()
     {
-        shadow.localScale= angl.localScale = Vector3.one * ExtensionMethods.RemapClamp(1f - cost / costMax, 0f, 1f, 1f, 0.4f);
+        Vector3 scl = Vector3.one * ExtensionMethods.RemapClamp(1f - cost / costMax, 0f, 1f, 1f, 0.4f);
+        shadow.localScale = scl * 6f;
+        angl.localScale = scl;
         angl.localPosition = new Vector3(angl.localPosition.x, ExtensionMethods.RemapClamp(1f - cost / costMax, 0f, 1f, 0f, -0.5f), angl.localPosition.z);
         foodBody.gameObject.SetActive(cost > 0);
 

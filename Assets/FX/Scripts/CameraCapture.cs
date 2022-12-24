@@ -35,7 +35,7 @@ public class CameraCapture : MonoBehaviour
         byte[] bytes = tex.EncodeToPNG();
         string path = "Assets/screenshot.png";
         System.IO.File.WriteAllBytes(path, bytes);
-        UnityEditor.AssetDatabase.ImportAsset(path);
+       // UnityEditor.AssetDatabase.ImportAsset(path);
     }
 }
 

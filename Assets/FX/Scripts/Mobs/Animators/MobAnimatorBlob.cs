@@ -75,8 +75,8 @@ public class MobAnimatorBlob : MonoBehaviour, IMobAnimator
 
         if (state == StateType.Run)
         {
-            t += Time.deltaTime * 5f;
-            a = ExtensionMethods.Remap(Mathf.Sin(t - Mathf.PI / 2f), -1f, 1f, 0f, 1f);
+            t += Time.deltaTime * 20f;
+            a = ExtensionMethods.Remap(Mathf.Sin(t - Mathf.PI / 2f), -1f, 1f, 0f, 0.5f);
             props.SetFloat("_Forward", a);
             mr.SetPropertyBlock(props);
         }
