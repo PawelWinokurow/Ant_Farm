@@ -115,20 +115,21 @@ public class SurfaceOperations : MonoBehaviour
     {
         var worker = workerJob.worker;
         var floorHex = workerJob.hex;
-        Debug.Log(floorHex);
         var type = surface.GetHexTypeByIcon(floorHex);
         var icon = ((WorkHexagon)floorHex.child).GetComponent<MountIcon>();
         var scaledBlock = icon.scaledIconPrefab;
 
-        scaledBlock.work -= worker.workerSettings.CONSTRUCTION_SPEED * Time.deltaTime;
-        scaledBlock.transform.localScale = Vector3.one * (0.3f + 0.7f * (1 - scaledBlock.work / WorkHexagon.MAX_WORK));
-        if (scaledBlock.work <= 0)
+        if (scaledBlock.work > 0)
+        {
+            scaledBlock.work -= worker.workerSettings.CONSTRUCTION_SPEED * Time.deltaTime;
+            scaledBlock.transform.localScale = Vector3.one * (0.3f + 0.7f * (1 - scaledBlock.work / WorkHexagon.MAX_WORK));
+        }
+        else
         {
             floorHex.RemoveChildren();
             surface.AddBlock(floorHex, type);
             surface.pathGraph.SetAccesabillity(floorHex, surface.GetAccessMaskByHexType(type), surface.GetEdgeWeightByHexType(type));
             workerJob.Cancel();
-            Debug.Log("Cancel");
             oldHexagons.Remove(floorHex.id);
         }
     }
