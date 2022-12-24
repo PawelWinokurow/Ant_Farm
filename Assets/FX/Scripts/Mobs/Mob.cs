@@ -1,5 +1,7 @@
 using UnityEngine;
 using System;
+using MobNamespace;
+
 
 public enum MobType
 {
@@ -27,3 +29,4 @@ public interface Mob
     public void SetRunAnimation();
     public void SetIdleAnimation();
 }
+

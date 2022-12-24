@@ -4,6 +4,7 @@ using System.Linq;
 using DataStructures.ViliWonka.KDTree;
 using UnityEngine;
 using FighterNamespace;
+using MobNamespace;
 
 public class Fighter : MonoBehaviour, Mob
 {

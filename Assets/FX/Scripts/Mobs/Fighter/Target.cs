@@ -1,4 +1,5 @@
 using System;
+using MobNamespace;
 
 namespace FighterNamespace
 {

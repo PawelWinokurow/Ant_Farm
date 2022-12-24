@@ -1,4 +1,5 @@
-using UnityEngine;
+using MobNamespace;
+
 namespace WorkerNamespace
 {
 

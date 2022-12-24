@@ -1,13 +1,13 @@
-namespace MobNamespace
+namespace TrapNamespace
 {
     public enum STATE
     {
-        IDLE, GOTO, BUILD, CARRYING, LOADING, UNLOADING, FOLLOWING, ATTACK, DEAD, PATROL, DIG
+        IDLE, ATTACK, DEAD
     }
 
     public abstract class State
     {
-        protected Mob mob;
+        protected Trap trap;
 
         public STATE type { get; set; }
         public abstract void Tick();
@@ -16,9 +16,9 @@ namespace MobNamespace
         public virtual void OnStateEnter() { }
         public virtual void OnStateExit() { }
 
-        public State(Mob mob)
+        public State(Trap trap)
         {
-            this.mob = mob;
+            this.trap = trap;
         }
     }
 }
