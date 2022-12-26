@@ -148,7 +148,7 @@ Shader "Custom/Blob_Tentackles"
 }
 /*ASEBEGIN
 Version=18500
-351;83;944.5;867.5;4111.627;2957.262;4.449997;True;False
+326;97.33334;1022;733.6667;4230.665;2659.483;4.449997;True;False
 Node;AmplifyShaderEditor.Vector3Node;14;-3407.91,-847.2419;Inherit;False;Property;_V;V;1;0;Create;True;0;0;False;0;False;0,0,1;0,0,1;0;4;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3
 Node;AmplifyShaderEditor.Vector3Node;15;-3196.969,-1351.928;Inherit;False;Property;_U;U;0;0;Create;True;0;0;False;0;False;-1,0,0;-1,0,0;0;4;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3
 Node;AmplifyShaderEditor.VertexColorNode;18;-3610.677,-1159.528;Inherit;False;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
@@ -214,4 +214,4 @@ WireConnection;40;1;37;0
 WireConnection;40;2;99;0
 WireConnection;9;0;40;0
 ASEEND*/
-//CHKSM=9CF41DB80A67E4A005ED7CDE1C6FA0A42661EC86
+//CHKSM=589D296C9ECE90411C49950F9BBC505D08CA67CF

@@ -20,6 +20,9 @@ public class CameraCapture : MonoBehaviour
 
     public void Capture()
     {
+#if (UNITY_EDITOR)
+
+
         RenderTexture rt = new RenderTexture(Screen.width, Screen.height, 1000000, RenderTextureFormat.ARGB32, RenderTextureReadWrite.sRGB);
         RenderTexture oldRT = camera.targetTexture;
         camera.targetTexture = rt;
@@ -36,6 +39,7 @@ public class CameraCapture : MonoBehaviour
         string path = "Assets/screenshot.png";
         System.IO.File.WriteAllBytes(path, bytes);
         UnityEditor.AssetDatabase.ImportAsset(path);
+#endif
     }
 }
 

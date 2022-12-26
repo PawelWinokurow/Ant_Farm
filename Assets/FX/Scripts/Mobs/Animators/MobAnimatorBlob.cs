@@ -18,10 +18,11 @@ public class MobAnimatorBlob : MonoBehaviour, IMobAnimator
     public MeshRenderer mr;
     private float t;
     private float a;
-
+    private Health health;
     private void Start()
     {
-        props = new MaterialPropertyBlock();
+        health = GetComponent<Health>();
+        props = health.bodyProps;
         Run();
     }
 
@@ -75,7 +76,7 @@ public class MobAnimatorBlob : MonoBehaviour, IMobAnimator
 
         if (state == StateType.Run)
         {
-            t += Time.deltaTime * 5f;
+            t += Time.deltaTime * 20f;
             a = ExtensionMethods.Remap(Mathf.Sin(t - Mathf.PI / 2f), -1f, 1f, 0f, 1f);
             props.SetFloat("_Forward", a);
             mr.SetPropertyBlock(props);

@@ -74,7 +74,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _Tex:
         m_Texture: {fileID: 2800000, guid: 27e08f06f539657468481e691046c2ce, type: 3}
-        m_Scale: {x: 0.1, y: 0.1}
+        m_Scale: {x: 0.05, y: 0.05}
         m_Offset: {x: 0, y: 0}
     - _Texture0:
         m_Texture: {fileID: 2800000, guid: 27e08f06f539657468481e691046c2ce, type: 3}
@@ -108,7 +108,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _Forward: 0.138
+    - _Forward: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -127,7 +127,7 @@ Material:
     - _ZWrite: 1
     - __dirty: 0
     m_Colors:
-    - _BlinkFX_Color: {r: 1, g: 0, b: 0, a: 0.53333336}
+    - _BlinkFX_Color: {r: 1, g: 0, b: 0, a: 1}
     - _BlinkFX_Color1: {r: 1, g: 0, b: 0, a: 1}
     - _Color: {r: 0.3857143, g: 1, b: 0, a: 1}
     - _Color1: {r: 0.14643769, g: 0.3773585, b: 0, a: 1}
