@@ -393,6 +393,7 @@ MonoBehaviour:
   hitFX_prefab: {fileID: 0}
   progressbar: {fileID: 1711813854394893241}
   MAX_HP: 100
+  restoreHp: 0
   hp: 100
   healTime: 10
   particlesColor: {r: 0.32941177, g: 0.32156864, b: 0.32156864, a: 1}

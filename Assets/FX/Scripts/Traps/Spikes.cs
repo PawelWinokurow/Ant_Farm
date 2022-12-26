@@ -11,7 +11,6 @@ namespace TrapNamespace
             animator = GetComponent<MobAnimatorSpikes>();
             gameSettings = Settings.Instance.gameSettings;
             trapSettings = Settings.Instance.spikesSettings;
-            animator = GetComponent<MobAnimator>();
             type = TrapType.SPIKES;
             health = GetComponent<Health>();
             currentHex = GetComponent<WorkHexagon>().floorHexagon;
