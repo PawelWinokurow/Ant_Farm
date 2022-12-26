@@ -68,7 +68,7 @@ Material:
     m_Floats:
     - _Add_U: 1.47
     - _Add_V: 0
-    - _Angl: 1.8
+    - _Angl: 1.62
     - _BlendDetails: 0.5
     - _BlendTexture: 0
     - _Blink_FX: 0
