@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a9a37a74ee8dc45138116b2246449bb7
+guid: c8bc143139dd2e74abef7b814f9663bb
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,12 +48,12 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
-  spriteBorder: {x: 125, y: 126, z: 126, w: 126}
+  spriteBorder: {x: 125, y: 125, z: 125, w: 125}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
-  textureType: 0
+  textureType: 8
   textureShape: 1
   singleChannelComponent: 0
   flipbookRows: 1
@@ -131,8 +131,8 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 8cab7a53cba01044797067d30b76a870
-    internalID: -1312410937
+    spriteID: 855fcdb2289e3c64fa3f9c050b27c16f
+    internalID: 878952009
     vertices: []
     indices: 
     edges: []
