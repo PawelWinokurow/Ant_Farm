@@ -1,9 +1,7 @@
 using System.Collections.Generic;
-using System.Collections;
 using UnityEngine;
 using System.Linq;
 using WorkerNamespace;
-using FighterNamespace;
 
 public class SurfaceOperations : MonoBehaviour
 {

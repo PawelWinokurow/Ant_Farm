@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using UnityEngine;
+using MobNamespace;
 
 namespace FighterNamespace
 {

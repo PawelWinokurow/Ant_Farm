@@ -1,3 +1,5 @@
+using MobNamespace;
+
 namespace FighterNamespace
 {
     public class DeadState : State

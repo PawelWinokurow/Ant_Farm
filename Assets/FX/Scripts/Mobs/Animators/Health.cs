@@ -11,6 +11,7 @@ public class Health : MonoBehaviour
     public MeshRenderer progressbar;
 
     public float MAX_HP;
+    public bool restoreHp = true;
     public float hp;
     public float healTime;
     private float hitTime = 1000f;
@@ -38,7 +39,7 @@ public class Health : MonoBehaviour
         hitTime += Time.deltaTime / 0.2f;
         if (hitTime < 1f)//������� ��� �����
         {
-            if(hitFX_prefab != null)
+            if (hitFX_prefab != null)
             {
                 if (!isDead)
                 {
@@ -55,7 +56,7 @@ public class Health : MonoBehaviour
 
         }
 
-        if (hp < MAX_HP)
+        if (restoreHp && hp < MAX_HP)
         {
             progressbar.transform.localScale = new Vector3(MAX_HP / 100f, 1f, 1f);
 

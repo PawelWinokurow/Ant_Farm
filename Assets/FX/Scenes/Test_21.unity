@@ -190,6 +190,7 @@ MonoBehaviour:
   gobberSettings: {fileID: 11400000, guid: 164d77fc56ba2d0409b66c5398f60915, type: 2}
   zombieSettings: {fileID: 11400000, guid: 251ac7c78c1013242b4cd24db9158213, type: 2}
   blobSettings: {fileID: 11400000, guid: 080bf5e7567c6b14aa305b4648013511, type: 2}
+  spikesSettings: {fileID: 11400000, guid: 48690d322ef7f0f4ab10c1ec622dcad7, type: 2}
 --- !u!1 &262357869
 GameObject:
   m_ObjectHideFlags: 0
@@ -349,6 +350,7 @@ MonoBehaviour:
   w: 0
   h: 0
   hexagons: []
+  store: {fileID: 1633955861}
   center: {x: 0, y: 0, z: 0}
 --- !u!114 &685065892
 MonoBehaviour:

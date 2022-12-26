@@ -93,7 +93,7 @@ public class GameManager : MonoBehaviour
 
     private bool AreNoMobsInHex(Hexagon hex)
     {
-        return workerJobScheduler.allWorkers.Where(mob => mob.currentState.type != STATE.DEAD).All(mob => surface.PositionToHex(mob.position).id != hex.id);
+        return workerJobScheduler.allWorkers.Where(mob => mob.currentState.type != MobNamespace.STATE.DEAD).All(mob => surface.PositionToHex(mob.position).id != hex.id);
     }
 }
 

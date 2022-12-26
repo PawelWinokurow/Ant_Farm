@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public enum HexType
@@ -16,6 +14,7 @@ public class FloorHexagon : MonoBehaviour, Hexagon
     public Hexagon child { get; set; }
     public Vertex vertex { get; set; }
     public MeshRenderer mr;
+    public Store store;
 
     public static FloorHexagon CreateHexagon(string id, FloorHexagon HexPrefab, Vector3 hexPosition, Transform parent, HexType hexType, float work)
     {

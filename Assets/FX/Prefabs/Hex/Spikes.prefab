@@ -296,6 +296,7 @@ GameObject:
   - component: {fileID: 889524462}
   - component: {fileID: 2030478845490514434}
   - component: {fileID: 889524464}
+  - component: {fileID: 7655105236922458050}
   m_Layer: 0
   m_Name: Spikes
   m_TagString: Untagged
@@ -363,7 +364,19 @@ MonoBehaviour:
   body: {fileID: 2518041817031097733}
   m_Shoot:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7655105236922458050}
+        m_TargetAssemblyTypeName: TrapNamespace.Spikes, Assembly-CSharp
+        m_MethodName: Attack
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &889524464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -380,11 +393,30 @@ MonoBehaviour:
   hitFX_prefab: {fileID: 0}
   progressbar: {fileID: 1711813854394893241}
   MAX_HP: 100
+  restoreHp: 0
   hp: 100
   healTime: 10
   particlesColor: {r: 0.32941177, g: 0.32156864, b: 0.32156864, a: 1}
   renderers:
   - {fileID: 3020231855571217872}
+--- !u!114 &7655105236922458050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8708655554276476704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b608fddebea18aa47a0c2f779f81ea62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  store: {fileID: 0}
+  gameSettings: {fileID: 0}
+  trapSettings: {fileID: 0}
+  workHesagon: {fileID: -962059493816826475}
+  body: {fileID: 2518041817031097733}
+  angl: {fileID: 4756509656313643830}
 --- !u!1001 &1517182781
 PrefabInstance:
   m_ObjectHideFlags: 0

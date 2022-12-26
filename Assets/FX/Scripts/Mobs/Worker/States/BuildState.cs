@@ -1,11 +1,10 @@
-using UnityEngine;
+using MobNamespace;
 
 namespace WorkerNamespace
 {
     public class BuildState : State
     {
         private Worker worker;
-        public bool IsDone;
         private WorkerJob job;
         public BuildState(Worker worker) : base(worker)
         {
@@ -15,7 +14,6 @@ namespace WorkerNamespace
 
         public override void Tick()
         {
-
             worker.surfaceOperations.Build(job);
         }
 
@@ -26,7 +24,6 @@ namespace WorkerNamespace
 
         override public void OnStateEnter()
         {
-            IsDone = false;
             job = (WorkerJob)worker.job;
             worker.SetIdleAnimation();
         }

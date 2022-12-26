@@ -1,13 +1,10 @@
-using MobNamespace;
-
-namespace WorkerNamespace
+namespace TrapNamespace
 {
     public class DeadState : State
     {
-        public DeadState(Mob mob) : base(mob)
+        public DeadState(Trap trap) : base(trap)
         {
             this.type = STATE.DEAD;
-            mob.SetRunAnimation();
         }
 
         public override void Tick()
@@ -20,6 +17,7 @@ namespace WorkerNamespace
 
         override public void OnStateEnter()
         {
+            trap.SetIdleAnimation();
         }
 
         override public void OnStateExit()
