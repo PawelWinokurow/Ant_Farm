@@ -41,7 +41,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 8e23c825cf802d047918724df9f0a3cb, type: 3}
+        m_Texture: {fileID: 2800000, guid: adc071a461ba712458384f5922a6ba17, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTexture:
@@ -75,8 +75,8 @@ Material:
     m_Ints: []
     m_Floats:
     - _Blend: 1
-    - _BlendDetails: 0.457
-    - _BlendTexture: 0.653
+    - _BlendDetails: 0.333
+    - _BlendTexture: 0.649
     - _Blink_FX: 0
     - _BumpScale: 1
     - _Cutoff: 0.5
@@ -111,7 +111,7 @@ Material:
     m_Colors:
     - _BlinkFX_Color: {r: 1, g: 0, b: 0, a: 1}
     - _BlinkFX_Color1: {r: 1, g: 0, b: 0, a: 1}
-    - _Color: {r: 1, g: 0.6637806, b: 0.5137255, a: 1}
+    - _Color: {r: 0.5849056, g: 0.48190337, b: 0.43408087, a: 1}
     - _ColorGround: {r: 1, g: 0.514151, b: 0.514151, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowColor: {r: 0.21568628, g: 0.03295701, b: 0, a: 1}

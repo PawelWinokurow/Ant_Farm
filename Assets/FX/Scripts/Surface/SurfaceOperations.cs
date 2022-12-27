@@ -118,7 +118,7 @@ public class SurfaceOperations : MonoBehaviour
         var scaledBlock = icon.scaledIconPrefab;
 
         scaledBlock.work -= worker.workerSettings.CONSTRUCTION_SPEED * Time.deltaTime;
-        scaledBlock.transform.localScale = Vector3.one * (0.3f + 0.7f * (1 - scaledBlock.work / WorkHexagon.MAX_WORK));
+        scaledBlock.transform.localScale = Vector3.one * (0.4f + 0.6f * (1 - scaledBlock.work / WorkHexagon.MAX_WORK));
         if (scaledBlock.work <= 0)
         {
             floorHex.RemoveChildren();
