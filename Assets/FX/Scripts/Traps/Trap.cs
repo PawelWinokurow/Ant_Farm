@@ -21,7 +21,7 @@ public class Trap : MonoBehaviour
     public int accessMask { get; set; }
     public GameSettings gameSettings;
     public TrapSettings trapSettings;
-    public WorkHexagon workHesagon;
+    public WorkHexagon workHexagon;
     public Transform body;
     public Transform angl;
     protected Quaternion smoothRot;

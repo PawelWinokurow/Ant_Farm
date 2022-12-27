@@ -13,6 +13,7 @@ public class Settings : MonoBehaviour
     public FighterSettings zombieSettings;
     public FighterSettings blobSettings;
     public TrapSettings spikesSettings;
+    public TrapSettings turretSettings;
     private void Awake()
     {
         if (Instance != null && Instance != this)

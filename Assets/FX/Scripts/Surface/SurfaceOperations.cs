@@ -122,7 +122,8 @@ public class SurfaceOperations : MonoBehaviour
         if (scaledBlock.work <= 0)
         {
             floorHex.RemoveChildren();
-            surface.AddBlock(floorHex, type);
+            var block = surface.AddBlock(floorHex, type);
+            block.surfaceOperations = this;
             surface.pathGraph.SetAccesabillity(floorHex, surface.GetAccessMaskByHexType(type), surface.GetEdgeWeightByHexType(type));
             workerJob.Cancel();
             oldHexagons.Remove(floorHex.id);

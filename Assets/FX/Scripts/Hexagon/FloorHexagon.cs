@@ -2,7 +2,7 @@ using UnityEngine;
 
 public enum HexType
 {
-    EMPTY, SOIL, STONE, SPIKES, FOOD, BASE
+    EMPTY, SOIL, STONE, SPIKES, FOOD, BASE, TURRET
 }
 
 public class FloorHexagon : MonoBehaviour, Hexagon

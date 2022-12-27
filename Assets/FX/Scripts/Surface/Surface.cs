@@ -8,6 +8,7 @@ public class Surface : MonoBehaviour
     public WorkHexagon soilPrefab;
     public WorkHexagon stonePrefab;
     public WorkHexagon spikesPrefab;
+    public WorkHexagon turretPrefab;
 
     public WorkHexagon soilMountIconPrefab;
     public WorkHexagon stoneMountIconPrefab;
@@ -192,6 +193,7 @@ public class Surface : MonoBehaviour
         if (type == HexType.SOIL) blockPrefab = soilPrefab;
         else if (type == HexType.STONE) blockPrefab = stonePrefab;
         else if (type == HexType.SPIKES) blockPrefab = spikesPrefab;
+        else if (type == HexType.TURRET) blockPrefab = turretPrefab;
         return blockPrefab;
     }
 
@@ -281,6 +283,7 @@ public class Surface : MonoBehaviour
         if (type == HexType.SOIL) return gameSettings.ACCESS_MASK_SOIL;
         else if (type == HexType.STONE) return gameSettings.ACCESS_MASK_STONE;
         else if (type == HexType.SPIKES) return gameSettings.ACCESS_MASK_FLOOR;
+        else if (type == HexType.TURRET) return gameSettings.ACCESS_MASK_STONE;
         return gameSettings.ACCESS_MASK_FLOOR;
     }
 
@@ -290,6 +293,7 @@ public class Surface : MonoBehaviour
         if (tag == "Soil_Mount_Icon") return HexType.SOIL;
         else if (tag == "Stone_Mount_Icon") return HexType.STONE;
         else if (tag == "Spikes_Mount_Icon") return HexType.SPIKES;
+        else if (tag == "Turret_Mount_Icon") return HexType.TURRET;
         return HexType.EMPTY;
     }
     public int GetEdgeWeightByHexType(HexType type)
@@ -297,6 +301,7 @@ public class Surface : MonoBehaviour
         if (type == HexType.SOIL) return gameSettings.EDGE_WEIGHT_OBSTACLE;
         else if (type == HexType.STONE) return gameSettings.EDGE_WEIGHT_OBSTACLE;
         else if (type == HexType.SPIKES) return gameSettings.EDGE_WEIGHT_NORMAL;
+        else if (type == HexType.TURRET) return gameSettings.EDGE_WEIGHT_OBSTACLE;
         return gameSettings.EDGE_WEIGHT_NORMAL;
     }
 
@@ -323,6 +328,11 @@ public class Surface : MonoBehaviour
         {
             pathGraph.SetAccesabillity(hex, gameSettings.ACCESS_MASK_FLOOR, gameSettings.EDGE_WEIGHT_NORMAL);
             WorkHexagon.CreateHexagon(hex, spikesPrefab).AssignProperties((WorkHexagon)oldIcon);
+        }
+        else if (oldIcon.type == HexType.TURRET)
+        {
+            pathGraph.SetAccesabillity(hex, gameSettings.ACCESS_MASK_STONE, gameSettings.EDGE_WEIGHT_OBSTACLE);
+            WorkHexagon.CreateHexagon(hex, turretPrefab).AssignProperties((WorkHexagon)oldIcon);
         }
         oldhexagons.Remove(hex.id);
         Destroy((FloorHexagon)oldIcon);

@@ -191,6 +191,7 @@ MonoBehaviour:
   zombieSettings: {fileID: 11400000, guid: 251ac7c78c1013242b4cd24db9158213, type: 2}
   blobSettings: {fileID: 11400000, guid: 080bf5e7567c6b14aa305b4648013511, type: 2}
   spikesSettings: {fileID: 11400000, guid: 48690d322ef7f0f4ab10c1ec622dcad7, type: 2}
+  turretSettings: {fileID: 11400000, guid: 5c88f751af4b9bc4eaed87de72571a5e, type: 2}
 --- !u!1 &262357869
 GameObject:
   m_ObjectHideFlags: 0
@@ -335,6 +336,7 @@ MonoBehaviour:
   soilPrefab: {fileID: 8455358244910370071, guid: 3e68a11dd730d1446b99d95886a65495, type: 3}
   stonePrefab: {fileID: 7051650168049685410, guid: 6ef6f73c1ef17de46868508c8bd2cd52, type: 3}
   spikesPrefab: {fileID: -962059493816826475, guid: 3182f398ee4d8de43b1691bc65af1d84, type: 3}
+  turretPrefab: {fileID: 3357525598540166572, guid: c91a246ba7177b64f8ebbba87033fe2b, type: 3}
   soilMountIconPrefab: {fileID: 1977940879894948748, guid: a5cb0394b24cb6e498b98739a23c66cc, type: 3}
   stoneMountIconPrefab: {fileID: 2594841573337192449, guid: b7190cfcc024d4f4e8dd1919ad9698b1, type: 3}
   spikesMountIconPrefab: {fileID: -4469524149322463765, guid: 0d2e999d7b11c6d488f20b315c186b2d, type: 3}

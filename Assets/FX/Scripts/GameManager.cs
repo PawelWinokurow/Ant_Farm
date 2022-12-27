@@ -77,13 +77,15 @@ public class GameManager : MonoBehaviour
                 }
                 else if (slider.choosenValue == SliderValue.SOIL
                 || slider.choosenValue == SliderValue.STONE
-                || slider.choosenValue == SliderValue.SPIKES)
+                || slider.choosenValue == SliderValue.SPIKES
+                || slider.choosenValue == SliderValue.TURRET)
                 {
+                    Debug.Log((SliderValue)slider.choosenValue);
                     surface.PlaceIcon(hex, slider.choosenValue);
                     workerJobScheduler.AssignBuildJob(new BuildJob(hex, hex.transform.position, JobType.MOUNT));
                 }
             }
-            else if ((hex.type == HexType.SOIL || hex.type == HexType.STONE || hex.type == HexType.SPIKES) && slider.choosenValue == SliderValue.DEMOUNT)
+            else if ((hex.type == HexType.SOIL || hex.type == HexType.STONE || hex.type == HexType.SPIKES || slider.choosenValue == SliderValue.TURRET) && slider.choosenValue == SliderValue.DEMOUNT)
             {
                 surface.PlaceIcon(hex, slider.choosenValue);
                 workerJobScheduler.AssignBuildJob(new BuildJob(hex, hex.transform.position, JobType.DEMOUNT));

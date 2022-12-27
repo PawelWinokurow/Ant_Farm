@@ -19564,7 +19564,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2658562306109355801}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 57d5f9c5c4702af42a89b368c316ccd3, type: 3}
   m_Name: 
@@ -19620,6 +19620,7 @@ MonoBehaviour:
   hitFX_prefab: {fileID: 3272130487407376759, guid: 11b753cc1e21c41e393bd07e86b78fb9, type: 3}
   progressbar: {fileID: 5476330844648452992}
   MAX_HP: 100
+  restoreHp: 1
   hp: 100
   healTime: 10
   particlesColor: {r: 0.5647059, g: 0.23137255, b: 0, a: 1}
@@ -19635,7 +19636,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2658562306109355801}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0e834a3630e5b4564a2c778aeba7d3bb, type: 3}
   m_Name: 

@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public enum SliderValue
 {
-    DEMOUNT, WORKER, SOLDIER, GUNNER, SOIL, STONE, SPIKES, SCORPION, GOBBER, BLOB, CANNON, ZOMBIE
+    DEMOUNT, WORKER, SOLDIER, GUNNER, SOIL, STONE, SPIKES, SCORPION, GOBBER, BLOB, TURRET, ZOMBIE
 }
 public class ScrollRectSnap : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
