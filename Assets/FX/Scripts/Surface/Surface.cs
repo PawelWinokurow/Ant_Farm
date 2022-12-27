@@ -13,6 +13,7 @@ public class Surface : MonoBehaviour
     public WorkHexagon soilMountIconPrefab;
     public WorkHexagon stoneMountIconPrefab;
     public WorkHexagon spikesMountIconPrefab;
+    public WorkHexagon turretMountIconPrefab;
     public WorkHexagon demountPrefab;
 
     public BaseHexagon basePrefab;
@@ -181,6 +182,7 @@ public class Surface : MonoBehaviour
     public WorkHexagon AddBlock(FloorHexagon hex, HexType type)
     {
         WorkHexagon blockPrefab = GetBlockPrefabByType(type);
+        Debug.Log(blockPrefab);
         var block = WorkHexagon.CreateHexagon(hex, blockPrefab);
         block.type = type;
         block.work = WorkHexagon.MAX_WORK;
@@ -238,6 +240,10 @@ public class Surface : MonoBehaviour
         else if (value == SliderValue.SPIKES)
         {
             PlaceMountIcon(hex, spikesMountIconPrefab, gameSettings.ACCESS_MASK_FLOOR, gameSettings.EDGE_WEIGHT_NORMAL);
+        }
+        else if (value == SliderValue.TURRET)
+        {
+            PlaceMountIcon(hex, turretMountIconPrefab, gameSettings.ACCESS_MASK_STONE, gameSettings.EDGE_WEIGHT_OBSTACLE);
         }
         if (value == SliderValue.DEMOUNT)
         {

@@ -185,7 +185,6 @@ public class Fighter : MonoBehaviour, Mob
         KDTree mobPositionsTree = new KDTree(notDeadMobs.Select(mob => mob.position).ToArray());
         KDQuery query = new KDQuery();
         List<int> queryResults = new List<int>();
-        queryResults.Reverse();
         query.Radius(mobPositionsTree, position, 200f, queryResults);
         if (queryResults.Count == 0) { return null; }
         for (int i = 0; i < queryResults.Count; i++)

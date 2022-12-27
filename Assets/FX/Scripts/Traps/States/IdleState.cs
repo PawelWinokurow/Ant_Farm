@@ -9,8 +9,10 @@ namespace TrapNamespace
 
         public override void Tick()
         {
-            if (trap.IsTargetInSight())
+            var target = trap.SearchTarget();
+            if (target != null)
             {
+                trap.SetTarget(target);
                 trap.SetState(new AttackState(trap));
             }
         }

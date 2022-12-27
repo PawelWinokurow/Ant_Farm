@@ -19514,6 +19514,7 @@ GameObject:
   - component: {fileID: 788094044779158211}
   - component: {fileID: 3357525598540166572}
   - component: {fileID: 6646820755847831767}
+  - component: {fileID: 8374605081907535155}
   - component: {fileID: 2658562306109355806}
   - component: {fileID: 6646820755847831753}
   - component: {fileID: 2658562306109355807}
@@ -19555,6 +19556,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a2cacea324c27a4ea7e7d19da329aab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  surfaceOperations: {fileID: 0}
   work: 100
   isGroundMat: 0
 --- !u!114 &6646820755847831767
@@ -19569,6 +19571,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57d5f9c5c4702af42a89b368c316ccd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8374605081907535155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2658562306109355801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84e8deff10324c74fb093a79803c9248, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  store: {fileID: 0}
+  gameSettings: {fileID: 0}
+  trapSettings: {fileID: 0}
+  workHexagon: {fileID: 0}
+  body: {fileID: 4133003089081887096}
+  angl: {fileID: 4133003089081887096}
 --- !u!114 &2658562306109355806
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19809,6 +19829,8 @@ MonoBehaviour:
   shoot_FX: {fileID: 1814643239172176884}
   ball_FX: {fileID: 457869106279244586}
   fighter: {fileID: 0}
+  trap: {fileID: 8374605081907535155}
+  isStatic: 1
 --- !u!1 &4810471440378067391
 GameObject:
   m_ObjectHideFlags: 0

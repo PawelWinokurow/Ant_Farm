@@ -22,6 +22,7 @@ namespace TrapNamespace
 
         public override void Tick()
         {
+            trap.Rotation();
             if (!trap.IsTargetInSight())
             {
                 trap.SetState(new IdleState(trap));

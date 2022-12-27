@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
+using FighterNamespace;
 using UnityEngine;
+using DataStructures.ViliWonka.KDTree;
 
 namespace TrapNamespace
 {
     public class Turret : Trap
     {
-
         void Start()
         {
             animator = GetComponent<MobAnimatorTurret>();
@@ -25,32 +26,68 @@ namespace TrapNamespace
             SetInitialState();
         }
 
-        public override bool IsTargetInSight()
+        public override Target SearchTarget()
         {
-            return store.allEnemies.Any(enemy =>
+            var notDeadMobs = new List<Mob>(store.allEnemies.Where(mob => mob.currentState.type != MobNamespace.STATE.DEAD));
+            KDTree mobPositionsTree = new KDTree(notDeadMobs.Select(mob => mob.position).ToArray());
+            KDQuery query = new KDQuery();
+            List<int> queryResults = new List<int>();
+            query.Radius(mobPositionsTree, position, 30f, queryResults);
+            if (queryResults.Count == 0) { return null; }
+            for (int i = 0; i < queryResults.Count; i++)
             {
-                var targetPosition = enemy.position;
-                var vec = targetPosition - position;
-                var vecLength = Vector3.Magnitude(vec);
-                if (vecLength < 20f)
+                var targetMob = notDeadMobs[queryResults[i]];
+                if (IsPositionInSight(targetMob.position))
                 {
-                    var vecNorm = Vector3.Normalize(vec);
-                    var hexagonsOnTrajectory = new List<FloorHexagon>();
-                    for (int i = 0; i < Mathf.Floor(vecLength); i++)
-                    {
-                        hexagonsOnTrajectory.Add(workHexagon.surfaceOperations.surface.PositionToHex(position + i * vecNorm));
-                    }
-                    hexagonsOnTrajectory.Add(workHexagon.surfaceOperations.surface.PositionToHex(targetPosition));
-                    return hexagonsOnTrajectory.All(hex => hex.type != HexType.SOIL && hex.type != HexType.STONE);
+                    Debug.Log("found");
+                    return new Target($"{id}_{targetMob.id}", targetMob);
                 }
-                return false;
-            });
+            }
+            return null;
         }
 
-        public void Attack()
+        private bool IsPositionInSight(Vector3 position)
         {
-            var enemiesToAttack = store.allEnemies.Where(enemy => enemy.currentHex == currentHex).ToList();
-            enemiesToAttack.ForEach(enemy => enemy.Hit(trapSettings.ATTACK_STRENGTH));
+            var targetPosition = position;
+            var vec = targetPosition - position;
+            var vecLength = Vector3.Magnitude(vec);
+            if (vecLength < 30f)
+            {
+                var vecNorm = Vector3.Normalize(vec);
+                var hexagonsOnTrajectory = new List<FloorHexagon>();
+                for (int i = 0; i < Mathf.Floor(vecLength); i++)
+                {
+                    hexagonsOnTrajectory.Add(workHexagon.surfaceOperations.surface.PositionToHex(position + i * vecNorm));
+                }
+                hexagonsOnTrajectory.Add(workHexagon.surfaceOperations.surface.PositionToHex(targetPosition));
+                return hexagonsOnTrajectory.All(hex => hex.type != HexType.SOIL && hex.type != HexType.STONE);
+            }
+            return false;
+        }
+        public override bool IsTargetInSight()
+        {
+            if (target != null)
+            {
+                return IsPositionInSight(target.mob.position);
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+        public override void Rotation()
+        {
+            Vector3 forward = Vector3.zero;
+            if (currentState.type == STATE.ATTACK && target?.mob != null)
+            {
+                forward = target.mob.position - transform.position;
+            }
+            Quaternion rot = Quaternion.LookRotation(angl.up, forward);
+            smoothRot = Quaternion.Slerp(smoothRot, rot, Time.deltaTime * 10f);
+            body.rotation = smoothRot;
+            body.Rotate(new Vector3(-90f, 0f, 180f), Space.Self);
         }
     }
 

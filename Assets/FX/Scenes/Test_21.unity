@@ -340,6 +340,7 @@ MonoBehaviour:
   soilMountIconPrefab: {fileID: 1977940879894948748, guid: a5cb0394b24cb6e498b98739a23c66cc, type: 3}
   stoneMountIconPrefab: {fileID: 2594841573337192449, guid: b7190cfcc024d4f4e8dd1919ad9698b1, type: 3}
   spikesMountIconPrefab: {fileID: -4469524149322463765, guid: 0d2e999d7b11c6d488f20b315c186b2d, type: 3}
+  turretMountIconPrefab: {fileID: 8603305084916396405, guid: c376c48559893ca479b594b8dbbe91f4, type: 3}
   demountPrefab: {fileID: 2741020347872787934, guid: 7dce2e03a5c3b884ba1b455f5a4e4db1, type: 3}
   basePrefab: {fileID: -6449949279687771907, guid: 3035fa6f7888cc444891347ded3c5bf6, type: 3}
   foodPrefab: {fileID: 885855770167225291, guid: b6796502f5525184d99c83ee5ae6b91d, type: 3}
@@ -977,6 +978,18 @@ PrefabInstance:
     - target: {fileID: 7101241709256306329, guid: 465f21d7f82950741b51465480634072, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -40.80005
+      objectReference: {fileID: 0}
+    - target: {fileID: 8169992440353475562, guid: 465f21d7f82950741b51465480634072, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.009994507
+      objectReference: {fileID: 0}
+    - target: {fileID: 8169992440690235745, guid: 465f21d7f82950741b51465480634072, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.69000244
+      objectReference: {fileID: 0}
+    - target: {fileID: 8169992441218033102, guid: 465f21d7f82950741b51465480634072, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -3.050003
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 465f21d7f82950741b51465480634072, type: 3}

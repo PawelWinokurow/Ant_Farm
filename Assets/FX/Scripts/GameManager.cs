@@ -80,7 +80,6 @@ public class GameManager : MonoBehaviour
                 || slider.choosenValue == SliderValue.SPIKES
                 || slider.choosenValue == SliderValue.TURRET)
                 {
-                    Debug.Log((SliderValue)slider.choosenValue);
                     surface.PlaceIcon(hex, slider.choosenValue);
                     workerJobScheduler.AssignBuildJob(new BuildJob(hex, hex.transform.position, JobType.MOUNT));
                 }

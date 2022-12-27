@@ -19637,6 +19637,8 @@ MonoBehaviour:
   shoot_FX: {fileID: 2266513408033644261}
   ball_FX: {fileID: 2097989179}
   fighter: {fileID: 6826684635683908350}
+  trap: {fileID: 0}
+  isStatic: 0
 --- !u!1 &2381269298352812388
 GameObject:
   m_ObjectHideFlags: 0
@@ -19926,6 +19928,7 @@ MonoBehaviour:
   hitFX_prefab: {fileID: 3272130487407376759, guid: 11b753cc1e21c41e393bd07e86b78fb9, type: 3}
   progressbar: {fileID: 1786696478848772234}
   MAX_HP: 0
+  restoreHp: 1
   hp: 0
   healTime: 10
   particlesColor: {r: 0.5372549, g: 0.043137256, b: 0.023529412, a: 1}

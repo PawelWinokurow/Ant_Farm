@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using TrapNamespace;
+using FighterNamespace;
 
 public enum TrapType
 {
@@ -26,10 +27,22 @@ public class Trap : MonoBehaviour
     public Transform angl;
     protected Quaternion smoothRot;
     public DigJob digJob;
+    public Target target;
+
 
     protected void SetInitialState()
     {
         SetState(new IdleState(this));
+    }
+
+    public void SetTarget(Target target)
+    {
+        this.target = target;
+    }
+
+    public virtual Target SearchTarget()
+    {
+        return null;
     }
 
     public void SetState(State state)
@@ -77,6 +90,9 @@ public class Trap : MonoBehaviour
     {
         return false;
     }
+
+    public virtual void Rotation() { }
+
 
 
 }

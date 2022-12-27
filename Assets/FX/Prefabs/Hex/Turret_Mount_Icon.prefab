@@ -128,6 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a2cacea324c27a4ea7e7d19da329aab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  surfaceOperations: {fileID: 0}
   work: 100
   isGroundMat: 0
 --- !u!1 &1097801329631603571
@@ -145,7 +146,7 @@ GameObject:
   - component: {fileID: 2899381214889533969}
   m_Layer: 0
   m_Name: Turret_Mount_Icon
-  m_TagString: Spikes_Mount_Icon
+  m_TagString: Turret_Mount_Icon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -228,6 +229,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a2cacea324c27a4ea7e7d19da329aab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  surfaceOperations: {fileID: 0}
   work: 100
   isGroundMat: 1
 --- !u!114 &2899381214889533969

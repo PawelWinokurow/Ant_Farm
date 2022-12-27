@@ -1,4 +1,5 @@
 using System.Linq;
+using FighterNamespace;
 using UnityEngine;
 
 namespace TrapNamespace
@@ -21,6 +22,12 @@ namespace TrapNamespace
                 SetState(new DeadState(this));
             };
             SetInitialState();
+        }
+
+        public override Target SearchTarget()
+        {
+            var targetMob = store.allEnemies.Where(enemy => enemy.currentHex == currentHex).FirstOrDefault();
+            return targetMob != null ? new Target($"{id}_{targetMob.id}", targetMob) : null;
         }
 
         public override bool IsTargetInSight()
