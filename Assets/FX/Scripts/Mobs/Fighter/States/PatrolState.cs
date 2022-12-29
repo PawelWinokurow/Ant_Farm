@@ -1,4 +1,3 @@
-using MobNamespace;
 
 namespace FighterNamespace
 {
@@ -7,7 +6,7 @@ namespace FighterNamespace
 
         private Fighter fighter;
 
-        public PatrolState(Fighter fighter) : base(fighter)
+        public PatrolState(Fighter fighter)
         {
             this.type = STATE.PATROL;
             this.fighter = fighter;

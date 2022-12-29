@@ -8,7 +8,7 @@ public enum TrapType
     SPIKES, TURRET
 }
 
-public class Trap : MonoBehaviour
+public class Trap : MonoBehaviour, Targetable
 {
     public string id { get; set; }
     public TrapType type { get; set; }
@@ -30,7 +30,7 @@ public class Trap : MonoBehaviour
     public Target target;
 
 
-    protected void SetInitialState()
+    public void SetInitialState()
     {
         SetState(new IdleState(this));
     }

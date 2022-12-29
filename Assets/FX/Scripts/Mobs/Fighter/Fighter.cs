@@ -4,9 +4,8 @@ using System.Linq;
 using DataStructures.ViliWonka.KDTree;
 using UnityEngine;
 using FighterNamespace;
-using MobNamespace;
 
-public class Fighter : MonoBehaviour, Mob
+public class Fighter : MonoBehaviour, Mob, Targetable
 {
     public string id { get; set; }
     public MobType type { get; set; }
@@ -34,7 +33,7 @@ public class Fighter : MonoBehaviour, Mob
     protected Quaternion smoothRot;
     public DigJob digJob;
 
-    protected void SetInitialState()
+    public void SetInitialState()
     {
         var target = SearchTarget();
         if (target != null)
@@ -179,9 +178,9 @@ public class Fighter : MonoBehaviour, Mob
     }
 
 
-    public Target SearchTarget(List<Mob> mobs, int accessMask, EdgeType edgeType = EdgeType.SECONDARY)
+    public Target SearchTarget(List<Targetable> mobs, int accessMask, EdgeType edgeType = EdgeType.SECONDARY)
     {
-        var notDeadMobs = new List<Mob>(mobs.Where(mob => mob.currentState?.type != STATE.DEAD));
+        var notDeadMobs = new List<Targetable>(mobs.Where(mob => mob.currentState?.type != STATE.DEAD));
         KDTree mobPositionsTree = new KDTree(notDeadMobs.Select(mob => mob.position).ToArray());
         KDQuery query = new KDQuery();
         List<int> queryResults = new List<int>();

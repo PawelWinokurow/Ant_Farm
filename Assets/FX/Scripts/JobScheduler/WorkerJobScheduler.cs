@@ -143,7 +143,7 @@ public class WorkerJobScheduler : MonoBehaviour
             buildingWorkers.Remove(worker);
             worker.CancelJob();
             freeWorkers.Remove(worker);
-            worker.store.DeleteAlly(worker);
+            worker.store.DeleteAlly((Targetable)worker);
             worker.SetState(new DeadState(worker));
         }
     }

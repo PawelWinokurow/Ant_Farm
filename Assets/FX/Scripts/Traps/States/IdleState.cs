@@ -2,9 +2,12 @@ namespace TrapNamespace
 {
     public class IdleState : State
     {
-        public IdleState(Trap trap) : base(trap)
+        private Trap trap;
+
+        public IdleState(Trap trap)
         {
             this.type = STATE.IDLE;
+            this.trap = trap;
         }
 
         public override void Tick()

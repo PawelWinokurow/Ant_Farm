@@ -182,8 +182,11 @@ public class Surface : MonoBehaviour
     public WorkHexagon AddBlock(FloorHexagon hex, HexType type)
     {
         WorkHexagon blockPrefab = GetBlockPrefabByType(type);
-        Debug.Log(blockPrefab);
         var block = WorkHexagon.CreateHexagon(hex, blockPrefab);
+        if (type == HexType.TURRET)
+        {
+            store.AddAlly((Targetable)block.GetComponent<Trap>());
+        }
         block.type = type;
         block.work = WorkHexagon.MAX_WORK;
         return block;
