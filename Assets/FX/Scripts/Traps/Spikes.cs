@@ -1,10 +1,9 @@
 using System.Linq;
 using FighterNamespace;
-using UnityEngine;
 
 namespace TrapNamespace
 {
-    public class Spikes : Trap
+    public class Spikes : Trap, Hitable
     {
 
         void Start()

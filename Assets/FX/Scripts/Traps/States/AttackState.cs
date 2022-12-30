@@ -2,7 +2,8 @@ namespace TrapNamespace
 {
     public class AttackState : State
     {
-        public AttackState(Trap trap) : base(trap)
+        private Trap trap;
+        public AttackState(Trap trap)
         {
             this.type = STATE.ATTACK;
             this.trap = trap;

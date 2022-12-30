@@ -1,5 +1,3 @@
-using MobNamespace;
-
 namespace FighterNamespace
 {
     public class DigState : State
@@ -7,7 +5,7 @@ namespace FighterNamespace
         private Scorpion scorpion;
         private DigJob job;
 
-        public DigState(Scorpion scorpion) : base(scorpion)
+        public DigState(Scorpion scorpion)
         {
             this.type = STATE.DIG;
             this.scorpion = scorpion;

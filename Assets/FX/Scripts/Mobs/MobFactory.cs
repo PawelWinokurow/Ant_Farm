@@ -48,11 +48,11 @@ public class MobFactory : MonoBehaviour
         scorpion.surfaceOperations = surfaceOperations;
         scorpion.Kill = () =>
         {
-            store.DeleteEnemy(scorpion);
+            store.DeleteEnemy((Targetable)scorpion);
             scorpion.SetState(new FighterNamespace.DeadState(scorpion));
             scorpion.CancelJob();
         };
-        store.AddEnemy(scorpion);
+        store.AddEnemy((Targetable)scorpion);
         Buy(scorpion, 10);
         yield return null;
     }
@@ -67,12 +67,12 @@ public class MobFactory : MonoBehaviour
         zombie.surfaceOperations = surfaceOperations;
         zombie.Kill = () =>
         {
-            store.DeleteEnemy(zombie);
+            store.DeleteEnemy((Targetable)zombie);
             zombie.SetState(new FighterNamespace.DeadState(zombie));
             zombie.CancelJob();
         };
         zombie.MutateMob = AddMobByType;
-        store.AddEnemy(zombie);
+        store.AddEnemy((Targetable)zombie);
         Buy(zombie, 10);
         yield return null;
     }
@@ -87,11 +87,11 @@ public class MobFactory : MonoBehaviour
         blob.surfaceOperations = surfaceOperations;
         blob.Kill = () =>
         {
-            store.DeleteEnemy(blob);
+            store.DeleteEnemy((Targetable)blob);
             blob.SetState(new FighterNamespace.DeadState(blob));
             blob.CancelJob();
         };
-        store.AddEnemy(blob);
+        store.AddEnemy((Targetable)blob);
         Buy(blob, 10);
         yield return null;
     }
@@ -106,11 +106,11 @@ public class MobFactory : MonoBehaviour
         gobber.surfaceOperations = surfaceOperations;
         gobber.Kill = () =>
         {
-            store.DeleteEnemy(gobber);
+            store.DeleteEnemy((Targetable)gobber);
             gobber.SetState(new FighterNamespace.DeadState(gobber));
             gobber.CancelJob();
         };
-        store.AddEnemy(gobber);
+        store.AddEnemy((Targetable)gobber);
         Buy(gobber, 10);
         yield return null;
     }
@@ -135,11 +135,11 @@ public class MobFactory : MonoBehaviour
         soldier.surfaceOperations = surfaceOperations;
         soldier.Kill = () =>
         {
-            store.DeleteAlly(soldier);
+            store.DeleteAlly((Targetable)soldier);
             soldier.SetState(new FighterNamespace.DeadState(soldier));
             soldier.CancelJob();
         };
-        store.AddAlly(soldier);
+        store.AddAlly((Targetable)soldier);
         Buy(soldier, 10);
         yield return null;
     }
@@ -153,11 +153,11 @@ public class MobFactory : MonoBehaviour
         gunner.surfaceOperations = surfaceOperations;
         gunner.Kill = () =>
         {
-            store.DeleteAlly(gunner);
+            store.DeleteAlly((Targetable)gunner);
             gunner.SetState(new FighterNamespace.DeadState(gunner));
             gunner.CancelJob();
         };
-        store.AddAlly(gunner);
+        store.AddAlly((Targetable)gunner);
         Buy(gunner, 10);
         yield return null;
     }

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using MobNamespace;
 
 namespace FighterNamespace
 {
@@ -24,7 +23,7 @@ namespace FighterNamespace
                 .Select(neighbour => neighbour.floorHexagon)
                 .ToList()
                 .Append(currentHex);
-            new List<Mob>(store.allAllies).ForEach(ally =>
+            new List<Targetable>(store.allAllies).ForEach(ally =>
             {
                 if (neighbours.Contains(ally.currentHex))
                 {

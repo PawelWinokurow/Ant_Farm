@@ -1,5 +1,3 @@
-using MobNamespace;
-
 namespace WorkerNamespace
 {
 
@@ -9,7 +7,7 @@ namespace WorkerNamespace
         private Worker worker;
         private WorkerSettings workerSettings = Settings.Instance.workerSettings;
 
-        public IdleState(Worker worker) : base(worker)
+        public IdleState(Worker worker)
         {
             this.type = STATE.IDLE;
             this.worker = worker;

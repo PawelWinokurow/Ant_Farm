@@ -28,7 +28,8 @@ namespace TrapNamespace
 
         public override Target SearchTarget()
         {
-            var notDeadMobs = new List<Mob>(store.allEnemies.Where(mob => mob.currentState.type != MobNamespace.STATE.DEAD));
+
+            var notDeadMobs = new List<Targetable>(store.allEnemies.Where(mob => mob.currentState != null && mob.currentState.type != STATE.DEAD));
             KDTree mobPositionsTree = new KDTree(notDeadMobs.Select(mob => mob.position).ToArray());
             KDQuery query = new KDQuery();
             List<int> queryResults = new List<int>();
@@ -39,7 +40,6 @@ namespace TrapNamespace
                 var targetMob = notDeadMobs[queryResults[i]];
                 if (IsPositionInSight(targetMob.position))
                 {
-                    Debug.Log("found");
                     return new Target($"{id}_{targetMob.id}", targetMob);
                 }
             }

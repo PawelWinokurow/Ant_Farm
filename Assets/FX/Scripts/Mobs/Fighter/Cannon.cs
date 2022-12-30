@@ -27,7 +27,7 @@ namespace FighterNamespace
 
         public void Shoot()
         {
-            if (fighter?.currentState.type != MobNamespace.STATE.DEAD || trap?.currentState.type != STATE.DEAD)
+            if (fighter?.currentState.type != STATE.DEAD || trap?.currentState.type != STATE.DEAD)
             {
 
                 if (sequence != null)

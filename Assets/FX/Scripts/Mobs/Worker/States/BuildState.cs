@@ -1,12 +1,10 @@
-using MobNamespace;
-
 namespace WorkerNamespace
 {
     public class BuildState : State
     {
         private Worker worker;
         private WorkerJob job;
-        public BuildState(Worker worker) : base(worker)
+        public BuildState(Worker worker)
         {
             this.type = STATE.BUILD;
             this.worker = worker;

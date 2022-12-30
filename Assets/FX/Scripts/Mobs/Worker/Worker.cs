@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using MobNamespace;
 
 namespace WorkerNamespace
 {
 
-    public class Worker : MonoBehaviour, Mob
+    public class Worker : MonoBehaviour, Mob, Targetable
     {
         public string id { get; set; }
         public MobType type { get; set; }
@@ -45,6 +44,11 @@ namespace WorkerNamespace
             health.InitHp(workerSettings.HP);
             type = MobType.WORKER;
             accessMask = gameSettings.ACCESS_MASK_FLOOR + gameSettings.ACCESS_MASK_BASE;
+            SetInitialState();
+        }
+
+        public void SetInitialState()
+        {
             SetState(new IdleState(this));
         }
 

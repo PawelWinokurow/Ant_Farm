@@ -1,5 +1,3 @@
-using MobNamespace;
-
 namespace FighterNamespace
 {
     public class FollowingState : State
@@ -7,7 +5,7 @@ namespace FighterNamespace
 
         private Fighter fighter;
 
-        public FollowingState(Fighter fighter) : base(fighter)
+        public FollowingState(Fighter fighter)
         {
             this.type = STATE.GOTO;
             this.fighter = fighter;

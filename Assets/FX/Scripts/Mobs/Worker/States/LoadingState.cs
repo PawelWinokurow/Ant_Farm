@@ -1,5 +1,3 @@
-using MobNamespace;
-
 namespace WorkerNamespace
 {
 
@@ -9,7 +7,7 @@ namespace WorkerNamespace
         public bool IsDone;
         private CarrierJob job;
 
-        public LoadingState(Worker worker) : base(worker)
+        public LoadingState(Worker worker)
         {
             type = STATE.LOADING;
             this.worker = worker;

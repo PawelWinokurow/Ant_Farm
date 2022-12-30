@@ -1,5 +1,3 @@
-using MobNamespace;
-
 namespace WorkerNamespace
 {
 
@@ -11,7 +9,7 @@ namespace WorkerNamespace
         private WorkerSettings workerSettings = Settings.Instance.workerSettings;
 
 
-        public GoToState(Worker worker) : base(worker)
+        public GoToState(Worker worker)
         {
             this.type = STATE.GOTO;
             this.worker = worker;

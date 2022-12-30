@@ -2,9 +2,12 @@ namespace TrapNamespace
 {
     public class DeadState : State
     {
-        public DeadState(Trap trap) : base(trap)
+        private Trap trap;
+
+        public DeadState(Trap trap)
         {
             this.type = STATE.DEAD;
+            this.trap = trap;
         }
 
         public override void Tick()
