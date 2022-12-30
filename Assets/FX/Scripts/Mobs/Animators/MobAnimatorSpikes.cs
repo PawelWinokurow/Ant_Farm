@@ -25,14 +25,18 @@ public class MobAnimatorSpikes : MonoBehaviour, IMobAnimator
     }
     public void IdleFight()
     {
+        Debug.Log("spikes");
+        m_Shoot.Invoke();
         health.Hit(20);
+        
         if (s != null)
         {
             s.Complete();
         }
+
         s = DOTween.Sequence();
-        s.Append(spikes.DOScale(new Vector3(1f, 0f, 1f), 0f));
-        s.Append(spikes.DOScale(new Vector3(1f, 2f, 1f), 0.2f).SetEase(Ease.OutBack).OnComplete(() => { m_Shoot.Invoke(); }));
+        s.Append(spikes.DOScale(new Vector3(1f, 1.5f, 1f), 0f));
+        s.Append(spikes.DOScale(new Vector3(1f, 1f, 1f), 0.1f).SetEase(Ease.OutBack).OnComplete(() => {  }));
         s.AppendInterval(0.5f);
         s.Append(spikes.DOScale(new Vector3(1f, 0f, 1f), 0.1f).SetEase(Ease.Linear).OnComplete(() => { spikes.localScale = Vector3.zero; }));
         s.AppendInterval(0.5f);
