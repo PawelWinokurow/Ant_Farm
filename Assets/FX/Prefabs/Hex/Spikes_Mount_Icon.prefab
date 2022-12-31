@@ -128,6 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a2cacea324c27a4ea7e7d19da329aab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  surfaceOperations: {fileID: 0}
   work: 100
   isGroundMat: 0
 --- !u!1 &2487207228394315188
@@ -311,6 +312,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a2cacea324c27a4ea7e7d19da329aab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  surfaceOperations: {fileID: 0}
   work: 100
   isGroundMat: 1
 --- !u!114 &2206958196654102159
@@ -409,7 +411,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8733836689660738198}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
