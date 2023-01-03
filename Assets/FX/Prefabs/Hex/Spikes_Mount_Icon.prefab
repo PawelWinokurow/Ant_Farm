@@ -114,7 +114,7 @@ Transform:
   m_Children:
   - {fileID: 3143622175264937443}
   m_Father: {fileID: 5027982129609804310}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3622386847402100495
 MonoBehaviour:
@@ -143,7 +143,7 @@ GameObject:
   - component: {fileID: 1619195870142329558}
   - component: {fileID: 3892226001637901806}
   m_Layer: 0
-  m_Name: Shadow (1)
+  m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -158,11 +158,11 @@ Transform:
   m_GameObject: {fileID: 2487207228394315188}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 7.5, y: 7.4999986, z: 7.4999986}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5427688932320537424}
-  m_RootOrder: 1
+  m_Father: {fileID: 5027982129609804310}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1619195870142329558
 MeshFilter:
@@ -246,6 +246,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 8245031074788454156}
   - {fileID: 4572131070376623151}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -392,7 +393,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5494308389105825565}
-  - {fileID: 8245031074788454156}
   m_Father: {fileID: 3143622175264937443}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
