@@ -28,13 +28,15 @@ namespace TrapNamespace
 
         public override Target SearchTarget()
         {
-
             var notDeadMobs = new List<Targetable>(store.allEnemies.Where(mob => mob.currentState != null && mob.currentState.type != STATE.DEAD));
             KDTree mobPositionsTree = new KDTree(notDeadMobs.Select(mob => mob.position).ToArray());
             KDQuery query = new KDQuery();
             List<int> queryResults = new List<int>();
-            query.Radius(mobPositionsTree, position, 30f, queryResults);
-            if (queryResults.Count == 0) { return null; }
+            List<float> queryDistances = new List<float>();
+            query.KNearest(mobPositionsTree, position, notDeadMobs.ToList().Count, queryResults, queryDistances);
+            queryResults.Reverse();
+            queryDistances.Reverse();
+            if (queryResults.Count == 0 || queryDistances[0] > 1000f) { return null; }
             for (int i = 0; i < queryResults.Count; i++)
             {
                 var targetMob = notDeadMobs[queryResults[i]];

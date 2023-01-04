@@ -187,14 +187,16 @@ public class Fighter : MonoBehaviour, Targetable
             KDTree mobPositionsTree = new KDTree(notDeadMobGroup.Select(mob => mob.position).ToArray());
             KDQuery query = new KDQuery();
             List<int> queryResults = new List<int>();
-            query.Radius(mobPositionsTree, position, 200f, queryResults);
-            if (queryResults.Count == 0) { return null; }
+            List<float> queryDistances = new List<float>();
+            query.KNearest(mobPositionsTree, position, notDeadMobGroup.ToList().Count, queryResults, queryDistances);
+            queryResults.Reverse();
+            queryDistances.Reverse();
+            if (queryResults.Count == 0 || queryDistances[0] > 1000f) { return null; }
             for (int i = 0; i < queryResults.Count; i++)
             {
                 var targetMob = notDeadMobGroup.ToList()[queryResults[i]];
                 if (targetMob.currentHex == null)
                 {
-                    Debug.Log(targetMob.currentHex);
                     continue;
                 }
                 var path = pathfinder.FindPath(position, targetMob.currentHex.position, accessMask, SearchType.NEAREST_VERTEX, edgeType);
