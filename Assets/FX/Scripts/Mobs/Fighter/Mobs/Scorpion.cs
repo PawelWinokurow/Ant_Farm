@@ -21,7 +21,8 @@ namespace FighterNamespace
 
         public void Attack()
         {
-            if (target.mob.Hit(mobSettings.ATTACK_STRENGTH) <= 0)
+            target.mob.Hit(mobSettings.ATTACK_STRENGTH);
+            if (target.mob.isDead)
             {
                 CancelJob();
                 SetState(new PatrolState(this));
@@ -74,9 +75,10 @@ namespace FighterNamespace
             return false;
         }
 
-        public override float Hit(int damage)
+        public override void Hit(int damage)
         {
-            if (health.hp > 0 && health.Hit(damage) <= 0)
+            health.Hit(damage);
+            if (isDead)
             {
                 if (digFX != null)
                 {
@@ -85,7 +87,6 @@ namespace FighterNamespace
                 }
                 Kill();
             }
-            return health.hp;
         }
 
         protected override void Rotation()

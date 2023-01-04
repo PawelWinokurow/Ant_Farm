@@ -33,6 +33,7 @@ namespace WorkerNamespace
         public Transform angl;
         protected Quaternion smoothRot;
         public Store store;
+        public bool isDead { get => health.isDead; }
 
 
         void Start()
@@ -164,13 +165,13 @@ namespace WorkerNamespace
             animator.Idle();
         }
 
-        public float Hit(int damage)
+        public void Hit(int damage)
         {
-            if (health.hp > 0 && health.Hit(damage) <= 0)
+            health.Hit(damage);
+            if (isDead)
             {
                 Kill();
             }
-            return health.hp;
         }
 
         private void Rotation()

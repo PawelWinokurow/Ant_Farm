@@ -2,7 +2,8 @@ using System;
 
 public interface Hitable
 {
-    public float Hit(int damage);
+    public void Hit(int damage);
+    public bool isDead { get; }
     public Health health { get; set; }
     public Action Kill { get; set; }
 }

@@ -32,6 +32,7 @@ public class Fighter : MonoBehaviour, Targetable
     public Transform angl;
     protected Quaternion smoothRot;
     public DigJob digJob;
+    public bool isDead { get => health.isDead; }
 
     public void SetInitialState()
     {
@@ -217,13 +218,13 @@ public class Fighter : MonoBehaviour, Targetable
         }
     }
 
-    public virtual float Hit(int damage)
+    public virtual void Hit(int damage)
     {
-        if (health.hp > 0 && health.Hit(damage) <= 0)
+        health.Hit(damage);
+        if (isDead)
         {
             Kill();
         }
-        return health.hp;
     }
 
     public virtual bool IsTargetInSight()

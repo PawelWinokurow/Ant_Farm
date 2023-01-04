@@ -18,7 +18,8 @@ namespace FighterNamespace
 
         public void Attack()
         {
-            if (target.mob.Hit(mobSettings.ATTACK_STRENGTH) <= 0)
+            target.mob.Hit(mobSettings.ATTACK_STRENGTH);
+            if (target.mob.isDead)
             {
                 CancelJob();
                 SetState(new PatrolState(this));

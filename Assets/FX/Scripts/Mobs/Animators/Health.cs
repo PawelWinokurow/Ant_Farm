@@ -15,7 +15,7 @@ public class Health : MonoBehaviour
     public float hp;
     public float healTime;
     private float hitTime = 1000f;
-    private bool isDead;
+    public bool isDead;
     public Color particlesColor;
     public Renderer[] renderers;
     // Start is called before the first frame update
@@ -80,7 +80,7 @@ public class Health : MonoBehaviour
         hp = MAX_HP;
         renderers[0].transform.localScale = Vector3.one;
     }
-    public float Hit(int damage)
+    public void Hit(int damage)
     {
         if (!isDead)
         {
@@ -96,9 +96,11 @@ public class Health : MonoBehaviour
                 isDead = true;
                 StartCoroutine(Dead_Cor());
             }
-            hitTime = 0f;
+            else
+            {
+                hitTime = 0f;
+            }
         }
-        return hp;
     }
     private IEnumerator Dead_Cor()
     {

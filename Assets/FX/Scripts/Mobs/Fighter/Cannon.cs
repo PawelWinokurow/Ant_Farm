@@ -92,16 +92,19 @@ namespace FighterNamespace
                ball_FX.gameObject.SetActive(false);
                ball_FX.gameObject.SetActive(true);
 
+               //TODO check if isDead check works
                if (isStatic)
                {
-                   if (trap.target?.mob.Hit(10) <= 0)
+                   trap.target?.mob.Hit(10);
+                   if (trap.target.mob.isDead && !trap.isDead)
                    {
                        trap.SetState(new IdleState(trap));
                    }
                }
                else
                {
-                   if (fighter.target?.mob.Hit(10) <= 0)
+                   fighter.target?.mob.Hit(10);
+                   if (fighter.target.mob.isDead && !fighter.isDead)
                    {
                        fighter.CancelJob();
                        fighter.SetState(new PatrolState(fighter));

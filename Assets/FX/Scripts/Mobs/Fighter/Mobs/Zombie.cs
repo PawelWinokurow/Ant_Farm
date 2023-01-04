@@ -19,17 +19,21 @@ namespace FighterNamespace
 
         public void Attack()
         {
-            if (UnityEngine.Random.Range(0, 100f) < 5)
+            if (UnityEngine.Random.Range(0, 100f) < 1)
             {
                 target.mob.Hit(Int32.MaxValue);
                 MutateMob(SliderValue.ZOMBIE, target.mob.currentHex);
                 CancelJob();
                 SetState(new PatrolState(this));
             }
-            else if (target.mob.Hit(mobSettings.ATTACK_STRENGTH) <= 0)
+            else
             {
-                CancelJob();
-                SetState(new PatrolState(this));
+                target.mob.Hit(mobSettings.ATTACK_STRENGTH);
+                if (target.mob.isDead)
+                {
+                    CancelJob();
+                    SetState(new PatrolState(this));
+                }
             }
         }
 

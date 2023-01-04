@@ -23,6 +23,8 @@ public class Trap : MonoBehaviour, Targetable
     protected Quaternion smoothRot;
     public DigJob digJob;
     public Target target;
+    public bool isDead { get => health.isDead; }
+
 
 
     public void SetInitialState()
@@ -72,13 +74,13 @@ public class Trap : MonoBehaviour, Targetable
     }
 
 
-    public virtual float Hit(int damage)
+    public virtual void Hit(int damage)
     {
-        if (health.hp > 0 && health.Hit(damage) <= 0)
+        health.Hit(damage);
+        if (isDead)
         {
             Kill();
         }
-        return health.hp;
     }
 
     public virtual bool IsTargetInSight()
