@@ -3,15 +3,10 @@ using UnityEngine;
 using TrapNamespace;
 using FighterNamespace;
 
-public enum TrapType
-{
-    SPIKES, TURRET
-}
-
 public class Trap : MonoBehaviour, Targetable
 {
     public string id { get; set; }
-    public TrapType type { get; set; }
+    public ACTOR_TYPE type { get; set; }
     public IMobAnimator animator { get; set; }
     public Health health { get; set; }
     public Vector3 position { get => transform.position; }

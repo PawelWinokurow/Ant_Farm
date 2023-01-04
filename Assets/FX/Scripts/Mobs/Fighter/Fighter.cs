@@ -5,10 +5,10 @@ using DataStructures.ViliWonka.KDTree;
 using UnityEngine;
 using FighterNamespace;
 
-public class Fighter : MonoBehaviour, Mob, Targetable
+public class Fighter : MonoBehaviour, Targetable
 {
     public string id { get; set; }
-    public MobType type { get; set; }
+    public ACTOR_TYPE type { get; set; }
     public IMobAnimator animator { get; set; }
     public Health health { get; set; }
     public Vector3 position { get => transform.position; }
@@ -178,28 +178,31 @@ public class Fighter : MonoBehaviour, Mob, Targetable
     }
 
 
-    public Target SearchTarget(List<Targetable> mobs, int accessMask, EdgeType edgeType = EdgeType.SECONDARY)
+    public Target SearchTarget(List<Targetable> mobs, int accessMask, EdgeType edgeType, Dictionary<ACTOR_TYPE, int> priorities)
     {
-        var notDeadMobs = new List<Targetable>(mobs.Where(mob => mob.currentState?.type != STATE.DEAD));
-        KDTree mobPositionsTree = new KDTree(notDeadMobs.Select(mob => mob.position).ToArray());
-        KDQuery query = new KDQuery();
-        List<int> queryResults = new List<int>();
-        query.Radius(mobPositionsTree, position, 200f, queryResults);
-        if (queryResults.Count == 0) { return null; }
-        for (int i = 0; i < queryResults.Count; i++)
+        var notDeadMobGroups = mobs.Where(mob => mob.currentState?.type != STATE.DEAD).GroupBy(mob => priorities[mob.type]).OrderBy(group => group.Key);
+        foreach (var notDeadMobGroup in notDeadMobGroups)
         {
-            var targetMob = notDeadMobs[queryResults[i]];
-            if (targetMob.currentHex == null)
+            KDTree mobPositionsTree = new KDTree(notDeadMobGroup.Select(mob => mob.position).ToArray());
+            KDQuery query = new KDQuery();
+            List<int> queryResults = new List<int>();
+            query.Radius(mobPositionsTree, position, 200f, queryResults);
+            if (queryResults.Count == 0) { return null; }
+            for (int i = 0; i < queryResults.Count; i++)
             {
-                continue;
-            }
-            var path = pathfinder.FindPath(position, targetMob.currentHex.position, accessMask, SearchType.NEAREST_VERTEX, edgeType);
-            if (path != null)
-            {
-                var target = new Target($"{id}_{targetMob.id}", targetMob);
-                target.path = path;
-                target.mob = targetMob;
-                return target;
+                var targetMob = notDeadMobGroup.ToList()[queryResults[i]];
+                if (targetMob.currentHex == null)
+                {
+                    continue;
+                }
+                var path = pathfinder.FindPath(position, targetMob.currentHex.position, accessMask, SearchType.NEAREST_VERTEX, edgeType);
+                if (path != null)
+                {
+                    var target = new Target($"{id}_{targetMob.id}", targetMob);
+                    target.path = path;
+                    target.mob = targetMob;
+                    return target;
+                }
             }
         }
         return null;

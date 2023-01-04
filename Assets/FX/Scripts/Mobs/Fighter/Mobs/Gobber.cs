@@ -11,7 +11,7 @@ namespace FighterNamespace
             gameSettings = Settings.Instance.gameSettings;
             mobSettings = Settings.Instance.gobberSettings;
             animator = GetComponent<MobAnimator>();
-            type = MobType.GOBBER;
+            type = ACTOR_TYPE.GOBBER;
             health = GetComponent<Health>();
             health.InitHp(mobSettings.HP);
             SetInitialState();
@@ -39,7 +39,7 @@ namespace FighterNamespace
 
         public override Target SearchTarget()
         {
-            return SearchTarget(store.allAllies, mobSettings.FOLLOWING_ACCESS_MASK);
+            return SearchTarget(store.allAllies, mobSettings.FOLLOWING_ACCESS_MASK, EdgeType.SECONDARY, Priorities.ENEMY_TARGET_PRIORITIES);
         }
     }
 }

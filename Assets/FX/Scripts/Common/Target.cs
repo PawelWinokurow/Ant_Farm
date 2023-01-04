@@ -1,7 +1,8 @@
 using System;
-public interface Targetable : Hitable, Hexable, StateMachine
+public interface Targetable : Hitable, Hexable, StateMachine, Animatable
 {
     public string id { get; set; }
+    public ACTOR_TYPE type { get; set; }
 }
 
 namespace FighterNamespace

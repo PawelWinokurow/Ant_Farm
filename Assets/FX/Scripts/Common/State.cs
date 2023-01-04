@@ -1,9 +1,3 @@
-
-public enum STATE
-{
-    IDLE, GOTO, BUILD, CARRYING, LOADING, UNLOADING, FOLLOWING, ATTACK, DEAD, PATROL, DIG
-}
-
 public abstract class State
 {
     public STATE type { get; set; }

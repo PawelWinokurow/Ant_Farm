@@ -162,7 +162,7 @@ public class MobFactory : MonoBehaviour
         yield return null;
     }
 
-    public void Buy(Mob mob, int cost)
+    public void Buy(Targetable mob, int cost)
     {
         PopUp popUp = Instantiate(popUp_prefad, mob.position, Quaternion.identity, transform);
         popUp.tmp.text = (-cost).ToString();

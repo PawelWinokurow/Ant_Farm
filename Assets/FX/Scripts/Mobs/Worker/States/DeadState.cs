@@ -2,7 +2,7 @@ namespace WorkerNamespace
 {
     public class DeadState : State
     {
-        public DeadState(Mob mob)
+        public DeadState(Targetable mob)
         {
             this.type = STATE.DEAD;
             mob.SetRunAnimation();

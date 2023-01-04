@@ -13,7 +13,7 @@ namespace TrapNamespace
             animator = GetComponent<MobAnimatorTurret>();
             gameSettings = Settings.Instance.gameSettings;
             trapSettings = Settings.Instance.turretSettings;
-            type = TrapType.TURRET;
+            type = ACTOR_TYPE.TURRET;
             health = GetComponent<Health>();
             workHexagon = GetComponent<WorkHexagon>();
             currentHex = workHexagon.floorHexagon;

@@ -13,7 +13,7 @@ namespace FighterNamespace
             gameSettings = Settings.Instance.gameSettings;
             mobSettings = Settings.Instance.scorpionSettings;
             animator = GetComponent<MobAnimator>();
-            type = MobType.SCORPION;
+            type = ACTOR_TYPE.SCORPION;
             health = GetComponent<Health>();
             health.InitHp(mobSettings.HP);
             SetInitialState();
@@ -62,7 +62,7 @@ namespace FighterNamespace
 
         public override Target SearchTarget()
         {
-            return SearchTarget(store.allAllies, mobSettings.FOLLOWING_ACCESS_MASK, EdgeType.PRIMARY);
+            return SearchTarget(store.allAllies, mobSettings.FOLLOWING_ACCESS_MASK, EdgeType.PRIMARY, Priorities.ENEMY_TARGET_PRIORITIES);
         }
 
         public override bool IsTargetInSight()

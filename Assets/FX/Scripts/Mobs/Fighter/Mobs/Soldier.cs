@@ -10,7 +10,7 @@ namespace FighterNamespace
             gameSettings = Settings.Instance.gameSettings;
             mobSettings = Settings.Instance.soldierSettings;
             animator = GetComponent<MobAnimator>();
-            type = MobType.SOLDIER;
+            type = ACTOR_TYPE.SOLDIER;
             health = GetComponent<Health>();
             health.InitHp(mobSettings.HP);
             SetInitialState();
@@ -27,7 +27,7 @@ namespace FighterNamespace
 
         public override Target SearchTarget()
         {
-            return SearchTarget(store.allEnemies, mobSettings.FOLLOWING_ACCESS_MASK);
+            return SearchTarget(store.allEnemies, mobSettings.FOLLOWING_ACCESS_MASK, EdgeType.SECONDARY, Priorities.ALLIES_TARGET_PRIORITIES);
         }
 
         public override bool IsTargetInSight()

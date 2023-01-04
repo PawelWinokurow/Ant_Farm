@@ -5,10 +5,10 @@ using UnityEngine;
 namespace WorkerNamespace
 {
 
-    public class Worker : MonoBehaviour, Mob, Targetable
+    public class Worker : MonoBehaviour, Targetable
     {
         public string id { get; set; }
-        public MobType type { get; set; }
+        public ACTOR_TYPE type { get; set; }
         public float carryingWeight = 0;
         public MobAnimator animator { get; set; }
         public Health health { get; set; }
@@ -42,7 +42,7 @@ namespace WorkerNamespace
             animator = GetComponent<MobAnimator>();
             health = GetComponent<Health>();
             health.InitHp(workerSettings.HP);
-            type = MobType.WORKER;
+            type = ACTOR_TYPE.WORKER;
             accessMask = gameSettings.ACCESS_MASK_FLOOR + gameSettings.ACCESS_MASK_BASE;
             SetInitialState();
         }
