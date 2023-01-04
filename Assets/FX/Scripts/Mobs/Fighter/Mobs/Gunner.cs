@@ -6,6 +6,7 @@ namespace FighterNamespace
 {
     public class Gunner : Fighter
     {
+
         void Start()
         {
             gameSettings = Settings.Instance.gameSettings;
@@ -40,6 +41,16 @@ namespace FighterNamespace
         public override Target SearchTarget()
         {
             return SearchTarget(store.allEnemies, mobSettings.FOLLOWING_ACCESS_MASK, EdgeType.SECONDARY, Priorities.ALLIES_TARGET_PRIORITIES);
+        }
+
+        public override void Attack()
+        {
+            target.mob.Hit(mobSettings.ATTACK_STRENGTH);
+            if (target.mob.isDead && !isDead)
+            {
+                CancelJob();
+                SetState(new PatrolState(this));
+            }
         }
     }
 }

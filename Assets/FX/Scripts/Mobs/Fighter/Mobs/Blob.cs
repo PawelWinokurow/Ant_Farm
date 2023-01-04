@@ -17,7 +17,7 @@ namespace FighterNamespace
             SetInitialState();
         }
 
-        public void Attack()
+        public override void Attack()
         {
             var neighbours = currentHex.vertex.neighbours
                 .Select(neighbour => neighbour.floorHexagon)
@@ -28,7 +28,7 @@ namespace FighterNamespace
                 if (neighbours.Contains(ally.currentHex))
                 {
                     ally.Hit(mobSettings.ATTACK_STRENGTH);
-                    if (target == null || target.Equals(null))
+                    if ((target == null || target.Equals(null)) && !isDead)
                     {
                         CancelJob();
                         SetState(new PatrolState(this));

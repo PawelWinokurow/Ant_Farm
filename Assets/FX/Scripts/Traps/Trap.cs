@@ -42,6 +42,11 @@ public class Trap : MonoBehaviour, Targetable
         return null;
     }
 
+    public virtual void Attack()
+    {
+
+    }
+
     public void SetState(State state)
     {
         if (currentState != null)

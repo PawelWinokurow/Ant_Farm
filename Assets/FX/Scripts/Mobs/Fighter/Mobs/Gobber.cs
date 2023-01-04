@@ -41,5 +41,16 @@ namespace FighterNamespace
         {
             return SearchTarget(store.allAllies, mobSettings.FOLLOWING_ACCESS_MASK, EdgeType.SECONDARY, Priorities.ENEMY_TARGET_PRIORITIES);
         }
+
+        public override void Attack()
+        {
+            target.mob.Hit(mobSettings.ATTACK_STRENGTH);
+            if (target.mob.isDead && !isDead)
+            {
+                CancelJob();
+                SetState(new PatrolState(this));
+            }
+        }
+
     }
 }

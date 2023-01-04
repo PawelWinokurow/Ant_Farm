@@ -89,6 +89,15 @@ namespace TrapNamespace
             body.rotation = smoothRot;
             body.Rotate(new Vector3(-90f, 0f, 180f), Space.Self);
         }
+
+        public override void Attack()
+        {
+            target.mob.Hit(10);
+            if (target.mob.isDead && !isDead)
+            {
+                SetState(new IdleState(this));
+            }
+        }
     }
 
 

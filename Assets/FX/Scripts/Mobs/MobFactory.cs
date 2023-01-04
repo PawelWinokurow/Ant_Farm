@@ -52,6 +52,7 @@ public class MobFactory : MonoBehaviour
             scorpion.SetState(new FighterNamespace.DeadState(scorpion));
             scorpion.CancelJob();
         };
+        scorpion.type = ACTOR_TYPE.SCORPION;
         store.AddEnemy((Targetable)scorpion);
         Buy(scorpion, 10);
         yield return null;
@@ -72,6 +73,7 @@ public class MobFactory : MonoBehaviour
             zombie.CancelJob();
         };
         zombie.MutateMob = AddMobByType;
+        zombie.type = ACTOR_TYPE.ZOMBIE;
         store.AddEnemy((Targetable)zombie);
         Buy(zombie, 10);
         yield return null;
@@ -91,6 +93,7 @@ public class MobFactory : MonoBehaviour
             blob.SetState(new FighterNamespace.DeadState(blob));
             blob.CancelJob();
         };
+        blob.type = ACTOR_TYPE.BLOB;
         store.AddEnemy((Targetable)blob);
         Buy(blob, 10);
         yield return null;
@@ -110,6 +113,7 @@ public class MobFactory : MonoBehaviour
             gobber.SetState(new FighterNamespace.DeadState(gobber));
             gobber.CancelJob();
         };
+        gobber.type = ACTOR_TYPE.GOBBER;
         store.AddEnemy((Targetable)gobber);
         Buy(gobber, 10);
         yield return null;
@@ -120,6 +124,7 @@ public class MobFactory : MonoBehaviour
         Worker worker = Instantiate(workerPrefab, spawnPosition, Quaternion.identity);
         worker.id = id;
         worker.store = store;
+        worker.type = ACTOR_TYPE.WORKER;
         workerJobScheduler.AddWorker(worker);
         store.AddAlly(worker);
         Buy(worker, 10);
@@ -139,6 +144,7 @@ public class MobFactory : MonoBehaviour
             soldier.SetState(new FighterNamespace.DeadState(soldier));
             soldier.CancelJob();
         };
+        soldier.type = ACTOR_TYPE.SOLDIER;
         store.AddAlly((Targetable)soldier);
         Buy(soldier, 10);
         yield return null;
@@ -157,6 +163,7 @@ public class MobFactory : MonoBehaviour
             gunner.SetState(new FighterNamespace.DeadState(gunner));
             gunner.CancelJob();
         };
+        gunner.type = ACTOR_TYPE.GUNNER;
         store.AddAlly((Targetable)gunner);
         Buy(gunner, 10);
         yield return null;

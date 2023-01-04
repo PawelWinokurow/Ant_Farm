@@ -34,7 +34,7 @@ namespace TrapNamespace
             return store.allEnemies.Where(enemy => enemy.currentHex == currentHex).ToList().Count > 0;
         }
 
-        public void Attack()
+        public override void Attack()
         {
             var enemiesToAttack = store.allEnemies.Where(enemy => enemy.currentHex == currentHex).ToList();
             enemiesToAttack.ForEach(enemy => enemy.Hit(trapSettings.ATTACK_STRENGTH));

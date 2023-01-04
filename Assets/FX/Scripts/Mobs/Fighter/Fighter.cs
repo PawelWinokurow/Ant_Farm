@@ -194,6 +194,7 @@ public class Fighter : MonoBehaviour, Targetable
                 var targetMob = notDeadMobGroup.ToList()[queryResults[i]];
                 if (targetMob.currentHex == null)
                 {
+                    Debug.Log(targetMob.currentHex);
                     continue;
                 }
                 var path = pathfinder.FindPath(position, targetMob.currentHex.position, accessMask, SearchType.NEAREST_VERTEX, edgeType);
@@ -237,6 +238,9 @@ public class Fighter : MonoBehaviour, Targetable
         return null;
     }
 
+    public virtual void Attack()
+    {
+    }
 
     void DrawDebugPath()
     {

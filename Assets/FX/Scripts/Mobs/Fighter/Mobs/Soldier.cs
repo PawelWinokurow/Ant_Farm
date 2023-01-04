@@ -16,10 +16,10 @@ namespace FighterNamespace
             SetInitialState();
         }
 
-        public void Attack()
+        public override void Attack()
         {
             target.mob.Hit(mobSettings.ATTACK_STRENGTH);
-            if (target.mob.isDead)
+            if (target.mob.isDead && !isDead)
             {
                 CancelJob();
                 SetState(new PatrolState(this));
