@@ -132,7 +132,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2710414617680978376
 Transform:
   m_ObjectHideFlags: 0
@@ -313,6 +313,7 @@ MonoBehaviour:
   restoreHp: 0
   hp: 100
   healTime: 10
+  isDead: 0
   particlesColor: {r: 0.32941177, g: 0.32156864, b: 0.32156864, a: 1}
   renderers:
   - {fileID: 3020231855571217872}
