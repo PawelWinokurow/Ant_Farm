@@ -221,8 +221,8 @@ public class Surface : MonoBehaviour
         baseHex.vertex.neighbours.ForEach(vertex =>
         {
             vertex.floorHexagon.RemoveChildren();
-            vertex.floorHexagon.type = HexType.BASE;
-            pathGraph.SetAccesabillity(vertex.floorHexagon, gameSettings.ACCESS_MASK_BASE, gameSettings.EDGE_WEIGHT_NORMAL);
+            vertex.floorHexagon.type = HexType.EMPTY;
+            pathGraph.SetAccesabillity(vertex.floorHexagon, gameSettings.ACCESS_MASK_FLOOR, gameSettings.EDGE_WEIGHT_NORMAL);
         });
         baseHex.RemoveChildren();
         BaseHexagon.CreateHexagon(baseHex, basePrefab).type = HexType.BASE;

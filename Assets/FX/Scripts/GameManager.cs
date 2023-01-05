@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            if (hex.type == HexType.EMPTY)
+            if (hex.type == HexType.EMPTY || hex.type == HexType.SPIKES)
             {
                 if (slider.choosenValue == SliderValue.WORKER
                 || slider.choosenValue == SliderValue.GOBBER
