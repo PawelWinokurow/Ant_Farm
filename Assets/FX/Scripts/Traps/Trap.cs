@@ -13,7 +13,6 @@ public class Trap : MonoBehaviour, Targetable
     public State currentState { get; set; }
     public FloorHexagon currentHex { get; set; }
     public Action Kill { get; set; }
-    public Store store;
     public int accessMask { get; set; }
     public GameSettings gameSettings;
     public TrapSettings trapSettings;
@@ -24,9 +23,16 @@ public class Trap : MonoBehaviour, Targetable
     public DigJob digJob;
     public Target target;
     public bool isDead { get => health.isDead; }
+    protected SurfaceOperations surfaceOperations { get; set; }
+    protected Surface surface { get; set; }
+    protected Store store;
 
-
-
+    protected void InitSingletons()
+    {
+        surface = Surface.Instance;
+        surfaceOperations = SurfaceOperations.Instance;
+        store = Store.Instance;
+    }
     public void SetInitialState()
     {
         SetState(new IdleState(this));

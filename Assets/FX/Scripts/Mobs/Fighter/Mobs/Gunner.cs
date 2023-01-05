@@ -12,9 +12,9 @@ namespace FighterNamespace
             gameSettings = Settings.Instance.gameSettings;
             mobSettings = Settings.Instance.gunnerSettings;
             animator = GetComponent<MobAnimator>();
-            type = ACTOR_TYPE.GUNNER;
             health = GetComponent<Health>();
             health.InitHp(mobSettings.HP);
+            InitSingletons();
             SetInitialState();
         }
 
@@ -29,9 +29,9 @@ namespace FighterNamespace
                 var hexagonsOnTrajectory = new List<FloorHexagon>();
                 for (int i = 0; i < Mathf.Floor(vecLength); i++)
                 {
-                    hexagonsOnTrajectory.Add(surfaceOperations.surface.PositionToHex(position + i * vecNorm));
+                    hexagonsOnTrajectory.Add(surface.PositionToHex(position + i * vecNorm));
                 }
-                hexagonsOnTrajectory.Add(surfaceOperations.surface.PositionToHex(targetPosition));
+                hexagonsOnTrajectory.Add(surface.PositionToHex(targetPosition));
                 return hexagonsOnTrajectory.All(hex => hex.type != HexType.SOIL && hex.type != HexType.STONE);
             }
 

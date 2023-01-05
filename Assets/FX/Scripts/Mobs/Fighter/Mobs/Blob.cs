@@ -11,9 +11,9 @@ namespace FighterNamespace
             gameSettings = Settings.Instance.gameSettings;
             mobSettings = Settings.Instance.blobSettings;
             animator = GetComponent<MobAnimatorBlob>();
-            type = ACTOR_TYPE.BLOB;
             health = GetComponent<Health>();
             health.InitHp(mobSettings.HP);
+            InitSingletons();
             SetInitialState();
         }
 

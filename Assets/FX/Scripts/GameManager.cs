@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public MobFactory mobFactory;
     private Pathfinder pathfinder;
     public GameSettings settings;
+    public Store store;
 
     void Awake()
     {
@@ -33,7 +34,6 @@ public class GameManager : MonoBehaviour
         surface.Init(pathGraph, hexagons);
         pathfinder = new Pathfinder(pathGraph);
         workerJobScheduler.pathfinder = pathfinder;
-        workerJobScheduler.pathfinder = pathfinder;
         workerJobScheduler.SetSurfaceOperations(surfaceOperations);
         workerJobScheduler.StartJobScheuler();
     }
@@ -42,11 +42,14 @@ public class GameManager : MonoBehaviour
     {
         pathGraph = new Graph();
         surface.Init(pathGraph);
-        buildWallsTest.Init(surface);
+        buildWallsTest.Init();
         pathfinder = new Pathfinder(pathGraph);
         workerJobScheduler.pathfinder = pathfinder;
         workerJobScheduler.SetSurfaceOperations(surfaceOperations);
         workerJobScheduler.StartJobScheuler();
+        surface = Surface.Instance;
+        surfaceOperations = SurfaceOperations.Instance;
+        store = Store.Instance;
         // StoreService.SaveGraph(pathGraph);
         // StoreService.SaveHexagons(Surface.Hexagons);
     }
@@ -56,7 +59,7 @@ public class GameManager : MonoBehaviour
     {
         FloorHexagon hex = surface.PositionToHex(pos);
 
-        if (surfaceOperations.IsInOldHexagons(hex) && !workerJobScheduler.IsJobAssigned(hex.id))
+        if (surface.IsInOldHexagons(hex) && !workerJobScheduler.IsJobAssigned(hex.id))
         {
             surface.RemoveIcon(hex);
             workerJobScheduler.CancelJob(hex.id);

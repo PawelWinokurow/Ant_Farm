@@ -14,12 +14,14 @@ namespace TrapNamespace
             type = ACTOR_TYPE.SPIKES;
             health = GetComponent<Health>();
             currentHex = GetComponent<WorkHexagon>().floorHexagon;
-            store = currentHex.store;
             health.InitHp(trapSettings.HP);
             Kill = () =>
             {
                 SetState(new DeadState(this));
+                surface.ClearHex(workHexagon.floorHexagon);
+                surface.AddGround(workHexagon.floorHexagon);
             };
+            InitSingletons();
             SetInitialState();
         }
 

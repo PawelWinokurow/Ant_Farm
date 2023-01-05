@@ -11,9 +11,9 @@ namespace FighterNamespace
             gameSettings = Settings.Instance.gameSettings;
             mobSettings = Settings.Instance.zombieSettings;
             animator = GetComponent<MobAnimator>();
-            type = ACTOR_TYPE.ZOMBIE;
             health = GetComponent<Health>();
             health.InitHp(mobSettings.HP);
+            InitSingletons();
             SetInitialState();
         }
 

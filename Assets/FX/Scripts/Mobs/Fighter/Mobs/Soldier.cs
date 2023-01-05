@@ -10,9 +10,9 @@ namespace FighterNamespace
             gameSettings = Settings.Instance.gameSettings;
             mobSettings = Settings.Instance.soldierSettings;
             animator = GetComponent<MobAnimator>();
-            type = ACTOR_TYPE.SOLDIER;
             health = GetComponent<Health>();
             health.InitHp(mobSettings.HP);
+            InitSingletons();
             SetInitialState();
         }
 

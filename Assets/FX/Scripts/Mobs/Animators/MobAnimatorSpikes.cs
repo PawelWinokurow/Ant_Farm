@@ -26,7 +26,6 @@ public class MobAnimatorSpikes : MonoBehaviour, IMobAnimator
     public void IdleFight()
     {
         m_Shoot.Invoke();
-        health.Hit(20);
 
         if (s != null)
         {

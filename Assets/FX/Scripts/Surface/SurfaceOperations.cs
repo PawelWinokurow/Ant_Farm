@@ -2,18 +2,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using WorkerNamespace;
+using System;
 
 public class SurfaceOperations : MonoBehaviour
 {
-    public Surface surface;
-    public Dictionary<string, Hexagon> oldHexagons { get => surface.oldhexagons; set => surface.oldhexagons = value; }
+    private Store store;
+    private Surface surface;
     private GameSettings gameSettings;
     private WorkerSettings workerSettings;
+    public static SurfaceOperations Instance { get; private set; }
 
-    void Start()
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
+    private void Start()
     {
         workerSettings = Settings.Instance.workerSettings;
         gameSettings = Settings.Instance.gameSettings;
+        surface = Surface.Instance;
+        store = Store.Instance;
     }
 
     public void Loading(CollectingHexagon collectingHex, LoadingState state, CarrierJob job)
@@ -38,6 +53,7 @@ public class SurfaceOperations : MonoBehaviour
             collectingHex.Quantity -= toTake;
             if (worker.carryingWeight >= workerSettings.MAX_CARRYING_WEIGHT)
             {
+                worker.carryingWeight = workerSettings.MAX_CARRYING_WEIGHT;
                 state.Done();
             }
         }
@@ -47,7 +63,7 @@ public class SurfaceOperations : MonoBehaviour
     {
         var worker = state.worker;
         var toStore = Mathf.Min((workerSettings.UPLOADING_SPEED * Time.deltaTime), worker.carryingWeight);
-        storageHex.storage += toStore;
+        store.AddRemoveFood(toStore);
         worker.carryingWeight -= toStore;
         if (worker.carryingWeight <= 0)
         {
@@ -84,6 +100,7 @@ public class SurfaceOperations : MonoBehaviour
             scaledBlock.transform.localScale = 0.95f * Vector3.one * scaledBlock.work / WorkHexagon.MAX_WORK;
             if (scaledBlock.work <= 0)
             {
+                surface.ClearHex(floorHex);
                 surface.AddGround(floorHex);
                 surface.pathGraph.SetAccesabillity(floorHex, gameSettings.ACCESS_MASK_FLOOR, gameSettings.EDGE_WEIGHT_NORMAL);
                 scorpion.CancelDigging();
@@ -97,15 +114,14 @@ public class SurfaceOperations : MonoBehaviour
         var floorHex = workerJob.hex;
         var type = surface.GetHexTypeByIcon(floorHex);
         var scaledBlock = (WorkHexagon)(floorHex.child);
-
         scaledBlock.work -= worker.workerSettings.CONSTRUCTION_SPEED * Time.deltaTime;
         scaledBlock.transform.localScale = 0.95f * Vector3.one * scaledBlock.work / WorkHexagon.MAX_WORK;
         if (scaledBlock.work <= 0)
         {
+            workerJob.Cancel();
+            surface.ClearHex(floorHex);
             surface.AddGround(floorHex);
             surface.pathGraph.SetAccesabillity(floorHex, gameSettings.ACCESS_MASK_FLOOR, gameSettings.EDGE_WEIGHT_NORMAL);
-            workerJob.Cancel();
-            oldHexagons.Remove(floorHex.id);
         }
     }
 
@@ -116,24 +132,19 @@ public class SurfaceOperations : MonoBehaviour
         var type = surface.GetHexTypeByIcon(floorHex);
         var icon = ((WorkHexagon)floorHex.child).GetComponent<MountIcon>();
         var scaledBlock = icon.scaledIconPrefab;
-
         scaledBlock.work -= worker.workerSettings.CONSTRUCTION_SPEED * Time.deltaTime;
         scaledBlock.transform.localScale = Vector3.one * (0.4f + 0.6f * (1 - scaledBlock.work / WorkHexagon.MAX_WORK));
         if (scaledBlock.work <= 0)
         {
-            floorHex.RemoveChildren();
-            var block = surface.AddBlock(floorHex, type);
-            block.surfaceOperations = this;
-            surface.pathGraph.SetAccesabillity(floorHex, surface.GetAccessMaskByHexType(type), surface.GetEdgeWeightByHexType(type));
             workerJob.Cancel();
-            oldHexagons.Remove(floorHex.id);
+            surface.ClearHex(floorHex);
+            var block = surface.AddBlock(floorHex, type);
+            block.surface = surface;
+            surface.pathGraph.SetAccesabillity(floorHex, surface.GetAccessMaskByHexType(type), surface.GetEdgeWeightByHexType(type));
         }
     }
 
-    public bool IsInOldHexagons(FloorHexagon hex)
-    {
-        return oldHexagons.ContainsKey(hex.id);
-    }
+
 
     public BaseHexagon NearestBaseHexagon()
     {

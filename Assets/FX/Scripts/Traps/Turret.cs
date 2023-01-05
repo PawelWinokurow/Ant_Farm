@@ -17,12 +17,14 @@ namespace TrapNamespace
             health = GetComponent<Health>();
             workHexagon = GetComponent<WorkHexagon>();
             currentHex = workHexagon.floorHexagon;
-            store = currentHex.store;
             health.InitHp(trapSettings.HP);
             Kill = () =>
             {
                 SetState(new DeadState(this));
+                surface.ClearHex(workHexagon.floorHexagon);
+                surface.AddGround(workHexagon.floorHexagon);
             };
+            InitSingletons();
             SetInitialState();
         }
 
@@ -59,9 +61,9 @@ namespace TrapNamespace
                 var hexagonsOnTrajectory = new List<FloorHexagon>();
                 for (int i = 0; i < Mathf.Floor(vecLength); i++)
                 {
-                    hexagonsOnTrajectory.Add(workHexagon.surfaceOperations.surface.PositionToHex(position + i * vecNorm));
+                    hexagonsOnTrajectory.Add(surface.PositionToHex(position + i * vecNorm));
                 }
-                hexagonsOnTrajectory.Add(workHexagon.surfaceOperations.surface.PositionToHex(targetPosition));
+                hexagonsOnTrajectory.Add(surface.PositionToHex(targetPosition));
                 return hexagonsOnTrajectory.All(hex => hex.type != HexType.SOIL && hex.type != HexType.STONE);
             }
             return false;
