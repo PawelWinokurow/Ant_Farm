@@ -98,6 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a2cacea324c27a4ea7e7d19da329aab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  surfaceOperations: {fileID: 0}
   work: 100
   isGroundMat: 1
 --- !u!114 &7300087671223650242
@@ -114,6 +115,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mountIconPrefab: {fileID: 2594841573337192449}
   scaledIconPrefab: {fileID: 1323456790323941696}
+  scl: {x: 0, y: 0, z: 0}
 --- !u!1001 &8323112287669486306
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -131,15 +133,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 628786673665116450, guid: 6ef6f73c1ef17de46868508c8bd2cd52, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.4
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 628786673665116450, guid: 6ef6f73c1ef17de46868508c8bd2cd52, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.4
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 628786673665116450, guid: 6ef6f73c1ef17de46868508c8bd2cd52, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.4
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 628786673665116450, guid: 6ef6f73c1ef17de46868508c8bd2cd52, type: 3}
       propertyPath: m_LocalPosition.x

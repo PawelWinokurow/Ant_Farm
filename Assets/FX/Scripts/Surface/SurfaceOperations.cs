@@ -133,7 +133,7 @@ public class SurfaceOperations : MonoBehaviour
         var icon = ((WorkHexagon)floorHex.child).GetComponent<MountIcon>();
         var scaledBlock = icon.scaledIconPrefab;
         scaledBlock.work -= worker.workerSettings.CONSTRUCTION_SPEED * Time.deltaTime;
-        scaledBlock.transform.localScale = Vector3.one * (0.4f + 0.6f * (1 - scaledBlock.work / WorkHexagon.MAX_WORK));
+        scaledBlock.transform.localScale = Vector3.one * Mathf.Lerp(icon.scl.x ,1, (1 - scaledBlock.work / WorkHexagon.MAX_WORK));
         if (scaledBlock.work <= 0)
         {
             workerJob.Cancel();
