@@ -7,7 +7,7 @@ using UnityEngine;
     {
 
         private Surface surface;
-    public Transform marker;
+    //public Transform marker;
     private Vector3[] points= new Vector3[81];
 
     public List<Material> materials;

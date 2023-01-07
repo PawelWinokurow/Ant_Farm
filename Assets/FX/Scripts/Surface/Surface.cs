@@ -38,6 +38,7 @@ public class Surface : MonoBehaviour
     public Vector3 center;
     private GameSettings gameSettings;
 
+   [HideInInspector] public Vector3[] sideHexagonsPos;
 
     public void Init(Graph pathGraph)
     {
@@ -81,10 +82,12 @@ public class Surface : MonoBehaviour
         height = Mathf.CeilToInt((lu.z - ld.z) / h) - 1;//находим количество шестиугольников в ширину и длину
         width = Mathf.CeilToInt((rd.x - ld.x) / w) - 1;
         hexagons = new FloorHexagon[width * height];
+        sideHexagonsPos = new Vector3[(width-1) *2+ (height-1)*2];
     }
 
     public void Generatehexagons()
     {
+        int n = 0;
         for (int z = 0; z < height; z++)
         {
             for (int x = 0; x < width; x++)
@@ -94,6 +97,11 @@ public class Surface : MonoBehaviour
                 hex.store = store;
                 pathGraph.AddHexagonSubGraph(hex, Hexagon.radius, $"{x}_{z}");
                 hexagons[z * width + x] = hex;
+
+                if (z == 0 || z == height -1 || x == 0 || x == width - 1)
+                {
+                    sideHexagonsPos[n++] = hexPosition;
+                }
             }
         }
         pathGraph.SetNeighbours();
