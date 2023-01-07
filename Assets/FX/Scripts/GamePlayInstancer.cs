@@ -22,7 +22,8 @@ public class GamePlayInstancer : MonoBehaviour
            // {
                 Vector3 sidePos = surface.sideHexagonsPos[Random.Range(0, surface.sideHexagonsPos.Length)];
                 Vector3 pos = Vector3.Lerp(sidePos, surface.center + (sidePos - surface.center).normalized * 15f, Mathf.Pow(Random.Range(0f, 1f), 3f));
-                Instantiate(marker, pos, Quaternion.identity);
+            Hexagon hex = surface.PositionToHex(pos);
+                Instantiate(marker, hex.position, Quaternion.identity);
           //  }
 
         }
