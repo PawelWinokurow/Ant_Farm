@@ -4,16 +4,18 @@ namespace FighterNamespace
     {
         private Scorpion scorpion;
         private DigJob job;
+        private SurfaceOperations surfaceOperations;
 
         public DigState(Scorpion scorpion)
         {
-            this.type = STATE.DIG;
+            type = STATE.DIG;
             this.scorpion = scorpion;
+            surfaceOperations = SurfaceOperations.Instance;
         }
 
         public override void Tick()
         {
-            scorpion.surfaceOperations.Dig(job);
+            surfaceOperations.Dig(job);
         }
 
         override public void CancelJob()

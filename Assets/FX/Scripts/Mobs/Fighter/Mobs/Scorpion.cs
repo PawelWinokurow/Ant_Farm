@@ -13,16 +13,16 @@ namespace FighterNamespace
             gameSettings = Settings.Instance.gameSettings;
             mobSettings = Settings.Instance.scorpionSettings;
             animator = GetComponent<MobAnimator>();
-            type = ACTOR_TYPE.SCORPION;
             health = GetComponent<Health>();
             health.InitHp(mobSettings.HP);
+            InitSingletons();
             SetInitialState();
         }
 
-        public void Attack()
+        public override void Attack()
         {
             target.mob.Hit(mobSettings.ATTACK_STRENGTH);
-            if (target.mob.isDead)
+            if (target.mob.isDead && !isDead)
             {
                 CancelJob();
                 SetState(new PatrolState(this));

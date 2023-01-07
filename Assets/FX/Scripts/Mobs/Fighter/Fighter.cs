@@ -15,7 +15,9 @@ public class Fighter : MonoBehaviour, Targetable
     public Path path { get; set; }
     public State currentState { get; set; }
     public Pathfinder pathfinder { get; set; }
-    public SurfaceOperations surfaceOperations { get; set; }
+    protected SurfaceOperations surfaceOperations { get; set; }
+    protected Surface surface { get; set; }
+    protected Store store;
     public Target target { get; set; }
     public FloorHexagon currentHex { get; set; }
     public Action Kill { get; set; }
@@ -23,7 +25,6 @@ public class Fighter : MonoBehaviour, Targetable
     protected float lerpDuration;
     protected float t = 0f;
     public Edge currentPathEdge;
-    public Store store;
     public int accessMask { get; set; }
     public GameSettings gameSettings;
     public FighterSettings mobSettings;
@@ -34,6 +35,12 @@ public class Fighter : MonoBehaviour, Targetable
     public DigJob digJob;
     public bool isDead { get => health.isDead; }
 
+    protected void InitSingletons()
+    {
+        surface = Surface.Instance;
+        surfaceOperations = SurfaceOperations.Instance;
+        store = Store.Instance;
+    }
     public void SetInitialState()
     {
         var target = SearchTarget();
@@ -187,8 +194,11 @@ public class Fighter : MonoBehaviour, Targetable
             KDTree mobPositionsTree = new KDTree(notDeadMobGroup.Select(mob => mob.position).ToArray());
             KDQuery query = new KDQuery();
             List<int> queryResults = new List<int>();
-            query.Radius(mobPositionsTree, position, 200f, queryResults);
-            if (queryResults.Count == 0) { return null; }
+            List<float> queryDistances = new List<float>();
+            query.KNearest(mobPositionsTree, position, notDeadMobGroup.ToList().Count, queryResults, queryDistances);
+            queryResults.Reverse();
+            queryDistances.Reverse();
+            if (queryResults.Count == 0 || queryDistances[0] > 10000f) { return null; }
             for (int i = 0; i < queryResults.Count; i++)
             {
                 var targetMob = notDeadMobGroup.ToList()[queryResults[i]];
@@ -237,6 +247,9 @@ public class Fighter : MonoBehaviour, Targetable
         return null;
     }
 
+    public virtual void Attack()
+    {
+    }
 
     void DrawDebugPath()
     {

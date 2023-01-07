@@ -2,7 +2,7 @@ using UnityEngine;
 
 public enum HexType
 {
-    EMPTY, SOIL, STONE, SPIKES, FOOD, BASE, TURRET
+    EMPTY, SOIL, STONE, SPIKES, FOOD, BASE, TURRET, HOLE
 }
 
 public class FloorHexagon : MonoBehaviour, Hexagon
@@ -14,7 +14,12 @@ public class FloorHexagon : MonoBehaviour, Hexagon
     public Hexagon child { get; set; }
     public Vertex vertex { get; set; }
     public MeshRenderer mr;
-    public Store store;
+    private Store store;
+
+    private void Start()
+    {
+        store = Store.Instance;
+    }
 
     public static FloorHexagon CreateHexagon(string id, FloorHexagon HexPrefab, Vector3 hexPosition, Transform parent, HexType hexType, float work)
     {

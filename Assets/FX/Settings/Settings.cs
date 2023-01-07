@@ -3,7 +3,6 @@ using UnityEngine;
 public class Settings : MonoBehaviour
 {
     public static Settings Instance { get; private set; }
-
     public GameSettings gameSettings;
     public WorkerSettings workerSettings;
     public FighterSettings soldierSettings;
@@ -14,6 +13,7 @@ public class Settings : MonoBehaviour
     public FighterSettings blobSettings;
     public TrapSettings spikesSettings;
     public TrapSettings turretSettings;
+    public PriceSettings priceSettings;
     private void Awake()
     {
         if (Instance != null && Instance != this)

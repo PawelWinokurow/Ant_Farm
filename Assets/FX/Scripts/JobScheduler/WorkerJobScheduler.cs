@@ -13,7 +13,6 @@ public class WorkerJobScheduler : MonoBehaviour
     private List<WorkerJob> unassignedCarryingJobsQueue = new List<WorkerJob>();
     private List<WorkerJob> assignedCarryingJobsQueue = new List<WorkerJob>();
     private Graph pathGraph;
-    private SurfaceOperations surfaceOperations;
     public Pathfinder pathfinder { get; set; }
     private List<Worker> carryingWorkers = new List<Worker>();
     private List<Worker> buildingWorkers = new List<Worker>();
@@ -23,7 +22,6 @@ public class WorkerJobScheduler : MonoBehaviour
     public GameSettings gameSettings;
     public List<FloorHexagon> foodHexagons = new List<FloorHexagon>();
 
-
     private bool someUnassignedBuildingJobLeft { get => unassignedBuildingJobsQueue.Count != 0; }
     private bool someAssignedBuildingJobLeft { get => assignedBuildingJobsQueue.Count != 0; }
     private bool someUnassignedCarryingJobLeft { get => unassignedCarryingJobsQueue.Count != 0; }
@@ -31,10 +29,16 @@ public class WorkerJobScheduler : MonoBehaviour
     private bool someFreeWorkersLeft { get => freeWorkers.Count != 0; }
     private bool someCarryingWorkersLeft { get => carryingWorkers.Count != 0; }
     private bool someFoodLeft { get => foodHexagons.Count != 0; }
+    private Surface surface;
+    private SurfaceOperations surfaceOperations;
+    private Store store;
 
-    void Start()
+    void Awake()
     {
         gameSettings = Settings.Instance.gameSettings;
+        surface = Surface.Instance;
+        surfaceOperations = SurfaceOperations.Instance;
+        store = Store.Instance;
     }
 
     void Update()
@@ -63,7 +67,7 @@ public class WorkerJobScheduler : MonoBehaviour
         var nearestFoodHex = FindNearestFood();
         if (nearestFoodHex != null)
         {
-            var path = pathfinder.FindPath(surfaceOperations.surface.baseHex.vertex.neighbours[0].position, nearestFoodHex.position, gameSettings.ACCESS_MASK_FLOOR + gameSettings.ACCESS_MASK_SOIL + gameSettings.ACCESS_MASK_BASE, SearchType.NEAREST_CENTRAL_VERTEX);
+            var path = pathfinder.FindPath(surface.baseHex.vertex.neighbours[0].position, nearestFoodHex.position, gameSettings.ACCESS_MASK_FLOOR + gameSettings.ACCESS_MASK_SOIL + gameSettings.ACCESS_MASK_BASE, SearchType.NEAREST_CENTRAL_VERTEX);
             if (path != null)
             {
                 var soilHexagons = path.wayPoints
@@ -71,7 +75,7 @@ public class WorkerJobScheduler : MonoBehaviour
                     .Distinct()
                     .Where(hex => hex.type == HexType.SOIL)
                     .ToList();
-                soilHexagons.ForEach(hex => { surfaceOperations.surface.PlaceIcon(hex, SliderValue.DEMOUNT); AssignBuildJob(new BuildJob(hex, hex.transform.position, JobType.DEMOUNT)); });
+                soilHexagons.ForEach(hex => { surface.PlaceIcon(hex, SliderValue.DEMOUNT); AssignBuildJob(new BuildJob(hex, hex.transform.position, JobType.DEMOUNT)); });
                 foodHexagons.Add(nearestFoodHex);
             }
         }
@@ -115,7 +119,7 @@ public class WorkerJobScheduler : MonoBehaviour
 
     private bool IsPathToFoodExists()
     {
-        return pathfinder.FindPath(surfaceOperations.surface.baseHex.vertex.neighbours[0].position, foodHexagons[0].position, gameSettings.ACCESS_MASK_FLOOR, SearchType.NEAREST_CENTRAL_VERTEX) != null;
+        return pathfinder.FindPath(surface.baseHex.vertex.neighbours[0].position, foodHexagons[0].position, gameSettings.ACCESS_MASK_FLOOR, SearchType.NEAREST_CENTRAL_VERTEX) != null;
     }
 
     public void SetSurfaceOperations(SurfaceOperations setSurfaceOperations)
@@ -143,7 +147,7 @@ public class WorkerJobScheduler : MonoBehaviour
             buildingWorkers.Remove(worker);
             worker.CancelJob();
             freeWorkers.Remove(worker);
-            worker.store.DeleteAlly((Targetable)worker);
+            store.DeleteAlly((Targetable)worker);
             worker.SetState(new DeadState(worker));
         }
     }
@@ -178,7 +182,7 @@ public class WorkerJobScheduler : MonoBehaviour
     {
         var freeWorker = freeWorkers.First();
         var foodHex = foodHexagons.First();
-        var job = new CarrierJob(foodHex, (BaseHexagon)surfaceOperations.surface.baseHex.child);
+        var job = new CarrierJob(foodHex, (BaseHexagon)surface.baseHex.child);
         var path = pathfinder.FindPath(freeWorker.position, job.destination, freeWorker.accessMask, SearchType.NEAREST_CENTRAL_VERTEX);
         if (path != null)
         {
@@ -192,8 +196,8 @@ public class WorkerJobScheduler : MonoBehaviour
 
     private FloorHexagon FindNearestFood()
     {
-        var baseNeighbour = surfaceOperations.surface.baseHex.vertex.neighbours.First();
-        var foodHexagons = surfaceOperations.surface.hexagons.Where(hex => hex.type == HexType.FOOD).ToList();
+        var baseNeighbour = surface.baseHex.vertex.neighbours.First();
+        var foodHexagons = surface.hexagons.Where(hex => hex.type == HexType.FOOD).ToList();
 
         if (foodHexagons.Count != 0)
         {

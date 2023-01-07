@@ -11,13 +11,13 @@ namespace FighterNamespace
             gameSettings = Settings.Instance.gameSettings;
             mobSettings = Settings.Instance.zombieSettings;
             animator = GetComponent<MobAnimator>();
-            type = ACTOR_TYPE.ZOMBIE;
             health = GetComponent<Health>();
             health.InitHp(mobSettings.HP);
+            InitSingletons();
             SetInitialState();
         }
 
-        public void Attack()
+        public override void Attack()
         {
             if (UnityEngine.Random.Range(0, 100f) < 1)
             {
@@ -29,7 +29,7 @@ namespace FighterNamespace
             else
             {
                 target.mob.Hit(mobSettings.ATTACK_STRENGTH);
-                if (target.mob.isDead)
+                if (target.mob.isDead && isDead)
                 {
                     CancelJob();
                     SetState(new PatrolState(this));

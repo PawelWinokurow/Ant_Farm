@@ -9,8 +9,9 @@ public class MobFactory : MonoBehaviour
     private int id = 0;
     public WorkerJobScheduler workerJobScheduler;
     private Pathfinder pathfinder;
-    public Surface surface;
-    public SurfaceOperations surfaceOperations;
+    private Surface surface;
+    private SurfaceOperations surfaceOperations;
+    private Store store;
     public Worker workerPrefab;
     public Scorpion scorpionPrefab;
     public Zombie zombiePrefab;
@@ -18,12 +19,17 @@ public class MobFactory : MonoBehaviour
     public Gunner gunnerPrefab;
     public Soldier soldierPrefab;
     public Blob blobPrefab;
-    public Store store;
-    public PopUp popUp_prefad;
+    public ResourceOperations resourceOperations;
+    private PriceSettings priceSettings;
 
     void Start()
     {
         pathfinder = workerJobScheduler.pathfinder;
+        resourceOperations = ResourceOperations.Instance;
+        priceSettings = Settings.Instance.priceSettings;
+        surface = Surface.Instance;
+        surfaceOperations = SurfaceOperations.Instance;
+        store = Store.Instance;
     }
     public void AddMobByType(SliderValue type, FloorHexagon hex)
     {
@@ -38,33 +44,29 @@ public class MobFactory : MonoBehaviour
         StartCoroutine(action($"{type}_{id++}", hex));
     }
 
-    IEnumerator SpawnScorpion(string id, FloorHexagon hex)
+    public IEnumerator SpawnScorpion(string id, FloorHexagon hex)
     {
         var spawnPosition = hex.position;
         Scorpion scorpion = Instantiate(scorpionPrefab, spawnPosition, Quaternion.identity);
         scorpion.id = id;
         scorpion.pathfinder = pathfinder;
-        scorpion.store = store;
-        scorpion.surfaceOperations = surfaceOperations;
         scorpion.Kill = () =>
         {
             store.DeleteEnemy((Targetable)scorpion);
             scorpion.SetState(new FighterNamespace.DeadState(scorpion));
             scorpion.CancelJob();
         };
+        scorpion.type = ACTOR_TYPE.SCORPION;
         store.AddEnemy((Targetable)scorpion);
-        Buy(scorpion, 10);
         yield return null;
     }
 
-    IEnumerator SpawnZombie(string id, FloorHexagon hex)
+    public IEnumerator SpawnZombie(string id, FloorHexagon hex)
     {
         var spawnPosition = hex.position;
         Zombie zombie = Instantiate(zombiePrefab, spawnPosition, Quaternion.identity);
         zombie.id = id;
         zombie.pathfinder = pathfinder;
-        zombie.store = store;
-        zombie.surfaceOperations = surfaceOperations;
         zombie.Kill = () =>
         {
             store.DeleteEnemy((Targetable)zombie);
@@ -72,99 +74,97 @@ public class MobFactory : MonoBehaviour
             zombie.CancelJob();
         };
         zombie.MutateMob = AddMobByType;
+        zombie.type = ACTOR_TYPE.ZOMBIE;
         store.AddEnemy((Targetable)zombie);
-        Buy(zombie, 10);
         yield return null;
     }
 
-    IEnumerator SpawnBlob(string id, FloorHexagon hex)
+    public IEnumerator SpawnBlob(string id, FloorHexagon hex)
     {
         var spawnPosition = hex.position;
         Blob blob = Instantiate(blobPrefab, spawnPosition, Quaternion.identity);
         blob.id = id;
         blob.pathfinder = pathfinder;
-        blob.store = store;
-        blob.surfaceOperations = surfaceOperations;
         blob.Kill = () =>
         {
             store.DeleteEnemy((Targetable)blob);
             blob.SetState(new FighterNamespace.DeadState(blob));
             blob.CancelJob();
         };
+        blob.type = ACTOR_TYPE.BLOB;
         store.AddEnemy((Targetable)blob);
-        Buy(blob, 10);
         yield return null;
     }
 
-    IEnumerator SpawnGobber(string id, FloorHexagon hex)
+    public IEnumerator SpawnGobber(string id, FloorHexagon hex)
     {
         var spawnPosition = hex.position;
         Gobber gobber = Instantiate(gobberPrefab, spawnPosition, Quaternion.identity);
         gobber.id = id;
         gobber.pathfinder = pathfinder;
-        gobber.store = store;
-        gobber.surfaceOperations = surfaceOperations;
         gobber.Kill = () =>
         {
             store.DeleteEnemy((Targetable)gobber);
             gobber.SetState(new FighterNamespace.DeadState(gobber));
             gobber.CancelJob();
         };
+        gobber.type = ACTOR_TYPE.GOBBER;
         store.AddEnemy((Targetable)gobber);
-        Buy(gobber, 10);
         yield return null;
     }
-    IEnumerator SpawnWorker(string id, FloorHexagon hex)
+    public IEnumerator SpawnWorker(string id, FloorHexagon hex)
     {
-        var spawnPosition = hex.position;
-        Worker worker = Instantiate(workerPrefab, spawnPosition, Quaternion.identity);
-        worker.id = id;
-        worker.store = store;
-        workerJobScheduler.AddWorker(worker);
-        store.AddAlly(worker);
-        Buy(worker, 10);
-        yield return null;
-    }
-    IEnumerator SpawnSoldier(string id, FloorHexagon hex)
-    {
-        var spawnPosition = hex.position;
-        Soldier soldier = Instantiate(soldierPrefab, spawnPosition, Quaternion.identity);
-        soldier.id = id;
-        soldier.pathfinder = pathfinder;
-        soldier.store = store;
-        soldier.surfaceOperations = surfaceOperations;
-        soldier.Kill = () =>
+        if (store.food >= priceSettings.WORKER_PRICE)
         {
-            store.DeleteAlly((Targetable)soldier);
-            soldier.SetState(new FighterNamespace.DeadState(soldier));
-            soldier.CancelJob();
-        };
-        store.AddAlly((Targetable)soldier);
-        Buy(soldier, 10);
+            var spawnPosition = hex.position;
+            Worker worker = Instantiate(workerPrefab, spawnPosition, Quaternion.identity);
+            worker.id = id;
+            worker.type = ACTOR_TYPE.WORKER;
+            workerJobScheduler.AddWorker(worker);
+            store.AddAlly(worker);
+            resourceOperations.Buy(worker.position, priceSettings.WORKER_PRICE);
+        }
         yield return null;
     }
-    IEnumerator SpawnGunner(string id, FloorHexagon hex)
+    public IEnumerator SpawnSoldier(string id, FloorHexagon hex)
     {
-        var spawnPosition = hex.position;
-        Gunner gunner = Instantiate(gunnerPrefab, spawnPosition, Quaternion.identity);
-        gunner.id = id;
-        gunner.pathfinder = pathfinder;
-        gunner.store = store;
-        gunner.surfaceOperations = surfaceOperations;
-        gunner.Kill = () =>
+        if (store.food >= priceSettings.SOLDIER_PRICE)
         {
-            store.DeleteAlly((Targetable)gunner);
-            gunner.SetState(new FighterNamespace.DeadState(gunner));
-            gunner.CancelJob();
-        };
-        store.AddAlly((Targetable)gunner);
-        Buy(gunner, 10);
+            var spawnPosition = hex.position;
+            Soldier soldier = Instantiate(soldierPrefab, spawnPosition, Quaternion.identity);
+            soldier.id = id;
+            soldier.pathfinder = pathfinder;
+            soldier.Kill = () =>
+            {
+                store.DeleteAlly((Targetable)soldier);
+                soldier.SetState(new FighterNamespace.DeadState(soldier));
+                soldier.CancelJob();
+            };
+            soldier.type = ACTOR_TYPE.SOLDIER;
+            store.AddAlly((Targetable)soldier);
+            resourceOperations.Buy(soldier.position, priceSettings.SOLDIER_PRICE);
+        }
+        yield return null;
+    }
+    public IEnumerator SpawnGunner(string id, FloorHexagon hex)
+    {
+        if (store.food >= priceSettings.GUNNER_PRICE)
+        {
+            var spawnPosition = hex.position;
+            Gunner gunner = Instantiate(gunnerPrefab, spawnPosition, Quaternion.identity);
+            gunner.id = id;
+            gunner.pathfinder = pathfinder;
+            gunner.Kill = () =>
+            {
+                store.DeleteAlly((Targetable)gunner);
+                gunner.SetState(new FighterNamespace.DeadState(gunner));
+                gunner.CancelJob();
+            };
+            gunner.type = ACTOR_TYPE.GUNNER;
+            store.AddAlly((Targetable)gunner);
+            resourceOperations.Buy(gunner.position, priceSettings.GUNNER_PRICE);
+        }
         yield return null;
     }
 
-    public void Buy(Targetable mob, int cost)
-    {
-        PopUp popUp = Instantiate(popUp_prefad, mob.position, Quaternion.identity, transform);
-        popUp.tmp.text = (-cost).ToString();
-    }
 }

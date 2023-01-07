@@ -32,7 +32,7 @@ namespace WorkerNamespace
         public Transform body;
         public Transform angl;
         protected Quaternion smoothRot;
-        public Store store;
+        private Store store;
         public bool isDead { get => health.isDead; }
 
 
@@ -40,6 +40,7 @@ namespace WorkerNamespace
         {
             gameSettings = Settings.Instance.gameSettings;
             workerSettings = Settings.Instance.workerSettings;
+            store = Store.Instance;
             animator = GetComponent<MobAnimator>();
             health = GetComponent<Health>();
             health.InitHp(workerSettings.HP);

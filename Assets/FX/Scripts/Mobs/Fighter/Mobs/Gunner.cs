@@ -6,14 +6,15 @@ namespace FighterNamespace
 {
     public class Gunner : Fighter
     {
+
         void Start()
         {
             gameSettings = Settings.Instance.gameSettings;
             mobSettings = Settings.Instance.gunnerSettings;
             animator = GetComponent<MobAnimator>();
-            type = ACTOR_TYPE.GUNNER;
             health = GetComponent<Health>();
             health.InitHp(mobSettings.HP);
+            InitSingletons();
             SetInitialState();
         }
 
@@ -28,9 +29,9 @@ namespace FighterNamespace
                 var hexagonsOnTrajectory = new List<FloorHexagon>();
                 for (int i = 0; i < Mathf.Floor(vecLength); i++)
                 {
-                    hexagonsOnTrajectory.Add(surfaceOperations.surface.PositionToHex(position + i * vecNorm));
+                    hexagonsOnTrajectory.Add(surface.PositionToHex(position + i * vecNorm));
                 }
-                hexagonsOnTrajectory.Add(surfaceOperations.surface.PositionToHex(targetPosition));
+                hexagonsOnTrajectory.Add(surface.PositionToHex(targetPosition));
                 return hexagonsOnTrajectory.All(hex => hex.type != HexType.SOIL && hex.type != HexType.STONE);
             }
 
@@ -40,6 +41,16 @@ namespace FighterNamespace
         public override Target SearchTarget()
         {
             return SearchTarget(store.allEnemies, mobSettings.FOLLOWING_ACCESS_MASK, EdgeType.SECONDARY, Priorities.ALLIES_TARGET_PRIORITIES);
+        }
+
+        public override void Attack()
+        {
+            target.mob.Hit(mobSettings.ATTACK_STRENGTH);
+            if (target.mob.isDead && !isDead)
+            {
+                CancelJob();
+                SetState(new PatrolState(this));
+            }
         }
     }
 }

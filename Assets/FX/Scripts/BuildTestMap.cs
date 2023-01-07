@@ -4,16 +4,15 @@ using UnityEngine;
 
 public class BuildTestMap : MonoBehaviour
 {
-
     private Surface surface;
     public int wallProbability = 80;
     public int foodProbability = 1;
     private GameSettings gameSettings;
 
-    public void Init(Surface surface)
+    public void Init()
     {
         gameSettings = Settings.Instance.gameSettings;
-        this.surface = surface;
+        surface = Surface.Instance;
         CreateWalls();
     }
 
@@ -23,6 +22,7 @@ public class BuildTestMap : MonoBehaviour
         surface.pathGraph.ResetAllEdgesToWalkable();
         for (int i = 1; i < surface.hexagons.Length - 1; i++)
         {
+            surface.ClearHex(surface.hexagons[i]);
             var probability = UnityEngine.Random.Range(0, 100f);
             if (probability <= wallProbability)
             {

@@ -11,13 +11,13 @@ namespace FighterNamespace
             gameSettings = Settings.Instance.gameSettings;
             mobSettings = Settings.Instance.blobSettings;
             animator = GetComponent<MobAnimatorBlob>();
-            type = ACTOR_TYPE.BLOB;
             health = GetComponent<Health>();
             health.InitHp(mobSettings.HP);
+            InitSingletons();
             SetInitialState();
         }
 
-        public void Attack()
+        public override void Attack()
         {
             var neighbours = currentHex.vertex.neighbours
                 .Select(neighbour => neighbour.floorHexagon)
@@ -28,7 +28,7 @@ namespace FighterNamespace
                 if (neighbours.Contains(ally.currentHex))
                 {
                     ally.Hit(mobSettings.ATTACK_STRENGTH);
-                    if (target == null || target.Equals(null))
+                    if ((target == null || target.Equals(null)) && !isDead)
                     {
                         CancelJob();
                         SetState(new PatrolState(this));

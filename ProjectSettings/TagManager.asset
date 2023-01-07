@@ -9,6 +9,7 @@ TagManager:
   - Spikes_Mount_Icon
   - Mob
   - Turret_Mount_Icon
+  - MoneyUI
   layers:
   - Default
   - TransparentFX

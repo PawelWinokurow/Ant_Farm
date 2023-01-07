@@ -17,24 +17,28 @@ namespace TrapNamespace
             health = GetComponent<Health>();
             workHexagon = GetComponent<WorkHexagon>();
             currentHex = workHexagon.floorHexagon;
-            store = currentHex.store;
             health.InitHp(trapSettings.HP);
             Kill = () =>
             {
                 SetState(new DeadState(this));
+                surface.ClearHex(workHexagon.floorHexagon);
+                surface.AddGround(workHexagon.floorHexagon);
             };
+            InitSingletons();
             SetInitialState();
         }
 
         public override Target SearchTarget()
         {
-
             var notDeadMobs = new List<Targetable>(store.allEnemies.Where(mob => mob.currentState != null && mob.currentState.type != STATE.DEAD));
             KDTree mobPositionsTree = new KDTree(notDeadMobs.Select(mob => mob.position).ToArray());
             KDQuery query = new KDQuery();
             List<int> queryResults = new List<int>();
-            query.Radius(mobPositionsTree, position, 30f, queryResults);
-            if (queryResults.Count == 0) { return null; }
+            List<float> queryDistances = new List<float>();
+            query.KNearest(mobPositionsTree, position, notDeadMobs.ToList().Count, queryResults, queryDistances);
+            queryResults.Reverse();
+            queryDistances.Reverse();
+            if (queryResults.Count == 0 || queryDistances[0] > 1000f) { return null; }
             for (int i = 0; i < queryResults.Count; i++)
             {
                 var targetMob = notDeadMobs[queryResults[i]];
@@ -57,9 +61,9 @@ namespace TrapNamespace
                 var hexagonsOnTrajectory = new List<FloorHexagon>();
                 for (int i = 0; i < Mathf.Floor(vecLength); i++)
                 {
-                    hexagonsOnTrajectory.Add(workHexagon.surfaceOperations.surface.PositionToHex(position + i * vecNorm));
+                    hexagonsOnTrajectory.Add(surface.PositionToHex(position + i * vecNorm));
                 }
-                hexagonsOnTrajectory.Add(workHexagon.surfaceOperations.surface.PositionToHex(targetPosition));
+                hexagonsOnTrajectory.Add(surface.PositionToHex(targetPosition));
                 return hexagonsOnTrajectory.All(hex => hex.type != HexType.SOIL && hex.type != HexType.STONE);
             }
             return false;
@@ -88,6 +92,15 @@ namespace TrapNamespace
             smoothRot = Quaternion.Slerp(smoothRot, rot, Time.deltaTime * 10f);
             body.rotation = smoothRot;
             body.Rotate(new Vector3(-90f, 0f, 180f), Space.Self);
+        }
+
+        public override void Attack()
+        {
+            target.mob.Hit(10);
+            if (target.mob.isDead && !isDead)
+            {
+                SetState(new IdleState(this));
+            }
         }
     }
 

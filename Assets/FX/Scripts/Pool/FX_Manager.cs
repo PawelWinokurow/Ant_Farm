@@ -77,8 +77,6 @@ public class FX_Manager : MonoBehaviour
         {
             go.transform.parent = parent;
         }
-        //TODO remove assert if it's working
-        Debug.Assert(go != null);
         return go;
     }
 

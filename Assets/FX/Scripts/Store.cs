@@ -1,12 +1,41 @@
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
 
 public class Store : MonoBehaviour
 {
     public List<Targetable> allAllies = new List<Targetable>();
     public List<Targetable> allEnemies = new List<Targetable>();
+    public static Store Instance { get; private set; }
+    public float food = 300f;
     private static object monitorLock = new object();
+    private TextMeshProUGUI moneyUI;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
+
+    private void Start()
+    {
+        moneyUI = GameObject.FindGameObjectWithTag("MoneyUI").GetComponent<TextMeshProUGUI>();
+    }
+
+    public void AddRemoveFood(float amount)
+    {
+        lock (monitorLock)
+        {
+            food += amount;
+            moneyUI.text = ((int)Mathf.Ceil(food)).ToString();
+        }
+    }
 
     public void AddAlly(Targetable mob)
     {

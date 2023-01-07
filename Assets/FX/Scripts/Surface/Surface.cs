@@ -9,6 +9,7 @@ public class Surface : MonoBehaviour
     public WorkHexagon stonePrefab;
     public WorkHexagon spikesPrefab;
     public WorkHexagon turretPrefab;
+    public WorkHexagon holePrefab;
 
     public WorkHexagon soilMountIconPrefab;
     public WorkHexagon stoneMountIconPrefab;
@@ -32,13 +33,25 @@ public class Surface : MonoBehaviour
     public FloorHexagon[] hexagons;
 
     public Graph pathGraph;
-    public Store store;
-
-    public Dictionary<string, Hexagon> oldhexagons = new Dictionary<string, Hexagon>();
+    private Store store;
+    public Dictionary<string, Hexagon> oldHexagons = new Dictionary<string, Hexagon>();
     public Vector3 center;
     private GameSettings gameSettings;
+    private ResourceOperations resourceOperations;
+    private PriceSettings priceSettings;
+    public static Surface Instance { get; private set; }
 
-   [HideInInspector] public Vector3[] sideHexagonsPos;
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
 
     public void Init(Graph pathGraph)
     {
@@ -49,7 +62,7 @@ public class Surface : MonoBehaviour
         SetCameraPositionToCenter();
         SetbaseHex();
         GetComponent<AddTextureToHex>().Init();
-        gameSettings = Settings.Instance.gameSettings;
+        InitSingletons();
     }
 
     public void Init(Graph pathGraph, HexagonSerializable[] hexagons)
@@ -60,6 +73,15 @@ public class Surface : MonoBehaviour
         // Loadhexagons(hexagons);
         SetCameraPositionToCenter();
         SetbaseHex();
+        InitSingletons();
+    }
+
+    private void InitSingletons()
+    {
+        gameSettings = Settings.Instance.gameSettings;
+        resourceOperations = ResourceOperations.Instance;
+        priceSettings = Settings.Instance.priceSettings;
+        store = Store.Instance;
     }
 
     public void SetupCamera()
@@ -82,26 +104,18 @@ public class Surface : MonoBehaviour
         height = Mathf.CeilToInt((lu.z - ld.z) / h) - 1;//находим количество шестиугольников в ширину и длину
         width = Mathf.CeilToInt((rd.x - ld.x) / w) - 1;
         hexagons = new FloorHexagon[width * height];
-        sideHexagonsPos = new Vector3[(width-1) *2+ (height-1)*2];
     }
 
     public void Generatehexagons()
     {
-        int n = 0;
         for (int z = 0; z < height; z++)
         {
             for (int x = 0; x < width; x++)
             {
                 Vector3 hexPosition = new Vector3(w * (x + (z % 2f) / 2f), 0f, z * h);
                 FloorHexagon hex = FloorHexagon.CreateHexagon($"{x}_{z}", hexPrefab, hexPosition, transform, HexType.EMPTY, 50f);
-                hex.store = store;
                 pathGraph.AddHexagonSubGraph(hex, Hexagon.radius, $"{x}_{z}");
                 hexagons[z * width + x] = hex;
-
-                if (z == 0 || z == height -1 || x == 0 || x == width - 1)
-                {
-                    sideHexagonsPos[n++] = hexPosition;
-                }
             }
         }
         pathGraph.SetNeighbours();
@@ -207,12 +221,18 @@ public class Surface : MonoBehaviour
         else if (type == HexType.STONE) blockPrefab = stonePrefab;
         else if (type == HexType.SPIKES) blockPrefab = spikesPrefab;
         else if (type == HexType.TURRET) blockPrefab = turretPrefab;
+        else if (type == HexType.HOLE) blockPrefab = holePrefab;
         return blockPrefab;
+    }
+
+    public void ClearHex(FloorHexagon hex)
+    {
+        hex.RemoveChildren();
+        oldHexagons.Remove(hex.id);
     }
 
     public void AddGround(FloorHexagon hex)
     {
-        hex.RemoveChildren();
         hex.type = HexType.EMPTY;
         hex.work = WorkHexagon.MAX_WORK;
     }
@@ -229,32 +249,35 @@ public class Surface : MonoBehaviour
         baseHex.vertex.neighbours.ForEach(vertex =>
         {
             vertex.floorHexagon.RemoveChildren();
-            vertex.floorHexagon.type = HexType.BASE;
-            pathGraph.SetAccesabillity(vertex.floorHexagon, gameSettings.ACCESS_MASK_BASE, gameSettings.EDGE_WEIGHT_NORMAL);
+            vertex.floorHexagon.type = HexType.EMPTY;
+            pathGraph.SetAccesabillity(vertex.floorHexagon, gameSettings.ACCESS_MASK_FLOOR, gameSettings.EDGE_WEIGHT_NORMAL);
         });
         baseHex.RemoveChildren();
         BaseHexagon.CreateHexagon(baseHex, basePrefab).type = HexType.BASE;
         pathGraph.SetAccesabillity(baseHex, gameSettings.ACCESS_MASK_PROHIBIT, gameSettings.EDGE_WEIGHT_NORMAL);
     }
 
-
     public void PlaceIcon(FloorHexagon hex, SliderValue value)
     {
-        if (value == SliderValue.SOIL)
+        if (value == SliderValue.SOIL && store.food >= priceSettings.SOIL_PRICE)
         {
             PlaceMountIcon(hex, soilMountIconPrefab, gameSettings.ACCESS_MASK_SOIL, gameSettings.EDGE_WEIGHT_OBSTACLE);
+            resourceOperations.Buy(hex.position, priceSettings.SOIL_PRICE);
         }
-        else if (value == SliderValue.STONE)
+        else if (value == SliderValue.STONE && store.food >= priceSettings.STONE_PRICE)
         {
             PlaceMountIcon(hex, stoneMountIconPrefab, gameSettings.ACCESS_MASK_STONE, gameSettings.EDGE_WEIGHT_OBSTACLE);
+            resourceOperations.Buy(hex.position, priceSettings.STONE_PRICE);
         }
-        else if (value == SliderValue.SPIKES)
+        else if (value == SliderValue.SPIKES && store.food >= priceSettings.SPIKES_PRICE)
         {
             PlaceMountIcon(hex, spikesMountIconPrefab, gameSettings.ACCESS_MASK_FLOOR, gameSettings.EDGE_WEIGHT_NORMAL);
+            resourceOperations.Buy(hex.position, priceSettings.SPIKES_PRICE);
         }
-        else if (value == SliderValue.TURRET)
+        else if (value == SliderValue.TURRET && store.food >= priceSettings.TURRET_PRICE)
         {
             PlaceMountIcon(hex, turretMountIconPrefab, gameSettings.ACCESS_MASK_STONE, gameSettings.EDGE_WEIGHT_OBSTACLE);
+            resourceOperations.Buy(hex.position, priceSettings.TURRET_PRICE);
         }
         if (value == SliderValue.DEMOUNT)
         {
@@ -267,7 +290,7 @@ public class Surface : MonoBehaviour
     {
         var clonedHex = Instantiate(hex).AssignProperties(hex);
         clonedHex.gameObject.SetActive(false);
-        oldhexagons.Add(clonedHex.id, clonedHex);
+        oldHexagons.Add(clonedHex.id, clonedHex);
         hex.RemoveChildren();
         pathGraph.SetAccesabillity(hex, accessMask, edgeMultiplier);
         WorkHexagon.CreateHexagon(hex, prefab);
@@ -277,7 +300,7 @@ public class Surface : MonoBehaviour
     {
         WorkHexagon clonedHex = WorkHexagon.CreateHexagon(hex, GetBlockPrefabByType(hex.type));
         clonedHex.AssignProperties((WorkHexagon)hex.child);
-        oldhexagons.Add(clonedHex.id, clonedHex);
+        oldHexagons.Add(clonedHex.id, clonedHex);
         hex.RemoveChildren();
         WorkHexagon hexNew = WorkHexagon.CreateHexagon(hex, GetBlockPrefabByType(hex.type));
         hexNew.AssignProperties(clonedHex);
@@ -325,7 +348,7 @@ public class Surface : MonoBehaviour
     public void RemoveIcon(FloorHexagon hex)
     {
         hex.RemoveChildren();
-        var oldIcon = oldhexagons[hex.id];
+        var oldIcon = oldHexagons[hex.id];
         if (oldIcon.type == HexType.EMPTY)
         {
             pathGraph.SetAccesabillity(hex, gameSettings.ACCESS_MASK_FLOOR, gameSettings.EDGE_WEIGHT_NORMAL);
@@ -351,8 +374,13 @@ public class Surface : MonoBehaviour
             pathGraph.SetAccesabillity(hex, gameSettings.ACCESS_MASK_STONE, gameSettings.EDGE_WEIGHT_OBSTACLE);
             WorkHexagon.CreateHexagon(hex, turretPrefab).AssignProperties((WorkHexagon)oldIcon);
         }
-        oldhexagons.Remove(hex.id);
+        oldHexagons.Remove(hex.id);
         Destroy((FloorHexagon)oldIcon);
+    }
+
+    public bool IsInOldHexagons(FloorHexagon hex)
+    {
+        return oldHexagons.ContainsKey(hex.id);
     }
 
 
