@@ -14,6 +14,7 @@ public class Settings : MonoBehaviour
     public TrapSettings spikesSettings;
     public TrapSettings turretSettings;
     public PriceSettings priceSettings;
+    public ResourcesSettings resourcesSettings;
     private void Awake()
     {
         if (Instance != null && Instance != this)

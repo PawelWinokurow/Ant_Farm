@@ -70,7 +70,7 @@ public class Storyteller : MonoBehaviour
             yield return new WaitForSeconds(3);
             var spawnFunc = spawnFuncs[0];
             spawnFuncs.RemoveAt(0);
-            // StartCoroutine(spawnFunc($"enemy{id++}", holeHex));
+            StartCoroutine(spawnFunc($"enemy{id++}", holeHex));
         }
     }
 }

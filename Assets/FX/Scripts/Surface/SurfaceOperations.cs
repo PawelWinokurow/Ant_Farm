@@ -36,10 +36,10 @@ public class SurfaceOperations : MonoBehaviour
         var worker = state.worker;
         var workerMaxCanTake = workerSettings.MAX_CARRYING_WEIGHT - worker.carryingWeight;
         var canTake = Mathf.Min((workerSettings.LOADING_SPEED * Time.deltaTime), workerMaxCanTake);
-        if (canTake >= collectingHex.Quantity)
+        if (canTake >= collectingHex.amount)
         {
-            worker.carryingWeight += collectingHex.Quantity;
-            collectingHex.Quantity = 0;
+            worker.carryingWeight += collectingHex.amount;
+            collectingHex.amount = 0;
             collectingHex.carriers.Where(w => w.id != worker.id).ToList().ForEach(w => w.CancelJob());
             collectingHex.ResetWorkers();
             collectingHex.floorHexagon.RemoveChildren();
@@ -50,7 +50,7 @@ public class SurfaceOperations : MonoBehaviour
         {
             var toTake = Mathf.Min(canTake, workerMaxCanTake);
             worker.carryingWeight += toTake;
-            collectingHex.Quantity -= toTake;
+            collectingHex.amount -= toTake;
             if (worker.carryingWeight >= workerSettings.MAX_CARRYING_WEIGHT)
             {
                 worker.carryingWeight = workerSettings.MAX_CARRYING_WEIGHT;
@@ -62,7 +62,7 @@ public class SurfaceOperations : MonoBehaviour
     public void Unloading(BaseHexagon storageHex, UnloadingState state, CarrierJob job)
     {
         var worker = state.worker;
-        var toStore = Mathf.Min((workerSettings.UPLOADING_SPEED * Time.deltaTime), worker.carryingWeight);
+        var toStore = worker.carryingWeight;
         store.AddRemoveFood(toStore);
         worker.carryingWeight -= toStore;
         if (worker.carryingWeight <= 0)
@@ -133,7 +133,7 @@ public class SurfaceOperations : MonoBehaviour
         var icon = ((WorkHexagon)floorHex.child).GetComponent<MountIcon>();
         var scaledBlock = icon.scaledIconPrefab;
         scaledBlock.work -= worker.workerSettings.CONSTRUCTION_SPEED * Time.deltaTime;
-        scaledBlock.transform.localScale = Vector3.one * Mathf.Lerp(icon.scl.x ,1, (1 - scaledBlock.work / WorkHexagon.MAX_WORK));
+        scaledBlock.transform.localScale = Vector3.one * Mathf.Lerp(icon.scl.x, 1, (1 - scaledBlock.work / WorkHexagon.MAX_WORK));
         if (scaledBlock.work <= 0)
         {
             workerJob.Cancel();

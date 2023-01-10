@@ -43,7 +43,7 @@ public class WorkerJobScheduler : MonoBehaviour
 
     void Update()
     {
-        if (someFoodLeft && ((CollectingHexagon)(foodHexagons.First().child)).Quantity <= 0) foodHexagons.RemoveAt(0);
+        if (someFoodLeft && ((CollectingHexagon)(foodHexagons.First().child)).amount <= 0) foodHexagons.RemoveAt(0);
         if (!someFoodLeft) SetPathToFood();
 
         while (someAssignedBuildingJobLeft)
@@ -145,7 +145,7 @@ public class WorkerJobScheduler : MonoBehaviour
         {
             carryingWorkers.Remove(worker);
             buildingWorkers.Remove(worker);
-            worker.CancelJob();
+            CancelJob(worker.job, true);
             freeWorkers.Remove(worker);
             store.DeleteAlly((Targetable)worker);
             worker.SetState(new DeadState(worker));
@@ -279,7 +279,7 @@ public class WorkerJobScheduler : MonoBehaviour
         }
     }
 
-    public void CancelJob(WorkerJob job)
+    public void CancelJob(WorkerJob job, bool isDead = false)
     {
         lock (monitorLock)
         {
@@ -287,19 +287,26 @@ public class WorkerJobScheduler : MonoBehaviour
             {
                 if (job.type == JobType.MOUNT || job.type == JobType.DEMOUNT)
                 {
-                    assignedBuildingJobsQueue.Remove(job);
-                    unassignedBuildingJobsQueue.Remove(job);
+                    if (isDead)
+                    {
+                        assignedBuildingJobsQueue.Remove(job);
+                        unassignedBuildingJobsQueue.Add(job);
+                    }
+                    else
+                    {
+                        assignedBuildingJobsQueue.Remove(job);
+                        unassignedBuildingJobsQueue.Remove(job);
+                    }
                     MoveBusyMobToFreeMobs(job.worker, buildingWorkers);
                 }
                 else if (job.type == JobType.CARRYING)
                 {
-
                     assignedCarryingJobsQueue.Remove(job);
                     unassignedCarryingJobsQueue.Remove(job);
                     MoveBusyMobToFreeMobs(job.worker, carryingWorkers);
                 }
                 job.worker.SetState(new IdleState(job.worker));
-                job.worker.path = null;
+                job.worker.RemovePath();
             }
             jobMap.Remove(job.id);
         }

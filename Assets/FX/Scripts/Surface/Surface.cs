@@ -38,6 +38,7 @@ public class Surface : MonoBehaviour
     public Vector3 center;
     private GameSettings gameSettings;
     private PriceSettings priceSettings;
+    private ResourcesSettings resourcesSettings;
     public static Surface Instance { get; private set; }
     [HideInInspector] public Vector3[] sideHexagonsPos;
     private void Awake()
@@ -79,6 +80,7 @@ public class Surface : MonoBehaviour
     {
         gameSettings = Settings.Instance.gameSettings;
         priceSettings = Settings.Instance.priceSettings;
+        resourcesSettings = Settings.Instance.resourcesSettings;
         store = Store.Instance;
     }
 
@@ -245,7 +247,7 @@ public class Surface : MonoBehaviour
     public void AddFood(FloorHexagon hex)
     {
         hex.RemoveChildren();
-        var collectingHex = CollectingHexagon.CreateHexagon(hex, foodPrefab);
+        var collectingHex = CollectingHexagon.CreateHexagon(hex, foodPrefab, resourcesSettings.FOOD_MAX_AMOUNT);
         collectingHex.type = HexType.FOOD;
     }
 

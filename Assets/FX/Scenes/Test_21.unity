@@ -193,6 +193,7 @@ MonoBehaviour:
   spikesSettings: {fileID: 11400000, guid: 48690d322ef7f0f4ab10c1ec622dcad7, type: 2}
   turretSettings: {fileID: 11400000, guid: 5c88f751af4b9bc4eaed87de72571a5e, type: 2}
   priceSettings: {fileID: 11400000, guid: a6f4adcdcf01aa447b44e119876e800c, type: 2}
+  resourcesSettings: {fileID: 11400000, guid: 8978e63a83830cb4996803fc9ad8a475, type: 2}
 --- !u!1 &262357869
 GameObject:
   m_ObjectHideFlags: 0
@@ -785,7 +786,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91ff42e579edf10479227a1f2de71d31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  food: 300
+  food: 10000
 --- !u!4 &1633955862
 Transform:
   m_ObjectHideFlags: 0
@@ -992,7 +993,6 @@ MonoBehaviour:
   gunnerPrefab: {fileID: 6826684635683908350, guid: bcf9c3d895ca58b4291a4b3b308974df, type: 3}
   soldierPrefab: {fileID: 6674348483651007441, guid: 3a0f38204bd838b42a8cdc55556aa0c3, type: 3}
   blobPrefab: {fileID: 8341925598511469700, guid: 9edd0512399568847b892b39fdc1507d, type: 3}
-  resourceOperations: {fileID: 0}
 --- !u!4 &2118494095978837243
 Transform:
   m_ObjectHideFlags: 0
@@ -1261,9 +1261,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7101241709256306328, guid: 465f21d7f82950741b51465480634072, type: 3}
       propertyPath: m_text
-      value: '300
-
-'
+      value: 10000
       objectReference: {fileID: 0}
     - target: {fileID: 7101241709256306328, guid: 465f21d7f82950741b51465480634072, type: 3}
       propertyPath: m_margin.x
