@@ -350,6 +350,7 @@ public class Surface : MonoBehaviour
     {
         hex.RemoveChildren();
         var oldIcon = oldHexagons[hex.id];
+
         if (oldIcon.type == HexType.EMPTY)
         {
             pathGraph.SetAccesabillity(hex, gameSettings.ACCESS_MASK_FLOOR, gameSettings.EDGE_WEIGHT_NORMAL);

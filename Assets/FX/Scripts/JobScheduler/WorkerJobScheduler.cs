@@ -298,10 +298,10 @@ public class WorkerJobScheduler : MonoBehaviour
                     unassignedCarryingJobsQueue.Remove(job);
                     MoveBusyMobToFreeMobs(job.worker, carryingWorkers);
                 }
-                jobMap.Remove(job.id);
                 job.worker.SetState(new IdleState(job.worker));
                 job.worker.path = null;
             }
+            jobMap.Remove(job.id);
         }
     }
 

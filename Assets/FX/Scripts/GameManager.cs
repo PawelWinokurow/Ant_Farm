@@ -65,8 +65,9 @@ public class GameManager : MonoBehaviour
 
         if (surface.IsInOldHexagons(hex) && !workerJobScheduler.IsJobAssigned(hex.id))
         {
-            surface.RemoveIcon(hex);
+            resourceOperations.Sell(hex.position, pricing.pricesByHexType[surface.GetHexTypeByIcon(hex)]);
             workerJobScheduler.CancelJob(hex.id);
+            surface.RemoveIcon(hex);
         }
         else
         {
@@ -82,7 +83,6 @@ public class GameManager : MonoBehaviour
             {
                 mobFactory.AddMobByType(slider.choosenValue, hex);
                 resourceOperations.Buy(hex.position, pricing.pricesBySliderValue[slider.choosenValue]);
-
             }
             else if ((slider.choosenValue == SliderValue.SOIL
             || slider.choosenValue == SliderValue.STONE

@@ -19,13 +19,11 @@ public class MobFactory : MonoBehaviour
     public Gunner gunnerPrefab;
     public Soldier soldierPrefab;
     public Blob blobPrefab;
-    public ResourceOperations resourceOperations;
     private PriceSettings priceSettings;
 
     void Start()
     {
         pathfinder = workerJobScheduler.pathfinder;
-        resourceOperations = ResourceOperations.Instance;
         priceSettings = Settings.Instance.priceSettings;
         surface = Surface.Instance;
         surfaceOperations = SurfaceOperations.Instance;
@@ -122,7 +120,6 @@ public class MobFactory : MonoBehaviour
             worker.type = ACTOR_TYPE.WORKER;
             workerJobScheduler.AddWorker(worker);
             store.AddAlly(worker);
-            resourceOperations.Buy(worker.position, priceSettings.WORKER_PRICE);
         }
         yield return null;
     }
@@ -142,7 +139,6 @@ public class MobFactory : MonoBehaviour
             };
             soldier.type = ACTOR_TYPE.SOLDIER;
             store.AddAlly((Targetable)soldier);
-            resourceOperations.Buy(soldier.position, priceSettings.SOLDIER_PRICE);
         }
         yield return null;
     }
@@ -162,7 +158,6 @@ public class MobFactory : MonoBehaviour
             };
             gunner.type = ACTOR_TYPE.GUNNER;
             store.AddAlly((Targetable)gunner);
-            resourceOperations.Buy(gunner.position, priceSettings.GUNNER_PRICE);
         }
         yield return null;
     }
