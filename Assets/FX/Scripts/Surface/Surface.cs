@@ -37,7 +37,6 @@ public class Surface : MonoBehaviour
     public Dictionary<string, Hexagon> oldHexagons = new Dictionary<string, Hexagon>();
     public Vector3 center;
     private GameSettings gameSettings;
-    private ResourceOperations resourceOperations;
     private PriceSettings priceSettings;
     public static Surface Instance { get; private set; }
     [HideInInspector] public Vector3[] sideHexagonsPos;
@@ -79,7 +78,6 @@ public class Surface : MonoBehaviour
     private void InitSingletons()
     {
         gameSettings = Settings.Instance.gameSettings;
-        resourceOperations = ResourceOperations.Instance;
         priceSettings = Settings.Instance.priceSettings;
         store = Store.Instance;
     }
@@ -266,25 +264,21 @@ public class Surface : MonoBehaviour
 
     public void PlaceIcon(FloorHexagon hex, SliderValue value)
     {
-        if (value == SliderValue.SOIL && store.food >= priceSettings.SOIL_PRICE)
+        if (value == SliderValue.SOIL)
         {
             PlaceMountIcon(hex, soilMountIconPrefab, gameSettings.ACCESS_MASK_SOIL, gameSettings.EDGE_WEIGHT_OBSTACLE);
-            resourceOperations.Buy(hex.position, priceSettings.SOIL_PRICE);
         }
-        else if (value == SliderValue.STONE && store.food >= priceSettings.STONE_PRICE)
+        else if (value == SliderValue.STONE)
         {
             PlaceMountIcon(hex, stoneMountIconPrefab, gameSettings.ACCESS_MASK_STONE, gameSettings.EDGE_WEIGHT_OBSTACLE);
-            resourceOperations.Buy(hex.position, priceSettings.STONE_PRICE);
         }
-        else if (value == SliderValue.SPIKES && store.food >= priceSettings.SPIKES_PRICE)
+        else if (value == SliderValue.SPIKES)
         {
             PlaceMountIcon(hex, spikesMountIconPrefab, gameSettings.ACCESS_MASK_FLOOR, gameSettings.EDGE_WEIGHT_NORMAL);
-            resourceOperations.Buy(hex.position, priceSettings.SPIKES_PRICE);
         }
-        else if (value == SliderValue.TURRET && store.food >= priceSettings.TURRET_PRICE)
+        else if (value == SliderValue.TURRET)
         {
             PlaceMountIcon(hex, turretMountIconPrefab, gameSettings.ACCESS_MASK_STONE, gameSettings.EDGE_WEIGHT_OBSTACLE);
-            resourceOperations.Buy(hex.position, priceSettings.TURRET_PRICE);
         }
         if (value == SliderValue.DEMOUNT)
         {

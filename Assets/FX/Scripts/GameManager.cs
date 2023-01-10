@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     private Pathfinder pathfinder;
     public GameSettings settings;
     public Store store;
+    public Pricing pricing;
+    private ResourceOperations resourceOperations;
 
     void Awake()
     {
@@ -36,6 +38,7 @@ public class GameManager : MonoBehaviour
         workerJobScheduler.pathfinder = pathfinder;
         workerJobScheduler.SetSurfaceOperations(surfaceOperations);
         workerJobScheduler.StartJobScheuler();
+
     }
 
     private void GenerateData()
@@ -49,6 +52,7 @@ public class GameManager : MonoBehaviour
         workerJobScheduler.StartJobScheuler();
         surface = Surface.Instance;
         surfaceOperations = SurfaceOperations.Instance;
+        resourceOperations = ResourceOperations.Instance;
         store = Store.Instance;
         // StoreService.SaveGraph(pathGraph);
         // StoreService.SaveHexagons(Surface.Hexagons);
@@ -66,31 +70,37 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            if (hex.type == HexType.EMPTY || hex.type == HexType.SPIKES)
+            if ((slider.choosenValue == SliderValue.WORKER
+            || slider.choosenValue == SliderValue.GOBBER
+            || slider.choosenValue == SliderValue.GUNNER
+            || slider.choosenValue == SliderValue.SCORPION
+            || slider.choosenValue == SliderValue.SOLDIER
+            || slider.choosenValue == SliderValue.ZOMBIE
+            || slider.choosenValue == SliderValue.BLOB)
+             && (hex.type == HexType.EMPTY || hex.type == HexType.SPIKES)
+             && store.food >= pricing.pricesBySliderValue[slider.choosenValue])
             {
-                if (slider.choosenValue == SliderValue.WORKER
-                || slider.choosenValue == SliderValue.GOBBER
-                || slider.choosenValue == SliderValue.GUNNER
-                || slider.choosenValue == SliderValue.SCORPION
-                || slider.choosenValue == SliderValue.SOLDIER
-                || slider.choosenValue == SliderValue.ZOMBIE
-                || slider.choosenValue == SliderValue.BLOB)
-                {
-                    mobFactory.AddMobByType(slider.choosenValue, hex);
-                }
-                else if (slider.choosenValue == SliderValue.SOIL
-                || slider.choosenValue == SliderValue.STONE
-                || slider.choosenValue == SliderValue.SPIKES
-                || slider.choosenValue == SliderValue.TURRET)
+                mobFactory.AddMobByType(slider.choosenValue, hex);
+                resourceOperations.Buy(hex.position, pricing.pricesBySliderValue[slider.choosenValue]);
+
+            }
+            else if ((slider.choosenValue == SliderValue.SOIL
+            || slider.choosenValue == SliderValue.STONE
+            || slider.choosenValue == SliderValue.SPIKES
+            || slider.choosenValue == SliderValue.TURRET)
+            && store.food >= pricing.pricesBySliderValue[slider.choosenValue])
+            {
+                if (hex.type == HexType.EMPTY)
                 {
                     surface.PlaceIcon(hex, slider.choosenValue);
                     workerJobScheduler.AssignBuildJob(new BuildJob(hex, hex.transform.position, JobType.MOUNT));
+                    resourceOperations.Buy(hex.position, pricing.pricesBySliderValue[slider.choosenValue]);
                 }
-            }
-            else if ((hex.type == HexType.SOIL || hex.type == HexType.STONE || hex.type == HexType.SPIKES || slider.choosenValue == SliderValue.TURRET) && slider.choosenValue == SliderValue.DEMOUNT)
-            {
-                surface.PlaceIcon(hex, slider.choosenValue);
-                workerJobScheduler.AssignBuildJob(new BuildJob(hex, hex.transform.position, JobType.DEMOUNT));
+                else if (slider.choosenValue == SliderValue.DEMOUNT)
+                {
+                    surface.PlaceIcon(hex, slider.choosenValue);
+                    workerJobScheduler.AssignBuildJob(new BuildJob(hex, hex.transform.position, JobType.DEMOUNT));
+                }
             }
         }
     }

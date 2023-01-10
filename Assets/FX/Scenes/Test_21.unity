@@ -400,6 +400,7 @@ MonoBehaviour:
   h: 0
   hexagons: []
   center: {x: 0, y: 0, z: 0}
+  sideHexagonsPos: []
 --- !u!114 &685065892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -550,6 +551,7 @@ MonoBehaviour:
   mobFactory: {fileID: 2071582712}
   settings: {fileID: 0}
   store: {fileID: 1633955861}
+  pricing: {fileID: 1607889637}
 --- !u!1001 &1124990943
 PrefabInstance:
   m_ObjectHideFlags: 0
