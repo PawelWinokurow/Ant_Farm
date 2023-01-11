@@ -20,7 +20,7 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        
+
     }
 
     public void EnemySpawnIcons(int[] number)
@@ -28,10 +28,10 @@ public class UIManager : MonoBehaviour
         int n = 0;
         for (int i = 0; i < spawnIcons.Length; i++)
         {
-            if(number[i] > 0)
+            if (number[i] > 0)
             {
                 spawnIcons[i].gameObject.SetActive(true);
-                spawnIcons[i].Play(n*0.2f, number[i]);
+                spawnIcons[i].Play(n * 0.2f, number[i]);
                 n++;
             }
             else
@@ -40,12 +40,12 @@ public class UIManager : MonoBehaviour
             }
 
 
-        } 
+        }
 
     }
-    public void MoneyCounter(int n)
+    public void SetFoodAmount(float amount)
     {
-        money.text = n.ToString();
+        money.text = Mathf.Ceil(amount).ToString();
     }
 
 }

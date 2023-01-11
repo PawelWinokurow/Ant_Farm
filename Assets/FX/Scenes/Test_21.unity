@@ -786,7 +786,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91ff42e579edf10479227a1f2de71d31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  food: 10000
+  food: 300
+  resourcesSettings: {fileID: 0}
 --- !u!4 &1633955862
 Transform:
   m_ObjectHideFlags: 0
@@ -1261,7 +1262,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7101241709256306328, guid: 465f21d7f82950741b51465480634072, type: 3}
       propertyPath: m_text
-      value: 10000
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 7101241709256306328, guid: 465f21d7f82950741b51465480634072, type: 3}
       propertyPath: m_margin.x
@@ -1282,6 +1283,10 @@ PrefabInstance:
     - target: {fileID: 7101241709256306330, guid: 465f21d7f82950741b51465480634072, type: 3}
       propertyPath: m_TagString
       value: MoneyUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 8169992442313619183, guid: 465f21d7f82950741b51465480634072, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 4.6900024
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 465f21d7f82950741b51465480634072, type: 3}

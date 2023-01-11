@@ -7,7 +7,8 @@ public class Store : MonoBehaviour
     public List<Targetable> allAllies = new List<Targetable>();
     public List<Targetable> allEnemies = new List<Targetable>();
     public static Store Instance { get; private set; }
-    public float food = 300f;
+    public float food;
+    public ResourcesSettings resourcesSettings;
     private static object monitorLock = new object();
     private TextMeshProUGUI moneyUI;
 
@@ -25,6 +26,9 @@ public class Store : MonoBehaviour
 
     private void Start()
     {
+        resourcesSettings = Settings.Instance.resourcesSettings;
+        food = resourcesSettings.INITIAL_FOOD_AMOUNT;
+        UIManager.instance.SetFoodAmount(food);
         moneyUI = GameObject.FindGameObjectWithTag("MoneyUI").GetComponent<TextMeshProUGUI>();
     }
 
@@ -33,7 +37,7 @@ public class Store : MonoBehaviour
         lock (monitorLock)
         {
             food += amount;
-            moneyUI.text = ((int)Mathf.Ceil(food)).ToString();
+            UIManager.instance.SetFoodAmount(Mathf.Ceil(food));
         }
     }
 
