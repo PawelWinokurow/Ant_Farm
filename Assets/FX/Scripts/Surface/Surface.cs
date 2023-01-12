@@ -130,8 +130,8 @@ public class Surface : MonoBehaviour
 
     private void SetCameraPositionToCenter()
     {
-        center = new Vector3((width - 0.5f) * w / 2f, 0, (height - 1) * h / 2f * (1f - 0.09f));
-        Camera.main.transform.parent.position = center;
+        center = new Vector3((width - 0.5f) * w / 2f, 0, (height - 1) * h / 2f);
+        Camera.main.transform.parent.position = new Vector3((width - 0.5f) * w / 2f, 0, (height - 1) * h / 2f * (1f - 0.09f));
     }
 
     public void SetbaseHex()
