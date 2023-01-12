@@ -52,25 +52,24 @@ public class Storyteller : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(30);
-            surface.ClearHex(holeHex);
-            surface.AddGround(holeHex);
+            yield return new WaitForSeconds(30f);
             hole = surface.AddBlock(holeHex, HexType.HOLE);
             StartCoroutine(SpawnEnemies());
-            yield return new WaitForSeconds(30);
+            yield return new WaitForSeconds(30f);
         }
     }
 
     IEnumerator SpawnEnemies()
     {
-
         var spawnFuncs = CalculateEnemiesBatch();
         while (spawnFuncs.Count > 0)
         {
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(0.2f);
             var spawnFunc = spawnFuncs[0];
             spawnFuncs.RemoveAt(0);
             StartCoroutine(spawnFunc($"enemy{id++}", holeHex));
         }
+        surface.ClearHex(holeHex);
+        surface.AddGround(holeHex);
     }
 }

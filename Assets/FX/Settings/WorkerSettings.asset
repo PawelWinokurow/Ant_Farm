@@ -12,3 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cb54ceddc56e6d409a11a3ff5f54354, type: 3}
   m_Name: WorkerSettings
   m_EditorClassIdentifier: 
+  HP: 100
+  CONSTRUCTION_SPEED: 10
+  LOADING_SPEED: 1
+  MAX_CARRYING_WEIGHT: 2
+  MOVEMENT_SPEED: 5
+  ACCESS_MASK: 5

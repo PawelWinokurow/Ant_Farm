@@ -88,19 +88,21 @@ public class GameManager : MonoBehaviour
             || slider.choosenValue == SliderValue.STONE
             || slider.choosenValue == SliderValue.SPIKES
             || slider.choosenValue == SliderValue.TURRET)
-            && store.food >= pricing.pricesBySliderValue[slider.choosenValue])
+            && store.food >= pricing.pricesBySliderValue[slider.choosenValue]
+            && hex.type == HexType.EMPTY)
             {
-                if (hex.type == HexType.EMPTY)
-                {
-                    surface.PlaceIcon(hex, slider.choosenValue);
-                    workerJobScheduler.AssignBuildJob(new BuildJob(hex, hex.transform.position, JobType.MOUNT));
-                    resourceOperations.Buy(hex.position, pricing.pricesBySliderValue[slider.choosenValue]);
-                }
-                else if (slider.choosenValue == SliderValue.DEMOUNT)
-                {
-                    surface.PlaceIcon(hex, slider.choosenValue);
-                    workerJobScheduler.AssignBuildJob(new BuildJob(hex, hex.transform.position, JobType.DEMOUNT));
-                }
+                surface.PlaceIcon(hex, slider.choosenValue);
+                workerJobScheduler.AssignBuildJob(new BuildJob(hex, hex.transform.position, JobType.MOUNT));
+                resourceOperations.Buy(hex.position, pricing.pricesBySliderValue[slider.choosenValue]);
+            }
+            else if (slider.choosenValue == SliderValue.DEMOUNT && (
+            hex.type == HexType.SOIL
+            || hex.type == HexType.SPIKES
+            || hex.type == HexType.STONE
+            || hex.type == HexType.TURRET))
+            {
+                surface.PlaceIcon(hex, slider.choosenValue);
+                workerJobScheduler.AssignBuildJob(new BuildJob(hex, hex.transform.position, JobType.DEMOUNT));
             }
         }
     }

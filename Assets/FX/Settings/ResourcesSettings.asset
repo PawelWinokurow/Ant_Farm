@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 020dbf8d61675504dacbecbabc124d5c, type: 3}
   m_Name: ResourcesSettings
   m_EditorClassIdentifier: 
-  FOOD_MAX_AMOUNT: 3000
+  FOOD_MAX_AMOUNT: 100
+  INITIAL_FOOD_AMOUNT: 30
