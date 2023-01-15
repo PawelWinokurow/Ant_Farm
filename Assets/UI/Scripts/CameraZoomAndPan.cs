@@ -7,7 +7,7 @@ namespace AntFarm
     public class CameraZoomAndPan : MonoBehaviour
     {
 
-        public float zoomOutMin = 50f;
+        public float zoomOutMin = 30f;
         public float zoomOutMax = 100f;
         private Vector3 touchStart;
         private float boundZ;
@@ -15,28 +15,30 @@ namespace AntFarm
         private Camera cam;
         private float zoomL;//линейный
         private float zoom;//синусоидный
-
+        private float downField = 0.16f;
 
         void Start()
         {
             cam = Camera.main;
 
-            float  heightMin = 2f * zoomOutMin*(1f-0.09f);
+            float  heightMin = 2f * zoomOutMin*(1f-0.16f);
             float widthMin = 2f * zoomOutMin * cam.aspect;
 
-            float heightMax = 2f * zoomOutMax * (1f - 0.09f);
+            float heightMax = 2f * zoomOutMax * (1f - 0.16f);
             float widthMax = 2f * zoomOutMax * cam.aspect;
 
             boundZ = (heightMax - heightMin) / 2f;
             boundX = (widthMax - widthMin) / 2f;
 
-            Camera.main.orthographicSize = zoomOutMin;
+   
+            zoomL = 0.5f;
+            zoom = -Mathf.Cos(zoomL * 3.14f) * 0.5f + 0.5f;
+            cam.orthographicSize = ExtensionMethods.Remap(zoom, 0f, 1f, zoomOutMin, zoomOutMax);
         }
 
         Vector3 Clamp(Vector3 pos)//задаем границы чтоб камера не уехала за поле
         {
-  
-             float z = Mathf.Clamp(pos.z, -boundZ * (1f - 0.09f) *(1f - zoom) , boundZ * (1f + 0.09f)  *(1f - zoom) );
+            float z = Mathf.Clamp(pos.z, -boundZ * (1f - 0.16f) *(1f - zoom) , boundZ * (1f + 0.16f)  *(1f - zoom) );
              float x = Mathf.Clamp(pos.x, -boundX * (1f - zoom) , boundX * (1f - zoom) );
             return new Vector3(x, 0, z);
         }
@@ -44,7 +46,7 @@ namespace AntFarm
         void Update()
         {
 
-            if (Input.mousePosition.y / Screen.height > 0.09f)
+            if (Input.mousePosition.y / Screen.height > 0.16f)
             {
                 if (Input.mouseScrollDelta.y != 0)//для мышки зум
                 {

@@ -26,6 +26,11 @@ public class Surface : MonoBehaviour
     public Vector3 rd;
     public Vector3 lu;
     public Vector3 ru;
+    private Vector3 fld;
+    private float heightLength;
+    private float widthLength;
+
+
     public float w;
     public float h;
 
@@ -41,6 +46,8 @@ public class Surface : MonoBehaviour
     private ResourcesSettings resourcesSettings;
     public static Surface Instance { get; private set; }
     [HideInInspector] public Vector3[] sideHexagonsPos;
+
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -88,21 +95,27 @@ public class Surface : MonoBehaviour
     {
         cam = Camera.main;
 
-        ld = cam.ScreenToWorldPoint(new Vector3(0, Screen.height * 0.09f, 1f));
+        heightLength = 2f * 100f ;
+        widthLength = 2f * 100f * cam.aspect;
+        /*
+        ld = cam.ScreenToWorldPoint(new Vector3(0, Screen.height * 0.16f, 1f));
 
-        rd = cam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height * 0.09f, 1f));
+        rd = cam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height * 0.16f, 1f));
 
         lu = cam.ScreenToWorldPoint(new Vector3(0, Screen.height, 1f));
 
         ru = cam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 1f));
+
+        fld= cam.ScreenToWorldPoint(new Vector3(0, 0, 1f));
+        */
     }
 
     public void CalculateSizes()
     {
         w = Mathf.Sin((60) * Mathf.Deg2Rad) * 2f * Hexagon.radius;//растояние по горизонтали между шестигольниками
         h = 2 * Hexagon.radius * 3f / 4f;//растояние по вертикали между шестигольниками
-        height = Mathf.CeilToInt((lu.z - ld.z) / h) - 1;//находим количество шестиугольников в ширину и длину
-        width = Mathf.CeilToInt((rd.x - ld.x) / w) - 1;
+        height = Mathf.CeilToInt(heightLength*(1f - 0.16f) / h) - 1;//находим количество шестиугольников в ширину и длину
+        width = Mathf.CeilToInt(widthLength / w) - 1;
         hexagons = new FloorHexagon[width * height];
         sideHexagonsPos = new Vector3[(width - 1) * 2 + (height - 1) * 2];
     }
@@ -131,7 +144,7 @@ public class Surface : MonoBehaviour
     private void SetCameraPositionToCenter()
     {
         center = new Vector3((width - 0.5f) * w / 2f, 0, (height - 1) * h / 2f);
-        Camera.main.transform.parent.position = new Vector3((width - 0.5f) * w / 2f, 0, (height - 1) * h / 2f * (1f - 0.09f));
+        Camera.main.transform.parent.position = new Vector3(center.x, 0, heightLength/ 2f - heightLength*0.16f);
     }
 
     public void SetbaseHex()
