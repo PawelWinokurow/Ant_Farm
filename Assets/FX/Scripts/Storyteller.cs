@@ -17,6 +17,8 @@ public class Storyteller : MonoBehaviour
     public MobFactory mobFactory;
     private GameSettings gameSettings;
     private int id = 1000;
+    public UIManager uiManager;
+
 
     void Start()
     {
@@ -29,21 +31,26 @@ public class Storyteller : MonoBehaviour
     }
 
 
-    List<Func<string, FloorHexagon, IEnumerator>> CalculateEnemiesBatch()
+    List<(Func<string, FloorHexagon, IEnumerator>, int)> CalculateEnemiesBatch()
     {
         var overallColonyCost = pricing.colonyCost + store.food;
         //TODO better solution 
-        var spawnFuncsToChoose = new List<Func<string, FloorHexagon, IEnumerator>>() { mobFactory.SpawnBlob, mobFactory.SpawnGobber, mobFactory.SpawnScorpion, mobFactory.SpawnZombie };
-        var spawnFuncs = new List<Func<string, FloorHexagon, IEnumerator>>() { mobFactory.SpawnScorpion };
+        var spawnFuncsToChoose = new List<(Func<string, FloorHexagon, IEnumerator>, int)>() {
+            (mobFactory.SpawnGobber, 1),
+            (mobFactory.SpawnScorpion, 0),
+            (mobFactory.SpawnBlob, 2),
+            (mobFactory.SpawnZombie, 3)
+        };
+        var enemySpawnTuples = new List<(Func<string, FloorHexagon, IEnumerator>, int)>() { (mobFactory.SpawnScorpion, 0) };
         overallColonyCost -= priceSettings.SCORPION_PRICE;
         while (overallColonyCost >= 0)
         {
             int index = UnityEngine.Random.Range(0, spawnFuncsToChoose.Count);
-            var enemySpawnFunc = spawnFuncsToChoose[index];
-            spawnFuncs.Add(enemySpawnFunc);
-            overallColonyCost -= pricing.pricesBySpawnFunc[enemySpawnFunc];
+            var enemySpawnTuple = spawnFuncsToChoose[index];
+            enemySpawnTuples.Add(enemySpawnTuple);
+            overallColonyCost -= pricing.pricesBySpawnFunc[enemySpawnTuple.Item1];
         }
-        return spawnFuncs;
+        return enemySpawnTuples;
     }
     public void SpawnHole()
     {
@@ -61,12 +68,15 @@ public class Storyteller : MonoBehaviour
 
     IEnumerator SpawnEnemies()
     {
-        var spawnFuncs = CalculateEnemiesBatch();
-        while (spawnFuncs.Count > 0)
+        var spawnTuples = CalculateEnemiesBatch();
+        int[] spawnIcons = Enumerable.Repeat(0, 4).ToArray();
+        spawnTuples.ForEach(tuple => spawnIcons[tuple.Item2]++);
+        uiManager.EnemySpawnIcons(spawnIcons);
+        while (spawnTuples.Count > 0)
         {
             yield return new WaitForSeconds(0.2f);
-            var spawnFunc = spawnFuncs[0];
-            spawnFuncs.RemoveAt(0);
+            var spawnFunc = spawnTuples[0].Item1;
+            spawnTuples.RemoveAt(0);
             StartCoroutine(spawnFunc($"enemy{id++}", holeHex));
         }
         surface.ClearHex(holeHex);
