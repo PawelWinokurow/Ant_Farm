@@ -15,6 +15,7 @@ public class Storyteller : MonoBehaviour
     private WorkHexagon hole;
     private Pricing pricing;
     public MobFactory mobFactory;
+    private GameSettings gameSettings;
     private int id = 1000;
 
     void Start()
@@ -22,15 +23,11 @@ public class Storyteller : MonoBehaviour
         surface = Surface.Instance;
         store = Store.Instance;
         pricing = Pricing.Instance;
-        holeHex = surface.PositionToHex(holeTestPosition);
+        gameSettings = Settings.Instance.gameSettings;
         priceSettings = Settings.Instance.priceSettings;
-        StartSpawner();
+        holeHex = surface.PositionToHex(holeTestPosition);
     }
 
-    void StartSpawner()
-    {
-        StartCoroutine(SpawnHole());
-    }
 
     List<Func<string, FloorHexagon, IEnumerator>> CalculateEnemiesBatch()
     {
@@ -48,15 +45,18 @@ public class Storyteller : MonoBehaviour
         }
         return spawnFuncs;
     }
-    IEnumerator SpawnHole()
+    public void SpawnHole()
     {
-        while (true)
+        surface.ClearHex(holeHex);
+        surface.AddBlock(holeHex, HexType.HOLE);
+        surface.pathGraph.SetAccesabillity(holeHex, gameSettings.ACCESS_MASK_FLOOR, gameSettings.EDGE_WEIGHT_NORMAL);
+        holeHex.vertex.neighbours.ForEach(vertex =>
         {
-            yield return new WaitForSeconds(30f);
-            hole = surface.AddBlock(holeHex, HexType.HOLE);
-            StartCoroutine(SpawnEnemies());
-            yield return new WaitForSeconds(30f);
-        }
+            surface.ClearHex(vertex.floorHexagon);
+            surface.AddGround(vertex.floorHexagon);
+            surface.pathGraph.SetAccesabillity(vertex.floorHexagon, gameSettings.ACCESS_MASK_FLOOR, gameSettings.EDGE_WEIGHT_NORMAL);
+        });
+        StartCoroutine(SpawnEnemies());
     }
 
     IEnumerator SpawnEnemies()
