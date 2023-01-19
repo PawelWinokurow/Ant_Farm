@@ -100,9 +100,7 @@ public class SurfaceOperations : MonoBehaviour
             scaledBlock.transform.localScale = 0.95f * Vector3.one * scaledBlock.work / WorkHexagon.MAX_WORK;
             if (scaledBlock.work <= 0)
             {
-                surface.ClearHex(floorHex);
-                surface.AddGround(floorHex);
-                surface.pathGraph.SetAccesabillity(floorHex, gameSettings.ACCESS_MASK_FLOOR, gameSettings.EDGE_WEIGHT_NORMAL);
+                surface.RemoveBuilding(floorHex);
                 scorpion.CancelDigging();
             }
         }
@@ -119,9 +117,7 @@ public class SurfaceOperations : MonoBehaviour
         if (scaledBlock.work <= 0)
         {
             workerJob.Cancel();
-            surface.ClearHex(floorHex);
-            surface.AddGround(floorHex);
-            surface.pathGraph.SetAccesabillity(floorHex, gameSettings.ACCESS_MASK_FLOOR, gameSettings.EDGE_WEIGHT_NORMAL);
+            surface.RemoveBuilding(floorHex);
         }
     }
 

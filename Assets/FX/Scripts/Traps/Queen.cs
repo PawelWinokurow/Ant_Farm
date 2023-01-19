@@ -6,14 +6,14 @@ using DataStructures.ViliWonka.KDTree;
 
 namespace TrapNamespace
 {
-    public class Turret : Trap
+    public class Queen : Trap
     {
         void Start()
         {
-            animator = GetComponent<MobAnimatorTurret>();
+            animator = GetComponent<MobAnimatorQueen>();
             gameSettings = Settings.Instance.gameSettings;
-            trapSettings = Settings.Instance.turretSettings;
-            type = ACTOR_TYPE.TURRET;
+            trapSettings = Settings.Instance.queenSettings;
+            type = ACTOR_TYPE.QUEEN;
             health = GetComponent<Health>();
             workHexagon = GetComponent<WorkHexagon>();
             currentHex = workHexagon.floorHexagon;
@@ -54,7 +54,7 @@ namespace TrapNamespace
             var targetPosition = position;
             var vec = targetPosition - position;
             var vecLength = Vector3.Magnitude(vec);
-            if (vecLength < 30f)
+            if (vecLength < 10f)
             {
                 var vecNorm = Vector3.Normalize(vec);
                 var hexagonsOnTrajectory = new List<FloorHexagon>();
@@ -67,6 +67,7 @@ namespace TrapNamespace
             }
             return false;
         }
+
         public override bool IsTargetInSight()
         {
             if (target != null)

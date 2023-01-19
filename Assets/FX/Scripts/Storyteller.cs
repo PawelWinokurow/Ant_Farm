@@ -59,9 +59,7 @@ public class Storyteller : MonoBehaviour
         surface.pathGraph.SetAccesabillity(holeHex, gameSettings.ACCESS_MASK_FLOOR, gameSettings.EDGE_WEIGHT_NORMAL);
         holeHex.vertex.neighbours.ForEach(vertex =>
         {
-            surface.ClearHex(vertex.floorHexagon);
-            surface.AddGround(vertex.floorHexagon);
-            surface.pathGraph.SetAccesabillity(vertex.floorHexagon, gameSettings.ACCESS_MASK_FLOOR, gameSettings.EDGE_WEIGHT_NORMAL);
+            surface.RemoveBuilding(vertex.floorHexagon);
         });
         StartCoroutine(SpawnEnemies());
     }
@@ -79,7 +77,6 @@ public class Storyteller : MonoBehaviour
             spawnTuples.RemoveAt(0);
             StartCoroutine(spawnFunc($"enemy{id++}", holeHex));
         }
-        surface.ClearHex(holeHex);
-        surface.AddGround(holeHex);
+        surface.RemoveBuilding(holeHex);
     }
 }

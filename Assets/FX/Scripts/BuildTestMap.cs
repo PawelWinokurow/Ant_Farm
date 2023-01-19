@@ -22,18 +22,16 @@ public class BuildTestMap : MonoBehaviour
         for (int i = 1; i < surface.hexagons.Length - 1; i++)
         {
             surface.ClearHex(surface.hexagons[i]);
-            
-            
 
             Vector3 pos = surface.hexagons[i].position;
             Vector3 sidePos = SidePoint(pos);
             float spread = Vector3.Distance(surface.center, pos) / Vector3.Distance(surface.center, sidePos);
 
-            float wallProb = wallProbability * Mathf.Pow(spread, 1/3f);
-            float foodProb = foodProbability* spread;
+            float wallProb = wallProbability * Mathf.Pow(spread, 1 / 3f);
+            float foodProb = foodProbability * spread;
 
             float rand = UnityEngine.Random.Range(0, 100f);
-            
+
             if (rand <= wallProb)
             {
                 surface.AddSoil(surface.hexagons[i]);
@@ -50,7 +48,7 @@ public class BuildTestMap : MonoBehaviour
                 surface.pathGraph.SetAccesabillity(surface.hexagons[i], gameSettings.ACCESS_MASK_FLOOR, gameSettings.EDGE_WEIGHT_NORMAL);
             }
         }
-     
+
 
         surface.AddBase();
     }

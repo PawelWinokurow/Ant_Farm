@@ -47,7 +47,6 @@ public class MobAnimatorQueen : MonoBehaviour, IMobAnimator
     }
     public void Shoot()
     {
-        Debug.Log("Shoot");
     }
 
 }

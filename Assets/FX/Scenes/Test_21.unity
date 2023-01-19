@@ -192,6 +192,7 @@ MonoBehaviour:
   blobSettings: {fileID: 11400000, guid: 080bf5e7567c6b14aa305b4648013511, type: 2}
   spikesSettings: {fileID: 11400000, guid: 48690d322ef7f0f4ab10c1ec622dcad7, type: 2}
   turretSettings: {fileID: 11400000, guid: 5c88f751af4b9bc4eaed87de72571a5e, type: 2}
+  queenSettings: {fileID: 11400000, guid: 10988099e5139924e9277beb4e96bd20, type: 2}
   priceSettings: {fileID: 11400000, guid: a6f4adcdcf01aa447b44e119876e800c, type: 2}
   resourcesSettings: {fileID: 11400000, guid: 8978e63a83830cb4996803fc9ad8a475, type: 2}
 --- !u!1 &262357869
@@ -384,6 +385,7 @@ MonoBehaviour:
   spikesPrefab: {fileID: -962059493816826475, guid: 3182f398ee4d8de43b1691bc65af1d84, type: 3}
   turretPrefab: {fileID: 3357525598540166572, guid: c91a246ba7177b64f8ebbba87033fe2b, type: 3}
   holePrefab: {fileID: -6195001515069235117, guid: afd234129f1ae564d92d71eecdcce774, type: 3}
+  queenPrefab: {fileID: 8759080067433689273, guid: 75875362e9ff84442a82f2222708d810, type: 3}
   soilMountIconPrefab: {fileID: 1977940879894948748, guid: a5cb0394b24cb6e498b98739a23c66cc, type: 3}
   stoneMountIconPrefab: {fileID: 2594841573337192449, guid: b7190cfcc024d4f4e8dd1919ad9698b1, type: 3}
   spikesMountIconPrefab: {fileID: -4469524149322463765, guid: 0d2e999d7b11c6d488f20b315c186b2d, type: 3}

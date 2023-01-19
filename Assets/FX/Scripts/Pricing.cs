@@ -38,7 +38,8 @@ public class Pricing : MonoBehaviour
         {ACTOR_TYPE.TURRET, priceSettings.TURRET_PRICE},
         {ACTOR_TYPE.SOLDIER, priceSettings.SOLDIER_PRICE},
         {ACTOR_TYPE.GUNNER, priceSettings.GUNNER_PRICE},
-        {ACTOR_TYPE.WORKER, priceSettings.WORKER_PRICE}
+        {ACTOR_TYPE.WORKER, priceSettings.WORKER_PRICE},
+        {ACTOR_TYPE.QUEEN, priceSettings.QUEEN_PRICE}
         };
 
 

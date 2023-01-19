@@ -258,6 +258,8 @@ GameObject:
   - component: {fileID: 6116766912116709674}
   - component: {fileID: 1906705686242943860}
   - component: {fileID: 1906705686242943857}
+  - component: {fileID: 3698304250750496966}
+  - component: {fileID: 8759080067433689273}
   m_Layer: 0
   m_Name: Queen
   m_TagString: Untagged
@@ -346,6 +348,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ee8db6a3062cc84dbc6ac93a9e26de9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3698304250750496966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2013333833068147162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c57cac28cc10c6042beae606e6ae3624, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameSettings: {fileID: 0}
+  trapSettings: {fileID: 0}
+  workHexagon: {fileID: 0}
+  body: {fileID: 2526670022507039116}
+  angl: {fileID: 5800604027608296989}
+--- !u!114 &8759080067433689273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2013333833068147162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a2cacea324c27a4ea7e7d19da329aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  surface: {fileID: 0}
+  work: 100
+  isGroundMat: 0
 --- !u!1 &2526670022507039120
 GameObject:
   m_ObjectHideFlags: 0

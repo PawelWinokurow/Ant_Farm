@@ -26,6 +26,7 @@ public class MobAnimatorTurret : MonoBehaviour, IMobAnimator
     public void Run()
     {
     }
+
     public void Idle()
     {
         if (tween != null)
@@ -87,7 +88,6 @@ public class MobAnimatorTurret : MonoBehaviour, IMobAnimator
     }
     public void Shoot()
     {
-        Debug.Log("Shoot");
     }
 
 }

@@ -18,8 +18,7 @@ namespace TrapNamespace
             Kill = () =>
             {
                 SetState(new DeadState(this));
-                surface.ClearHex(workHexagon.floorHexagon);
-                surface.AddGround(workHexagon.floorHexagon);
+                surface.RemoveBuilding(workHexagon.floorHexagon);
             };
             InitSingletons();
             SetInitialState();

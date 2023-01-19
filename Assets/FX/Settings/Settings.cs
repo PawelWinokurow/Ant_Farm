@@ -13,6 +13,7 @@ public class Settings : MonoBehaviour
     public FighterSettings blobSettings;
     public TrapSettings spikesSettings;
     public TrapSettings turretSettings;
+    public TrapSettings queenSettings;
     public PriceSettings priceSettings;
     public ResourcesSettings resourcesSettings;
     private void Awake()
