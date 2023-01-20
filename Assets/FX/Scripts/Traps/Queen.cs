@@ -54,7 +54,7 @@ namespace TrapNamespace
             var targetPosition = position;
             var vec = targetPosition - position;
             var vecLength = Vector3.Magnitude(vec);
-            if (vecLength < 10f)
+            if (vecLength < 4f)
             {
                 var vecNorm = Vector3.Normalize(vec);
                 var hexagonsOnTrajectory = new List<FloorHexagon>();
@@ -83,6 +83,7 @@ namespace TrapNamespace
 
         public override void Rotation()
         {
+            
             Vector3 forward = Vector3.zero;
             if (currentState.type == STATE.ATTACK && target?.mob != null)
             {
@@ -92,6 +93,7 @@ namespace TrapNamespace
             smoothRot = Quaternion.Slerp(smoothRot, rot, Time.deltaTime * 10f);
             body.rotation = smoothRot;
             body.Rotate(new Vector3(-90f, 0f, 180f), Space.Self);
+            
         }
 
         public override void Attack()
