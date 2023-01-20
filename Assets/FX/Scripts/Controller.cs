@@ -26,9 +26,9 @@ public class Controller : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         isDrag = true;
     }
     public void OnDrag(PointerEventData eventData)
-    { 
+    {
     }
-        public void OnEndDrag(PointerEventData eventData)
+    public void OnEndDrag(PointerEventData eventData)
     {
         isDrag = false;
     }
@@ -37,7 +37,6 @@ public class Controller : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
     {
         if (!isDrag && onSlider)
         {
-            
             Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             GameManager.ProcessTap(pos);
         }

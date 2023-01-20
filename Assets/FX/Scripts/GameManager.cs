@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     public ScrollRectSnap slider;
     public MobFactory mobFactory;
     private Pathfinder pathfinder;
-    public GameSettings settings;
+    public GameSettings gameSettings;
     public Store store;
     public Pricing pricing;
     private ResourceOperations resourceOperations;
@@ -38,7 +38,6 @@ public class GameManager : MonoBehaviour
         workerJobScheduler.pathfinder = pathfinder;
         workerJobScheduler.SetSurfaceOperations(surfaceOperations);
         workerJobScheduler.StartJobScheuler();
-
     }
 
     private void GenerateData()
@@ -57,7 +56,6 @@ public class GameManager : MonoBehaviour
         // StoreService.SaveGraph(pathGraph);
         // StoreService.SaveHexagons(Surface.Hexagons);
     }
-
 
     public void ProcessTap(Vector3 pos)
     {
@@ -105,11 +103,6 @@ public class GameManager : MonoBehaviour
                 workerJobScheduler.AssignBuildJob(new BuildJob(hex, hex.transform.position, JobType.DEMOUNT));
             }
         }
-    }
-
-    private bool AreNoMobsInHex(Hexagon hex)
-    {
-        return workerJobScheduler.allWorkers.Where(mob => mob.currentState.type != STATE.DEAD).All(mob => surface.PositionToHex(mob.position).id != hex.id);
     }
 }
 

@@ -182,7 +182,7 @@ public class WorkerJobScheduler : MonoBehaviour
     {
         var freeWorker = freeWorkers.First();
         var foodHex = foodHexagons.First();
-        var job = new CarrierJob(foodHex, (BaseHexagon)surface.baseHex.child);
+        var job = new CarrierJob(foodHex, (WorkHexagon)surface.baseHex.child);
         var path = pathfinder.FindPath(freeWorker.position, job.destination, freeWorker.accessMask, SearchType.NEAREST_CENTRAL_VERTEX);
         if (path != null)
         {

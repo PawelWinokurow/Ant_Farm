@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44402242, g: 0.49316543, b: 0.5722324, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -195,6 +195,7 @@ MonoBehaviour:
   queenSettings: {fileID: 11400000, guid: 10988099e5139924e9277beb4e96bd20, type: 2}
   priceSettings: {fileID: 11400000, guid: a6f4adcdcf01aa447b44e119876e800c, type: 2}
   resourcesSettings: {fileID: 11400000, guid: 8978e63a83830cb4996803fc9ad8a475, type: 2}
+  gameplaySettings: {fileID: 11400000, guid: bc69f7fe475270e43a964da1fd36f779, type: 2}
 --- !u!1 &262357869
 GameObject:
   m_ObjectHideFlags: 0
@@ -488,6 +489,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mobFactory: {fileID: 2071582712}
   uiManager: {fileID: 3628777673697454068}
+  currentWave: 0
 --- !u!4 &988287287
 Transform:
   m_ObjectHideFlags: 0
@@ -553,7 +555,7 @@ MonoBehaviour:
   workerJobScheduler: {fileID: 348439228}
   slider: {fileID: 3628777673697454067}
   mobFactory: {fileID: 2071582712}
-  settings: {fileID: 0}
+  gameSettings: {fileID: 0}
   store: {fileID: 1633955861}
   pricing: {fileID: 1607889637}
 --- !u!1001 &1124990943
@@ -1219,6 +1221,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -6.1
       objectReference: {fileID: 0}
+    - target: {fileID: 1807494648038915257, guid: 465f21d7f82950741b51465480634072, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4172790179162094116, guid: 465f21d7f82950741b51465480634072, type: 3}
       propertyPath: gameManager
       value: 
@@ -1242,6 +1248,34 @@ PrefabInstance:
     - target: {fileID: 6056760792838704793, guid: 465f21d7f82950741b51465480634072, type: 3}
       propertyPath: m_text
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6661393804378760233, guid: 465f21d7f82950741b51465480634072, type: 3}
+      propertyPath: onClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6661393804378760233, guid: 465f21d7f82950741b51465480634072, type: 3}
+      propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6661393804378760233, guid: 465f21d7f82950741b51465480634072, type: 3}
+      propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 988287286}
+    - target: {fileID: 6661393804378760233, guid: 465f21d7f82950741b51465480634072, type: 3}
+      propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6661393804378760233, guid: 465f21d7f82950741b51465480634072, type: 3}
+      propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: EarlyWaveStart
+      objectReference: {fileID: 0}
+    - target: {fileID: 6661393804378760233, guid: 465f21d7f82950741b51465480634072, type: 3}
+      propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Storyteller, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6661393804378760233, guid: 465f21d7f82950741b51465480634072, type: 3}
+      propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 7101241707985254853, guid: 465f21d7f82950741b51465480634072, type: 3}
       propertyPath: m_RootOrder
@@ -1322,6 +1356,10 @@ PrefabInstance:
     - target: {fileID: 8169992442313619183, guid: 465f21d7f82950741b51465480634072, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 4.6900024
+      objectReference: {fileID: 0}
+    - target: {fileID: 8591608599017551723, guid: 465f21d7f82950741b51465480634072, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 465f21d7f82950741b51465480634072, type: 3}
