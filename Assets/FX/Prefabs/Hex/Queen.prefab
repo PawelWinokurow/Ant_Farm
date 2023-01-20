@@ -295,7 +295,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad566de7ab78790458dc979655823c2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deadFX_prefab: {fileID: 3272130487407376759, guid: 39c28e67acc0741eda505500a9133922, type: 3}
+  deadFX_prefab: {fileID: 2230850071633438090, guid: ee2187ae3b19b524cbb0abff548091a2, type: 3}
   hitFX_prefab: {fileID: 3272130487407376759, guid: 11b753cc1e21c41e393bd07e86b78fb9, type: 3}
   progressbar: {fileID: 550079563266739444}
   MAX_HP: 100

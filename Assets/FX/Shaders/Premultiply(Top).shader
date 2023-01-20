@@ -140,7 +140,7 @@ Shader "Custom/Premultiply(Top)"
 }
 /*ASEBEGIN
 Version=18500
-1138;658;954.6667;763.6667;-59.68007;836.0109;1.397217;True;False
+932;72.66667;1161.333;809.6667;84.69896;868.1469;1.397217;True;False
 Node;AmplifyShaderEditor.TemplateShaderPropertyNode;22;-1024.748,-536.8439;Inherit;False;0;0;_MainTex;Shader;0;5;SAMPLER2D;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SamplerNode;19;-766.1986,-497.5619;Inherit;True;Property;_TextureSample0;Texture Sample 0;2;0;Create;True;0;0;False;0;False;-1;None;None;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.VertexColorNode;20;-716.5493,-843.5421;Inherit;False;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
@@ -169,4 +169,4 @@ WireConnection;35;0;39;0
 WireConnection;35;3;32;0
 WireConnection;0;0;35;0
 ASEEND*/
-//CHKSM=835434FE8DC21EC04AF4F4C51A15AF06E7A7FAF8
+//CHKSM=788D311857940F67B3CD87E82FB3F6885492BAEC

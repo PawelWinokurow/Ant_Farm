@@ -115,8 +115,13 @@ public class Health : MonoBehaviour
     }
     private IEnumerator Dead_Cor()
     {
-        ColorFX colorFX = FX_Manager.instance.SpawnFromPool(deadFX_prefab, transform.position, transform.rotation).GetComponent<ColorFX>();
-        colorFX.Colorize(particlesColor);
+     
+        ColorFX colorFX = FX_Manager.instance.SpawnFromPool(deadFX_prefab, transform.position, deadFX_prefab.transform.rotation).GetComponent<ColorFX>();
+        if (colorFX != null)
+        {
+            colorFX.Colorize(particlesColor);
+        }
+
         renderers[0].transform.localScale = Vector3.one * 1.3f;
         yield return new WaitForSeconds(0.1f);
         renderers[0].gameObject.SetActive(false);
