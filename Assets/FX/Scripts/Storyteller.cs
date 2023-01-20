@@ -77,6 +77,7 @@ public class Storyteller : MonoBehaviour
             spawnTuples.RemoveAt(0);
             StartCoroutine(spawnFunc($"enemy{id++}", holeHex));
         }
+        yield return new WaitForSeconds(5f);
         surface.RemoveBuilding(holeHex);
     }
 }
