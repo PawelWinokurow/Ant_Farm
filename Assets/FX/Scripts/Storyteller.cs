@@ -10,7 +10,7 @@ public class Storyteller : MonoBehaviour
     private Surface surface;
     private Store store;
     private PriceSettings priceSettings;
-    private Vector3 holeTestPosition = new Vector3(51.26929f, 0, -154.7541f);
+    private Vector3 holeTestPosition = new Vector3(51.26929f, 0, 154.7541f);
     private FloorHexagon holeHex;
     private WorkHexagon hole;
     private Pricing pricing;
@@ -34,7 +34,7 @@ public class Storyteller : MonoBehaviour
     List<(Func<string, FloorHexagon, IEnumerator>, int)> CalculateEnemiesBatch()
     {
         var overallColonyCost = pricing.colonyCost + store.food;
-        //TODO better solution 
+        //TODO find better solution 
         var spawnFuncsToChoose = new List<(Func<string, FloorHexagon, IEnumerator>, int)>() {
             (mobFactory.SpawnGobber, 1),
             (mobFactory.SpawnScorpion, 0),
