@@ -19,7 +19,7 @@ namespace FighterNamespace
 
         public override void Attack()
         {
-            if (UnityEngine.Random.Range(0, 100f) < 1)
+            if (UnityEngine.Random.Range(0, 100f) < 1 && target.mob.type != ACTOR_TYPE.QUEEN)
             {
                 target.mob.Hit(Int32.MaxValue);
                 MutateMob(SliderValue.ZOMBIE, target.mob.currentHex);

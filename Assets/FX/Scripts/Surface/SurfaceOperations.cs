@@ -59,7 +59,7 @@ public class SurfaceOperations : MonoBehaviour
         }
     }
 
-    public void Unloading(BaseHexagon storageHex, UnloadingState state, CarrierJob job)
+    public void Unloading(WorkHexagon storageHex, UnloadingState state, CarrierJob job)
     {
         var worker = state.worker;
         var toStore = worker.carryingWeight;
@@ -142,9 +142,9 @@ public class SurfaceOperations : MonoBehaviour
 
 
 
-    public BaseHexagon NearestBaseHexagon()
+    public WorkHexagon NearestBaseHexagon()
     {
-        return (BaseHexagon)surface.baseHex.child;
+        return (WorkHexagon)surface.baseHex.child;
     }
 
 }

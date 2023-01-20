@@ -52,10 +52,6 @@ namespace FighterNamespace
                         targetPos = fighter.target.mob.position;
                     }
                 }
-                // else//test
-                //{
-                //targetPos = new Vector3(transform.position.x + Random.Range(-10f, 10f), 0, transform.position.z + Random.Range(-10f, 10f));//test
-                //}
 
                 float dist = Vector3.Distance(transform.position, targetPos);
                 float t = dist / speed;

@@ -31,7 +31,7 @@ public class MobFactory : MonoBehaviour
     }
     public void AddMobByType(SliderValue type, FloorHexagon hex)
     {
-        Func<string, FloorHexagon, IEnumerator> action = null;
+        Func<FloorHexagon, IEnumerator> action = null;
         if (type == SliderValue.WORKER) action = SpawnWorker;
         else if (type == SliderValue.GOBBER) action = SpawnGobber;
         else if (type == SliderValue.GUNNER) action = SpawnGunner;
@@ -39,14 +39,14 @@ public class MobFactory : MonoBehaviour
         else if (type == SliderValue.SOLDIER) action = SpawnSoldier;
         else if (type == SliderValue.ZOMBIE) action = SpawnZombie;
         else if (type == SliderValue.BLOB) action = SpawnBlob;
-        StartCoroutine(action($"{type}_{id++}", hex));
+        StartCoroutine(action(hex));
     }
 
-    public IEnumerator SpawnScorpion(string id, FloorHexagon hex)
+    public IEnumerator SpawnScorpion(FloorHexagon hex)
     {
         var spawnPosition = hex.position;
         Scorpion scorpion = Instantiate(scorpionPrefab, spawnPosition, Quaternion.identity);
-        scorpion.id = id;
+        scorpion.id = $"Scorpion_{id++}";
         scorpion.pathfinder = pathfinder;
         scorpion.Kill = () =>
         {
@@ -59,11 +59,11 @@ public class MobFactory : MonoBehaviour
         yield return null;
     }
 
-    public IEnumerator SpawnZombie(string id, FloorHexagon hex)
+    public IEnumerator SpawnZombie(FloorHexagon hex)
     {
         var spawnPosition = hex.position;
         Zombie zombie = Instantiate(zombiePrefab, spawnPosition, Quaternion.identity);
-        zombie.id = id;
+        zombie.id = $"Zombie_{id++}";
         zombie.pathfinder = pathfinder;
         zombie.Kill = () =>
         {
@@ -77,11 +77,11 @@ public class MobFactory : MonoBehaviour
         yield return null;
     }
 
-    public IEnumerator SpawnBlob(string id, FloorHexagon hex)
+    public IEnumerator SpawnBlob(FloorHexagon hex)
     {
         var spawnPosition = hex.position;
         Blob blob = Instantiate(blobPrefab, spawnPosition, Quaternion.identity);
-        blob.id = id;
+        blob.id = $"Blob_{id++}";
         blob.pathfinder = pathfinder;
         blob.Kill = () =>
         {
@@ -94,11 +94,11 @@ public class MobFactory : MonoBehaviour
         yield return null;
     }
 
-    public IEnumerator SpawnGobber(string id, FloorHexagon hex)
+    public IEnumerator SpawnGobber(FloorHexagon hex)
     {
         var spawnPosition = hex.position;
         Gobber gobber = Instantiate(gobberPrefab, spawnPosition, Quaternion.identity);
-        gobber.id = id;
+        gobber.id = $"Gobber_{id++}";
         gobber.pathfinder = pathfinder;
         gobber.Kill = () =>
         {
@@ -110,26 +110,26 @@ public class MobFactory : MonoBehaviour
         store.AddEnemy((Targetable)gobber);
         yield return null;
     }
-    public IEnumerator SpawnWorker(string id, FloorHexagon hex)
+    public IEnumerator SpawnWorker(FloorHexagon hex)
     {
         if (store.food >= priceSettings.WORKER_PRICE)
         {
             var spawnPosition = hex.position;
             Worker worker = Instantiate(workerPrefab, spawnPosition, Quaternion.identity);
-            worker.id = id;
+            worker.id = $"Worker_{id++}";
             worker.type = ACTOR_TYPE.WORKER;
             workerJobScheduler.AddWorker(worker);
             store.AddAlly(worker);
         }
         yield return null;
     }
-    public IEnumerator SpawnSoldier(string id, FloorHexagon hex)
+    public IEnumerator SpawnSoldier(FloorHexagon hex)
     {
         if (store.food >= priceSettings.SOLDIER_PRICE)
         {
             var spawnPosition = hex.position;
             Soldier soldier = Instantiate(soldierPrefab, spawnPosition, Quaternion.identity);
-            soldier.id = id;
+            soldier.id = $"Soldier_{id++}";
             soldier.pathfinder = pathfinder;
             soldier.Kill = () =>
             {
@@ -142,13 +142,13 @@ public class MobFactory : MonoBehaviour
         }
         yield return null;
     }
-    public IEnumerator SpawnGunner(string id, FloorHexagon hex)
+    public IEnumerator SpawnGunner(FloorHexagon hex)
     {
         if (store.food >= priceSettings.GUNNER_PRICE)
         {
             var spawnPosition = hex.position;
             Gunner gunner = Instantiate(gunnerPrefab, spawnPosition, Quaternion.identity);
-            gunner.id = id;
+            gunner.id = $"Gunner_{id++}";
             gunner.pathfinder = pathfinder;
             gunner.Kill = () =>
             {

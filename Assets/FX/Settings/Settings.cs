@@ -16,6 +16,7 @@ public class Settings : MonoBehaviour
     public TrapSettings queenSettings;
     public PriceSettings priceSettings;
     public ResourcesSettings resourcesSettings;
+    public GameplaySettings gameplaySettings;
     private void Awake()
     {
         if (Instance != null && Instance != this)

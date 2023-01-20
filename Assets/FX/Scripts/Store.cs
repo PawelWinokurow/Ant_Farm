@@ -6,6 +6,7 @@ public class Store : MonoBehaviour
 {
     public List<Targetable> allAllies = new List<Targetable>();
     public List<Targetable> allEnemies = new List<Targetable>();
+    public List<Targetable> currentWave = new List<Targetable>();
     public static Store Instance { get; private set; }
     public float food;
     public ResourcesSettings resourcesSettings;
@@ -60,6 +61,7 @@ public class Store : MonoBehaviour
         lock (monitorLock)
         {
             allEnemies.Add(mob);
+            currentWave.Add(mob);
         }
     }
     public void DeleteEnemy(Targetable mob)
@@ -67,6 +69,7 @@ public class Store : MonoBehaviour
         lock (monitorLock)
         {
             allEnemies.Remove(mob);
+            currentWave.Remove(mob);
         }
     }
 }

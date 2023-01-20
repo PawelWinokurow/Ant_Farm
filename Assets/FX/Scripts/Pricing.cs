@@ -11,7 +11,7 @@ public class Pricing : MonoBehaviour
     public Dictionary<ACTOR_TYPE, int> pricesByActorType;
     public Dictionary<SliderValue, int> pricesBySliderValue;
     public Dictionary<HexType, int> pricesByHexType;
-    public Dictionary<Func<string, FloorHexagon, IEnumerator>, int> pricesBySpawnFunc;
+    public Dictionary<Func<FloorHexagon, IEnumerator>, int> pricesBySpawnFunc;
     public MobFactory mobFactory;
     public static Pricing Instance { get; private set; }
 
@@ -64,7 +64,7 @@ public class Pricing : MonoBehaviour
         {HexType.SOIL, priceSettings.SOIL_PRICE},
         };
 
-        pricesBySpawnFunc = new Dictionary<Func<string, FloorHexagon, IEnumerator>, int>()
+        pricesBySpawnFunc = new Dictionary<Func<FloorHexagon, IEnumerator>, int>()
         {
             {mobFactory.SpawnBlob, priceSettings.BLOB_PRICE},
             { mobFactory.SpawnGobber, priceSettings.GOBBER_PRICE},

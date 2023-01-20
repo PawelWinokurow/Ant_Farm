@@ -18,7 +18,7 @@ public class Surface : MonoBehaviour
     public WorkHexagon turretMountIconPrefab;
     public WorkHexagon demountPrefab;
 
-    public BaseHexagon basePrefab;
+    public WorkHexagon basePrefab;
     public CollectingHexagon foodPrefab;
     private Camera cam;
     public int height;
@@ -273,7 +273,7 @@ public class Surface : MonoBehaviour
         });
 
         baseHex.RemoveChildren();
-        BaseHexagon.CreateHexagon(baseHex, basePrefab).type = HexType.BASE;
+        WorkHexagon.CreateHexagon(baseHex, basePrefab).type = HexType.BASE;
         var block = WorkHexagon.CreateHexagon(baseHex, queenPrefab);
         store.AddAlly((Targetable)block.GetComponent<Trap>());
         pathGraph.SetAccesabillity(baseHex, gameSettings.ACCESS_MASK_PROHIBIT, gameSettings.EDGE_WEIGHT_NORMAL);
