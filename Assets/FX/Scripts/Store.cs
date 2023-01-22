@@ -41,14 +41,16 @@ public class Store : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(0.2f);
-            var deadMob = allAllies.Concat(allEnemies).Where(mob => mob.currentState.type == STATE.DEAD).FirstOrDefault();
-            if (deadMob != null)
+            var deadMobs = allAllies.Concat(allEnemies).Where(mob => mob.currentState.type == STATE.DEAD).ToList();
+            deadMobs.ForEach(deadMob =>
             {
                 allAllies.Remove(deadMob);
                 allEnemies.Remove(deadMob);
-                GameObject.Destroy(deadMob.obj, 1);
-            }
-
+                if (deadMob.type != ACTOR_TYPE.SPIKES && deadMob.type != ACTOR_TYPE.TURRET && deadMob.type != ACTOR_TYPE.QUEEN)
+                {
+                    GameObject.Destroy(deadMob.obj, 1);
+                }
+            });
         }
     }
 
