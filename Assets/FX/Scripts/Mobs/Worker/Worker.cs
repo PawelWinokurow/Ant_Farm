@@ -34,6 +34,7 @@ namespace WorkerNamespace
         protected Quaternion smoothRot;
         private Store store;
         public bool isDead { get => health.isDead; }
+        public GameObject obj { get => gameObject; }
 
 
         void Start()

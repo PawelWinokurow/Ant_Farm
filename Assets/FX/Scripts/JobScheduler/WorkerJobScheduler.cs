@@ -33,7 +33,7 @@ public class WorkerJobScheduler : MonoBehaviour
     private SurfaceOperations surfaceOperations;
     private Store store;
 
-    void Awake()
+    void Start()
     {
         gameSettings = Settings.Instance.gameSettings;
         surface = Surface.Instance;
@@ -147,8 +147,8 @@ public class WorkerJobScheduler : MonoBehaviour
             buildingWorkers.Remove(worker);
             CancelJob(worker.job, true);
             freeWorkers.Remove(worker);
-            store.DeleteAlly((Targetable)worker);
             worker.SetState(new DeadState(worker));
+            // store.DeleteAlly((Targetable)worker);
         }
     }
 

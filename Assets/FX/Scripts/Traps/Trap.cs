@@ -26,6 +26,7 @@ public class Trap : MonoBehaviour, Targetable
     protected SurfaceOperations surfaceOperations { get; set; }
     protected Surface surface { get; set; }
     protected Store store;
+    public GameObject obj { get => gameObject; }
 
     protected void InitSingletons()
     {

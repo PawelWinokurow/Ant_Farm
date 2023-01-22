@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TrapNamespace;
 using UnityEngine;
 
 
@@ -275,7 +276,8 @@ public class Surface : MonoBehaviour
         baseHex.RemoveChildren();
         WorkHexagon.CreateHexagon(baseHex, basePrefab).type = HexType.BASE;
         var block = WorkHexagon.CreateHexagon(baseHex, queenPrefab);
-        store.AddAlly((Targetable)block.GetComponent<Trap>());
+        var targetable = (Targetable)block.GetComponent<Queen>();
+        store.AddAlly(targetable);
         pathGraph.SetAccesabillity(baseHex, gameSettings.ACCESS_MASK_PROHIBIT, gameSettings.EDGE_WEIGHT_NORMAL);
     }
 

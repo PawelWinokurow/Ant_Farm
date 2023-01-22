@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System.Collections;
+using System.Linq;
 
 public class Store : MonoBehaviour
 {
@@ -31,6 +33,23 @@ public class Store : MonoBehaviour
         food = resourcesSettings.INITIAL_FOOD_AMOUNT;
         UIManager.instance.SetFoodAmount(food);
         moneyUI = GameObject.FindGameObjectWithTag("MoneyUI").GetComponent<TextMeshProUGUI>();
+        StartCoroutine(GarbageCollector());
+    }
+
+    IEnumerator GarbageCollector()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(0.2f);
+            var deadMob = allAllies.Concat(allEnemies).Where(mob => mob.currentState.type == STATE.DEAD).FirstOrDefault();
+            if (deadMob != null)
+            {
+                allAllies.Remove(deadMob);
+                allEnemies.Remove(deadMob);
+                GameObject.Destroy(deadMob.obj, 1);
+            }
+
+        }
     }
 
     public void AddRemoveFood(float amount)
@@ -72,5 +91,6 @@ public class Store : MonoBehaviour
             currentWave.Remove(mob);
         }
     }
+
 }
 
