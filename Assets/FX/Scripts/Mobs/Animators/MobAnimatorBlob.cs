@@ -13,7 +13,8 @@ public class MobAnimatorBlob : MonoBehaviour, IMobAnimator
     }
     private StateType state;
 
-    public ParticleSystem tentackles;
+    public ParticleSystem tentacklesFight; 
+    public ParticleSystem tentacklesRun;
     MaterialPropertyBlock props;
     public MeshRenderer mr;
     private float t;
@@ -31,12 +32,14 @@ public class MobAnimatorBlob : MonoBehaviour, IMobAnimator
         t = 0;
         a = 0;
         state = StateType.Run;
-        tentackles.Stop();
+        tentacklesFight.Stop();
+        tentacklesRun.Play();
     }
     public void Idle()
     {
         state = StateType.Idle;
-        tentackles.Stop();
+        tentacklesFight.Stop();
+        tentacklesRun.Play();
     }
     public void IdleFight()
     {
@@ -56,7 +59,8 @@ public class MobAnimatorBlob : MonoBehaviour, IMobAnimator
             if (state == StateType.IdleFight)
             {
                 m_Shoot.Invoke();
-                tentackles.Play();
+                tentacklesFight.Play();
+                tentacklesRun.Stop();
                 mr.transform.localScale = 1.5f * Vector3.one;
             }
         }
@@ -64,7 +68,8 @@ public class MobAnimatorBlob : MonoBehaviour, IMobAnimator
         if (fOld < 14 && isHitMade)
         {
             isHitMade = false;
-            tentackles.Stop();
+            tentacklesFight.Stop();
+            tentacklesRun.Play();
         }
 
         fOld = f;
