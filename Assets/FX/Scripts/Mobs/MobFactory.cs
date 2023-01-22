@@ -50,7 +50,6 @@ public class MobFactory : MonoBehaviour
         scorpion.pathfinder = pathfinder;
         scorpion.Kill = () =>
         {
-            store.DeleteEnemy((Targetable)scorpion);
             scorpion.SetState(new FighterNamespace.DeadState(scorpion));
             scorpion.CancelJob();
         };
@@ -67,7 +66,6 @@ public class MobFactory : MonoBehaviour
         zombie.pathfinder = pathfinder;
         zombie.Kill = () =>
         {
-            store.DeleteEnemy((Targetable)zombie);
             zombie.SetState(new FighterNamespace.DeadState(zombie));
             zombie.CancelJob();
         };
@@ -85,7 +83,6 @@ public class MobFactory : MonoBehaviour
         blob.pathfinder = pathfinder;
         blob.Kill = () =>
         {
-            store.DeleteEnemy((Targetable)blob);
             blob.SetState(new FighterNamespace.DeadState(blob));
             blob.CancelJob();
         };
@@ -102,7 +99,6 @@ public class MobFactory : MonoBehaviour
         gobber.pathfinder = pathfinder;
         gobber.Kill = () =>
         {
-            store.DeleteEnemy((Targetable)gobber);
             gobber.SetState(new FighterNamespace.DeadState(gobber));
             gobber.CancelJob();
         };
@@ -133,7 +129,6 @@ public class MobFactory : MonoBehaviour
             soldier.pathfinder = pathfinder;
             soldier.Kill = () =>
             {
-                store.DeleteAlly((Targetable)soldier);
                 soldier.SetState(new FighterNamespace.DeadState(soldier));
                 soldier.CancelJob();
             };
@@ -152,7 +147,6 @@ public class MobFactory : MonoBehaviour
             gunner.pathfinder = pathfinder;
             gunner.Kill = () =>
             {
-                store.DeleteAlly((Targetable)gunner);
                 gunner.SetState(new FighterNamespace.DeadState(gunner));
                 gunner.CancelJob();
             };
