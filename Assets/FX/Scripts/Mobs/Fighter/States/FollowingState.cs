@@ -28,7 +28,7 @@ namespace FighterNamespace
 
         public override void Tick()
         {
-            if (fighter.target.mob.currentState.type == STATE.DEAD)
+            if (fighter.target.IsDead)
             {
                 fighter.SetState(new PatrolState(fighter));
             }

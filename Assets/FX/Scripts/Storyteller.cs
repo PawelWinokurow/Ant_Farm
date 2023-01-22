@@ -20,7 +20,7 @@ public class Storyteller : MonoBehaviour
     public UIManager uiManager;
     public int currentWave = 0;
     private float t;
-    private bool canWaveStart { get => store.currentWave.Count == 0 || store.currentWave.All(mob => mob.isDead); }
+    private bool canWaveStart { get => store.currentWave != null && (store.currentWave.Count == 0 || store.currentWave.All(mob => mob.isDead)); }
     void Start()
     {
         surface = Surface.Instance;

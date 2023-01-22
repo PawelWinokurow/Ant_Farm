@@ -46,7 +46,11 @@ public class Store : MonoBehaviour
             {
                 allAllies.Remove(deadMob);
                 allEnemies.Remove(deadMob);
-                GameObject.Destroy(deadMob.obj, 1);
+                if (deadMob.type != ACTOR_TYPE.SPIKES && deadMob.type != ACTOR_TYPE.TURRET && deadMob.type != ACTOR_TYPE.QUEEN)
+                {
+                    GameObject.Destroy(deadMob.obj, 1);
+                }
+
             }
 
         }

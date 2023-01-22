@@ -33,7 +33,7 @@ public class Fighter : MonoBehaviour, Targetable
     public Transform angl;
     protected Quaternion smoothRot;
     public DigJob digJob;
-    public bool isDead { get => health.isDead; }
+    public bool isDead { get => health != null && health.isDead; }
     public GameObject obj { get => gameObject; }
 
     protected void InitSingletons()
