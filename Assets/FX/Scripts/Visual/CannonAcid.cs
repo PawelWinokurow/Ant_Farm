@@ -6,18 +6,19 @@ namespace AntFarm
 {
     public class CannonAcid : MonoBehaviour
     {
-        void Start()
+        private float startScl;
+        void Awake()
         {
-        
+            startScl = transform.localScale.x;
         }
 
         private void OnEnable()
         {
             float flip = Random.Range(0, 2);
             flip = ExtensionMethods.Remap(flip, 0, 1, -1, 1);
-            float scl = Random.Range(0.7f, 1f);
-            transform.localScale = new Vector3(scl* flip, scl, scl);
+            float scl = startScl * Random.Range(0.7f, 1f);
+            transform.localScale = new Vector3(scl * flip, scl, scl);
         }
-   
+
     }
 }

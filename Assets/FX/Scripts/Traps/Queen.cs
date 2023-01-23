@@ -8,6 +8,7 @@ namespace TrapNamespace
 {
     public class Queen : Trap
     {
+
         void Start()
         {
             animator = GetComponent<MobAnimatorQueen>();

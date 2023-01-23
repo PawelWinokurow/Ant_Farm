@@ -76,10 +76,13 @@ namespace FighterNamespace
                             targetPos = fighter.target.mob.position;
                         }
                     }
-                    ball_p.transform.position = Vector3.Lerp(transform.position, targetPos, a);
+
+                    ball_p.position = Vector3.Lerp(transform.position, targetPos, a);
+                    ball.localPosition = Vector3.up * (1f - (1f - a * 2f) * (1f - a * 2f)) * dist * 0.3f;
+
                     ball_p.LookAt(targetPos, transform.up);
                     ball.LookAt(ballPosOld, Vector3.up);
-                    ballPosOld = ball.position;
+                    ballPosOld = ball.position + ball.forward;
                 }
                 ).OnComplete(() =>
            {
@@ -99,10 +102,10 @@ namespace FighterNamespace
                }
 
            }));
-                sequence.Join(ball.DOLocalMoveY(dist * 0.3f, t / 2f).SetEase(Ease.OutQuad));
-                sequence.Join(ball.DOLocalMoveY(0f, t / 2f).SetEase(Ease.InQuad).SetDelay(t / 2f));
+
             }
         }
+
     }
 }
 
