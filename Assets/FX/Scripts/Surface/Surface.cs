@@ -133,7 +133,7 @@ public class Surface : MonoBehaviour
                 pathGraph.AddHexagonSubGraph(hex, Hexagon.radius, $"{x}_{z}");
                 hexagons[z * width + x] = hex;
 
-                if (z == 0 || z == height - 1 || x == 0 || x == width - 1)
+                if ((z == 0 || z == height - 1 || x == 0 || x == width - 1 ) && z> height/2)
                 {
                     sideHexagonsPos[n++] = hexPosition;
                 }
