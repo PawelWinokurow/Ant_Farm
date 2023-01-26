@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: ResourcesSettings
   m_EditorClassIdentifier: 
   FOOD_MAX_AMOUNT: 100
-  INITIAL_FOOD_AMOUNT: 30
+  INITIAL_FOOD_AMOUNT: 300
