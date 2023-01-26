@@ -37,7 +37,7 @@ public class BuildTestMap : MonoBehaviour
                 surface.AddSoil(surface.hexagons[i]);
                 surface.pathGraph.SetAccesabillity(surface.hexagons[i], gameSettings.ACCESS_MASK_SOIL, gameSettings.EDGE_WEIGHT_OBSTACLE);
             }
-            else if (rand <= wallProb + foodProb)
+            else if (rand <= wallProb + foodProb && surface.hexagons[i].position.z< surface.center.z)
             {
                 surface.AddFood(surface.hexagons[i]);
                 surface.pathGraph.SetAccesabillity(surface.hexagons[i], gameSettings.ACCESS_MASK_FLOOR, gameSettings.EDGE_WEIGHT_NORMAL);
