@@ -15,6 +15,7 @@ public class PriceSettings : ScriptableObject
     public int BLOB_PRICE = 50;
     public int SOIL_PRICE = 1;
     public int STONE_PRICE = 5;
+    public int EGG_PRICE = 0;
     public int QUEEN_PRICE = 0;
 
 }

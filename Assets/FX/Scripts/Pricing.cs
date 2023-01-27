@@ -39,6 +39,7 @@ public class Pricing : MonoBehaviour
         {ACTOR_TYPE.SOLDIER, priceSettings.SOLDIER_PRICE},
         {ACTOR_TYPE.GUNNER, priceSettings.GUNNER_PRICE},
         {ACTOR_TYPE.WORKER, priceSettings.WORKER_PRICE},
+        {ACTOR_TYPE.EGG, priceSettings.EGG_PRICE},
         {ACTOR_TYPE.QUEEN, priceSettings.QUEEN_PRICE}
         };
 

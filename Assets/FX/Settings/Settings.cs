@@ -14,6 +14,7 @@ public class Settings : MonoBehaviour
     public TrapSettings spikesSettings;
     public TrapSettings turretSettings;
     public TrapSettings queenSettings;
+    public TrapSettings eggSettings;
     public PriceSettings priceSettings;
     public ResourcesSettings resourcesSettings;
     public GameplaySettings gameplaySettings;

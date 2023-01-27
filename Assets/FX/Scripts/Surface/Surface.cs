@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using TrapNamespace;
 using UnityEngine;
 
@@ -11,8 +12,6 @@ public class Surface : MonoBehaviour
     public WorkHexagon spikesPrefab;
     public WorkHexagon turretPrefab;
     public WorkHexagon holePrefab;
-    public WorkHexagon queenPrefab;
-
     public WorkHexagon soilMountIconPrefab;
     public WorkHexagon stoneMountIconPrefab;
     public WorkHexagon spikesMountIconPrefab;
@@ -255,6 +254,7 @@ public class Surface : MonoBehaviour
 
     public void AddGround(FloorHexagon hex)
     {
+        hex.RemoveChildren();
         hex.type = HexType.EMPTY;
         hex.work = WorkHexagon.MAX_WORK;
     }
@@ -268,17 +268,21 @@ public class Surface : MonoBehaviour
 
     public void AddBase()
     {
-        baseHex.vertex.neighbours.ForEach(vertex =>
+        baseHex.vertex.neighbours.Select(vertex => vertex.floorHexagon).Append(baseHex).ToList().ForEach(hex =>
         {
-            RemoveBuilding(vertex.floorHexagon);
+            RemoveBuilding(hex);
+            hex.type = HexType.BASE;
+            pathGraph.SetAccesabillity(hex, gameSettings.ACCESS_MASK_PROHIBIT, gameSettings.EDGE_WEIGHT_NORMAL);
         });
-
-        baseHex.RemoveChildren();
-        WorkHexagon.CreateHexagon(baseHex, basePrefab).type = HexType.BASE;
-        var block = WorkHexagon.CreateHexagon(baseHex, queenPrefab);
-        var targetable = (Targetable)block.GetComponent<Queen>();
-        store.AddAlly(targetable);
-        pathGraph.SetAccesabillity(baseHex, gameSettings.ACCESS_MASK_PROHIBIT, gameSettings.EDGE_WEIGHT_NORMAL);
+        var completeBase = WorkHexagon.CreateHexagon(baseHex, basePrefab);
+        var hexagons = completeBase.GetComponentsInChildren<WorkHexagon>();
+        hexagons.ToList().ForEach(hex =>
+        {
+            var position = hex.gameObject.transform.position;
+            hex.floorHexagon = PositionToHex(position);
+            PositionToHex(position).child = hex;
+        });
+        completeBase.GetComponentsInChildren<Egg>().Select(egg => (Targetable)egg).Append((Targetable)completeBase.GetComponentInChildren<Queen>()).ToList().ForEach(targetable => store.AddAlly(targetable));
     }
 
     public void PlaceIcon(FloorHexagon hex, SliderValue value)
@@ -406,7 +410,6 @@ public class Surface : MonoBehaviour
 
     public void RemoveBuilding(FloorHexagon hex)
     {
-        pathGraph.SetAccesabillity(hex, gameSettings.ACCESS_MASK_FLOOR, gameSettings.EDGE_WEIGHT_NORMAL);
         ClearHex(hex);
         AddGround(hex);
     }

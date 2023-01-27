@@ -58,7 +58,6 @@ public class Storyteller : MonoBehaviour
     {
         surface.ClearHex(holeHex);
         surface.AddBlock(holeHex, HexType.HOLE);
-        surface.pathGraph.SetAccesabillity(holeHex, gameSettings.ACCESS_MASK_FLOOR, gameSettings.EDGE_WEIGHT_NORMAL);
         holeHex.vertex.neighbours.ForEach(vertex =>
         {
             surface.RemoveBuilding(vertex.floorHexagon);
