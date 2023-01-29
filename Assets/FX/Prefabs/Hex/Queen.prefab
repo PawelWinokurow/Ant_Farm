@@ -5177,6 +5177,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deadFX_prefab: {fileID: 2230850071633438090, guid: ee2187ae3b19b524cbb0abff548091a2, type: 3}
   hitFX_prefab: {fileID: 3272130487407376759, guid: 11b753cc1e21c41e393bd07e86b78fb9, type: 3}
+  destroyDelay: 0.1
   progressbar: {fileID: 550079563266739444}
   MAX_HP: 100
   restoreHp: 1

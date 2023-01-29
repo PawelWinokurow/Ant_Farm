@@ -6,6 +6,7 @@ public class Health : MonoBehaviour
 {
     public GameObject deadFX_prefab;
     public GameObject hitFX_prefab;
+    public float destroyDelay = 0.1f;
     public MaterialPropertyBlock bodyProps;
     private MaterialPropertyBlock progressbarProps;
     public MeshRenderer progressbar;
@@ -123,7 +124,7 @@ public class Health : MonoBehaviour
         }
 
         renderers[0].transform.localScale = Vector3.one * 1.3f;
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(destroyDelay);
         renderers[0].gameObject.SetActive(false);
     }
 }
