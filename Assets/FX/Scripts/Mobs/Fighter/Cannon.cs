@@ -27,7 +27,6 @@ namespace FighterNamespace
 
         public void Shoot()
         {
-            Debug.Log("shoot");
             if (fighter?.currentState.type != STATE.DEAD || trap?.currentState.type != STATE.DEAD)
             {
 
@@ -79,11 +78,11 @@ namespace FighterNamespace
                     }
 
                     ball_p.position = Vector3.Lerp(transform.position, targetPos, a);
-                    ball.localPosition = Vector3.up * (1f - (1f - a * 2f) * (1f - a * 2f))* dist * 0.3f;
- 
+                    ball.localPosition = Vector3.up * (1f - (1f - a * 2f) * (1f - a * 2f)) * dist * 0.3f;
+
                     ball_p.LookAt(targetPos, transform.up);
                     ball.LookAt(ballPosOld, Vector3.up);
-                    ballPosOld = ball.position+ ball.forward;
+                    ballPosOld = ball.position + ball.forward;
                 }
                 ).OnComplete(() =>
            {
@@ -103,10 +102,10 @@ namespace FighterNamespace
                }
 
            }));
-          
+
             }
         }
-   
+
     }
 }
 

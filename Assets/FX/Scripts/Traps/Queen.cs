@@ -55,7 +55,7 @@ namespace TrapNamespace
             var targetPosition = position;
             var vec = targetPosition - position;
             var vecLength = Vector3.Magnitude(vec);
-            if (vecLength <= 4f)
+            if (vecLength <= 30f)
             {
                 var vecNorm = Vector3.Normalize(vec);
                 var hexagonsOnTrajectory = new List<FloorHexagon>();

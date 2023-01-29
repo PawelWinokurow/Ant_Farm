@@ -28,7 +28,7 @@ namespace FighterNamespace
 
         public override void Tick()
         {
-            if (!fighter.IsTargetInSight() || fighter.target.IsDead)
+            if (fighter.target.IsDead || !fighter.IsTargetInSight())
             {
                 fighter.SetState(new FollowingState(fighter));
             }
