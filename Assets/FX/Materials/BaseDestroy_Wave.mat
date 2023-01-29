@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BaseDestroy_Glow
+  m_Name: BaseDestroy_Wave
   m_Shader: {fileID: 4800000, guid: ad1d982a08776034e896083060effdb1, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -80,6 +80,7 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _TimeScl: 1
+    - _TopFade: 1
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:

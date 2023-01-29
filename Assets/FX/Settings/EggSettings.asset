@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41fb3ccea58394e4bbb99506bf9e92dd, type: 3}
   m_Name: EggSettings
   m_EditorClassIdentifier: 
-  HP: 200
+  HP: 30
   ATTACK_STRENGTH: 0

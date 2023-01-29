@@ -7,12 +7,12 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Sand_Base
-  m_Shader: {fileID: 4800000, guid: fb610ee558d4c4349aed3be1f3f1cfbd, type: 3}
+  m_Name: BaseDestroy_Sphere
+  m_Shader: {fileID: 4800000, guid: ad1d982a08776034e896083060effdb1, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
-  m_EnableInstancingVariants: 1
+  m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -41,16 +41,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: de7e698adc22ead4780758f5851e3b66, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTexture:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Matcap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: 27e08f06f539657468481e691046c2ce, type: 3}
+        m_Scale: {x: 2, y: 0.5}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
@@ -64,55 +56,35 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _Texture:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _texcoord:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Blend: 1
-    - _BlendDetails: 0.333
-    - _BlendTexture: 0.649
-    - _Blink_FX: 0
+    - _AlphaBlend: 1
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _Emission: 0
-    - _Float0: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _Heigth: 0.6
-    - _Lerp2: 0.42
-    - _Matcap_Intensity: 0
+    - _InvFade: 1
     - _Metallic: 0
     - _Mode: 0
-    - _Mult: 1
-    - _Multiply: 1
+    - _Mult: 2
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _Pow: 1
-    - _Pow1: 2
-    - _Pow2: 0.65
-    - _ScaleUV: 0.03
-    - _ScaleUV1: 1
-    - _ScaleUV2: 1
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _TimeScl: 1
+    - _TopFade: 0
     - _UVSec: 0
     - _ZWrite: 1
-    - __dirty: 0
     m_Colors:
-    - _BlinkFX_Color: {r: 1, g: 0, b: 0, a: 1}
-    - _BlinkFX_Color1: {r: 1, g: 0, b: 0, a: 1}
-    - _Color: {r: 0.5566038, g: 0.5566038, b: 0.5566038, a: 1}
-    - _ColorGround: {r: 1, g: 0.514151, b: 0.514151, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _ShadowColor: {r: 0.21568628, g: 0.03295701, b: 0, a: 1}
+    - _TintColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
